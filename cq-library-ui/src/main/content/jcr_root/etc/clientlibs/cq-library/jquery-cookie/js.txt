@@ -1,0 +1,3 @@
+#base=js
+
+jquery.cookie.min.js
