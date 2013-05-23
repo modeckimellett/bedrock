@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>cq-library-ui</artifactId>
     <packaging>jar</packaging>
-    <name>CITYTECH, Inc. CQ5 Library - UI</name>
+    <name>CITYTECH, Inc. CQ Library - UI</name>
 
     <properties>
         <maven.test.skip>true</maven.test.skip>

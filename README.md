@@ -1,10 +1,10 @@
-# CITYTECH, Inc. CQ5 Library
+# CITYTECH, Inc. CQ Library
 
 [CITYTECH, Inc.](http://www.citytechinc.com)
 
 ## Overview
 
-The CITYTECH CQ5 Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript modules for bootstrapping and simplifying Adobe CQ5 implementations.
+The CITYTECH CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript modules for bootstrapping and simplifying Adobe CQ5 implementations.
 
 ## `Optional` Usage
 
