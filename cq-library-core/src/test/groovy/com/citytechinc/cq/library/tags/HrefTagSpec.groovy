@@ -11,9 +11,7 @@ class HrefTagSpec extends AbstractPropertyTagSpec {
         pageBuilder.content {
             citytechinc {
                 "jcr:content"(path: "/content/global")
-                ctmsp {
-
-                }
+                ctmsp()
             }
         }
     }
