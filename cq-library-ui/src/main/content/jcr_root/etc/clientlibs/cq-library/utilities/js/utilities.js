@@ -31,7 +31,7 @@ CITYTECH.Utilities = function () {
         hideEditables: function (names, comparePath) {
             if (CITYTECH.Utilities.isAuthor()) {
                 var pagePath = CQ.WCM.getPagePath();
-                var noCompare = _.isUndefined(comparePath);
+                var noCompare = typeof comparePath === 'undefined';
 
                 $.each(names, function (i, name) {
                     var path = pagePath + '/jcr:content/' + name;
@@ -47,24 +47,6 @@ CITYTECH.Utilities = function () {
                     });
                 });
             }
-        },
-
-        isLoggedIn: function (callback) {
-            var loggedIn = false;
-
-            $.ajax({
-                url: '/libs/granite/security/currentuser.json',
-                async: false,
-                cache: false
-            }).done(function (data) {
-                loggedIn = data.authorizableId != 'anonymous';
-
-                if (loggedIn && _.isFunction(callback)) {
-                    callback(data);
-                }
-            });
-
-            return loggedIn;
         }
     };
 }();

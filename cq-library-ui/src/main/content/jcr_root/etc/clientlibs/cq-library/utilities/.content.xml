@@ -4,5 +4,5 @@
           xmlns:jcr="http://www.jcp.org/jcr/1.0"
           jcr:primaryType="cq:ClientLibraryFolder"
           sling:resourceType="widgets/clientlib"
-          embed="[citytech.jquery,citytech.jquery-cookie,citytech.underscore,citytech.namespace]"
+          embed="[citytech.jquery,citytech.jquery-cookie,citytech.namespace]"
           categories="[citytech.utilities]" />
