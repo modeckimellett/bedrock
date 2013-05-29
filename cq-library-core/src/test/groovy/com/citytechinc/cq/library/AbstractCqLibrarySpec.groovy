@@ -8,10 +8,10 @@ package com.citytechinc.cq.library
 import com.citytechinc.cq.groovy.builders.NodeBuilder
 import com.citytechinc.cq.groovy.builders.PageBuilder
 import com.citytechinc.cq.groovy.metaclass.GroovyExtensionMetaClassRegistry
+import com.citytechinc.cq.groovy.testing.AbstractRepositorySpec
+import com.citytechinc.cq.groovy.testing.resource.TestingResourceResolver
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
-import com.citytechinc.cq.testing.AbstractRepositorySpec
-import com.citytechinc.cq.testing.resource.TestingResourceResolver
 import spock.lang.Shared
 
 abstract class AbstractCqLibrarySpec extends AbstractRepositorySpec {

@@ -6,7 +6,6 @@
 package com.citytechinc.cq.library.content.node.predicates
 
 import com.citytechinc.cq.library.AbstractCqLibrarySpec
-import com.citytechinc.cq.library.content.node.impl.DefaultBasicNode
 import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 import org.apache.sling.api.resource.NonExistingResource
 
@@ -31,8 +30,8 @@ class ComponentNodePropertyExistsPredicateSpec extends AbstractCqLibrarySpec {
     def "node where property does not exist is not included"() {
         setup:
         def resource = resourceResolver.getResource("/content/citytechinc")
-        def node = new DefaultBasicNode(resource)
-        def predicate = new BasicNodeResourceTypePredicate("jcr:description")
+        def node = new DefaultComponentNode(resource)
+        def predicate = new ComponentNodePropertyExistsPredicate("jcr:description")
 
         expect:
         !predicate.apply(node)

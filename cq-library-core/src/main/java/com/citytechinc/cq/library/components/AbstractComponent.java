@@ -285,36 +285,6 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
-    public final Optional<BasicNode> getNode(final String relativePath) {
-        return componentNode.getNode(relativePath);
-    }
-
-    @Override
-    public final List<BasicNode> getNodes() {
-        return componentNode.getNodes();
-    }
-
-    @Override
-    public final List<BasicNode> getNodes(final Predicate<BasicNode> predicate) {
-        return componentNode.getNodes(predicate);
-    }
-
-    @Override
-    public final List<BasicNode> getNodes(final String parsysName) {
-        return componentNode.getNodes(parsysName);
-    }
-
-    @Override
-    public final List<BasicNode> getNodes(final String parsysName, final String resourceType) {
-        return componentNode.getNodes(parsysName, resourceType);
-    }
-
-    @Override
-    public final List<BasicNode> getNodes(final String relativePath, final Predicate<BasicNode> predicate) {
-        return componentNode.getNodes(relativePath, predicate);
-    }
-
-    @Override
     public final List<BasicNode> getNodesInherited(final String relativePath) {
         return componentNode.getNodesInherited(relativePath);
     }

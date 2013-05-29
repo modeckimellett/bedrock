@@ -11,6 +11,7 @@ import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.citytechinc.cq.library.content.node.BasicNode;
 import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.citytechinc.cq.library.content.node.predicates.ComponentNodePropertyExistsPredicate;
+import com.citytechinc.cq.library.content.node.predicates.ComponentNodeResourceTypePredicate;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.day.cq.commons.DownloadResource;
@@ -24,7 +25,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -39,7 +39,6 @@ import java.util.List;
 
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
-import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.BASIC_NODE_TO_COMPONENT_NODE;
 import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.RESOURCE_TO_BASIC_NODE;
 import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.RESOURCE_TO_COMPONENT_NODE;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -171,6 +170,8 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public Optional<ComponentNode> getComponentNode(final String relativePath) {
+        checkNotNull(relativePath);
+
         return Optional.fromNullable(resource.getChild(relativePath)).transform(RESOURCE_TO_COMPONENT_NODE);
     }
 
@@ -181,24 +182,40 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public List<ComponentNode> getComponentNodes(final Predicate<ComponentNode> predicate) {
+        checkNotNull(predicate);
+
         return FluentIterable.from(resource.getChildren()).transform(RESOURCE_TO_COMPONENT_NODE).filter(predicate)
             .toList();
     }
 
     @Override
     public List<ComponentNode> getComponentNodes(final String relativePath) {
-        return Lists.transform(basicNode.getNodes(relativePath), BASIC_NODE_TO_COMPONENT_NODE);
+        checkNotNull(relativePath);
+
+        final Resource child = resource.getChild(relativePath);
+
+        final List<ComponentNode> nodes;
+
+        if (child == null) {
+            nodes = Collections.emptyList();
+        } else {
+            nodes = FluentIterable.from(child.getChildren()).transform(RESOURCE_TO_COMPONENT_NODE).toList();
+        }
+
+        return nodes;
     }
 
     @Override
     public List<ComponentNode> getComponentNodes(final String relativePath, final String resourceType) {
-        return Lists.transform(basicNode.getNodes(relativePath, resourceType), BASIC_NODE_TO_COMPONENT_NODE);
+        return getComponentNodes(relativePath, new ComponentNodeResourceTypePredicate(resourceType));
     }
 
     @Override
     public List<ComponentNode> getComponentNodes(final String relativePath, final Predicate<ComponentNode> predicate) {
-        return FluentIterable.from(basicNode.getNodes(relativePath)).transform(BASIC_NODE_TO_COMPONENT_NODE).filter(
-            predicate).toList();
+        checkNotNull(relativePath);
+        checkNotNull(predicate);
+
+        return FluentIterable.from(getComponentNodes(relativePath)).filter(predicate).toList();
     }
 
     @Override
@@ -296,36 +313,6 @@ public final class DefaultComponentNode implements ComponentNode {
     @Override
     public Optional<Node> getNode() {
         return basicNode.getNode();
-    }
-
-    @Override
-    public Optional<BasicNode> getNode(final String relativePath) {
-        return basicNode.getNode(relativePath);
-    }
-
-    @Override
-    public List<BasicNode> getNodes() {
-        return basicNode.getNodes();
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final Predicate<BasicNode> predicate) {
-        return basicNode.getNodes(predicate);
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final String parsysName) {
-        return basicNode.getNodes(parsysName);
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final String parsysName, final String resourceType) {
-        return basicNode.getNodes(parsysName, resourceType);
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final String relativePath, final Predicate<BasicNode> predicate) {
-        return basicNode.getNodes(relativePath, predicate);
     }
 
     @Override

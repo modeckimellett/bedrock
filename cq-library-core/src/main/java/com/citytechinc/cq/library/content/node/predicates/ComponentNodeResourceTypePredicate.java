@@ -5,28 +5,28 @@
  */
 package com.citytechinc.cq.library.content.node.predicates;
 
-import com.citytechinc.cq.library.content.node.BasicNode;
+import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.google.common.base.Predicate;
 import org.apache.sling.api.resource.Resource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class BasicNodeResourceTypePredicate implements Predicate<BasicNode> {
+public final class ComponentNodeResourceTypePredicate implements Predicate<ComponentNode> {
 
     /**
      * sling:resourceType property value to filter on.
      */
     private final String resourceType;
 
-    public BasicNodeResourceTypePredicate(final String resourceType) {
+    public ComponentNodeResourceTypePredicate(final String resourceType) {
         this.resourceType = checkNotNull(resourceType);
     }
 
     @Override
-    public boolean apply(final BasicNode basicNode) {
-        checkNotNull(basicNode);
+    public boolean apply(final ComponentNode componentNode) {
+        checkNotNull(componentNode);
 
-        final Resource resource = basicNode.getResource();
+        final Resource resource = componentNode.getResource();
 
         return resourceType.equals(resource.getResourceType());
     }

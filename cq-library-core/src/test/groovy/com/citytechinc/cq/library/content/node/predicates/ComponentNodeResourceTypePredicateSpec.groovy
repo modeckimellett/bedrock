@@ -6,9 +6,9 @@
 package com.citytechinc.cq.library.content.node.predicates
 
 import com.citytechinc.cq.library.AbstractCqLibrarySpec
-import com.citytechinc.cq.library.content.node.impl.DefaultBasicNode
+import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 
-class BasicNodeResourceTypePredicateSpec extends AbstractCqLibrarySpec {
+class ComponentNodeResourceTypePredicateSpec extends AbstractCqLibrarySpec {
 
     def setupSpec() {
         nodeBuilder.sabbath("sling:resourceType": "black") {
@@ -18,7 +18,7 @@ class BasicNodeResourceTypePredicateSpec extends AbstractCqLibrarySpec {
 
     def "exception thrown when resource type is null"() {
         when:
-        new BasicNodeResourceTypePredicate(null)
+        new ComponentNodeResourceTypePredicate(null)
 
         then:
         thrown(NullPointerException)
@@ -26,7 +26,7 @@ class BasicNodeResourceTypePredicateSpec extends AbstractCqLibrarySpec {
 
     def "exception thrown when node is null"() {
         setup:
-        def predicate = new BasicNodeResourceTypePredicate("black")
+        def predicate = new ComponentNodeResourceTypePredicate("black")
 
         when:
         predicate.apply(null)
@@ -38,8 +38,8 @@ class BasicNodeResourceTypePredicateSpec extends AbstractCqLibrarySpec {
     def "node with matching resource type is included"() {
         setup:
         def resource = resourceResolver.getResource("/sabbath")
-        def node = new DefaultBasicNode(resource)
-        def predicate = new BasicNodeResourceTypePredicate("black")
+        def node = new DefaultComponentNode(resource)
+        def predicate = new ComponentNodeResourceTypePredicate("black")
 
         expect:
         predicate.apply(node)
@@ -48,8 +48,8 @@ class BasicNodeResourceTypePredicateSpec extends AbstractCqLibrarySpec {
     def "node with non-matching resource type is not included"() {
         setup:
         def resource = resourceResolver.getResource("/sabbath")
-        def node = new DefaultBasicNode(resource)
-        def predicate = new BasicNodeResourceTypePredicate("purple")
+        def node = new DefaultComponentNode(resource)
+        def predicate = new ComponentNodeResourceTypePredicate("purple")
 
         expect:
         !predicate.apply(node)
@@ -58,8 +58,8 @@ class BasicNodeResourceTypePredicateSpec extends AbstractCqLibrarySpec {
     def "node with no resource type is not included"() {
         setup:
         def resource = resourceResolver.getResource("/sabbath/paranoid")
-        def node = new DefaultBasicNode(resource)
-        def predicate = new BasicNodeResourceTypePredicate("purple")
+        def node = new DefaultComponentNode(resource)
+        def predicate = new ComponentNodeResourceTypePredicate("purple")
 
         expect:
         !predicate.apply(node)

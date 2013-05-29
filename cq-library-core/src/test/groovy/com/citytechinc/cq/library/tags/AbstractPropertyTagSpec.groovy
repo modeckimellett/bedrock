@@ -6,11 +6,11 @@
 package com.citytechinc.cq.library.tags
 
 import com.citytechinc.cq.groovy.builders.PageBuilder
+import com.citytechinc.cq.groovy.testing.resource.TestingResourceResolver
+import com.citytechinc.cq.groovy.testing.tag.AbstractTagSpec
 import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
-import com.citytechinc.cq.testing.resource.TestingResourceResolver
-import com.citytechinc.cq.testing.tag.AbstractTagSpec
 import spock.lang.Shared
 
 abstract class AbstractPropertyTagSpec extends AbstractTagSpec {

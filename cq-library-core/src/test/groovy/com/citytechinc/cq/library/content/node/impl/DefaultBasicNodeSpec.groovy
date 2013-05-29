@@ -6,7 +6,6 @@
 package com.citytechinc.cq.library.content.node.impl
 
 import com.citytechinc.cq.library.AbstractCqLibrarySpec
-import com.citytechinc.cq.library.content.node.predicates.BasicNodeResourceTypePredicate
 import com.citytechinc.cq.library.content.node.predicates.PropertyNamePredicate
 import spock.lang.Unroll
 
@@ -145,34 +144,6 @@ class DefaultBasicNodeSpec extends AbstractCqLibrarySpec {
         !node.getAsPage("nonExistentProperty").present
     }
 
-    def "get nodes"() {
-        setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
-
-        expect:
-        node.nodes.size() == 4
-    }
-
-    def "get nodes with null predicate"() {
-        setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
-
-        when:
-        node.getNodes(null)
-
-        then:
-        thrown(NullPointerException)
-    }
-
-    def "get nodes with predicate"() {
-        setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
-        def predicate = new BasicNodeResourceTypePredicate("rye")
-
-        expect:
-        node.getNodes(predicate).size() == 1
-    }
-
     def "get href"() {
         setup:
         def node = createBasicNode("/content/citytechinc/jcr:content")
@@ -236,40 +207,6 @@ class DefaultBasicNodeSpec extends AbstractCqLibrarySpec {
 
         expect:
         node.node.get().path == "/content/citytechinc/jcr:content"
-    }
-
-    def "get node at relative path"() {
-        setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
-
-        expect:
-        node.getNode("beer").get().path == "/content/citytechinc/jcr:content/beer"
-        !node.getNode("wine").present
-    }
-
-    def "get nodes at relative path"() {
-        setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
-
-        expect:
-        node.getNodes("malort").size() == 2
-    }
-
-    def "get nodes at relative path with resource type"() {
-        setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
-
-        expect:
-        node.getNodes("malort", "tew").size() == 1
-    }
-
-    def "get nodes at relative path with predicate"() {
-        setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
-        def predicate = new BasicNodeResourceTypePredicate("won")
-
-        expect:
-        node.getNodes("malort", predicate).size() == 1
     }
 
     def "get path"() {

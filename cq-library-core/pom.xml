@@ -261,7 +261,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.citytechinc.cq</groupId>
-			<artifactId>cq5-groovy-extension</artifactId>
+			<artifactId>cq-groovy-extension</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -281,7 +281,7 @@
 		<!-- test -->
 		<dependency>
 			<groupId>com.citytechinc.cq</groupId>
-			<artifactId>cq5-testing</artifactId>
+			<artifactId>cq-groovy-testing</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>

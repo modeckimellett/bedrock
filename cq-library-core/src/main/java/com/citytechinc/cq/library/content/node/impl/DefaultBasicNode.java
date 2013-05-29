@@ -9,9 +9,10 @@ import com.citytechinc.cq.library.constants.Constants;
 import com.citytechinc.cq.library.content.link.Link;
 import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.citytechinc.cq.library.content.node.BasicNode;
-import com.citytechinc.cq.library.content.node.predicates.BasicNodeResourceTypePredicate;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.PageManagerDecorator;
+import com.citytechinc.cq.library.content.resource.predicates.PathPredicate;
+import com.citytechinc.cq.library.content.resource.predicates.ResourceTypePredicate;
 import com.day.cq.commons.DownloadResource;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
@@ -21,7 +22,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -40,14 +40,13 @@ import java.util.List;
 
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
-import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.RESOURCE_TO_BASIC_NODE;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class DefaultBasicNode implements BasicNode {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultBasicNode.class);
 
-    private static final Predicate<BasicNode> ALL = Predicates.alwaysTrue();
+    private static final Predicate<Resource> ALL = Predicates.alwaysTrue();
 
     private final ValueMap properties;
 
@@ -90,6 +89,13 @@ public final class DefaultBasicNode implements BasicNode {
     }
 
     @Override
+    public Optional<Link> getAsLink(final String propertyName) {
+        final Optional<String> pathOptional = get(propertyName);
+
+        return pathOptional.transform(PATH_TO_LINK);
+    }
+
+    @Override
     public Optional<String> getAsMappedHref(final String propertyName) {
         return getAsMappedLink(propertyName).transform(LINK_TO_HREF);
     }
@@ -97,13 +103,6 @@ public final class DefaultBasicNode implements BasicNode {
     @Override
     public String getAsMappedHref(final String propertyName, final String defaultValue) {
         return getAsMappedHref(propertyName).or(defaultValue);
-    }
-
-    @Override
-    public Optional<Link> getAsLink(final String propertyName) {
-        final Optional<String> pathOptional = get(propertyName);
-
-        return pathOptional.transform(PATH_TO_LINK);
     }
 
     @Override
@@ -136,63 +135,8 @@ public final class DefaultBasicNode implements BasicNode {
     }
 
     @Override
-    public List<BasicNode> getNodes() {
-        return getNodes(ALL);
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final Predicate<BasicNode> predicate) {
-        checkNotNull(predicate);
-
-        return FluentIterable.from(resource.getChildren()).transform(RESOURCE_TO_BASIC_NODE).filter(predicate).toList();
-    }
-
-    @Override
-    public Optional<BasicNode> getNode(final String relativePath) {
-        checkNotNull(relativePath);
-
-        return Optional.fromNullable(resource.getChild(relativePath)).transform(RESOURCE_TO_BASIC_NODE);
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final String relativePath) {
-        checkNotNull(relativePath);
-
-        final Resource child = resource.getChild(relativePath);
-
-        final List<BasicNode> nodes;
-
-        if (child == null) {
-            nodes = Collections.emptyList();
-        } else {
-            nodes = FluentIterable.from(child.getChildren()).transform(RESOURCE_TO_BASIC_NODE).toList();
-        }
-
-        return nodes;
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final String relativePath, final String resourceType) {
-        return getNodes(relativePath, new BasicNodeResourceTypePredicate(resourceType));
-    }
-
-    @Override
-    public List<BasicNode> getNodes(final String relativePath, final Predicate<BasicNode> predicate) {
-        checkNotNull(relativePath);
-        checkNotNull(predicate);
-
-        final Resource child = resource.getChild(relativePath);
-
-        final List<BasicNode> nodes;
-
-        if (child == null) {
-            nodes = Collections.emptyList();
-        } else {
-            nodes = FluentIterable.from(child.getChildren()).transform(RESOURCE_TO_BASIC_NODE).filter(predicate)
-                .toList();
-        }
-
-        return nodes;
+    public String getHref() {
+        return getLink().getHref();
     }
 
     @Override
@@ -245,37 +189,43 @@ public final class DefaultBasicNode implements BasicNode {
     }
 
     @Override
-    public Optional<Node> getNode() {
-        return Optional.fromNullable(resource.adaptTo(Node.class));
-    }
-
-    @Override
     public int getIndex() {
         return getIndex(ALL);
     }
 
     @Override
     public int getIndex(final String resourceType) {
-        return getIndex(new BasicNodeResourceTypePredicate(resourceType));
+        return getIndex(new ResourceTypePredicate(resourceType));
     }
 
     @Override
-    public Resource getResource() {
-        return resource;
+    public Link getLink() {
+        return getLinkBuilder().build();
     }
 
     @Override
-    public boolean isHasImage() {
-        return isHasImage(Constants.DEFAULT_IMAGE_NAME);
+    public LinkBuilder getLinkBuilder() {
+        return LinkBuilder.forResource(resource);
     }
 
     @Override
-    public boolean isHasImage(final String name) {
-        checkNotNull(name);
+    public String getMappedHref() {
+        return getMappedLink().getHref();
+    }
 
-        final Resource child = resource.getChild(name);
+    @Override
+    public Link getMappedLink() {
+        return getMappedLinkBuilder().build();
+    }
 
-        return child != null && new Image(resource, name).hasContent();
+    @Override
+    public LinkBuilder getMappedLinkBuilder() {
+        return LinkBuilder.forMappedResource(resource);
+    }
+
+    @Override
+    public Optional<Node> getNode() {
+        return Optional.fromNullable(resource.adaptTo(Node.class));
     }
 
     @Override
@@ -315,63 +265,34 @@ public final class DefaultBasicNode implements BasicNode {
     }
 
     @Override
-    public String getHref() {
-        return getLink().getHref();
+    public Resource getResource() {
+        return resource;
     }
 
     @Override
-    public Link getLink() {
-        return getLinkBuilder().build();
+    public boolean isHasImage() {
+        return isHasImage(Constants.DEFAULT_IMAGE_NAME);
     }
 
     @Override
-    public LinkBuilder getLinkBuilder() {
-        return LinkBuilder.forResource(resource);
-    }
+    public boolean isHasImage(final String name) {
+        checkNotNull(name);
 
-    @Override
-    public String getMappedHref() {
-        return getMappedLink().getHref();
-    }
+        final Resource child = resource.getChild(name);
 
-    @Override
-    public Link getMappedLink() {
-        return getMappedLinkBuilder().build();
-    }
-
-    @Override
-    public LinkBuilder getMappedLinkBuilder() {
-        return LinkBuilder.forMappedResource(resource);
-    }
-
-    private int getIndex(final Predicate<BasicNode> predicate) {
-        checkNotNull(predicate);
-
-        int index = -1;
-
-        final Resource parent = resource.getParent();
-
-        if (parent != null) {
-            final List<BasicNode> contentNodes = new DefaultBasicNode(parent).getNodes(predicate);
-
-            int count = 0;
-
-            for (final BasicNode node : contentNodes) {
-                if (getPath().equals(node.getPath())) {
-                    index = count;
-                    break;
-                }
-
-                count++;
-            }
-        }
-
-        return index;
+        return child != null && new Image(resource, name).hasContent();
     }
 
     @Override
     public String toString() {
         return Objects.toStringHelper(this).add("path", getPath()).add("properties", Maps.newHashMap(asMap()))
             .toString();
+    }
+
+    private int getIndex(final Predicate<Resource> resourceTypePredicate) {
+        final Iterable<Resource> resources = Iterables.filter(resource.getParent().getChildren(),
+            resourceTypePredicate);
+
+        return Iterables.indexOf(resources, new PathPredicate(getPath()));
     }
 }

@@ -73,6 +73,14 @@ public interface BasicNode extends Linkable {
     String getAsHref(String propertyName, String defaultValue);
 
     /**
+     * Given a property on this resource containing the path of another resource, get a link to the resource.
+     *
+     * @param propertyName name of property containing a valid content path
+     * @return <code>Optional</code> link object, absent if property does not contain a valid content path
+     */
+    Optional<Link> getAsLink(String propertyName);
+
+    /**
      * Given a property on this resource containing the path of another resource, get an <code>Optional</code>
      * containing the mapped href to the resource.
      * <p/>
@@ -96,14 +104,6 @@ public interface BasicNode extends Linkable {
     String getAsMappedHref(String propertyName, String defaultValue);
 
     /**
-     * Given a property on this resource containing the path of another resource, get a link to the resource.
-     *
-     * @param propertyName name of property containing a valid content path
-     * @return <code>Optional</code> link object, absent if property does not contain a valid content path
-     */
-    Optional<Link> getAsLink(String propertyName);
-
-    /**
      * Given a property on this resource containing the path of another resource, get a mapped link to the resource.
      * <p/>
      * A "mapped" link has been routed through the Resource Resolver to determine the mapped path for the current
@@ -123,53 +123,6 @@ public interface BasicNode extends Linkable {
      * @return <code>Optional</code> page for property value
      */
     Optional<PageDecorator> getAsPage(String propertyName);
-
-    /**
-     * @param relativePath node path relative to current node
-     * @return <code>Optional</code> node at path
-     */
-    Optional<BasicNode> getNode(String relativePath);
-
-    /**
-     * @return children of this node
-     */
-    List<BasicNode> getNodes();
-
-    /**
-     * Get the children of this node that apply for the given predicate.
-     *
-     * @param predicate predicate to apply
-     * @return filtered list of child nodes
-     */
-    List<BasicNode> getNodes(Predicate<BasicNode> predicate);
-
-    /**
-     * Get the child nodes for the addressed relative path.
-     *
-     * @param relativePath path relative to current node (jcr:content if at page level)
-     * @return child nodes for node at relative path or empty list if addressed node does not exist
-     */
-    List<BasicNode> getNodes(String relativePath);
-
-    /**
-     * Get the child nodes for the given resource type for the addressed relative path.
-     *
-     * @param relativePath path relative to current node (jcr:content if at page level)
-     * @param resourceType resource type to find in parsys
-     * @return child nodes for resource type at relative path or empty list if addressed node does not exist or has no
-     *         children
-     */
-    List<BasicNode> getNodes(String relativePath, String resourceType);
-
-    /**
-     * Get the child nodes for the addressed relative path that apply for given predicate.
-     *
-     * @param relativePath path relative to current node (jcr:content if at page level)
-     * @param predicate predicate to apply
-     * @return filtered list of child nodes at relative path or empty list if addressed node does not exist or no child
-     *         nodes apply for the given predicate
-     */
-    List<BasicNode> getNodes(String relativePath, Predicate<BasicNode> predicate);
 
     /**
      * Get the referenced DAM asset path for the default image (named "image") for this component.

@@ -30,7 +30,7 @@
             <outputDirectory>jcr_root/apps/cq-library/install</outputDirectory>
             <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveDependencies>false</useTransitiveDependencies>
-            <scope>runtime</scope>
+            <scope>compile</scope>
             <useStrictFiltering>true</useStrictFiltering>
         </dependencySet>
     </dependencySets>
