@@ -11,7 +11,7 @@ import com.google.common.base.Function;
 import org.apache.sling.api.resource.Resource;
 
 /**
- * Functions for transforming to and from node decorators.
+ * Functions for transforming resources to node decorators.
  */
 public final class NodeFunctions {
 
@@ -26,13 +26,6 @@ public final class NodeFunctions {
         @Override
         public ComponentNode apply(final Resource resource) {
             return new DefaultComponentNode(resource);
-        }
-    };
-
-    public static final Function<BasicNode, ComponentNode> BASIC_NODE_TO_COMPONENT_NODE = new Function<BasicNode, ComponentNode>() {
-        @Override
-        public ComponentNode apply(final BasicNode basicNode) {
-            return new DefaultComponentNode(basicNode.getResource());
         }
     };
 

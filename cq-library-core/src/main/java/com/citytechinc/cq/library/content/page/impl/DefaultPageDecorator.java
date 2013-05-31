@@ -15,8 +15,6 @@ import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.day.cq.commons.Filter;
-import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
-import com.day.cq.commons.inherit.InheritanceValueMap;
 import com.day.cq.tagging.Tag;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
@@ -289,33 +287,13 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public InheritanceValueMap getProperties() {
-        final Resource resource = getContentResource();
-
-        final InheritanceValueMap properties;
-
-        if (resource == null) {
-            properties = new HierarchyNodeInheritanceValueMap(ValueMap.EMPTY);
-        } else {
-            properties = new HierarchyNodeInheritanceValueMap(resource);
-        }
-
-        return properties;
+    public ValueMap getProperties() {
+        return page.getProperties();
     }
 
     @Override
-    public InheritanceValueMap getProperties(final String relativePath) {
-        final Resource resource = getContentResource(relativePath);
-
-        final InheritanceValueMap properties;
-
-        if (resource == null) {
-            properties = new HierarchyNodeInheritanceValueMap(ValueMap.EMPTY);
-        } else {
-            properties = new HierarchyNodeInheritanceValueMap(resource);
-        }
-
-        return properties;
+    public ValueMap getProperties(final String relativePath) {
+        return page.getProperties(relativePath);
     }
 
     @Override

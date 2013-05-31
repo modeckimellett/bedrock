@@ -9,7 +9,6 @@ import com.citytechinc.cq.library.content.link.ImageLink;
 import com.citytechinc.cq.library.content.link.Linkable;
 import com.citytechinc.cq.library.content.link.NavigationLink;
 import com.citytechinc.cq.library.content.node.ComponentNode;
-import com.day.cq.commons.inherit.InheritanceValueMap;
 import com.day.cq.wcm.api.Page;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -18,21 +17,8 @@ import java.util.List;
 
 public interface PageDecorator extends Page, Linkable {
 
-    /**
-     * Get the navigation title for this page.
-     *
-     * @return optional navigation title
-     */
-    Optional<String> getNavigationTitleOptional();
-
-    /**
-     * Get the page title for this page.  This secondary page title is absent unless it is set in page properties by an
-     * author, as opposed to the title returned by <code>getTitle()</code>, which is the required title when the page is
-     * created.
-     *
-     * @return optional page title
-     */
-    Optional<String> getPageTitleOptional();
+    @Override
+    PageDecorator getAbsoluteParent(int level);
 
     /**
      * @return all child pages of current page
@@ -84,22 +70,29 @@ public interface PageDecorator extends Page, Linkable {
     NavigationLink getNavigationLink();
 
     /**
-     * Get the page properties with inheritance capabilities.
+     * Get the navigation title for this page.
      *
-     * @return properties map
+     * @return optional navigation title
      */
+    Optional<String> getNavigationTitleOptional();
+
     @Override
-    InheritanceValueMap getProperties();
+    PageManagerDecorator getPageManager();
 
     /**
-     * Get the properties of the component or resource relative to this page's content node with inheritance
-     * capabilities.
+     * Get the page title for this page.  This secondary page title is absent unless it is set in page properties by an
+     * author, as opposed to the title returned by <code>getTitle()</code>, which is the required title when the page is
+     * created.
      *
-     * @param relativePath path of resource relative to the jcr:content node of this page
-     * @return properties map
+     * @return optional page title
      */
+    Optional<String> getPageTitleOptional();
+
     @Override
-    InheritanceValueMap getProperties(String relativePath);
+    PageDecorator getParent();
+
+    @Override
+    PageDecorator getParent(int level);
 
     /**
      * Get the template path for this page.  This method is preferred over getTemplate().getPath(), which is dependent
@@ -108,16 +101,4 @@ public interface PageDecorator extends Page, Linkable {
      * @return value of cq:template property or empty string if none exists
      */
     String getTemplatePath();
-
-    @Override
-    PageDecorator getAbsoluteParent(int level);
-
-    @Override
-    PageManagerDecorator getPageManager();
-
-    @Override
-    PageDecorator getParent();
-
-    @Override
-    PageDecorator getParent(int level);
 }

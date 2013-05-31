@@ -20,7 +20,7 @@ public final class DisableAuthorTag extends TagSupport {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String ATTR_PREVIOUS_WCMMODE = "previousWcmMode_";
+    private static final String ATTR_PREVIOUS_WCMMODE = "previous-wcm-mode-";
 
     @Override
     public int doStartTag() throws JspException {
