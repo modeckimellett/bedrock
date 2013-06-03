@@ -12,25 +12,17 @@ import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.citytechinc.cq.library.content.request.ComponentRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
-import javax.jcr.RepositoryException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -39,26 +31,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p/>
  * For documentation on the methods available here, see {@link com.citytechinc.cq.library.content.node.ComponentNode}.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE,
+    isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public abstract class AbstractComponent implements ComponentNode {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractComponent.class);
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
-    private static final Predicate<Property> PROTECTED = new Predicate<Property>() {
-        @Override
-        public boolean apply(final Property property) {
-            boolean isProtected = false;
-
-            try {
-                isProtected = property.getDefinition().isProtected();
-            } catch (RepositoryException e) {
-                LOG.error("error getting property definition", e);
-            }
-
-            return isProtected;
-        }
-    };
 
     protected final ComponentRequest request;
 
@@ -94,34 +69,6 @@ public abstract class AbstractComponent implements ComponentNode {
 
         currentPage = request.getCurrentPage();
         componentNode = request.getComponentNode();
-    }
-
-    /**
-     * Get the properties for this component as JSON.
-     *
-     * @return JSON map of non-protected properties for this component
-     * @throws JsonProcessingException if error occurs writing property map as JSON
-     */
-    public final String getPropertiesAsJson() throws JsonProcessingException {
-        final List<Property> protectedProperties = getProperties(PROTECTED);
-        final Set<String> protectedPropertyNames = Sets.newHashSet();
-
-        for (final Property property : protectedProperties) {
-            try {
-                protectedPropertyNames.add(property.getName());
-            } catch (RepositoryException e) {
-                LOG.error("error getting property name", e);
-            }
-        }
-
-        final Map<String, Object> propertyMap = Maps.filterKeys(asMap(), new Predicate<String>() {
-            @Override
-            public boolean apply(final String key) {
-                return !protectedPropertyNames.contains(key);
-            }
-        });
-
-        return MAPPER.writeValueAsString(propertyMap);
     }
 
     @Override
@@ -246,7 +193,7 @@ public abstract class AbstractComponent implements ComponentNode {
 
     @Override
     public final List<ComponentNode> getComponentNodes(final String relativePath,
-                                                       final Predicate<ComponentNode> predicate) {
+        final Predicate<ComponentNode> predicate) {
         return componentNode.getComponentNodes(relativePath, predicate);
     }
 
@@ -364,14 +311,14 @@ public abstract class AbstractComponent implements ComponentNode {
      * Get an OSGi service.
      *
      * @param serviceType the type (class) of the service
-     * @param <T>         type
+     * @param <T> type
      * @return the service instance, or null if it is not available
      */
     public final <T> T getService(final Class<T> serviceType) {
         checkNotNull(request, "cannot get a service reference when request is null");
 
         final SlingBindings bindings = (SlingBindings) request.getSlingRequest().getAttribute(
-                SlingBindings.class.getName());
+            SlingBindings.class.getName());
 
         checkNotNull(bindings, "request does not contain bindings attribute");
 

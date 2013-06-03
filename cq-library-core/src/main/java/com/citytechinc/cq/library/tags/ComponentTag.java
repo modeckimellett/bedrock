@@ -47,12 +47,12 @@ public final class ComponentTag extends TagSupport {
     }
 
     /**
-     * Component class to instantiate. Class must be annotated with @Component.
+     * Component class to instantiate.
      */
     private String className;
 
     /**
-     * Name to set in pageContext for the component class. Defaults to "currentComponent".
+     * Name to set in pageContext for the component class.
      */
     private String name;
 
