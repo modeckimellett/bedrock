@@ -12,12 +12,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-public final class SerializeJsonTag extends TagSupport {
+public final class SerializeJsonTag extends AbstractScopedTag {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +38,7 @@ public final class SerializeJsonTag extends TagSupport {
     public int doEndTag() throws JspException {
         checkArgument(!isNullOrEmpty(className) || !isNullOrEmpty(instanceName),
             "className or instanceName is required");
+        checkScopeAttribute();
 
         final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(
             DefineObjectsTag.ATTR_COMPONENT_REQUEST);
@@ -47,8 +47,12 @@ public final class SerializeJsonTag extends TagSupport {
             final Object component;
 
             if (isNullOrEmpty(className)) {
-                component = pageContext.getAttribute(instanceName);
+                LOG.info("doEndTag() serializing JSON for instance name = {}", instanceName);
+
+                component = pageContext.getAttribute(instanceName, getScopeValue());
             } else {
+                LOG.info("doEndTag() serializing JSON for class name = {}", className);
+
                 component = Class.forName(className).getConstructor(ComponentRequest.class).newInstance(request);
             }
 
