@@ -262,6 +262,11 @@
                     <artifactId>site-maven-plugin</artifactId>
                     <version>0.8</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.atlassian.maven.plugins</groupId>
+                    <artifactId>maven-jgitflow-plugin</artifactId>
+                    <version>1.0-alpha8</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>

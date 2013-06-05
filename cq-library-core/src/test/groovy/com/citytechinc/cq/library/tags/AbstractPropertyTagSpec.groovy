@@ -4,10 +4,12 @@
  * Confidential and Proprietary
  */
 package com.citytechinc.cq.library.tags
+
 import com.citytechinc.cq.groovy.builders.PageBuilder
 import com.citytechinc.cq.groovy.metaclass.GroovyExtensionMetaClassRegistry
 import com.citytechinc.cq.groovy.testing.tag.AbstractTagSpec
 import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
+import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
 import spock.lang.Shared
 
@@ -16,13 +18,8 @@ abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
     @Shared pageBuilder
 
     @Override
-    @SuppressWarnings("unchecked")
-    Map<Class, Closure> addAdapters() {
-        def closure = { resourceResolver ->
-            new DefaultPageManagerDecorator(resourceResolver)
-        }
-
-        [PageManagerDecorator: closure]
+    void addAdapters() {
+        addAdapter(PageManagerDecorator, { resourceResolver -> new DefaultPageManagerDecorator(resourceResolver) })
     }
 
     def setupSpec() {

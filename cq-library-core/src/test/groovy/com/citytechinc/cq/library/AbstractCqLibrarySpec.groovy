@@ -20,11 +20,8 @@ abstract class AbstractCqLibrarySpec extends AbstractSlingRepositorySpec {
     @Shared pageBuilder
 
     @Override
-    @SuppressWarnings("unchecked")
-    Map<Class, Closure> addAdapters() {
-        [(PageManagerDecorator.class): { resourceResolver ->
-            new DefaultPageManagerDecorator(resourceResolver)
-        }]
+    void addAdapters() {
+        addAdapter(PageManagerDecorator, { resourceResolver -> new DefaultPageManagerDecorator(resourceResolver) })
     }
 
     def setupSpec() {
