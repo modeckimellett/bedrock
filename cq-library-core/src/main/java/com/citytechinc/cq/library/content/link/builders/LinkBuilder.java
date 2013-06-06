@@ -17,6 +17,9 @@ import com.citytechinc.cq.library.content.link.impl.DefaultLink;
 import com.citytechinc.cq.library.content.link.impl.DefaultNavigationLink;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.google.common.base.Charsets;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
@@ -27,11 +30,10 @@ import javax.jcr.RepositoryException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import static com.citytechinc.cq.library.utils.PathUtils.isExternal;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -45,7 +47,7 @@ public final class LinkBuilder {
 
     private final List<NavigationLink> children = new ArrayList<NavigationLink>();
 
-    private final Map<String, String> parameters = new LinkedHashMap<String, String>();
+    private final Multimap<String, String> parameters = LinkedHashMultimap.create();
 
     private final Map<String, String> properties = new HashMap<String, String>();
 
@@ -181,7 +183,7 @@ public final class LinkBuilder {
     }
 
     public LinkBuilder addParameters(final Map<String, String> parameters) {
-        this.parameters.putAll(checkNotNull(parameters));
+        this.parameters.putAll(Multimaps.forMap(checkNotNull(parameters)));
 
         return this;
     }
@@ -211,18 +213,6 @@ public final class LinkBuilder {
         this.selectors.addAll(checkNotNull(selectors));
 
         return this;
-    }
-
-    public NavigationLink buildNavigationLink() {
-        final Link link = build();
-
-        return new DefaultNavigationLink(link, active, children);
-    }
-
-    public ImageLink buildImageLink() {
-        final Link link = build();
-
-        return new DefaultImageLink(link, imageSrc);
     }
 
     public Link build() {
@@ -255,6 +245,18 @@ public final class LinkBuilder {
         return new DefaultLink(path, extension, href, selectors, queryString, external, target, title, properties);
     }
 
+    public ImageLink buildImageLink() {
+        final Link link = build();
+
+        return new DefaultImageLink(link, imageSrc);
+    }
+
+    public NavigationLink buildNavigationLink() {
+        final Link link = build();
+
+        return new DefaultNavigationLink(link, active, children);
+    }
+
     /**
      * @return href for this link
      */
@@ -270,6 +272,12 @@ public final class LinkBuilder {
 
     public LinkBuilder setExtension(final String extension) {
         this.extension = extension;
+
+        return this;
+    }
+
+    public LinkBuilder setHost(final String host) {
+        this.host = host;
 
         return this;
     }
@@ -292,12 +300,6 @@ public final class LinkBuilder {
         return this;
     }
 
-    public LinkBuilder setHost(final String host) {
-        this.host = host;
-
-        return this;
-    }
-
     public LinkBuilder setTarget(final String target) {
         this.target = target;
 
@@ -308,61 +310,6 @@ public final class LinkBuilder {
         this.title = title;
 
         return this;
-    }
-
-    private String buildPathWithSelectors() {
-        final StringBuilder builder = new StringBuilder();
-
-        builder.append(path);
-        builder.append(buildSelectors());
-
-        return builder.toString();
-    }
-
-    private String buildSelectors() {
-        final StringBuilder builder = new StringBuilder();
-
-        if (!external) {
-            for (final String selector : selectors) {
-                builder.append('.');
-                builder.append(selector);
-            }
-        }
-
-        return builder.toString();
-    }
-
-    private String buildQuery() {
-        final StringBuilder builder = new StringBuilder();
-
-        if (!parameters.isEmpty()) {
-            builder.append('?');
-
-            final int size = parameters.size();
-
-            int count = 0;
-
-            for (final Entry<String, String> entry : parameters.entrySet()) {
-                final String name = entry.getKey();
-                final String value = entry.getValue();
-
-                try {
-                    builder.append(URLEncoder.encode(name, Charsets.UTF_8.name()));
-                    builder.append('=');
-                    builder.append(URLEncoder.encode(value, Charsets.UTF_8.name()));
-                } catch (UnsupportedEncodingException uee) {
-                    LOG.error("invalid encoding for parameter = " + name + "=" + value, uee);
-                }
-
-                if (count < size - 1) {
-                    builder.append('&');
-                }
-
-                count++;
-            }
-        }
-
-        return builder.toString();
     }
 
     private String buildHost() {
@@ -376,6 +323,56 @@ public final class LinkBuilder {
             if (port > 0) {
                 builder.append(':');
                 builder.append(port);
+            }
+        }
+
+        return builder.toString();
+    }
+
+    private String buildPathWithSelectors() {
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append(path);
+        builder.append(buildSelectors());
+
+        return builder.toString();
+    }
+
+    private String buildQuery() {
+        final StringBuilder builder = new StringBuilder();
+
+        if (!parameters.isEmpty()) {
+            builder.append('?');
+
+            for (final String name : parameters.keySet()) {
+                final Collection<String> values = parameters.get(name);
+
+                for (final String value : values) {
+                    try {
+                        builder.append(URLEncoder.encode(name, Charsets.UTF_8.name()));
+                        builder.append('=');
+                        builder.append(URLEncoder.encode(value, Charsets.UTF_8.name()));
+                    } catch (UnsupportedEncodingException uee) {
+                        LOG.error("invalid encoding for parameter = " + name + "=" + value, uee);
+                    }
+
+                    builder.append('&');
+                }
+            }
+
+            builder.deleteCharAt(builder.length() - 1);
+        }
+
+        return builder.toString();
+    }
+
+    private String buildSelectors() {
+        final StringBuilder builder = new StringBuilder();
+
+        if (!external) {
+            for (final String selector : selectors) {
+                builder.append('.');
+                builder.append(selector);
             }
         }
 

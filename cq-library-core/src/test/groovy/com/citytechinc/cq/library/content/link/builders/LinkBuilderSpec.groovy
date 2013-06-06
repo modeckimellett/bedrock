@@ -165,6 +165,22 @@ class LinkBuilderSpec extends AbstractCqLibrarySpec {
         ["a": "1", "b": "2"] | "/content.html?a=1&b=2" | "?a=1&b=2"
     }
 
+    def "build link for path with same-name parameters"() {
+        setup:
+        def builder = LinkBuilder.forPath("/content")
+
+        when:
+        builder.addParameter("a", "1")
+        builder.addParameter("a", "2")
+        builder.addParameter("a", "3")
+
+        then:
+        def link = builder.build()
+
+        expect:
+        link.queryString == "?a=1&a=2&a=3"
+    }
+
     @Unroll
     def "build image link"() {
         setup:
