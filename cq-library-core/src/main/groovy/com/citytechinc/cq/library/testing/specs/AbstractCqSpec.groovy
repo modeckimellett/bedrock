@@ -15,6 +15,9 @@ import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
 import spock.lang.Shared
 
+/**
+ * Spock specification for CQ testing with builders for creating test content.
+ */
 abstract class AbstractCqSpec extends AbstractSlingRepositorySpec {
 
     @Shared nodeBuilder

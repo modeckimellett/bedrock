@@ -21,6 +21,11 @@ class ComponentRequestBuilder {
         responseBuilder = new ResponseBuilder()
     }
 
+    ComponentRequestBuilder(resourceResolver, path) {
+        requestBuilder = new RequestBuilder(resourceResolver, path)
+        responseBuilder = new ResponseBuilder()
+    }
+
     def build(Closure closure) {
         closure.delegate = this
         closure.resolveStrategy = Closure.DELEGATE_ONLY

@@ -12,9 +12,7 @@ class ComponentRequestBuilderSpec extends AbstractCqSpec {
     def setupSpec() {
         pageBuilder.content {
             citytechinc("CITYTECH, Inc.") {
-                "jcr:content"(pagePath: "/content/citytechinc", externalPath: "http://www.reddit.com") {
-
-                }
+                "jcr:content"(pagePath: "/content/citytechinc", externalPath: "http://www.reddit.com")
             }
         }
     }

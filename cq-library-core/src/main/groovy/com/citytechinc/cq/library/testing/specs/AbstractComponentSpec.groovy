@@ -5,13 +5,29 @@
  */
 package com.citytechinc.cq.library.testing.specs
 
+import com.citytechinc.cq.library.testing.builders.ComponentRequestBuilder
+
+/**
+ * Spock specification for testing CQ components with builder for creating <code>ComponentRequest</code> instances.
+ */
 class AbstractComponentSpec extends AbstractCqSpec {
 
-    def setupSpec() {
-
+    /**
+     * Get a component request builder for the current session.
+     *
+     * @return builder
+     */
+    def getComponentRequestBuilder() {
+        new ComponentRequestBuilder(resourceResolver)
     }
 
-    def getComponentRequest(String path) {
-
+    /**
+     * Get a component request builder for the current session.
+     *
+     * @param path content path for request
+     * @return builder
+     */
+    def getComponentRequestBuilder(String path) {
+        new ComponentRequestBuilder(resourceResolver, path)
     }
 }
