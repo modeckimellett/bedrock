@@ -5,14 +5,14 @@
  */
 package com.citytechinc.cq.library.content.page.impl
 
-import com.citytechinc.cq.library.AbstractCqLibrarySpec
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
+import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.day.cq.tagging.TagConstants
 import spock.lang.Shared
 
 import javax.jcr.query.Query
 
-class DefaultPageManagerDecoratorSpec extends AbstractCqLibrarySpec {
+class DefaultPageManagerDecoratorSpec extends AbstractCqSpec {
 
     @Shared pageManager
 

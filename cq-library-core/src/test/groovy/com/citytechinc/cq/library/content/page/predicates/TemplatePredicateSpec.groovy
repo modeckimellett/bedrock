@@ -5,10 +5,10 @@
  */
 package com.citytechinc.cq.library.content.page.predicates
 
-import com.citytechinc.cq.library.AbstractCqLibrarySpec
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
+import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 
-class TemplatePredicateSpec extends AbstractCqLibrarySpec {
+class TemplatePredicateSpec extends AbstractCqSpec {
 
     def setupSpec() {
         pageBuilder.content {

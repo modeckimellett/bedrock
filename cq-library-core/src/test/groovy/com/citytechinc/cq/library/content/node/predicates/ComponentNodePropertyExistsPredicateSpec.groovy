@@ -5,11 +5,11 @@
  */
 package com.citytechinc.cq.library.content.node.predicates
 
-import com.citytechinc.cq.library.AbstractCqLibrarySpec
 import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
+import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import org.apache.sling.api.resource.NonExistingResource
 
-class ComponentNodePropertyExistsPredicateSpec extends AbstractCqLibrarySpec {
+class ComponentNodePropertyExistsPredicateSpec extends AbstractCqSpec {
 
     def setupSpec() {
         nodeBuilder.content {

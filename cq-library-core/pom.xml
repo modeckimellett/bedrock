@@ -46,10 +46,6 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.gmaven</groupId>
-				<artifactId>gmaven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<extensions>true</extensions>
@@ -195,6 +191,10 @@
 			<groupId>com.adobe.granite</groupId>
 			<artifactId>com.adobe.granite.replication.core</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.adobe.granite</groupId>
+            <artifactId>com.adobe.granite.jmx</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>com.day.cq.wcm</groupId>
 			<artifactId>cq-wcm-foundation</artifactId>
@@ -273,12 +273,6 @@
 			<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
 			<artifactId>cq-component-maven-plugin</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>com.adobe.granite</groupId>
-            <artifactId>com.adobe.granite.jmx</artifactId>
-        </dependency>
-
-		<!-- test -->
 		<dependency>
 			<groupId>com.citytechinc.cq</groupId>
 			<artifactId>cq-groovy-testing</artifactId>

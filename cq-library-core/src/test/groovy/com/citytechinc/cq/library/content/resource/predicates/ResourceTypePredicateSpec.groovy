@@ -5,8 +5,8 @@
  */
 package com.citytechinc.cq.library.content.resource.predicates
 
-import com.citytechinc.cq.library.AbstractCqLibrarySpec
+import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 
-class ResourceTypePredicateSpec extends AbstractCqLibrarySpec {
+class ResourceTypePredicateSpec extends AbstractCqSpec {
 
 }

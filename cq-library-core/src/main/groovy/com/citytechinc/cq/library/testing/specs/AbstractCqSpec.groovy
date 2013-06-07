@@ -3,17 +3,17 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.cq.library
+package com.citytechinc.cq.library.testing.specs
 
-import com.citytechinc.cq.groovy.builders.NodeBuilder
-import com.citytechinc.cq.groovy.builders.PageBuilder
-import com.citytechinc.cq.groovy.metaclass.GroovyExtensionMetaClassRegistry
-import com.citytechinc.cq.groovy.testing.AbstractSlingRepositorySpec
+import com.citytechinc.cq.groovy.extension.builders.NodeBuilder
+import com.citytechinc.cq.groovy.extension.builders.PageBuilder
+import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
+import com.citytechinc.cq.groovy.testing.specs.AbstractSlingRepositorySpec
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
 import spock.lang.Shared
 
-abstract class AbstractCqLibrarySpec extends AbstractSlingRepositorySpec {
+abstract class AbstractCqSpec extends AbstractSlingRepositorySpec {
 
     @Shared nodeBuilder
 

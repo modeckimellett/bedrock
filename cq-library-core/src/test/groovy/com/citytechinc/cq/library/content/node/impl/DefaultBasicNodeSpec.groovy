@@ -5,11 +5,11 @@
  */
 package com.citytechinc.cq.library.content.node.impl
 
-import com.citytechinc.cq.library.AbstractCqLibrarySpec
 import com.citytechinc.cq.library.content.node.predicates.PropertyNamePredicate
+import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import spock.lang.Unroll
 
-class DefaultBasicNodeSpec extends AbstractCqLibrarySpec {
+class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def setupSpec() {
         pageBuilder.content {

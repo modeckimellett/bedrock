@@ -5,15 +5,15 @@
  */
 package com.citytechinc.cq.library.content.page.impl
 
-import com.citytechinc.cq.library.AbstractCqLibrarySpec
 import com.citytechinc.cq.library.content.node.BasicNode
 import com.citytechinc.cq.library.content.node.ComponentNode
 import com.citytechinc.cq.library.content.page.predicates.TemplatePredicate
+import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.day.cq.wcm.api.NameConstants
 import com.day.cq.wcm.api.PageManager
 import spock.lang.Unroll
 
-class DefaultPageDecoratorSpec extends AbstractCqLibrarySpec {
+class DefaultPageDecoratorSpec extends AbstractCqSpec {
 
     def setupSpec() {
         pageBuilder.content {

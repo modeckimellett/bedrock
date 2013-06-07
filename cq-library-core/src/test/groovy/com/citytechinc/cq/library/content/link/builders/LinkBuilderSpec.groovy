@@ -5,12 +5,12 @@
  */
 package com.citytechinc.cq.library.content.link.builders
 
-import com.citytechinc.cq.library.AbstractCqLibrarySpec
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
+import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.day.cq.wcm.api.NameConstants
 import spock.lang.Unroll
 
-class LinkBuilderSpec extends AbstractCqLibrarySpec {
+class LinkBuilderSpec extends AbstractCqSpec {
 
     def setupSpec() {
         pageBuilder.content {

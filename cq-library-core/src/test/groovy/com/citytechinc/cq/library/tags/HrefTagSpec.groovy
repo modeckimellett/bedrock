@@ -5,6 +5,8 @@
  */
 package com.citytechinc.cq.library.tags
 
+import com.citytechinc.cq.library.testing.specs.AbstractPropertyTagSpec
+
 class HrefTagSpec extends AbstractPropertyTagSpec {
 
     def setupSpec() {

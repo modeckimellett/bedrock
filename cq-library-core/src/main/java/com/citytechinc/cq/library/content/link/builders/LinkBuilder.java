@@ -18,8 +18,8 @@ import com.citytechinc.cq.library.content.link.impl.DefaultNavigationLink;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.google.common.base.Charsets;
 import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
@@ -30,10 +30,10 @@ import javax.jcr.RepositoryException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.citytechinc.cq.library.utils.PathUtils.isExternal;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -47,7 +47,7 @@ public final class LinkBuilder {
 
     private final List<NavigationLink> children = new ArrayList<NavigationLink>();
 
-    private final Multimap<String, String> parameters = LinkedHashMultimap.create();
+    private final SetMultimap<String, String> parameters = LinkedHashMultimap.create();
 
     private final Map<String, String> properties = new HashMap<String, String>();
 
@@ -345,7 +345,7 @@ public final class LinkBuilder {
             builder.append('?');
 
             for (final String name : parameters.keySet()) {
-                final Collection<String> values = parameters.get(name);
+                final Set<String> values = parameters.get(name);
 
                 for (final String value : values) {
                     try {

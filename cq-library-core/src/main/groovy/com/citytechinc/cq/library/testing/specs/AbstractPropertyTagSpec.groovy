@@ -3,16 +3,20 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.cq.library.tags
+package com.citytechinc.cq.library.testing.specs
 
-import com.citytechinc.cq.groovy.builders.PageBuilder
-import com.citytechinc.cq.groovy.metaclass.GroovyExtensionMetaClassRegistry
-import com.citytechinc.cq.groovy.testing.tag.AbstractTagSpec
+import com.citytechinc.cq.groovy.extension.builders.PageBuilder
+import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
+import com.citytechinc.cq.groovy.testing.specs.tag.AbstractTagSpec
 import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
+import com.citytechinc.cq.library.tags.DefineObjectsTag
 import spock.lang.Shared
 
+/**
+ *
+ */
 abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
 
     @Shared pageBuilder
