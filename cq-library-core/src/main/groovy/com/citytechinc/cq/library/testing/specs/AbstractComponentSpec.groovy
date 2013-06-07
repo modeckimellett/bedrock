@@ -10,4 +10,8 @@ class AbstractComponentSpec extends AbstractCqSpec {
     def setupSpec() {
 
     }
+
+    def getComponentRequest(String path) {
+
+    }
 }

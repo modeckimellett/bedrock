@@ -22,8 +22,10 @@ abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
     @Shared pageBuilder
 
     @Override
-    void addAdapters() {
-        addAdapter(PageManagerDecorator, { resourceResolver -> new DefaultPageManagerDecorator(resourceResolver) })
+    void addResourceResolverAdapters() {
+        addResourceResolverAdapter(PageManagerDecorator, {
+            resourceResolver -> new DefaultPageManagerDecorator(resourceResolver)
+        })
     }
 
     def setupSpec() {

@@ -9,6 +9,8 @@ import com.citytechinc.cq.groovy.extension.builders.NodeBuilder
 import com.citytechinc.cq.groovy.extension.builders.PageBuilder
 import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
 import com.citytechinc.cq.groovy.testing.specs.AbstractSlingRepositorySpec
+import com.citytechinc.cq.library.content.node.ComponentNode
+import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
 import spock.lang.Shared
@@ -20,8 +22,17 @@ abstract class AbstractCqSpec extends AbstractSlingRepositorySpec {
     @Shared pageBuilder
 
     @Override
-    void addAdapters() {
-        addAdapter(PageManagerDecorator, { resourceResolver -> new DefaultPageManagerDecorator(resourceResolver) })
+    void addResourceAdapters() {
+        addResourceAdapter(ComponentNode, { resource ->
+            new DefaultComponentNode(resource)
+        })
+    }
+
+    @Override
+    void addResourceResolverAdapters() {
+        addResourceResolverAdapter(PageManagerDecorator, {
+            resourceResolver -> new DefaultPageManagerDecorator(resourceResolver)
+        })
     }
 
     def setupSpec() {
