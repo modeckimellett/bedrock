@@ -26,10 +26,16 @@ class ComponentRequestBuilder {
         responseBuilder = new ResponseBuilder()
     }
 
+    def build() {
+        build(null)
+    }
+
     def build(Closure closure) {
-        closure.delegate = this
-        closure.resolveStrategy = Closure.DELEGATE_ONLY
-        closure()
+        if (closure) {
+            closure.delegate = this
+            closure.resolveStrategy = Closure.DELEGATE_ONLY
+            closure()
+        }
 
         def slingRequest = requestBuilder.build()
         def slingResponse = responseBuilder.build()
