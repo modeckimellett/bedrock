@@ -9,12 +9,15 @@ import com.citytechinc.cq.groovy.testing.builders.RequestBuilder
 import com.citytechinc.cq.groovy.testing.builders.ResponseBuilder
 import com.citytechinc.cq.library.content.request.impl.DefaultComponentServletRequest
 import com.citytechinc.cq.library.testing.mocks.MockComponentRequest
+import com.day.cq.wcm.api.WCMMode
 
 class ComponentRequestBuilder {
 
     @Delegate RequestBuilder requestBuilder
 
     @Delegate ResponseBuilder responseBuilder
+
+    def mode
 
     ComponentRequestBuilder(resourceResolver) {
         requestBuilder = new RequestBuilder(resourceResolver)
@@ -24,6 +27,10 @@ class ComponentRequestBuilder {
     ComponentRequestBuilder(resourceResolver, path) {
         requestBuilder = new RequestBuilder(resourceResolver, path)
         responseBuilder = new ResponseBuilder()
+    }
+
+    void mode(WCMMode mode) {
+        this.mode = mode
     }
 
     def build() {
@@ -39,6 +46,10 @@ class ComponentRequestBuilder {
 
         def slingRequest = requestBuilder.build()
         def slingResponse = responseBuilder.build()
+
+        if (mode) {
+            mode.toRequest(slingRequest)
+        }
 
         def componentServletRequest = new DefaultComponentServletRequest(slingRequest, slingResponse)
 

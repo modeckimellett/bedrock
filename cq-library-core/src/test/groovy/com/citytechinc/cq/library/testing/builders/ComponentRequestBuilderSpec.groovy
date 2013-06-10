@@ -6,6 +6,7 @@
 package com.citytechinc.cq.library.testing.builders
 
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
+import com.day.cq.wcm.api.WCMMode
 
 class ComponentRequestBuilderSpec extends AbstractCqSpec {
 
@@ -34,5 +35,16 @@ class ComponentRequestBuilderSpec extends AbstractCqSpec {
         request.slingRequest
         request.slingResponse
         !request.selectors
+    }
+
+    def "build request with mode"() {
+        setup:
+        def request = new ComponentRequestBuilder(resourceResolver).build {
+            path "/content/citytechinc/jcr:content"
+            mode WCMMode.DISABLED
+        }
+
+        expect:
+        WCMMode.fromRequest(request.slingRequest) == WCMMode.DISABLED
     }
 }
