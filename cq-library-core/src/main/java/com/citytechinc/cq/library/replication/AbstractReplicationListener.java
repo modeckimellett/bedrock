@@ -17,9 +17,11 @@ import org.slf4j.LoggerFactory;
  * register the listener.
  * <p/>
  * <pre>
+ * {@code
  * @Component(immediate = true, metatype = true, inherit = true)
  * @Service
  * @Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC)
+ * }
  * </pre>
  */
 public abstract class AbstractReplicationListener extends AbstractSlingService implements EventHandler {

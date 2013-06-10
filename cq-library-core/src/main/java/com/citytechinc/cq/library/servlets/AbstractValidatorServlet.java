@@ -28,6 +28,7 @@ import java.util.Collections;
  * the validator for a given dialog field using the following function:
  *
  * <pre>
+ * {@code
  * <name jcr:primaryType="cq:Widget" fieldLabel="Name" name="./name" xtype="textfield"
  *     validator="function(value) {
  *         var dialog = this.findParentByType('dialog');
@@ -38,6 +39,7 @@ import java.util.Collections;
  *
  *         return result.valid ? true : 'Name is invalid.';
  *     }" />
+ * }
  * </pre>
  */
 public abstract class AbstractValidatorServlet extends AbstractJsonResponseServlet {

@@ -22,8 +22,6 @@ import java.util.List;
  */
 public abstract class AbstractCacheService implements CacheService {
 
-    protected abstract Logger getLogger();
-
     @Override
     public void clearAllCaches() {
 
@@ -39,8 +37,10 @@ public abstract class AbstractCacheService implements CacheService {
 
                 } catch (final Exception exception) {
 
-                    getLogger().error("An error has occurred while attempting to invalidate cache values for {} in the class {}. See exception: {}",
-                            new Object[] {field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(exception)});
+                    getLogger().error(
+                        "An error has occurred while attempting to invalidate cache values for {} in the class {}. See exception: {}",
+                        new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
+                            exception) });
                 }
             }
         }
@@ -51,7 +51,8 @@ public abstract class AbstractCacheService implements CacheService {
 
         for (final Field field : collectFields(this.getClass())) {
 
-            if ((StringUtils.equals(cacheVariableName, field.getName())) && (field.getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
+            if ((StringUtils.equals(cacheVariableName, field.getName())) && (field
+                .getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
 
                 try {
 
@@ -61,11 +62,69 @@ public abstract class AbstractCacheService implements CacheService {
 
                 } catch (final Exception exception) {
 
-                    getLogger().error("An error has occurred while attempting to invalidate cache values for {} in the class {}. See exception: {}",
-                            new Object[] {field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(exception)});
+                    getLogger().error(
+                        "An error has occurred while attempting to invalidate cache values for {} in the class {}. See exception: {}",
+                        new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
+                            exception) });
                 }
             }
         }
+    }
+
+    @Override
+    public Long getCacheSize(final String cacheVariableName) {
+        Long cacheSize = 0L;
+
+        for (final Field field : collectFields(this.getClass())) {
+
+            if ((StringUtils.equals(cacheVariableName, field.getName())) && (field
+                .getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
+
+                try {
+
+                    field.setAccessible(true);
+                    final Cache cache = (Cache) field.get(this);
+                    cacheSize = cache.size();
+
+                } catch (final Exception exception) {
+
+                    getLogger().error(
+                        "An error has occurred while attempting retrieve cache size for {} in the class {}. See exception: {}",
+                        new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
+                            exception) });
+                }
+            }
+        }
+
+        return cacheSize;
+    }
+
+    @Override
+    public CacheStats getCacheStats(String cacheVariableName) {
+        CacheStats cacheStats = null;
+
+        for (final Field field : collectFields(this.getClass())) {
+
+            if ((StringUtils.equals(cacheVariableName, field.getName())) && (field
+                .getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
+
+                try {
+
+                    field.setAccessible(true);
+                    final Cache cache = (Cache) field.get(this);
+                    cacheStats = cache.stats();
+
+                } catch (final Exception exception) {
+
+                    getLogger().error(
+                        "An error has occurred while attempting retrieve cache statistics for {} in the class {}. See exception: {}",
+                        new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
+                            exception) });
+                }
+            }
+        }
+
+        return cacheStats;
     }
 
     @Override
@@ -84,62 +143,14 @@ public abstract class AbstractCacheService implements CacheService {
         return cachesBuilder.build();
     }
 
-    @Override
-    public CacheStats getCacheStats(String cacheVariableName) {
-        CacheStats cacheStats = null;
+    protected abstract Logger getLogger();
 
-        for (final Field field : collectFields(this.getClass())) {
-
-            if ((StringUtils.equals(cacheVariableName, field.getName())) && (field.getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
-
-                try {
-
-                    field.setAccessible(true);
-                    final Cache cache = (Cache) field.get(this);
-                    cacheStats = cache.stats();
-
-                } catch (final Exception exception) {
-
-                    getLogger().error("An error has occurred while attempting retrieve cache statistics for {} in the class {}. See exception: {}",
-                            new Object[] {field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(exception)});
-                }
-            }
+    private List<Field> collectFields(Class clazz) {
+        List<Field> fields = new ArrayList<Field>();
+        if (clazz != null) {
+            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            fields.addAll(collectFields(clazz.getSuperclass()));
         }
-
-        return cacheStats;
-    }
-
-    @Override
-    public Long getCacheSize(final String cacheVariableName) {
-        Long cacheSize = 0L;
-
-        for (final Field field : collectFields(this.getClass())) {
-
-            if ((StringUtils.equals(cacheVariableName, field.getName())) && (field.getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
-
-                try {
-
-                    field.setAccessible(true);
-                    final Cache cache = (Cache) field.get(this);
-                    cacheSize = cache.size();
-
-                } catch (final Exception exception) {
-
-                    getLogger().error("An error has occurred while attempting retrieve cache size for {} in the class {}. See exception: {}",
-                            new Object[] {field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(exception)});
-                }
-            }
-        }
-
-        return cacheSize;
-    }
-
-    private List<Field> collectFields(Class clazz){
-    	List<Field> fields=new ArrayList<Field>();
-    	if(clazz!=null){
-    		fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-    		fields.addAll(collectFields(clazz.getSuperclass()));
-    	}
-    	return fields;
+        return fields;
     }
 }
