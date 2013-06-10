@@ -121,7 +121,7 @@
                         </goals>
                         <configuration>
                             <bundleNames>
-                                <bundleName>${core.name}</bundleName>
+                                <bundleName>cq-library-core</bundleName>
                             </bundleNames>
                             <host>${cq.host}</host>
                             <port>${cq.port}</port>
@@ -144,7 +144,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${core.name}</artifactId>
+            <artifactId>cq-library-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
