@@ -17,7 +17,7 @@ class AbstractComponentSpec extends AbstractCqSpec {
      *
      * @return builder
      */
-    def getComponentRequestBuilder() {
+    ComponentRequestBuilder getComponentRequestBuilder() {
         new ComponentRequestBuilder(resourceResolver)
     }
 
@@ -27,7 +27,7 @@ class AbstractComponentSpec extends AbstractCqSpec {
      * @param path content path for request
      * @return builder
      */
-    def getComponentRequestBuilder(String path) {
+    ComponentRequestBuilder getComponentRequestBuilder(String path) {
         new ComponentRequestBuilder(resourceResolver, path)
     }
 }

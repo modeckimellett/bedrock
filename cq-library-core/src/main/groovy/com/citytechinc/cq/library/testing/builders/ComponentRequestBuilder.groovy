@@ -7,6 +7,7 @@ package com.citytechinc.cq.library.testing.builders
 
 import com.citytechinc.cq.groovy.testing.builders.RequestBuilder
 import com.citytechinc.cq.groovy.testing.builders.ResponseBuilder
+import com.citytechinc.cq.library.content.request.ComponentRequest
 import com.citytechinc.cq.library.content.request.impl.DefaultComponentServletRequest
 import com.citytechinc.cq.library.testing.mocks.MockComponentRequest
 import com.day.cq.wcm.api.WCMMode
@@ -33,11 +34,11 @@ class ComponentRequestBuilder {
         this.mode = mode
     }
 
-    def build() {
+    ComponentRequest build() {
         build(null)
     }
 
-    def build(Closure closure) {
+    ComponentRequest build(Closure closure) {
         if (closure) {
             closure.delegate = this
             closure.resolveStrategy = Closure.DELEGATE_ONLY
