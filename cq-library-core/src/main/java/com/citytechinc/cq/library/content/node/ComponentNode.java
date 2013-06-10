@@ -30,8 +30,6 @@ public interface ComponentNode extends BasicNode {
      */
     Optional<ComponentNode> findAncestor(Predicate<ComponentNode> predicate);
 
-    // <T> Optional<ComponentNode> findAncestorWherePropertyEquals(String propertyName, T value);
-
     /**
      * Find the first ancestor node containing the given property name.
      *
@@ -39,6 +37,16 @@ public interface ComponentNode extends BasicNode {
      * @return <code>Optional</code> node that contains the property
      */
     Optional<ComponentNode> findAncestorWithProperty(String propertyName);
+
+    /**
+     * Find the first ancestor node where the given property name has the specified value.
+     *
+     * @param propertyName property name to find on ancestor nodes
+     * @param propertyValue value of named property to match
+     * @param <T> type of value
+     * @return <code>Optional</code> node that contains the property value
+     */
+    <T> Optional<ComponentNode> findAncestorWithPropertyValue(String propertyName, T propertyValue);
 
     /**
      * Given a property on this node containing the path of another resource, get the href to the resource, using

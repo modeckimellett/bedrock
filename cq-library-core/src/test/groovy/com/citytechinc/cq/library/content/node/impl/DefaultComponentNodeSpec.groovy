@@ -90,7 +90,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
             }
             inheritance {
                 "jcr:content"("jcr:title": "Inheritance") {
-                    component("jcr:title": "Component")
+                    component("jcr:title": "Component", "number": 5, "boolean": false)
                 }
                 child {
                     "jcr:content" {
@@ -127,6 +127,31 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
         where:
         path << ["/content/inheritance/child/jcr:content", "/content/inheritance/child/jcr:content/component"]
+    }
+
+    @Unroll
+    def "find ancestor with property value"() {
+        setup:
+        def node = createComponentNode("/content/inheritance/child/jcr:content/component")
+        def ancestorNodeOptional = node.findAncestorWithPropertyValue(propertyName, propertyValue)
+
+        expect:
+        ancestorNodeOptional.get().path == "/content/inheritance/jcr:content/component"
+
+        where:
+        propertyName | propertyValue
+        "jcr:title"  | "Component"
+        "number"     | Long.valueOf(5)
+        "boolean"    | false
+    }
+
+    def "find ancestor with property value returns absent"() {
+        setup:
+        def node = createComponentNode("/content/inheritance/child/jcr:content/component")
+        def ancestorNodeOptional = node.findAncestorWithPropertyValue("jcr:title", "Komponent")
+
+        expect:
+        !ancestorNodeOptional.present
     }
 
     @Unroll

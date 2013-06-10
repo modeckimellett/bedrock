@@ -87,6 +87,12 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
+    public final <T> Optional<ComponentNode> findAncestorWithPropertyValue(final String propertyName,
+        final T propertyValue) {
+        return componentNode.findAncestorWithPropertyValue(propertyName, propertyValue);
+    }
+
+    @Override
     public final <T> Optional<T> get(final String name) {
         return componentNode.get(name);
     }

@@ -37,9 +37,13 @@ public final class ComponentNodePropertyExistsPredicate implements Predicate<Com
         if (nodeOptional.isPresent()) {
             try {
                 result = nodeOptional.get().hasProperty(propertyName);
+
+                LOG.debug("apply() component node = {}, has property = {}", componentNode, result);
             } catch (RepositoryException e) {
                 LOG.error("error checking property existence for component node", e);
             }
+        } else {
+            LOG.debug("apply() node does not exist for component node = {}", componentNode);
         }
 
         return result;

@@ -11,6 +11,7 @@ import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.citytechinc.cq.library.content.node.BasicNode;
 import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.citytechinc.cq.library.content.node.predicates.ComponentNodePropertyExistsPredicate;
+import com.citytechinc.cq.library.content.node.predicates.ComponentNodePropertyValuePredicate;
 import com.citytechinc.cq.library.content.node.predicates.ComponentNodeResourceTypePredicate;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.PageManagerDecorator;
@@ -75,6 +76,12 @@ public final class DefaultComponentNode implements ComponentNode {
     @Override
     public Optional<ComponentNode> findAncestorWithProperty(final String propertyName) {
         return Optional.fromNullable(findAncestorForPredicate(new ComponentNodePropertyExistsPredicate(propertyName)));
+    }
+
+    @Override
+    public <T> Optional<ComponentNode> findAncestorWithPropertyValue(final String propertyName, final T propertyValue) {
+        return Optional.fromNullable(findAncestorForPredicate(new ComponentNodePropertyValuePredicate<T>(propertyName,
+            propertyValue)));
     }
 
     @Override
