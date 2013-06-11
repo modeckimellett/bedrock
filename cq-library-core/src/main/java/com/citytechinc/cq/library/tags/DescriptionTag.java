@@ -5,6 +5,7 @@
  */
 package com.citytechinc.cq.library.tags;
 
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.Page;
 import org.apache.sling.api.resource.ValueMap;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public final class DescriptionTag extends AbstractPropertyTag {
@@ -36,11 +38,11 @@ public final class DescriptionTag extends AbstractPropertyTag {
         if (hasPropertyName()) {
             description = properties.get(propertyName, "");
         } else {
-            description = properties.get("jcr:description", "");
+            description = properties.get(JcrConstants.JCR_DESCRIPTION, "");
         }
 
         if (isNotEmpty(description)) {
-            builder.append(description);
+            builder.append(escapeHtml4(description));
             builder.append(suffix);
         }
 

@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+
 public final class TitleTag extends AbstractPropertyTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(TitleTag.class);
@@ -29,9 +31,9 @@ public final class TitleTag extends AbstractPropertyTag {
         final StringBuilder builder = new StringBuilder();
 
         if (hasPropertyName()) {
-            builder.append(currentPage.getProperties().get(propertyName, title));
+            builder.append(escapeHtml4(currentPage.getProperties().get(propertyName, title)));
         } else {
-            builder.append(title);
+            builder.append(escapeHtml4(title));
         }
 
         builder.append(suffix);

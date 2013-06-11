@@ -14,6 +14,8 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+
 public final class KeywordsTag extends TagSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeywordsTag.class);
@@ -25,7 +27,7 @@ public final class KeywordsTag extends TagSupport {
         final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
 
         try {
-            pageContext.getOut().write(WCMUtils.getKeywords(currentPage));
+            pageContext.getOut().write(escapeHtml4(WCMUtils.getKeywords(currentPage, false)));
         } catch (IOException ioe) {
             LOG.error("error writing keywords for page = " + currentPage.getPath(), ioe);
 
