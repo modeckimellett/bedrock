@@ -53,6 +53,27 @@ class ComponentServletRequestSpec extends AbstractCqSpec {
     }
 
     @Unroll
+    def "get request parameter with default value"() {
+        setup:
+        def slingRequest = getRequestBuilder().build {
+            parameters "a": ["1", "2"], "b": [""]
+        }
+
+        def slingResponse = Mock(SlingHttpServletResponse)
+
+        def request = new DefaultComponentServletRequest(slingRequest, slingResponse)
+
+        expect:
+        request.getRequestParameter(parameterName, "default") == parameterValue
+
+        where:
+        parameterName | parameterValue
+        "a"           | "1"
+        "b"           | ""
+        "c"           | "default"
+    }
+
+    @Unroll
     def "get request parameters optional"() {
         setup:
         def slingRequest = getRequestBuilder().build {

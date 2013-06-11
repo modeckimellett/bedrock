@@ -137,23 +137,28 @@ public final class DefaultComponentServletRequest implements ComponentServletReq
 
     @Override
     public Optional<String> getRequestParameter(final String parameterName) {
+        checkNotNull(parameterName);
+
         return Optional.fromNullable(slingRequest.getRequestParameter(parameterName)).transform(
             REQUEST_PARAMETER_TO_STRING);
     }
 
     @Override
-    public Optional<String[]> getRequestParameters(final String parameterName) {
-        return Optional.fromNullable(slingRequest.getRequestParameters(parameterName)).transform(
-            REQUEST_PARAMETERS_TO_STRING_ARRAY);
-    }
-
-    @Override
     public String getRequestParameter(final String parameterName, final String defaultValue) {
+        checkNotNull(parameterName);
         checkNotNull(defaultValue);
 
         final RequestParameter parameter = slingRequest.getRequestParameter(parameterName);
 
         return parameter == null ? defaultValue : parameter.getString();
+    }
+
+    @Override
+    public Optional<String[]> getRequestParameters(final String parameterName) {
+        checkNotNull(parameterName);
+
+        return Optional.fromNullable(slingRequest.getRequestParameters(parameterName)).transform(
+            REQUEST_PARAMETERS_TO_STRING_ARRAY);
     }
 
     @Override
