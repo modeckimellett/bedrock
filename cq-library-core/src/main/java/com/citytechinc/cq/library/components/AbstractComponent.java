@@ -208,8 +208,14 @@ public abstract class AbstractComponent implements ComponentNode {
         return componentNode.getDesignNode();
     }
 
+    /**
+     * Get the path of the current component with a ".html" extension.  This method can be overridden to return an
+     * implementation-specific value.
+     *
+     * @return href of the current component
+     */
     @Override
-    public final String getHref() {
+    public String getHref() {
         return componentNode.getHref();
     }
 
@@ -263,8 +269,14 @@ public abstract class AbstractComponent implements ComponentNode {
         return componentNode.getInherited(propertyName);
     }
 
+    /**
+     * Get a link object to the path for the current component.  This method can be overridden to modify the default
+     * behavior and return a different <code>Link</code> instance or implementation.
+     *
+     * @return link containing the path for the current component
+     */
     @Override
-    public final Link getLink() {
+    public Link getLink() {
         return componentNode.getLink();
     }
 
