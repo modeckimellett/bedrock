@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Widget(annotationClass = MultiCompositeField.class, makerClass = MultiCompositeFieldWidgetMaker.class,
     xtype = MultiCompositeFieldWidget.XTYPE)
-public class MultiCompositeFieldWidget extends AbstractWidget {
+public final class MultiCompositeFieldWidget extends AbstractWidget {
 
     public static final String XTYPE = "multicompositefield";
 
@@ -24,20 +24,21 @@ public class MultiCompositeFieldWidget extends AbstractWidget {
 
     private final String prefix;
 
-    public MultiCompositeFieldWidget(boolean matchBaseName, String prefix, String fieldLabel, String fieldDescription,
-        boolean allowBlank, boolean hideLabel, String defaultValue, String name, String fieldName,
-        Map<String, String> additionalProperties, List<? extends DialogElement> containedElements) {
+    public MultiCompositeFieldWidget(final boolean matchBaseName, final String prefix, final String fieldLabel,
+        final String fieldDescription, final boolean allowBlank, final boolean hideLabel, final String defaultValue,
+        final String name, final String fieldName, final Map<String, String> additionalProperties,
+        final List<? extends DialogElement> containedElements) {
         super(XTYPE, fieldLabel, fieldDescription, allowBlank, hideLabel, defaultValue, name, PRIMARY_TYPE, null,
             fieldName, additionalProperties, containedElements);
         this.matchBaseName = matchBaseName;
         this.prefix = prefix;
     }
 
-    public boolean isMatchBaseName() {
-        return matchBaseName;
-    }
-
     public String getPrefix() {
         return prefix;
+    }
+
+    public boolean isMatchBaseName() {
+        return matchBaseName;
     }
 }

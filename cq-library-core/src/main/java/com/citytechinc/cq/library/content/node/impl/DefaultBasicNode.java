@@ -44,9 +44,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class DefaultBasicNode implements BasicNode {
 
+    private static final Predicate<Resource> ALL = Predicates.alwaysTrue();
+
     private static final Logger LOG = LoggerFactory.getLogger(DefaultBasicNode.class);
 
-    private static final Predicate<Resource> ALL = Predicates.alwaysTrue();
+    private static final Function<Rendition, String> RENDITION_TO_PATH = new Function<Rendition, String>() {
+        @Override
+        public String apply(final Rendition rendition) {
+            return rendition.getPath();
+        }
+    };
 
     private final ValueMap properties;
 
@@ -163,26 +170,26 @@ public final class DefaultBasicNode implements BasicNode {
         checkNotNull(name);
         checkNotNull(renditionName);
 
-        final Optional<String> pathOptional = getImageReference(name);
+        final Optional<String> imageReferenceOptional = getImageReference(name);
 
-        Optional<String> imageRenditionOptional = Optional.absent();
+        final Optional<String> imageRenditionOptional;
 
-        if (pathOptional.isPresent()) {
-            // TODO replace with granite AssetManager?
-            final Asset asset = resource.getResourceResolver().getResource(pathOptional.get()).adaptTo(Asset.class);
+        if (imageReferenceOptional.isPresent()) {
+            final Asset asset = resource.getResourceResolver().getResource(imageReferenceOptional.get()).adaptTo(
+                Asset.class);
 
-            if (asset != null) {
-                final boolean valid = Iterables.any(asset.getRenditions(), new Predicate<Rendition>() {
+            if (asset == null) {
+                imageRenditionOptional = Optional.absent();
+            } else {
+                imageRenditionOptional = Iterables.tryFind(asset.getRenditions(), new Predicate<Rendition>() {
                     @Override
                     public boolean apply(final Rendition rendition) {
                         return renditionName.equals(rendition.getName());
                     }
-                });
-
-                if (valid) {
-                    imageRenditionOptional = Optional.of(asset.getRendition(renditionName).getPath());
-                }
+                }).transform(RENDITION_TO_PATH);
             }
+        } else {
+            imageRenditionOptional = Optional.absent();
         }
 
         return imageRenditionOptional;

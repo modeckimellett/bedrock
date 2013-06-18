@@ -10,6 +10,7 @@ import com.citytechinc.cq.library.content.request.ComponentServletRequest;
 import com.citytechinc.cq.library.servlets.AbstractComponentServlet;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.WCMMode;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Properties;
 import org.apache.felix.scr.annotations.Property;
@@ -38,11 +39,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -57,9 +56,11 @@ import java.util.Set;
  */
 @SlingServlet(resourceTypes = { NameConstants.NT_PAGE }, selectors = { ParagraphJsonServlet.SELECTOR },
     extensions = { ParagraphJsonServlet.EXTENSION }, methods = { "GET" })
-@Properties({ @Property(name = Constants.SERVICE_DESCRIPTION,
-    value = "Requests, in JSON format, the path and html for all " + "non-container components on the page."), @Property(
-    name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc.") })
+@Properties({
+    @Property(name = Constants.SERVICE_DESCRIPTION, value = "Requests, in JSON format, the path and html for all "
+        + "non-container components on the page."),
+    @Property(name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc.")
+})
 public final class ParagraphJsonServlet extends AbstractComponentServlet {
 
     public static final String SELECTOR = "ctparagraphs";
@@ -91,11 +92,7 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
             if (paragraphs.isEmpty()) {
                 LOG.debug("{} Paragraphs found on page", paragraphs.size());
 
-                final Map<String, List<Paragraph>> returnObject = new HashMap<String, List<Paragraph>>();
-
-                returnObject.put("paragraphs", paragraphs);
-
-                writeJsonResponse(slingResponse, returnObject);
+                writeJsonResponse(slingResponse, ImmutableMap.of("paragraphs", paragraphs));
             } else {
                 LOG.info("Null returned indicating a lack of page or a lack of content");
                 slingResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -259,6 +256,7 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
                 containerComponentSet.add(curContainerComponentNode.getPath());
             }
         }
+
         while (containerComponentsFromAppsQueryResultIterator.hasNext()) {
             final Node curContainerComponentNode = containerComponentsFromAppsQueryResultIterator.nextNode();
 
@@ -282,7 +280,7 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
 
         final ServletOutputStream outputStream = new ServletOutputStream() {
             @Override
-            public void write(int b) throws IOException {
+            public void write(final int b) throws IOException {
                 outputBuffer.append((char) b);
             }
         };

@@ -8,7 +8,7 @@ package com.citytechinc.cq.library.content.link;
 import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 
 /**
- * Definition for "linkable" items such as pages and components.
+ * Definition for "linkable" items, such as pages and components (i.e. path-addressable resources).
  */
 public interface Linkable {
 

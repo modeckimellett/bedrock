@@ -10,17 +10,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Link with associated attributes.
+ * A link represents the attributes that compose a URL with additional title and target properties to encapsulate the
+ * typical attributes of an HTML anchor tag.
  */
 public interface Link extends Serializable {
 
+    /**
+     * @return extension
+     */
     String getExtension();
 
     /**
-     * @return href
+     * @return href (path with extension)
      */
     String getHref();
 
+    /**
+     * @return path
+     */
     String getPath();
 
     /**
@@ -28,8 +35,14 @@ public interface Link extends Serializable {
      */
     Map<String, String> getProperties();
 
+    /**
+     * @return query string starting with '?' or empty string if no parameters present
+     */
     String getQueryString();
 
+    /**
+     * @return list of selector values
+     */
     List<String> getSelectors();
 
     /**

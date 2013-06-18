@@ -42,7 +42,6 @@ public class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
         boolean useDotSlashInName)
         throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException,
         SecurityException, NoSuchFieldException {
-
         MultiCompositeField multiCompositeFieldAnnotation = (MultiCompositeField) ctWidgetField.getAnnotation(
             MultiCompositeField.class);
         DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);

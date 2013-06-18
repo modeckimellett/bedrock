@@ -7,6 +7,10 @@ package com.citytechinc.cq.library.content.link;
 
 import java.util.List;
 
+/**
+ * A navigation link contains all of the attributes of a <code>Link</code> with the addition of an active state
+ * attribute and a list of child links for representing navigation hierarchies.
+ */
 public interface NavigationLink extends Link {
 
     /**

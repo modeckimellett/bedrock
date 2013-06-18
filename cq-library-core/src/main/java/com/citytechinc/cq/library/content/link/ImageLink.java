@@ -5,6 +5,9 @@
  */
 package com.citytechinc.cq.library.content.link;
 
+/**
+ * An image link contains all of the attributes of a <code>Link</code> with the addition of an image source attribute.
+ */
 public interface ImageLink extends Link {
 
     /**
