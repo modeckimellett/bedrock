@@ -13,7 +13,7 @@
     <artifactId>cq-library</artifactId>
     <packaging>pom</packaging>
 
-    <version>5.0.1-SNAPSHOT</version>
+    <version>5.0.1</version>
     <name>CITYTECH, Inc. CQ Library</name>
     <description>
         The CITYTECH CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
