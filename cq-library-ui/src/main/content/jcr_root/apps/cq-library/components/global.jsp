@@ -1,10 +1,3 @@
-<%--
-
-    Copyright 2013, CITYTECH, Inc.
-    All rights reserved - Do Not Redistribute
-    Confidential and Proprietary
-
---%>
 <%@include file="/libs/foundation/global.jsp"%>
 <%@taglib prefix="ct" uri="http://www.citytechinc.com/tags"%>
 
