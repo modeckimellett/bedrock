@@ -3,9 +3,10 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.cq.library.jmx;
+package com.citytechinc.cq.library.jmx.impl;
 
 import com.adobe.granite.jmx.annotation.AnnotatedStandardMBean;
+import com.citytechinc.cq.library.jmx.GoogleGuavaCacheReportingAndMaintenanceMBean;
 import com.citytechinc.cq.library.services.CacheService;
 import com.google.common.base.Function;
 import com.google.common.cache.CacheStats;
@@ -33,12 +34,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component(immediate = true)
-@Property(name = "jmx.objectname",
-    value = "com.citytechinc.cq.library:type=Google Guava Cache Reporting and Maintenance")
+@Property(name = "jmx.objectname", value = "com.citytechinc.cq.library:type=Google Guava Cache Reporting and Maintenance")
 @Service
-public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends AnnotatedStandardMBean implements GoogleGuavaCacheReportingAndMaintenanceMBean {
+public final class DefaultGoogleGuavaCacheReportingAndMaintenanceMBean extends AnnotatedStandardMBean implements GoogleGuavaCacheReportingAndMaintenanceMBean {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GoogleGuavaCacheReportingAndMaintenanceMBeanImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(
+        DefaultGoogleGuavaCacheReportingAndMaintenanceMBean.class);
 
     private static final Function<Object, String> REDUCE_LIST_OF_OBJECTS_TO_LIST_OF_CLASS_NAMES = new Function<Object, String>() {
 
@@ -52,13 +53,12 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
         referenceInterface = CacheService.class, bind = "bindCacheService", unbind = "unbindCacheService")
     private List<CacheService> cacheServices = Lists.newCopyOnWriteArrayList();
 
-    public GoogleGuavaCacheReportingAndMaintenanceMBeanImpl() throws NotCompliantMBeanException {
+    public DefaultGoogleGuavaCacheReportingAndMaintenanceMBean() throws NotCompliantMBeanException {
         super(GoogleGuavaCacheReportingAndMaintenanceMBean.class);
     }
 
     @Override
     public void clearAllCaches() {
-
         for (final CacheService cacheService : cacheServices) {
             cacheService.clearAllCaches();
         }
@@ -66,11 +66,8 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
 
     @Override
     public void clearAllCachesForService(final String cacheServiceClassName) {
-
         for (final CacheService cacheService : cacheServices) {
-
             if (StringUtils.equalsIgnoreCase(cacheService.getClass().getName(), cacheServiceClassName)) {
-
                 cacheService.clearAllCaches();
             }
         }
@@ -78,11 +75,8 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
 
     @Override
     public void clearSpecificCacheForSpecificService(final String cacheServiceClassName, final String cacheKey) {
-
         for (final CacheService cacheService : cacheServices) {
-
             if (StringUtils.equalsIgnoreCase(cacheService.getClass().getName(), cacheServiceClassName)) {
-
                 cacheService.clearSpecificCache(cacheKey);
             }
         }
@@ -90,11 +84,9 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
 
     @Override
     public TabularDataSupport getCacheStats() {
-
         TabularDataSupport tabularDataSupport = null;
 
         try {
-
             final String[] itemNamesAndDescriptions = { "Cache Service", "Cache Key", "Average Load Penalty", "Eviction Count", "Hit Count", "% Hit Rate", "Load Count", "Load Exception Count", "% Load Exception Rate", "Load Success Count", "Miss Count", "% Miss Rate", "Request Count", "Total Load Time (s)", "Cache Size" };
             final OpenType[] itemTypes = { SimpleType.STRING, SimpleType.STRING, SimpleType.DOUBLE, SimpleType.LONG, SimpleType.LONG, SimpleType.BIGDECIMAL, SimpleType.LONG, SimpleType.LONG, SimpleType.BIGDECIMAL, SimpleType.LONG, SimpleType.LONG, SimpleType.BIGDECIMAL, SimpleType.LONG, SimpleType.LONG, SimpleType.LONG };
 
@@ -107,16 +99,13 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
             tabularDataSupport = new TabularDataSupport(pageTabularType);
 
             for (final CacheService cacheService : cacheServices) {
-
                 final String cacheServiceClassname = cacheService.getClass().getSimpleName();
 
                 for (final String cacheName : cacheService.listCaches()) {
-
                     final CacheStats cacheStats = cacheService.getCacheStats(cacheName);
                     final Long cacheSize = cacheService.getCacheSize(cacheName);
 
                     if (cacheStats != null) {
-
                         final BigDecimal hitRate = new BigDecimal(cacheStats.hitRate()).setScale(2,
                             RoundingMode.HALF_UP).movePointRight(2);
                         final BigDecimal loadExceptionRate = new BigDecimal(cacheStats.loadExceptionRate()).setScale(2,
@@ -134,9 +123,7 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
                     }
                 }
             }
-
         } catch (final Exception exception) {
-
             LOG.error("An exception occurred building tabulardata for cache stats.", exception);
         }
 
@@ -145,11 +132,9 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
 
     @Override
     public TabularDataSupport getExposedCaches() {
-
         TabularDataSupport tabularDataSupport = null;
 
         try {
-
             final String[] itemNamesAndDescriptions = { "Cache Service", "Cache Key" };
             final OpenType[] itemTypes = { SimpleType.STRING, SimpleType.STRING };
 
@@ -162,7 +147,6 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
             tabularDataSupport = new TabularDataSupport(pageTabularType);
 
             for (final CacheService cacheService : cacheServices) {
-
                 final String cacheServiceClassname = cacheService.getClass().getName();
 
                 for (final String cacheName : cacheService.listCaches()) {
@@ -170,9 +154,7 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
                         new Object[]{ cacheServiceClassname, cacheName }));
                 }
             }
-
         } catch (final Exception exception) {
-
             LOG.error("An exception occurred building tabulardata for the exposed caches.", exception);
         }
 
@@ -181,11 +163,9 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
 
     @Override
     public TabularDataSupport getRegisteredCacheServices() {
-
         TabularDataSupport tabularDataSupport = null;
 
         try {
-
             final String[] itemNamesAndDescriptions = { "Cache Service" };
             final OpenType[] itemTypes = { SimpleType.STRING };
 
@@ -202,9 +182,7 @@ public final class GoogleGuavaCacheReportingAndMaintenanceMBeanImpl extends Anno
                 tabularDataSupport.put(new CompositeDataSupport(pageType, itemNamesAndDescriptions,
                     new Object[]{ className }));
             }
-
         } catch (final Exception exception) {
-
             LOG.error("An exception occurred building tabulardata for the registered cache services.", exception);
         }
 

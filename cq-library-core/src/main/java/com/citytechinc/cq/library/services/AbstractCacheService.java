@@ -18,25 +18,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Responsible for exposing cache stats and cache variables in CacheServices.
+ * Responsible for exposing cache stats and cache variables in <code>CacheService</code> instances.
  */
 public abstract class AbstractCacheService implements CacheService {
 
     @Override
     public void clearAllCaches() {
-
         for (final Field field : collectFields(this.getClass())) {
-
             if (field.getType() == Cache.class || Cache.class.isAssignableFrom(field.getType())) {
-
                 try {
-
                     field.setAccessible(true);
                     final Cache cache = (Cache) field.get(this);
                     cache.invalidateAll();
-
                 } catch (final Exception exception) {
-
                     getLogger().error(
                         "An error has occurred while attempting to invalidate cache values for {} in the class {}. See exception: {}",
                         new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
@@ -48,20 +42,14 @@ public abstract class AbstractCacheService implements CacheService {
 
     @Override
     public void clearSpecificCache(String cacheVariableName) {
-
         for (final Field field : collectFields(this.getClass())) {
-
             if ((StringUtils.equals(cacheVariableName, field.getName())) && (field
                 .getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
-
                 try {
-
                     field.setAccessible(true);
                     final Cache cache = (Cache) field.get(this);
                     cache.invalidateAll();
-
                 } catch (final Exception exception) {
-
                     getLogger().error(
                         "An error has occurred while attempting to invalidate cache values for {} in the class {}. See exception: {}",
                         new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
@@ -76,18 +64,13 @@ public abstract class AbstractCacheService implements CacheService {
         Long cacheSize = 0L;
 
         for (final Field field : collectFields(this.getClass())) {
-
             if ((StringUtils.equals(cacheVariableName, field.getName())) && (field
                 .getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
-
                 try {
-
                     field.setAccessible(true);
                     final Cache cache = (Cache) field.get(this);
                     cacheSize = cache.size();
-
                 } catch (final Exception exception) {
-
                     getLogger().error(
                         "An error has occurred while attempting retrieve cache size for {} in the class {}. See exception: {}",
                         new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
@@ -104,18 +87,13 @@ public abstract class AbstractCacheService implements CacheService {
         CacheStats cacheStats = null;
 
         for (final Field field : collectFields(this.getClass())) {
-
             if ((StringUtils.equals(cacheVariableName, field.getName())) && (field
                 .getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
-
                 try {
-
                     field.setAccessible(true);
                     final Cache cache = (Cache) field.get(this);
                     cacheStats = cache.stats();
-
                 } catch (final Exception exception) {
-
                     getLogger().error(
                         "An error has occurred while attempting retrieve cache statistics for {} in the class {}. See exception: {}",
                         new Object[]{ field.getName(), this.getClass().getName(), ExceptionUtils.getStackTrace(
@@ -129,13 +107,10 @@ public abstract class AbstractCacheService implements CacheService {
 
     @Override
     public List<String> listCaches() {
-
         final ImmutableList.Builder<String> cachesBuilder = new ImmutableList.Builder<String>();
 
         for (final Field field : collectFields(this.getClass())) {
-
             if (field.getType() == Cache.class || Cache.class.isAssignableFrom(field.getType())) {
-
                 cachesBuilder.add(field.getName());
             }
         }
@@ -145,12 +120,14 @@ public abstract class AbstractCacheService implements CacheService {
 
     protected abstract Logger getLogger();
 
-    private List<Field> collectFields(Class clazz) {
+    private static List<Field> collectFields(Class clazz) {
         List<Field> fields = new ArrayList<Field>();
+
         if (clazz != null) {
             fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
             fields.addAll(collectFields(clazz.getSuperclass()));
         }
+
         return fields;
     }
 }
