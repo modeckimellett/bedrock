@@ -12,29 +12,29 @@ import java.util.List;
 public interface CacheService {
 
     /**
-     *
+     * Clear all caches.
      */
     void clearAllCaches();
 
     /**
-     * @param cacheVariableName
+     * @param cacheVariableName cache name
      */
     void clearSpecificCache(String cacheVariableName);
 
     /**
-     * @return
+     * @param cacheVariableName cache name
+     * @return cache size
      */
-    List<String> listCaches();
+    Long getCacheSize(String cacheVariableName);
 
     /**
-     * @param cacheVariableName
-     * @return
+     * @param cacheVariableName cache name
+     * @return cache stats
      */
     CacheStats getCacheStats(String cacheVariableName);
 
     /**
-     * @param cacheVariableName
-     * @return
+     * @return list of cache names
      */
-    Long getCacheSize(String cacheVariableName);
+    List<String> listCaches();
 }

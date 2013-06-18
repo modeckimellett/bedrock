@@ -15,7 +15,7 @@ import com.citytechinc.cq.library.tags.DefineObjectsTag
 import spock.lang.Shared
 
 /**
- *
+ * Spock specification for testing CQ-based tag support classes.
  */
 abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
 

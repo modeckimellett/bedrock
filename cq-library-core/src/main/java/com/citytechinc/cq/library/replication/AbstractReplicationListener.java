@@ -13,15 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Listeners extending this class need to add the following SCR annotations to
- * register the listener.
+ * Listeners extending this class need to add the following SCR annotations to register the listener.
  * <p/>
  * <pre>
- * {@code
- * @Component(immediate = true, metatype = true, inherit = true)
- * @Service
- * @Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC)
- * }
+ * {@literal @}Component(immediate = true, metatype = true, inherit = true)
+ * {@literal @}Service
+ * {@literal @}Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC)
  * </pre>
  */
 public abstract class AbstractReplicationListener extends AbstractSlingService implements EventHandler {

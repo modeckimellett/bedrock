@@ -15,18 +15,16 @@ import java.io.IOException;
 import java.util.Collections;
 
 /**
- * Validators extending this class need to add the following SCR annotation to
- * register the servlet:
- *
+ * Validators extending this class need to add the following SCR annotation to register the servlet:
+ * <p/>
  * <pre>
- * @SlingServlet(resourceTypes = "citytechlib/components/content/example", selectors = "validator", extensions = "json",
- *     methods = "GET", description = "Validator Servlet")
+ * {@literal @}SlingServlet(resourceTypes = "citytechlib/components/content/example", selectors = "validator",
+ * extensions = "json", methods = "GET", description = "Validator Servlet")
  * </pre>
- *
- * The "resourceTypes" annotation will need to be updated to match the resource
- * type of the component being validated. The component dialog.xml can call the
- * the validator for a given dialog field using the following function:
- *
+ * <p/>
+ * The "resourceTypes" annotation will need to be updated to match the resource type of the component being validated.
+ * The component dialog.xml can call the the validator for a given dialog field using the following function:
+ * <p/>
  * <pre>
  * {@code
  * <name jcr:primaryType="cq:Widget" fieldLabel="Name" name="./name" xtype="textfield"
