@@ -79,6 +79,8 @@ public final class LinkBuilder {
     private LinkBuilder(final String path) {
         this.path = path;
 
+        new DefaultImageLink(null, "");
+
         external = isExternal(path);
     }
 
