@@ -14,6 +14,8 @@ public final class ComponentConstants {
 
     public static final String NODE_NAME_PAR = "par";
 
+    public static final String RESOURCE_TYPE_PARBASE = "foundation/components/parbase";
+
     public static final String RESOURCE_TYPE_PARSYS = "foundation/components/parsys";
 
     private ComponentConstants() {
