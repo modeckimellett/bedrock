@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public final class DescriptionTag extends AbstractPropertyTag {
 
@@ -41,9 +41,12 @@ public final class DescriptionTag extends AbstractPropertyTag {
             description = properties.get(JcrConstants.JCR_DESCRIPTION, "");
         }
 
-        if (isNotEmpty(description)) {
+        if (!isNullOrEmpty(description)) {
             builder.append(escapeHtml4(description));
-            builder.append(suffix);
+
+            if (!isNullOrEmpty(suffix)) {
+                builder.append(suffix);
+            }
         }
 
         try {

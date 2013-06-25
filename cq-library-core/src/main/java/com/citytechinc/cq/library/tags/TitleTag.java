@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 public final class TitleTag extends AbstractPropertyTag {
@@ -36,7 +37,9 @@ public final class TitleTag extends AbstractPropertyTag {
             builder.append(escapeHtml4(title));
         }
 
-        builder.append(suffix);
+        if (!isNullOrEmpty(suffix)) {
+            builder.append(suffix);
+        }
 
         final String content = builder.toString();
 
