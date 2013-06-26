@@ -97,6 +97,23 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
+    public Optional<PageDecorator> findAncestor(final Predicate<PageDecorator> predicate) {
+        PageDecorator page = this;
+        PageDecorator ancestorPage = null;
+
+        while (page != null) {
+            if (predicate.apply(page)) {
+                ancestorPage = page;
+                break;
+            } else {
+                page = page.getParent();
+            }
+        }
+
+        return Optional.fromNullable(ancestorPage);
+    }
+
+    @Override
     public PageDecorator getAbsoluteParent(final int level) {
         final Page absoluteParent = page.getAbsoluteParent(level);
 

@@ -158,7 +158,7 @@ public interface BasicNode extends Linkable {
      *
      * @return optional image source (absent if the referenced image has no content)
      */
-    Optional<String> getImageSrc();
+    Optional<String> getImageSource();
 
     /**
      * Get the image source for the default image (named "image") for this node for the given width.
@@ -166,7 +166,7 @@ public interface BasicNode extends Linkable {
      * @param width image width
      * @return optional image source (absent if the referenced image has no content)
      */
-    Optional<String> getImageSrc(int width);
+    Optional<String> getImageSource(int width);
 
     /**
      * Get the image source for this node for the named image.
@@ -174,7 +174,7 @@ public interface BasicNode extends Linkable {
      * @param name image name (name of image as defined in dialog)
      * @return optional image source (absent if the referenced image has no content)
      */
-    Optional<String> getImageSrc(String name);
+    Optional<String> getImageSource(String name);
 
     /**
      * Get the image source for this node for the named image and given width.
@@ -183,7 +183,7 @@ public interface BasicNode extends Linkable {
      * @param width image width
      * @return optional image source (absent if the referenced image has no content)
      */
-    Optional<String> getImageSrc(String name, int width);
+    Optional<String> getImageSource(String name, int width);
 
     /**
      * @return index in sibling nodes or -1 if resource is null or has null parent node

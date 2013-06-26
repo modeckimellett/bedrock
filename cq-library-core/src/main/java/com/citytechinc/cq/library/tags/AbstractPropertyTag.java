@@ -5,43 +5,13 @@
  */
 package com.citytechinc.cq.library.tags;
 
-import com.citytechinc.cq.library.content.node.ComponentNode;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
-import javax.servlet.jsp.tagext.TagSupport;
-
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
-public abstract class AbstractPropertyTag extends TagSupport {
+public abstract class AbstractPropertyTag extends AbstractComponentTag {
 
     private static final long serialVersionUID = 1L;
 
     protected String propertyName;
-
-    /**
-     * Should property value be inherited? Defaults to false.
-     */
-    protected String inherit;
-
-    protected final ComponentNode getComponentNode() {
-        return (ComponentNode) pageContext.getAttribute(DefineObjectsTag.ATTR_COMPONENT_NODE);
-    }
-
-    protected final boolean isInherit() {
-        return isEmpty(inherit) ? false : Boolean.valueOf(inherit);
-    }
-
-    protected final boolean hasPropertyName() {
-        return isNotEmpty(propertyName);
-    }
-
-    public final String getInherit() {
-        return inherit;
-    }
-
-    public final void setInherit(final String inherit) {
-        this.inherit = inherit;
-    }
 
     public final String getPropertyName() {
         return propertyName;
@@ -49,5 +19,9 @@ public abstract class AbstractPropertyTag extends TagSupport {
 
     public final void setPropertyName(final String propertyName) {
         this.propertyName = propertyName;
+    }
+
+    protected final boolean hasPropertyName() {
+        return !isNullOrEmpty(propertyName);
     }
 }

@@ -203,23 +203,23 @@ public final class DefaultBasicNode implements BasicNode {
     }
 
     @Override
-    public Optional<String> getImageSrc() {
-        return getImageSrc(DEFAULT_IMAGE_NAME);
+    public Optional<String> getImageSource() {
+        return getImageSource(DEFAULT_IMAGE_NAME);
     }
 
     @Override
-    public Optional<String> getImageSrc(final int width) {
-        return getImageSrc(DEFAULT_IMAGE_NAME, width);
+    public Optional<String> getImageSource(final int width) {
+        return getImageSource(DEFAULT_IMAGE_NAME, width);
     }
 
     @Override
-    public Optional<String> getImageSrc(final String name) {
-        return getImageSrc(name, -1);
+    public Optional<String> getImageSource(final String name) {
+        return getImageSource(name, -1);
     }
 
     @Override
-    public Optional<String> getImageSrc(final String name, final int width) {
-        final String imageSrc;
+    public Optional<String> getImageSource(final String name, final int width) {
+        final String imageSource;
 
         if (isHasImage(name)) {
             final StringBuilder builder = new StringBuilder();
@@ -242,12 +242,12 @@ public final class DefaultBasicNode implements BasicNode {
 
             builder.append('.').append(EXTENSION_PNG);
 
-            imageSrc = builder.toString();
+            imageSource = builder.toString();
         } else {
-            imageSrc = null;
+            imageSource = null;
         }
 
-        return Optional.fromNullable(imageSrc);
+        return Optional.fromNullable(imageSource);
     }
 
     @Override

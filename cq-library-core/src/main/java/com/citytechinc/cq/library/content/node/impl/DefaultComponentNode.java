@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.content.node.impl;
 
-import com.citytechinc.cq.library.constants.Constants;
 import com.citytechinc.cq.library.content.link.Link;
 import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.citytechinc.cq.library.content.node.BasicNode;
@@ -38,6 +37,7 @@ import javax.jcr.Property;
 import java.util.Collections;
 import java.util.List;
 
+import static com.citytechinc.cq.library.constants.Constants.DEFAULT_IMAGE_NAME;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
 import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.RESOURCE_TO_BASIC_NODE;
@@ -70,18 +70,17 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public Optional<ComponentNode> findAncestor(final Predicate<ComponentNode> predicate) {
-        return Optional.fromNullable(findAncestorForPredicate(predicate));
+        return findAncestorForPredicate(predicate);
     }
 
     @Override
     public Optional<ComponentNode> findAncestorWithProperty(final String propertyName) {
-        return Optional.fromNullable(findAncestorForPredicate(new ComponentNodePropertyExistsPredicate(propertyName)));
+        return findAncestorForPredicate(new ComponentNodePropertyExistsPredicate(propertyName));
     }
 
     @Override
     public <T> Optional<ComponentNode> findAncestorWithPropertyValue(final String propertyName, final T propertyValue) {
-        return Optional.fromNullable(findAncestorForPredicate(new ComponentNodePropertyValuePredicate<T>(propertyName,
-            propertyValue)));
+        return findAncestorForPredicate(new ComponentNodePropertyValuePredicate<T>(propertyName, propertyValue));
     }
 
     @Override
@@ -253,7 +252,7 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public Optional<String> getImageReferenceInherited() {
-        return getImageReferenceInherited(Constants.DEFAULT_IMAGE_NAME);
+        return getImageReferenceInherited(DEFAULT_IMAGE_NAME);
     }
 
     @Override
@@ -272,23 +271,63 @@ public final class DefaultComponentNode implements ComponentNode {
     }
 
     @Override
-    public Optional<String> getImageSrc() {
-        return basicNode.getImageSrc();
+    public Optional<String> getImageSource() {
+        return basicNode.getImageSource();
     }
 
     @Override
-    public Optional<String> getImageSrc(final int width) {
-        return basicNode.getImageSrc(width);
+    public Optional<String> getImageSource(final int width) {
+        return basicNode.getImageSource(width);
     }
 
     @Override
-    public Optional<String> getImageSrc(final String name) {
-        return basicNode.getImageSrc(name);
+    public Optional<String> getImageSource(final String name) {
+        return basicNode.getImageSource(name);
     }
 
     @Override
-    public Optional<String> getImageSrc(final String name, final int width) {
-        return basicNode.getImageSrc(name, width);
+    public Optional<String> getImageSource(final String name, final int width) {
+        return basicNode.getImageSource(name, width);
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited() {
+        return getImageSourceInherited(DEFAULT_IMAGE_NAME);
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited(final int width) {
+        return getImageSourceInherited(DEFAULT_IMAGE_NAME, width);
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited(final String name) {
+        return getImageSourceInherited(name, -1);
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited(final String name, final int width) {
+        final Optional<String> optionalImageSource;
+
+        if (isHasImage(name)) {
+            optionalImageSource = getImageSource(name, width);
+        } else {
+            final Predicate<ComponentNode> predicate = new Predicate<ComponentNode>() {
+                @Override
+                public boolean apply(final ComponentNode componentNode) {
+                    return componentNode.isHasImage(name);
+                }
+            };
+
+            optionalImageSource = findAncestor(predicate).transform(new Function<ComponentNode, String>() {
+                @Override
+                public String apply(final ComponentNode componentNode) {
+                    return componentNode.getImageSource(name, width).get();
+                }
+            });
+        }
+
+        return optionalImageSource;
     }
 
     @Override
@@ -344,18 +383,16 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public List<BasicNode> getNodesInherited(final String relativePath) {
-        Resource child = resource.getChild(relativePath);
-
-        if (child == null) {
-            child = findChildResourceInherited(relativePath);
-        }
+        final Optional<Resource> childOptional = findChildResourceInherited(relativePath);
 
         final List<BasicNode> nodes;
 
-        if (child == null) {
-            nodes = Collections.emptyList();
-        } else {
+        if (childOptional.isPresent()) {
+            final Resource child = childOptional.get();
+
             nodes = FluentIterable.from(child.getChildren()).transform(RESOURCE_TO_BASIC_NODE).toList();
+        } else {
+            nodes = Collections.emptyList();
         }
 
         return nodes;
@@ -392,7 +429,7 @@ public final class DefaultComponentNode implements ComponentNode {
             .toString();
     }
 
-    private ComponentNode findAncestorForPredicate(final Predicate<ComponentNode> predicate) {
+    private Optional<ComponentNode> findAncestorForPredicate(final Predicate<ComponentNode> predicate) {
         final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
         final PageDecorator containingPage = pageManager.getContainingPage(resource);
 
@@ -403,43 +440,40 @@ public final class DefaultComponentNode implements ComponentNode {
 
         LOG.debug("findAncestorForPredicate() relative path = {}", relativePath);
 
-        PageDecorator parent = containingPage.getParent();
-
-        ComponentNode result = null;
-
-        while (parent != null) {
-            final Optional<ComponentNode> componentNodeOptional = relativePath.isEmpty() ? parent
-                .getComponentNode() : parent.getComponentNode(relativePath);
-
-            if (componentNodeOptional.isPresent() && predicate.apply(componentNodeOptional.get())) {
-                LOG.debug("findAncestorForPredicate() found matching component node resource for page = {}",
-                    parent.getPath());
-
-                result = componentNodeOptional.get();
-
-                break;
-            } else {
-                LOG.debug("findAncestorForPredicate() component node not found for page = {}", parent.getPath());
-
-                parent = parent.getParent();
+        final Function<PageDecorator, Optional<ComponentNode>> componentNodeFunction = new Function<PageDecorator, Optional<ComponentNode>>() {
+            @Override
+            public Optional<ComponentNode> apply(final PageDecorator page) {
+                return relativePath.isEmpty() ? page.getComponentNode() : page.getComponentNode(relativePath);
             }
-        }
+        };
 
-        return result;
+        final Predicate<PageDecorator> pagePredicate = new Predicate<PageDecorator>() {
+            @Override
+            public boolean apply(final PageDecorator page) {
+                final Optional<ComponentNode> componentNodeOptional = componentNodeFunction.apply(page);
+
+                return componentNodeOptional.isPresent() && predicate.apply(componentNodeOptional.get());
+            }
+        };
+
+        return containingPage.findAncestor(pagePredicate).transform(new Function<PageDecorator, ComponentNode>() {
+            @Override
+            public ComponentNode apply(final PageDecorator page) {
+                return componentNodeFunction.apply(page).get();
+            }
+        });
     }
 
-    private Resource findChildResourceInherited(final String relativePath) {
+    private Optional<Resource> findChildResourceInherited(final String relativePath) {
         final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
         final PageDecorator containingPage = pageManager.getContainingPage(resource);
-
-        final String path = resource.getPath();
 
         final StringBuilder builder = new StringBuilder();
 
         if (resource.getName().equals(JcrConstants.JCR_CONTENT)) {
             builder.append(relativePath);
         } else {
-            builder.append(path.substring(containingPage.getContentResource().getPath().length() + 1));
+            builder.append(resource.getPath().substring(containingPage.getContentResource().getPath().length() + 1));
             builder.append('/');
             builder.append(relativePath);
         }
@@ -449,24 +483,18 @@ public final class DefaultComponentNode implements ComponentNode {
 
         LOG.debug("findChildResourceInherited() child resource relative path = {}", resourcePath);
 
-        PageDecorator parent = containingPage.getParent();
-
-        Resource child = null;
-
-        while (parent != null) {
-            child = parent.getContentResource(resourcePath);
-
-            if (child == null) {
-                LOG.debug("findChildResourceInherited() child resource not found for page = {}", parent.getPath());
-
-                parent = parent.getParent();
-            } else {
-                LOG.debug("findChildResourceInherited() found child resource for page = {}", parent.getPath());
-
-                break;
+        final Predicate<PageDecorator> predicate = new Predicate<PageDecorator>() {
+            @Override
+            public boolean apply(final PageDecorator page) {
+                return page.getContentResource(resourcePath) != null;
             }
-        }
+        };
 
-        return child;
+        return containingPage.findAncestor(predicate).transform(new Function<PageDecorator, Resource>() {
+            @Override
+            public Resource apply(final PageDecorator page) {
+                return page.getContentResource(resourcePath);
+            }
+        });
     }
 }

@@ -193,28 +193,37 @@ public interface ComponentNode extends BasicNode {
     Optional<String> getImageReferenceInherited(String name);
 
     /**
-     * @return inherited image source
+     * Get the image source for the default image (named "image") for this node. Uses the image servlet rather than a
+     * direct reference to the DAM path.
+     *
+     * @return optional inherited image source
      */
-    //String getImageSrcInherited();
+    Optional<String> getImageSourceInherited();
 
     /**
+     * Get the image source for the default image (named "image") for this node for the given width.
+     *
      * @param width image width
-     * @return inherited image source
+     * @return optional inherited image source
      */
-    //String getImageSrcInherited(int width);
+    Optional<String> getImageSourceInherited(int width);
 
     /**
+     * Get the image source for this node for the named image.
+     *
      * @param name image name (name of image as defined in dialog)
-     * @return inherited image source
+     * @return optional inherited image source
      */
-    //String getImageSrcInherited(String name);
+    Optional<String> getImageSourceInherited(String name);
 
     /**
+     * Get the image source for this node for the named image and given width.
+     *
      * @param name image name (name of image as defined in dialog)
      * @param width image width
-     * @return inherited image source
+     * @return optional inherited image source
      */
-    //String getImageSrcInherited(String name, int width);
+    Optional<String> getImageSourceInherited(String name, int width);
 
     /**
      * Get a property value from the current node. If no value is found, recurse up the content tree respective to the

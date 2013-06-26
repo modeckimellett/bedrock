@@ -35,9 +35,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
     isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public abstract class AbstractComponent implements ComponentNode {
 
-    protected final ComponentRequest request;
-
     protected final PageDecorator currentPage;
+
+    protected final ComponentRequest request;
 
     private final ComponentNode componentNode;
 
@@ -250,23 +250,43 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
-    public Optional<String> getImageSrc() {
-        return componentNode.getImageSrc();
+    public final Optional<String> getImageSource() {
+        return componentNode.getImageSource();
     }
 
     @Override
-    public Optional<String> getImageSrc(final int width) {
-        return componentNode.getImageSrc(width);
+    public final Optional<String> getImageSource(final int width) {
+        return componentNode.getImageSource(width);
     }
 
     @Override
-    public Optional<String> getImageSrc(final String name) {
-        return componentNode.getImageSrc(name);
+    public final Optional<String> getImageSource(final String name) {
+        return componentNode.getImageSource(name);
     }
 
     @Override
-    public Optional<String> getImageSrc(final String name, final int width) {
-        return componentNode.getImageSrc(name, width);
+    public final Optional<String> getImageSource(final String name, final int width) {
+        return componentNode.getImageSource(name, width);
+    }
+
+    @Override
+    public final Optional<String> getImageSourceInherited() {
+        return componentNode.getImageSourceInherited();
+    }
+
+    @Override
+    public final Optional<String> getImageSourceInherited(final int width) {
+        return componentNode.getImageSourceInherited(width);
+    }
+
+    @Override
+    public final Optional<String> getImageSourceInherited(final String name) {
+        return componentNode.getImageSourceInherited(name);
+    }
+
+    @Override
+    public final Optional<String> getImageSourceInherited(final String name, final int width) {
+        return componentNode.getImageSourceInherited(name, width);
     }
 
     @Override

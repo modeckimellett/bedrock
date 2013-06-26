@@ -19,6 +19,11 @@ public final class HrefTag extends AbstractPropertyTag {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Default value if property does not exist.
+     */
+    private String defaultValue = "";
+
     @Override
     public int doEndTag() throws JspTagException {
         final ComponentNode componentNode = getComponentNode();
@@ -31,18 +36,24 @@ public final class HrefTag extends AbstractPropertyTag {
             optionalHref = componentNode.getAsHref(propertyName);
         }
 
-        if (optionalHref.isPresent()) {
-            final String href = optionalHref.get();
+        final String href = optionalHref.or(defaultValue);
 
-            try {
-                pageContext.getOut().write(href);
-            } catch (IOException ioe) {
-                LOG.error("error writing href = " + href, ioe);
+        try {
+            pageContext.getOut().write(href);
+        } catch (IOException e) {
+            LOG.error("error writing href = " + href, e);
 
-                throw new JspTagException(ioe);
-            }
+            throw new JspTagException(e);
         }
 
         return EVAL_PAGE;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(final String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 }

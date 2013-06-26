@@ -185,7 +185,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         def node = createBasicNode(path)
 
         expect:
-        node.imageSrc.present == isPresent
+        node.imageSource.present == isPresent
 
         where:
         path                                       | isPresent
@@ -201,7 +201,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         def node = createBasicNode(path)
 
         expect:
-        node.imageSrc.get() == imageSrc
+        node.imageSource.get() == imageSrc
 
         where:
         path                                    | imageSrc
@@ -215,7 +215,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         def node = createBasicNode(path)
 
         expect:
-        node.getImageSrc(name).get() == imageSrc
+        node.getImageSource(name).get() == imageSrc
 
         where:
         path                                    | name          | imageSrc
@@ -231,7 +231,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         def node = createBasicNode(path)
 
         expect:
-        node.getImageSrc(width).get() == imageSrc
+        node.getImageSource(width).get() == imageSrc
 
         where:
         path                                    | width | imageSrc
@@ -247,7 +247,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         def node = createBasicNode(path)
 
         expect:
-        node.getImageSrc(name, width).get() == imageSrc
+        node.getImageSource(name, width).get() == imageSrc
 
         where:
         path                                    | name          | width | imageSrc

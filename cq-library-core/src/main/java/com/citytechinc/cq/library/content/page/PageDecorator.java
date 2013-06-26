@@ -17,6 +17,14 @@ import java.util.List;
 
 public interface PageDecorator extends Page, Linkable {
 
+    /**
+     * Find the first ancestor page that matches the given predicate condition.
+     *
+     * @param predicate predicate to match ancestor pages against
+     * @return <code>Optional</code> page that matches the predicate condition
+     */
+    Optional<PageDecorator> findAncestor(Predicate<PageDecorator> predicate);
+
     @Override
     PageDecorator getAbsoluteParent(int level);
 

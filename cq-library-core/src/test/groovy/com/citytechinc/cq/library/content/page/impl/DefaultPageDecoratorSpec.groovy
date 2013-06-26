@@ -7,10 +7,12 @@ package com.citytechinc.cq.library.content.page.impl
 
 import com.citytechinc.cq.library.content.node.BasicNode
 import com.citytechinc.cq.library.content.node.ComponentNode
+import com.citytechinc.cq.library.content.page.PageDecorator
 import com.citytechinc.cq.library.content.page.predicates.TemplatePredicate
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.day.cq.wcm.api.NameConstants
 import com.day.cq.wcm.api.PageManager
+import com.google.common.base.Predicate
 import spock.lang.Unroll
 
 class DefaultPageDecoratorSpec extends AbstractCqSpec {
@@ -31,11 +33,35 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
 
                 }
             }
+            other {
+
+            }
         }
 
         // also create a page with no jcr:content node
         session.getNode("/content/citytechinc").addNode("empty", NameConstants.NT_PAGE)
         session.save()
+    }
+
+    @Unroll
+    def "find ancestor optional"() {
+        setup:
+        def page = createPage(path)
+        def predicate = new Predicate<PageDecorator>() {
+            @Override
+            boolean apply(PageDecorator input) {
+                input.title == "CITYTECH, Inc."
+            }
+        }
+
+        expect:
+        page.findAncestor(predicate).present == isPresent
+
+        where:
+        path                          | isPresent
+        "/content/citytechinc"        | true
+        "/content/citytechinc/child1" | true
+        "/content/other"              | false
     }
 
     @Unroll
