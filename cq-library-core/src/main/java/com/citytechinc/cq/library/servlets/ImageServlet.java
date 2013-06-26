@@ -13,7 +13,7 @@ import com.day.cq.wcm.commons.AbstractImageServlet;
 import com.day.cq.wcm.foundation.Image;
 import com.day.image.Layer;
 import com.google.common.io.ByteStreams;
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.io.Closeables;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -27,6 +27,8 @@ import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 @SlingServlet(label = "CITYTECH Image Servlet", description = "Image rendering servlet.", methods = "GET",
     selectors = "img", resourceTypes = "sling/servlet/default")
@@ -131,7 +133,7 @@ public final class ImageServlet extends AbstractImageServlet {
 
                 ByteStreams.copy(stream, response.getOutputStream());
             } finally {
-                stream.close();
+                Closeables.close(stream, true);
                 binary.dispose();
             }
         }
@@ -187,7 +189,7 @@ public final class ImageServlet extends AbstractImageServlet {
             if (selectors.length > 1) {
                 final String selector = selectors[1];
 
-                if (StringUtils.isNumeric(selector)) {
+                if (isNumeric(selector)) {
                     name = isPage || isPageContent(request) ? PAGE_IMAGE_NAME : null;
                     width = Integer.valueOf(selector);
                 } else {

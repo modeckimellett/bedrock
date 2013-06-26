@@ -193,6 +193,30 @@ public interface ComponentNode extends BasicNode {
     Optional<String> getImageReferenceInherited(String name);
 
     /**
+     * @return inherited image source
+     */
+    //String getImageSrcInherited();
+
+    /**
+     * @param width image width
+     * @return inherited image source
+     */
+    //String getImageSrcInherited(int width);
+
+    /**
+     * @param name image name (name of image as defined in dialog)
+     * @return inherited image source
+     */
+    //String getImageSrcInherited(String name);
+
+    /**
+     * @param name image name (name of image as defined in dialog)
+     * @param width image width
+     * @return inherited image source
+     */
+    //String getImageSrcInherited(String name, int width);
+
+    /**
      * Get a property value from the current node. If no value is found, recurse up the content tree respective to the
      * page and relative node path until a value is found.
      *

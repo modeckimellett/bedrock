@@ -250,6 +250,26 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
+    public Optional<String> getImageSrc() {
+        return componentNode.getImageSrc();
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final int width) {
+        return componentNode.getImageSrc(width);
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final String name) {
+        return componentNode.getImageSrc(name);
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final String name, final int width) {
+        return componentNode.getImageSrc(name, width);
+    }
+
+    @Override
     public final int getIndex() {
         return componentNode.getIndex();
     }

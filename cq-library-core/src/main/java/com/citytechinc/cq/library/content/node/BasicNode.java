@@ -153,6 +153,39 @@ public interface BasicNode extends Linkable {
     Optional<String> getImageRendition(String name, String renditionName);
 
     /**
+     * Get the image source for the default image (named "image") for this node. Uses the image servlet rather than a
+     * direct reference to the DAM path.
+     *
+     * @return optional image source (absent if the referenced image has no content)
+     */
+    Optional<String> getImageSrc();
+
+    /**
+     * Get the image source for the default image (named "image") for this node for the given width.
+     *
+     * @param width image width
+     * @return optional image source (absent if the referenced image has no content)
+     */
+    Optional<String> getImageSrc(int width);
+
+    /**
+     * Get the image source for this node for the named image.
+     *
+     * @param name image name (name of image as defined in dialog)
+     * @return optional image source (absent if the referenced image has no content)
+     */
+    Optional<String> getImageSrc(String name);
+
+    /**
+     * Get the image source for this node for the named image and given width.
+     *
+     * @param name image name (name of image as defined in dialog)
+     * @param width image width
+     * @return optional image source (absent if the referenced image has no content)
+     */
+    Optional<String> getImageSrc(String name, int width);
+
+    /**
      * @return index in sibling nodes or -1 if resource is null or has null parent node
      */
     int getIndex();

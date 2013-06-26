@@ -272,6 +272,26 @@ public final class DefaultComponentNode implements ComponentNode {
     }
 
     @Override
+    public Optional<String> getImageSrc() {
+        return basicNode.getImageSrc();
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final int width) {
+        return basicNode.getImageSrc(width);
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final String name) {
+        return basicNode.getImageSrc(name);
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final String name, final int width) {
+        return basicNode.getImageSrc(name, width);
+    }
+
+    @Override
     public int getIndex() {
         return basicNode.getIndex();
     }

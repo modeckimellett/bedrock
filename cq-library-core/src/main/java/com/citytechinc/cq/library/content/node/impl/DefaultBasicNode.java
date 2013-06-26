@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.content.node.impl;
 
-import com.citytechinc.cq.library.constants.Constants;
 import com.citytechinc.cq.library.content.link.Link;
 import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.citytechinc.cq.library.content.node.BasicNode;
@@ -14,6 +13,7 @@ import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.citytechinc.cq.library.content.resource.predicates.PathPredicate;
 import com.citytechinc.cq.library.content.resource.predicates.ResourceTypePredicate;
 import com.day.cq.commons.DownloadResource;
+import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
 import com.day.cq.wcm.foundation.Image;
@@ -38,6 +38,8 @@ import javax.jcr.RepositoryException;
 import java.util.Collections;
 import java.util.List;
 
+import static com.citytechinc.cq.library.constants.Constants.DEFAULT_IMAGE_NAME;
+import static com.citytechinc.cq.library.constants.Constants.EXTENSION_PNG;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -45,6 +47,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class DefaultBasicNode implements BasicNode {
 
     private static final Predicate<Resource> ALL = Predicates.alwaysTrue();
+
+    /**
+     * Image servlet selector.
+     */
+    private static final String IMAGE_SELECTOR = "img";
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultBasicNode.class);
 
@@ -148,7 +155,7 @@ public final class DefaultBasicNode implements BasicNode {
 
     @Override
     public Optional<String> getImageReference() {
-        return getImageReference(Constants.DEFAULT_IMAGE_NAME);
+        return getImageReference(DEFAULT_IMAGE_NAME);
     }
 
     @Override
@@ -162,7 +169,7 @@ public final class DefaultBasicNode implements BasicNode {
     public Optional<String> getImageRendition(final String renditionName) {
         checkNotNull(renditionName);
 
-        return getImageRendition(Constants.DEFAULT_IMAGE_NAME, renditionName);
+        return getImageRendition(DEFAULT_IMAGE_NAME, renditionName);
     }
 
     @Override
@@ -193,6 +200,54 @@ public final class DefaultBasicNode implements BasicNode {
         }
 
         return imageRenditionOptional;
+    }
+
+    @Override
+    public Optional<String> getImageSrc() {
+        return getImageSrc(DEFAULT_IMAGE_NAME);
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final int width) {
+        return getImageSrc(DEFAULT_IMAGE_NAME, width);
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final String name) {
+        return getImageSrc(name, -1);
+    }
+
+    @Override
+    public Optional<String> getImageSrc(final String name, final int width) {
+        final String imageSrc;
+
+        if (isHasImage(name)) {
+            final StringBuilder builder = new StringBuilder();
+
+            if (JcrConstants.JCR_CONTENT.equals(resource.getName())) {
+                builder.append(resource.getParent().getPath());
+            } else {
+                builder.append(resource.getPath());
+            }
+
+            builder.append('.').append(IMAGE_SELECTOR);
+
+            if (!name.equals(DEFAULT_IMAGE_NAME)) {
+                builder.append('.').append(name);
+            }
+
+            if (width > -1) {
+                builder.append('.').append(width);
+            }
+
+            builder.append('.').append(EXTENSION_PNG);
+
+            imageSrc = builder.toString();
+        } else {
+            imageSrc = null;
+        }
+
+        return Optional.fromNullable(imageSrc);
     }
 
     @Override
@@ -278,7 +333,7 @@ public final class DefaultBasicNode implements BasicNode {
 
     @Override
     public boolean isHasImage() {
-        return isHasImage(Constants.DEFAULT_IMAGE_NAME);
+        return isHasImage(DEFAULT_IMAGE_NAME);
     }
 
     @Override
