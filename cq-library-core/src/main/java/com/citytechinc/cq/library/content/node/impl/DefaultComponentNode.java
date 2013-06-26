@@ -307,27 +307,19 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public Optional<String> getImageSourceInherited(final String name, final int width) {
-        final Optional<String> optionalImageSource;
+        final Predicate<ComponentNode> predicate = new Predicate<ComponentNode>() {
+            @Override
+            public boolean apply(final ComponentNode componentNode) {
+                return componentNode.isHasImage(name);
+            }
+        };
 
-        if (isHasImage(name)) {
-            optionalImageSource = getImageSource(name, width);
-        } else {
-            final Predicate<ComponentNode> predicate = new Predicate<ComponentNode>() {
-                @Override
-                public boolean apply(final ComponentNode componentNode) {
-                    return componentNode.isHasImage(name);
-                }
-            };
-
-            optionalImageSource = findAncestor(predicate).transform(new Function<ComponentNode, String>() {
-                @Override
-                public String apply(final ComponentNode componentNode) {
-                    return componentNode.getImageSource(name, width).get();
-                }
-            });
-        }
-
-        return optionalImageSource;
+        return findAncestor(predicate).transform(new Function<ComponentNode, String>() {
+            @Override
+            public String apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource(name, width).get();
+            }
+        });
     }
 
     @Override

@@ -28,6 +28,8 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
             ales {
                 esb("ESB") {
                     "jcr:content"(otherPagePath: "/content/citytechinc", externalPath: "http://www.reddit.com") {
+                        image(fileReference: "/content/dam/image")
+                        secondimage(fileReference: "/content/dam/image")
                         fullers("sling:resourceType": "bitter")
                         morland("sling:resourceType": "bitter")
                         greeneking("sling:resourceType": "bitter")
@@ -90,12 +92,24 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
             }
             inheritance {
                 "jcr:content"("jcr:title": "Inheritance") {
-                    component("jcr:title": "Component", "number": 5, "boolean": false)
+                    component("jcr:title": "Component", "number": 5, "boolean": false) {
+                        image(fileReference: "/content/dam/image")
+                        secondimage(fileReference: "/content/dam/image")
+                    }
                 }
                 child {
                     "jcr:content" {
                         component()
+                        other()
                     }
+                }
+            }
+        }
+
+        nodeBuilder.content {
+            dam("sling:Folder") {
+                image("dam:Asset") {
+                    "jcr:content"("jcr:data": "data")
                 }
             }
         }
@@ -112,6 +126,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
         where:
         path                                               | ancestorPath
+        "/content/inheritance/jcr:content"                 | "/content/inheritance/jcr:content"
         "/content/inheritance/child/jcr:content"           | "/content/inheritance/jcr:content"
         "/content/inheritance/child/jcr:content/component" | "/content/inheritance/jcr:content/component"
     }
@@ -242,12 +257,24 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
         "/content/ales/esb/bar/tree/jcr:content/wood"    | 3
     }
 
-    def "get image reference inherited"() {
+    @Unroll
+    def "get image source inherited optional"() {
+        setup:
+        def node = createComponentNode(path)
 
-    }
+        expect:
+        node.imageSourceInherited.present == isPresent
 
-    def "get image reference inherited for name"() {
-
+        where:
+        path                                               | isPresent
+        "/content/ales/esb/jcr:content"                    | true
+        "/content/ales/esb/suds/jcr:content"               | true
+        "/content/ales/esb/suds/pint/jcr:content"          | true
+        "/content/inheritance/jcr:content"                 | false
+        "/content/inheritance/child/jcr:content"           | false
+        "/content/inheritance/jcr:content/component"       | true
+        "/content/inheritance/child/jcr:content/component" | true
+        "/content/ales/esb/jcr:content/fullers"            | false
     }
 
     @Unroll
