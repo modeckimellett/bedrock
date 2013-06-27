@@ -20,6 +20,7 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.Template;
 import com.day.cq.wcm.api.WCMException;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -38,14 +39,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class DefaultPageDecorator implements PageDecorator {
 
+    private static final Predicate<PageDecorator> ALL = Predicates.alwaysTrue();
+
     private static final Predicate<PageDecorator> DISPLAYABLE_ONLY = new Predicate<PageDecorator>() {
         @Override
         public boolean apply(final PageDecorator page) {
             return page.getContentResource() != null && !page.isHideInNav();
         }
     };
-
-    private static final Predicate<PageDecorator> ALL = Predicates.alwaysTrue();
 
     private final Optional<ComponentNode> componentNodeOptional;
 
@@ -78,24 +79,6 @@ public final class DefaultPageDecorator implements PageDecorator {
         return page.canUnlock();
     }
 
-    private List<PageDecorator> filterChildren(final Predicate<PageDecorator> predicate) {
-        final List<PageDecorator> pages = new ArrayList<PageDecorator>();
-
-        final Iterator<Page> children = page.listChildren();
-
-        final PageManagerDecorator pageManager = getPageManagerDecorator();
-
-        while (children.hasNext()) {
-            final PageDecorator child = pageManager.getPage(children.next());
-
-            if (child != null && predicate.apply(child)) {
-                pages.add(child);
-            }
-        }
-
-        return pages;
-    }
-
     @Override
     public Optional<PageDecorator> findAncestor(final Predicate<PageDecorator> predicate) {
         PageDecorator page = this;
@@ -118,16 +101,6 @@ public final class DefaultPageDecorator implements PageDecorator {
         final Page absoluteParent = page.getAbsoluteParent(level);
 
         return absoluteParent == null ? null : new DefaultPageDecorator(absoluteParent);
-    }
-
-    @Override
-    public Optional<String> getNavigationTitleOptional() {
-        return Optional.fromNullable(page.getNavigationTitle());
-    }
-
-    @Override
-    public Optional<String> getPageTitleOptional() {
-        return Optional.fromNullable(page.getPageTitle());
     }
 
     @Override
@@ -164,21 +137,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public ImageLink getImageLink(final String imageSrc) {
-        return LinkBuilder.forPage(this).setImage(checkNotNull(imageSrc)).buildImageLink();
-    }
-
-    @Override
-    public NavigationLink getNavigationLink() {
-        return LinkBuilder.forNavigationPage(this).buildNavigationLink();
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return getProperties().get(NameConstants.NN_TEMPLATE, "");
-    }
-
-    @Override
     public Resource getContentResource() {
         return page.getContentResource();
     }
@@ -201,6 +159,51 @@ public final class DefaultPageDecorator implements PageDecorator {
     @Override
     public String getHref() {
         return getLink().getHref();
+    }
+
+    @Override
+    public ImageLink getImageLink(final String imageSrc) {
+        return LinkBuilder.forPage(this).setImage(checkNotNull(imageSrc)).buildImageLink();
+    }
+
+    @Override
+    public Optional<String> getImageSource() {
+        return getImageSource(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource();
+            }
+        });
+    }
+
+    @Override
+    public Optional<String> getImageSource(final int width) {
+        return getImageSource(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource(width);
+            }
+        });
+    }
+
+    @Override
+    public Optional<String> getImageSource(final String name) {
+        return getImageSource(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource(name);
+            }
+        });
+    }
+
+    @Override
+    public Optional<String> getImageSource(final String name, final int width) {
+        return getImageSource(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource(name, width);
+            }
+        });
     }
 
     @Override
@@ -229,6 +232,11 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
+    public String getLockOwner() {
+        return page.getLockOwner();
+    }
+
+    @Override
     public String getMappedHref() {
         return getMappedLink().getHref();
     }
@@ -244,18 +252,23 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public String getLockOwner() {
-        return page.getLockOwner();
-    }
-
-    @Override
     public String getName() {
         return page.getName();
     }
 
     @Override
+    public NavigationLink getNavigationLink() {
+        return LinkBuilder.forNavigationPage(this).buildNavigationLink();
+    }
+
+    @Override
     public String getNavigationTitle() {
         return page.getNavigationTitle();
+    }
+
+    @Override
+    public Optional<String> getNavigationTitleOptional() {
+        return Optional.fromNullable(page.getNavigationTitle());
     }
 
     @Override
@@ -273,15 +286,14 @@ public final class DefaultPageDecorator implements PageDecorator {
         return getPageManagerDecorator();
     }
 
-    private PageManagerDecorator getPageManagerDecorator() {
-        final Resource resource = page.adaptTo(Resource.class);
-
-        return resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
-    }
-
     @Override
     public String getPageTitle() {
         return page.getPageTitle();
+    }
+
+    @Override
+    public Optional<String> getPageTitleOptional() {
+        return Optional.fromNullable(page.getPageTitle());
     }
 
     @Override
@@ -321,6 +333,11 @@ public final class DefaultPageDecorator implements PageDecorator {
     @Override
     public Template getTemplate() {
         return page.getTemplate();
+    }
+
+    @Override
+    public String getTemplatePath() {
+        return getProperties().get(NameConstants.NN_TEMPLATE, "");
     }
 
     @Override
@@ -391,5 +408,31 @@ public final class DefaultPageDecorator implements PageDecorator {
     @Override
     public void unlock() throws WCMException {
         page.unlock();
+    }
+
+    private List<PageDecorator> filterChildren(final Predicate<PageDecorator> predicate) {
+        final List<PageDecorator> pages = new ArrayList<PageDecorator>();
+
+        final Iterator<Page> children = page.listChildren();
+
+        final PageManagerDecorator pageManager = getPageManagerDecorator();
+
+        while (children.hasNext()) {
+            final PageDecorator child = pageManager.getPage(children.next());
+
+            if (child != null && predicate.apply(child)) {
+                pages.add(child);
+            }
+        }
+
+        return pages;
+    }
+
+    private Optional<String> getImageSource(final Function<ComponentNode, Optional<String>> function) {
+        return componentNodeOptional.transform(function).or(Optional.<String>absent());
+    }
+
+    private PageManagerDecorator getPageManagerDecorator() {
+        return page.adaptTo(Resource.class).getResourceResolver().adaptTo(PageManagerDecorator.class);
     }
 }

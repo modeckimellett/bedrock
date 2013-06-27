@@ -6,6 +6,7 @@
 package com.citytechinc.cq.library.content.page;
 
 import com.citytechinc.cq.library.content.link.ImageLink;
+import com.citytechinc.cq.library.content.link.ImageSource;
 import com.citytechinc.cq.library.content.link.Linkable;
 import com.citytechinc.cq.library.content.link.NavigationLink;
 import com.citytechinc.cq.library.content.node.ComponentNode;
@@ -15,7 +16,7 @@ import com.google.common.base.Predicate;
 
 import java.util.List;
 
-public interface PageDecorator extends Page, Linkable {
+public interface PageDecorator extends Page, Linkable, ImageSource {
 
     /**
      * Find the first ancestor page that matches the given predicate condition.

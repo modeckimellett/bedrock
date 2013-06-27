@@ -30,7 +30,10 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
                     "jcr:content"(hideInNav: true, "cq:template": "template")
                 }
                 child2 {
-
+                    "jcr:content" {
+                        image(fileReference: "/content/dam/image")
+                        secondimage(fileReference: "/content/dam/image")
+                    }
                 }
             }
             other {
@@ -38,9 +41,82 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
             }
         }
 
-        // also create a page with no jcr:content node
-        session.getNode("/content/citytechinc").addNode("empty", NameConstants.NT_PAGE)
-        session.save()
+        nodeBuilder.content {
+            citytechinc {
+                empty(NameConstants.NT_PAGE)
+            }
+            dam("sling:Folder") {
+                image("dam:Asset") {
+                    "jcr:content"("jcr:data": "data")
+                }
+            }
+        }
+    }
+
+    @Unroll
+    def "get image source optional"() {
+        setup:
+        def page = createPage(path)
+
+        expect:
+        page.imageSource.present == isPresent
+
+        where:
+        path                          | isPresent
+        "/content/citytechinc/child1" | false
+        "/content/citytechinc/child2" | true
+    }
+
+    def "get image source"() {
+        setup:
+        def page = createPage("/content/citytechinc/child2")
+
+        expect:
+        page.imageSource.get() == "/content/citytechinc/child2.img.png"
+    }
+
+    @Unroll
+    def "get named image source"() {
+        setup:
+        def page = createPage("/content/citytechinc/child2")
+
+        expect:
+        page.getImageSource(name).get() == imageSrc
+
+        where:
+        name          | imageSrc
+        "image"       | "/content/citytechinc/child2.img.png"
+        "secondimage" | "/content/citytechinc/child2.img.secondimage.png"
+    }
+
+    @Unroll
+    def "get image source with width"() {
+        setup:
+        def page = createPage("/content/citytechinc/child2")
+
+        expect:
+        page.getImageSource(width).get() == imageSrc
+
+        where:
+        width | imageSrc
+        -1    | "/content/citytechinc/child2.img.png"
+        100   | "/content/citytechinc/child2.img.100.png"
+    }
+
+    @Unroll
+    def "get named image source with width"() {
+        setup:
+        def page = createPage("/content/citytechinc/child2")
+
+        expect:
+        page.getImageSource(name, width).get() == imageSrc
+
+        where:
+        name          | width | imageSrc
+        "image"       | -1    | "/content/citytechinc/child2.img.png"
+        "image"       | 100   | "/content/citytechinc/child2.img.100.png"
+        "secondimage" | -1    | "/content/citytechinc/child2.img.secondimage.png"
+        "secondimage" | 100   | "/content/citytechinc/child2.img.secondimage.100.png"
     }
 
     @Unroll
