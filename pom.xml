@@ -25,6 +25,11 @@
         <url>http://www.citytechinc.com</url>
     </organization>
 
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://tasks.citytech.ctmsp.com/browse/CTCQLIBRRY</url>
+    </issueManagement>
+
     <url>http://citytechinc.github.io/cq-library</url>
 
     <modules>
@@ -300,6 +305,10 @@
                     <version>3.0.1</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-changes-plugin</artifactId>
+                    <version>2.9</version>
+                </plugin>
+                <plugin>
                     <groupId>com.github.github</groupId>
                     <artifactId>site-maven-plugin</artifactId>
                     <version>0.8</version>
@@ -359,6 +368,21 @@
                                     <ruleset>${project.basedir}/src/main/config/pmd.xml</ruleset>
                                 </rulesets>
                             </configuration>
+                        </plugin>
+                        <plugin>
+                            <artifactId>maven-changes-plugin</artifactId>
+                            <configuration>
+                                <onlyCurrentVersion>true</onlyCurrentVersion>
+                                <webUser>${jira.user}</webUser>
+                                <webPassword>${jira.password}</webPassword>
+                            </configuration>
+                            <reportSets>
+                                <reportSet>
+                                    <reports>
+                                        <report>jira-report</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
                         </plugin>
                     </reportPlugins>
                 </configuration>
