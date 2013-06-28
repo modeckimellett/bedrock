@@ -17,8 +17,6 @@ import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.osgi.framework.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jcr.Session;
 import java.util.Set;
@@ -28,29 +26,18 @@ import java.util.Set;
 @Property(name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc.")
 public final class DefaultSelectiveReplicationService implements SelectiveReplicationService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultSelectiveReplicationService.class);
-
     @Reference
     private Replicator replicator;
 
     @Override
     public void replicate(final Session session, final String path, final ReplicationActionType actionType,
         final Set<String> agentIds) throws ReplicationException {
-        LOG.info("replicate() executing replication action = {} for path = {} to agent IDs = {}",
-            new Object[]{ actionType, path, agentIds });
+        final AgentFilter filter = new AgentIdFilter(agentIds.toArray(new String[agentIds.size()]));
 
         final ReplicationOptions replicationOptions = new ReplicationOptions();
 
-        final AgentFilter filter = new AgentIdFilter(agentIds.toArray(new String[agentIds.size()]));
-
         replicationOptions.setFilter(filter);
 
-        try {
-            replicator.replicate(session, actionType, path, replicationOptions);
-        } catch (ReplicationException e) {
-            LOG.error("error executing replication action = " + actionType + " for path = " + path, e);
-
-            throw e;
-        }
+        replicator.replicate(session, actionType, path, replicationOptions);
     }
 }

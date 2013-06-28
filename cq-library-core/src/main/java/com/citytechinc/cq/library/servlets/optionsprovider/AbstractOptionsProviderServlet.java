@@ -5,10 +5,10 @@
  */
 package com.citytechinc.cq.library.servlets.optionsprovider;
 
-import com.citytechinc.cq.library.servlets.AbstractJsonResponseServlet;
+import com.citytechinc.cq.library.content.request.ComponentServletRequest;
+import com.citytechinc.cq.library.servlets.AbstractComponentServlet;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 
 import javax.servlet.ServletException;
@@ -20,37 +20,37 @@ import java.util.List;
  * be rendered in a selection box.  The implementing class determines how these options are retrieved from the
  * repository or third-party provider.
  */
-public abstract class AbstractOptionsProviderServlet extends AbstractJsonResponseServlet {
+public abstract class AbstractOptionsProviderServlet extends AbstractComponentServlet {
 
     private static final long serialVersionUID = 1L;
-
-    @Override
-    protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
-        throws ServletException, IOException {
-        final List<Option> result = getOptions(request);
-
-        final Optional<String> optionsRoot = getOptionsRoot(request);
-
-        if (optionsRoot.isPresent()) {
-            writeJsonResponse(response, ImmutableMap.of(optionsRoot.get(), result));
-        } else {
-            writeJsonResponse(response, result);
-        }
-    }
 
     /**
      * Get a list of "options" (text/value pairs) for rendering in an authoring dialog.  Building the list of options is
      * handled by the implementing class and will vary depending on the requirements for the component dialog calling
      * this servlet.
      *
-     * @param request servlet request
+     * @param request component servlet request
      * @return list of options as determined by the implementing class
      */
-    protected abstract List<Option> getOptions(final SlingHttpServletRequest request);
+    protected abstract List<Option> getOptions(final ComponentServletRequest request);
 
     /**
-     * @param request servlet request
+     * @param request component servlet request
      * @return Optional name of root JSON object containing options
      */
-    protected abstract Optional<String> getOptionsRoot(final SlingHttpServletRequest request);
+    protected abstract Optional<String> getOptionsRoot(final ComponentServletRequest request);
+
+    protected void processGet(final ComponentServletRequest request) throws ServletException, IOException {
+        final List<Option> result = getOptions(request);
+
+        final Optional<String> optionsRoot = getOptionsRoot(request);
+
+        final SlingHttpServletResponse slingResponse = request.getSlingResponse();
+
+        if (optionsRoot.isPresent()) {
+            writeJsonResponse(slingResponse, ImmutableMap.of(optionsRoot.get(), result));
+        } else {
+            writeJsonResponse(slingResponse, result);
+        }
+    }
 }

@@ -38,21 +38,21 @@ import static com.google.common.base.Preconditions.checkArgument;
 @Property(name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc.")
 public final class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
 
-    private static final long serialVersionUID = 1L;
-
     private static final Logger LOG = LoggerFactory.getLogger(SelectiveReplicationServlet.class);
-
-    private static final String PARAMETER_PATHS = "paths";
 
     private static final String PARAMETER_ACTION = "action";
 
     private static final String PARAMETER_AGENT_IDS = "agentIds";
 
-    @Reference
-    private SelectiveReplicationService selectiveReplicationService;
+    private static final String PARAMETER_PATHS = "paths";
+
+    private static final long serialVersionUID = 1L;
 
     @Reference
     private AgentManager agentManager;
+
+    @Reference
+    private SelectiveReplicationService selectiveReplicationService;
 
     @Override
     protected void doPost(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
@@ -73,9 +73,6 @@ public final class SelectiveReplicationServlet extends AbstractJsonResponseServl
 
         final ReplicationActionType actionType = ReplicationActionType.fromName(action);
 
-        LOG.info("doPost() executing replication action = {} for paths = {} to agent IDs = {}",
-            new Object[]{ actionType, uniquePaths, uniqueAgentIds });
-
         final Session session = request.getResourceResolver().adaptTo(Session.class);
 
         final List<Map<String, Boolean>> result = Lists.newArrayList();
@@ -83,10 +80,16 @@ public final class SelectiveReplicationServlet extends AbstractJsonResponseServl
         for (final String path : uniquePaths) {
             boolean success;
 
+            LOG.info("doPost() executing replication action = {} for path = {} to agent IDs = {}",
+                new Object[]{ actionType, path, agentIds });
+
             try {
                 selectiveReplicationService.replicate(session, path, actionType, uniqueAgentIds);
+
                 success = true;
             } catch (ReplicationException e) {
+                LOG.error("error executing replication action = " + actionType + " for path = " + path, e);
+
                 success = false;
             }
 
