@@ -14,6 +14,7 @@ import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.PageManagerDecorator;
+import com.citytechinc.cq.library.content.page.enums.TitleType;
 import com.day.cq.commons.Filter;
 import com.day.cq.tagging.Tag;
 import com.day.cq.wcm.api.NameConstants;
@@ -162,8 +163,8 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public ImageLink getImageLink(final String imageSrc) {
-        return LinkBuilder.forPage(this).setImage(checkNotNull(imageSrc)).buildImageLink();
+    public ImageLink getImageLink(final String imageSource) {
+        return LinkBuilder.forPage(this).setImageSource(checkNotNull(imageSource)).buildImageLink();
     }
 
     @Override
@@ -248,7 +249,7 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public LinkBuilder getMappedLinkBuilder() {
-        return LinkBuilder.forMappedPage(this);
+        return LinkBuilder.forPage(this, true);
     }
 
     @Override
@@ -258,7 +259,7 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public NavigationLink getNavigationLink() {
-        return LinkBuilder.forNavigationPage(this).buildNavigationLink();
+        return LinkBuilder.forPage(this, false, TitleType.NAVIGATION_TITLE).buildNavigationLink();
     }
 
     @Override

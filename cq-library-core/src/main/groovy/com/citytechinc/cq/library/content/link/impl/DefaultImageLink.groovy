@@ -14,5 +14,5 @@ class DefaultImageLink implements ImageLink {
 
     @Delegate Link link
 
-    String imageSrc
+    String imageSource
 }

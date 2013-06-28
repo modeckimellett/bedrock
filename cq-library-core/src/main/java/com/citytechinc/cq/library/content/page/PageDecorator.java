@@ -65,10 +65,10 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
     /**
      * Get a link for this page with an attached image source.
      *
-     * @param imageSrc image source to set on the returned image link
+     * @param imageSource image source to set on the returned image link
      * @return image link with the provided image source
      */
-    ImageLink getImageLink(String imageSrc);
+    ImageLink getImageLink(String imageSource);
 
     /**
      * Get a navigation link for this page.  The returned link will use the navigation title as the link title,

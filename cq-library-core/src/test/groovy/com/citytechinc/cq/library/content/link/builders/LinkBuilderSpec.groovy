@@ -6,6 +6,7 @@
 package com.citytechinc.cq.library.content.link.builders
 
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
+import com.citytechinc.cq.library.content.page.enums.TitleType
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.day.cq.wcm.api.NameConstants
 import spock.lang.Unroll
@@ -35,17 +36,6 @@ class LinkBuilderSpec extends AbstractCqSpec {
 
         expect:
         LinkBuilder.forLink(link).build() == link
-    }
-
-    def "build link for node"() {
-        setup:
-        def node = session.getNode("/content/global")
-        def link = LinkBuilder.forNode(node).build()
-
-        expect:
-        link.path == "/content/global"
-        link.href == "/content/global.html"
-        link.extension == "html"
     }
 
     def "build link for page"() {
@@ -84,10 +74,10 @@ class LinkBuilderSpec extends AbstractCqSpec {
         link.title == "DE"
     }
 
-    def "build link for navigation page"() {
+    def "build link for page with navigation title"() {
         setup:
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage("/content/global")
-        def link = LinkBuilder.forNavigationPage(page).build()
+        def link = LinkBuilder.forPage(page, TitleType.NAVIGATION_TITLE).build()
 
         expect:
         link.path == "/content/global"
@@ -96,10 +86,10 @@ class LinkBuilderSpec extends AbstractCqSpec {
         link.title == "Global Navigation"
     }
 
-    def "build link for navigation page without navigation title"() {
+    def "build link for page without navigation title"() {
         setup:
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage("/content/us")
-        def link = LinkBuilder.forNavigationPage(page).build()
+        def link = LinkBuilder.forPage(page, TitleType.NAVIGATION_TITLE).build()
 
         expect:
         link.path == "/content/us"
@@ -184,13 +174,13 @@ class LinkBuilderSpec extends AbstractCqSpec {
     @Unroll
     def "build image link"() {
         setup:
-        def imageLink = LinkBuilder.forPath("/content/global").setImage(imageSrc).buildImageLink()
+        def imageLink = LinkBuilder.forPath("/content/global").setImageSource(imageSource).buildImageLink()
 
         expect:
-        imageLink.imageSrc == imageSrc
+        imageLink.imageSource == imageSource
 
         where:
-        imageSrc << ["abc.png", ""]
+        imageSource << ["abc.png", ""]
     }
 
     def "build navigation link without children"() {

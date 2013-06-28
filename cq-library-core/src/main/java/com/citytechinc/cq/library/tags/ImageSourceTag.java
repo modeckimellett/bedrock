@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.tags;
 
-import com.citytechinc.cq.library.constants.Constants;
 import com.citytechinc.cq.library.content.node.ComponentNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+import static com.citytechinc.cq.library.constants.ComponentConstants.DEFAULT_IMAGE_NAME;
 import static com.google.common.base.CharMatcher.DIGIT;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -35,7 +35,7 @@ public final class ImageSourceTag extends AbstractComponentTag {
 
         checkArgument(DIGIT.matchesAllOf(width), "width attribute must be numeric");
 
-        final String name = isNullOrEmpty(this.name) ? Constants.DEFAULT_IMAGE_NAME : this.name;
+        final String name = isNullOrEmpty(this.name) ? DEFAULT_IMAGE_NAME : this.name;
         final int width = Integer.valueOf(this.width);
 
         final String imageSource;

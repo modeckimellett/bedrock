@@ -13,5 +13,5 @@ public interface ImageLink extends Link {
     /**
      * @return image source or empty String if none
      */
-    String getImageSrc();
+    String getImageSource();
 }

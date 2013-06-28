@@ -37,7 +37,7 @@ import javax.jcr.Property;
 import java.util.Collections;
 import java.util.List;
 
-import static com.citytechinc.cq.library.constants.Constants.DEFAULT_IMAGE_NAME;
+import static com.citytechinc.cq.library.constants.ComponentConstants.DEFAULT_IMAGE_NAME;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
 import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.RESOURCE_TO_BASIC_NODE;

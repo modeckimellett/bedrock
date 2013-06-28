@@ -38,8 +38,8 @@ import javax.jcr.RepositoryException;
 import java.util.Collections;
 import java.util.List;
 
-import static com.citytechinc.cq.library.constants.Constants.DEFAULT_IMAGE_NAME;
-import static com.citytechinc.cq.library.constants.Constants.EXTENSION_PNG;
+import static com.citytechinc.cq.library.constants.ComponentConstants.DEFAULT_IMAGE_NAME;
+import static com.citytechinc.cq.library.constants.PathConstants.EXTENSION_PNG;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -282,7 +282,7 @@ public final class DefaultBasicNode implements BasicNode {
 
     @Override
     public LinkBuilder getMappedLinkBuilder() {
-        return LinkBuilder.forMappedResource(resource);
+        return LinkBuilder.forResource(resource, true);
     }
 
     @Override

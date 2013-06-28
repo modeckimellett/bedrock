@@ -11,13 +11,11 @@ import java.util.regex.Pattern;
 
 public final class PathConstants {
 
-    public static final String REGEX_CONTENT = "/content/([^/]+)/?(.+)?";
+    public static final String EXTENSION_HTML = "html";
 
-    public static final Pattern PATTERN_CONTENT = Pattern.compile(REGEX_CONTENT);
+    public static final String EXTENSION_JSON = "json";
 
-    public static final String SELECTOR = ".";
-
-    public static final String PATH_SEPARATOR = "/";
+    public static final String EXTENSION_PNG = "png";
 
     public static final String PATH_CONTENT = "/content";
 
@@ -27,7 +25,15 @@ public final class PathConstants {
 
     public static final String PATH_ETC = "/etc";
 
-    public static final String PATH_JCR_CONTENT = PATH_SEPARATOR + JcrConstants.JCR_CONTENT;
+    public static final String PATH_JCR_CONTENT = "/" + JcrConstants.JCR_CONTENT;
+
+    public static final String PATH_SEPARATOR = "/";
+
+    public static final String REGEX_CONTENT = "/content/([^/]+)/?(.+)?";
+
+    public static final Pattern PATTERN_CONTENT = Pattern.compile(REGEX_CONTENT);
+
+    public static final String SELECTOR = ".";
 
     private PathConstants() {
 

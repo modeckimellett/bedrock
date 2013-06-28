@@ -10,6 +10,11 @@ package com.citytechinc.cq.library.constants;
  */
 public final class ComponentConstants {
 
+    /**
+     * Default page/component image name.
+     */
+    public static final String DEFAULT_IMAGE_NAME = "image";
+
     public static final String GROUP_HIDDEN = ".hidden";
 
     public static final String NODE_NAME_PAR = "par";

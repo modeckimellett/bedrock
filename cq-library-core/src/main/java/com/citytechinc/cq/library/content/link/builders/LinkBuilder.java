@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.content.link.builders;
 
-import com.citytechinc.cq.library.constants.Constants;
 import com.citytechinc.cq.library.constants.PathConstants;
 import com.citytechinc.cq.library.constants.PropertyConstants;
 import com.citytechinc.cq.library.content.link.ImageLink;
@@ -16,6 +15,7 @@ import com.citytechinc.cq.library.content.link.impl.DefaultImageLink;
 import com.citytechinc.cq.library.content.link.impl.DefaultLink;
 import com.citytechinc.cq.library.content.link.impl.DefaultNavigationLink;
 import com.citytechinc.cq.library.content.page.PageDecorator;
+import com.citytechinc.cq.library.content.page.enums.TitleType;
 import com.google.common.base.Charsets;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimaps;
@@ -25,8 +25,6 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -48,29 +46,29 @@ public final class LinkBuilder {
 
     private static final String UTF8 = Charsets.UTF_8.name();
 
-    private final boolean external;
-
     private final List<NavigationLink> children = new ArrayList<NavigationLink>();
 
+    private final boolean external;
+
     private final SetMultimap<String, String> parameters = LinkedHashMultimap.create();
+
+    private final String path;
 
     private final Map<String, String> properties = new HashMap<String, String>();
 
     private final List<String> selectors = new ArrayList<String>();
 
-    private final String path;
+    private boolean active;
 
     private String extension;
 
-    private boolean active;
+    private String host;
 
-    private String imageSrc = "";
+    private String imageSource = "";
 
     private int port;
 
     private boolean secure;
-
-    private String host;
 
     private String target = LinkTarget.SELF.getTarget();
 
@@ -78,8 +76,6 @@ public final class LinkBuilder {
 
     private LinkBuilder(final String path) {
         this.path = path;
-
-        new DefaultImageLink(null, "");
 
         external = isExternal(path);
     }
@@ -104,70 +100,6 @@ public final class LinkBuilder {
     }
 
     /**
-     * Get a builder instance for a node.
-     *
-     * @param node content node
-     * @return builder containing the path to the given node
-     * @throws RepositoryException if error occurs getting path for node
-     */
-    public static LinkBuilder forNode(final Node node) throws RepositoryException {
-        checkNotNull(node);
-
-        return new LinkBuilder(node.getPath());
-    }
-
-    /**
-     * Get a builder instance for a page using the navigation title on the returned builder.
-     *
-     * @param page page
-     * @return builder containing the path and navigation title of the given page
-     */
-    public static LinkBuilder forNavigationPage(final PageDecorator page) {
-        checkNotNull(page);
-
-        final String redirect = page.getProperties().get(PropertyConstants.REDIRECT_TARGET, "");
-        final String path = redirect.isEmpty() ? page.getPath() : redirect;
-        final String title = page.getNavigationTitleOptional().or(page.getTitle());
-
-        return new LinkBuilder(path).setTitle(title);
-    }
-
-    /**
-     * Get a builder instance for a page using the mapped path and navigation title on the returned builder.
-     *
-     * @param page page
-     * @return builder containing the mapped path and navigation title of the given page
-     */
-    public static LinkBuilder forMappedNavigationPage(final PageDecorator page) {
-        checkNotNull(page);
-
-        final String redirect = page.getProperties().get(PropertyConstants.REDIRECT_TARGET, "");
-        final String path = redirect.isEmpty() ? page.getPath() : redirect;
-        final String title = page.getNavigationTitleOptional().or(page.getTitle());
-
-        final ResourceResolver resourceResolver = page.adaptTo(Resource.class).getResourceResolver();
-
-        return new LinkBuilder(resourceResolver.map(path)).setTitle(title);
-    }
-
-    /**
-     * Get a builder instance for a page using the mapped path on the returned builder.
-     *
-     * @param page page
-     * @return builder containing the mapped path of the given page
-     */
-    public static LinkBuilder forMappedPage(final PageDecorator page) {
-        checkNotNull(page);
-
-        final String redirect = page.getProperties().get(PropertyConstants.REDIRECT_TARGET, "");
-        final String path = redirect.isEmpty() ? page.getPath() : redirect;
-
-        final ResourceResolver resourceResolver = page.adaptTo(Resource.class).getResourceResolver();
-
-        return new LinkBuilder(resourceResolver.map(path)).setTitle(page.getTitle());
-    }
-
-    /**
      * Get a builder instance for a page.  If the page contains a redirect, the builder will contain the redirect target
      * rather than the page path.
      *
@@ -175,12 +107,50 @@ public final class LinkBuilder {
      * @return builder containing the path of the given page
      */
     public static LinkBuilder forPage(final PageDecorator page) {
+        return forPage(page, false, TitleType.TITLE);
+    }
+
+    /**
+     * Get a builder instance for a page using the specified title type on the returned builder.
+     *
+     * @param page page
+     * @param titleType type of page title to set on the builder
+     * @return builder containing the path and title of the given page
+     */
+    public static LinkBuilder forPage(final PageDecorator page, final TitleType titleType) {
         checkNotNull(page);
 
-        final String redirect = page.getProperties().get(PropertyConstants.REDIRECT_TARGET, "");
-        final String path = redirect.isEmpty() ? page.getPath() : redirect;
+        final String title = page.getProperties().get(titleType.getPropertyName(), page.getTitle());
 
-        return new LinkBuilder(path).setTitle(page.getTitle());
+        return new LinkBuilder(getPagePath(page, false)).setTitle(title);
+    }
+
+    /**
+     * Get a builder instance for a page.  If the page contains a redirect, the builder will contain the redirect target
+     * rather than the page path.
+     *
+     * @param page page
+     * @param mappedPath if true, link path will be mapped through resource resolver
+     * @return builder containing the mapped path of the given page
+     */
+    public static LinkBuilder forPage(final PageDecorator page, final boolean mappedPath) {
+        return forPage(page, mappedPath, TitleType.TITLE);
+    }
+
+    /**
+     * Get a builder instance for a page using the specified title type on the returned builder.
+     *
+     * @param page page
+     * @param mappedPath if true, link path will be mapped through resource resolver
+     * @param titleType type of page title to set on the builder
+     * @return builder containing the path and title of the given page
+     */
+    public static LinkBuilder forPage(final PageDecorator page, final boolean mappedPath, final TitleType titleType) {
+        checkNotNull(page);
+
+        final String title = page.getProperties().get(titleType.getPropertyName(), page.getTitle());
+
+        return new LinkBuilder(getPagePath(page, mappedPath)).setTitle(title);
     }
 
     /**
@@ -202,23 +172,47 @@ public final class LinkBuilder {
      * @return builder containing the path of the given resource
      */
     public static LinkBuilder forResource(final Resource resource) {
-        checkNotNull(resource);
-
-        return new LinkBuilder(resource.getPath());
+        return forResource(resource, false);
     }
 
     /**
      * Get a builder instance for a resource using the mapped path on the returned builder.
      *
      * @param resource resource
+     * @param mappedPath if true, link path will be mapped through resource resolver
      * @return builder containing the mapped path of the given resource
      */
-    public static LinkBuilder forMappedResource(final Resource resource) {
+    public static LinkBuilder forResource(final Resource resource, final boolean mappedPath) {
         checkNotNull(resource);
 
-        final ResourceResolver resourceResolver = resource.getResourceResolver();
+        final String path;
 
-        return new LinkBuilder(resourceResolver.map(resource.getPath()));
+        if (mappedPath) {
+            final ResourceResolver resourceResolver = resource.getResourceResolver();
+
+            path = resourceResolver.map(resource.getPath());
+        } else {
+            path = resource.getPath();
+        }
+
+        return new LinkBuilder(path);
+    }
+
+    private static String getPagePath(final PageDecorator page, final boolean mapped) {
+        final String redirect = page.getProperties().get(PropertyConstants.REDIRECT_TARGET, "");
+        final String path = redirect.isEmpty() ? page.getPath() : redirect;
+
+        final String result;
+
+        if (mapped) {
+            final ResourceResolver resourceResolver = page.adaptTo(Resource.class).getResourceResolver();
+
+            result = resourceResolver.map(path);
+        } else {
+            result = path;
+        }
+
+        return result;
     }
 
     /**
@@ -342,7 +336,7 @@ public final class LinkBuilder {
         if (path.contains(PathConstants.SELECTOR)) {
             extension = path.substring(path.indexOf(PathConstants.SELECTOR) + 1);
         } else {
-            extension = this.extension == null ? Constants.EXTENSION_HTML : this.extension;
+            extension = this.extension == null ? PathConstants.EXTENSION_HTML : this.extension;
 
             if (!external && !extension.isEmpty()) {
                 builder.append('.');
@@ -370,7 +364,7 @@ public final class LinkBuilder {
     public ImageLink buildImageLink() {
         final Link link = build();
 
-        return new DefaultImageLink(link, imageSrc);
+        return new DefaultImageLink(link, imageSource);
     }
 
     /**
@@ -435,11 +429,11 @@ public final class LinkBuilder {
     /**
      * Set an image source.  This only applies to image links returned by calling <code>buildImageLink()</code>.
      *
-     * @param imageSrc
+     * @param imageSource
      * @return builder
      */
-    public LinkBuilder setImage(final String imageSrc) {
-        this.imageSrc = imageSrc;
+    public LinkBuilder setImageSource(final String imageSource) {
+        this.imageSource = imageSource;
 
         return this;
     }

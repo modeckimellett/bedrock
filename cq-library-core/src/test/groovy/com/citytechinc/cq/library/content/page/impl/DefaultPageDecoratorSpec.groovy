@@ -81,10 +81,10 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
         def page = createPage("/content/citytechinc/child2")
 
         expect:
-        page.getImageSource(name).get() == imageSrc
+        page.getImageSource(name).get() == imageSource
 
         where:
-        name          | imageSrc
+        name          | imageSource
         "image"       | "/content/citytechinc/child2.img.png"
         "secondimage" | "/content/citytechinc/child2.img.secondimage.png"
     }
@@ -95,10 +95,10 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
         def page = createPage("/content/citytechinc/child2")
 
         expect:
-        page.getImageSource(width).get() == imageSrc
+        page.getImageSource(width).get() == imageSource
 
         where:
-        width | imageSrc
+        width | imageSource
         -1    | "/content/citytechinc/child2.img.png"
         100   | "/content/citytechinc/child2.img.100.png"
     }
@@ -109,10 +109,10 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
         def page = createPage("/content/citytechinc/child2")
 
         expect:
-        page.getImageSource(name, width).get() == imageSrc
+        page.getImageSource(name, width).get() == imageSource
 
         where:
-        name          | width | imageSrc
+        name          | width | imageSource
         "image"       | -1    | "/content/citytechinc/child2.img.png"
         "image"       | 100   | "/content/citytechinc/child2.img.100.png"
         "secondimage" | -1    | "/content/citytechinc/child2.img.secondimage.png"
@@ -298,7 +298,7 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
 
         expect:
         imageLink.href == "/content/citytechinc.html"
-        imageLink.imageSrc == "/image"
+        imageLink.imageSource == "/image"
     }
 
     def "get navigation link"() {
