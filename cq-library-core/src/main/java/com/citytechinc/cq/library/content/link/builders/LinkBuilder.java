@@ -44,7 +44,7 @@ public final class LinkBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(LinkBuilder.class);
 
-    private static final String UTF8 = Charsets.UTF_8.name();
+    private static final String UTF_8 = Charsets.UTF_8.name();
 
     private final List<NavigationLink> children = new ArrayList<NavigationLink>();
 
@@ -524,9 +524,9 @@ public final class LinkBuilder {
 
                 for (final String value : values) {
                     try {
-                        builder.append(URLEncoder.encode(name, UTF8));
+                        builder.append(URLEncoder.encode(name, UTF_8));
                         builder.append('=');
-                        builder.append(URLEncoder.encode(value, UTF8));
+                        builder.append(URLEncoder.encode(value, UTF_8));
                     } catch (UnsupportedEncodingException uee) {
                         LOG.error("invalid encoding for parameter = " + name + "=" + value, uee);
                     }
