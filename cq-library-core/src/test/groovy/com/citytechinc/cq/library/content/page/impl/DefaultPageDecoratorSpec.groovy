@@ -8,6 +8,7 @@ package com.citytechinc.cq.library.content.page.impl
 import com.citytechinc.cq.library.content.node.BasicNode
 import com.citytechinc.cq.library.content.node.ComponentNode
 import com.citytechinc.cq.library.content.page.PageDecorator
+import com.citytechinc.cq.library.content.page.enums.TitleType
 import com.citytechinc.cq.library.content.page.predicates.TemplatePredicate
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.day.cq.wcm.api.NameConstants
@@ -30,7 +31,7 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
                     "jcr:content"(hideInNav: true, "cq:template": "template")
                 }
                 child2 {
-                    "jcr:content" {
+                    "jcr:content"(pageTitle: "Child 2") {
                         image(fileReference: "/content/dam/image")
                         secondimage(fileReference: "/content/dam/image")
                     }
@@ -289,6 +290,36 @@ class DefaultPageDecoratorSpec extends AbstractCqSpec {
 
         expect:
         !page.navigationTitleOptional.present
+    }
+
+    @Unroll
+    def "get title for type optional"() {
+        setup:
+        def page = createPage("/content/citytechinc/child2")
+
+        expect:
+        page.getTitle(titleType).present == isPresent
+
+        where:
+        titleType                  | isPresent
+        TitleType.TITLE            | false
+        TitleType.PAGE_TITLE       | true
+        TitleType.NAVIGATION_TITLE | false
+    }
+
+    @Unroll
+    def "get title for type"() {
+        setup:
+        def page = createPage("/content/citytechinc")
+
+        expect:
+        page.getTitle(titleType).get() == title
+
+        where:
+        titleType                  | title
+        TitleType.TITLE            | "CITYTECH, Inc."
+        TitleType.PAGE_TITLE       | "Page Title"
+        TitleType.NAVIGATION_TITLE | "Navigation Title"
     }
 
     def "get image link"() {

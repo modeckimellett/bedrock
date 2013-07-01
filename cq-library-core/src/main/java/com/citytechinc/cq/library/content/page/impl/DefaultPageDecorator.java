@@ -342,6 +342,16 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
+    public Optional<String> getTitle(final TitleType titleType) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.get(titleType.getPropertyName());
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
     public String getTitle() {
         return getProperties().get(NameConstants.PN_TITLE, "");
     }

@@ -10,6 +10,7 @@ import com.citytechinc.cq.library.content.link.ImageSource;
 import com.citytechinc.cq.library.content.link.Linkable;
 import com.citytechinc.cq.library.content.link.NavigationLink;
 import com.citytechinc.cq.library.content.node.ComponentNode;
+import com.citytechinc.cq.library.content.page.enums.TitleType;
 import com.day.cq.wcm.api.Page;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -110,4 +111,13 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
      * @return value of cq:template property or empty string if none exists
      */
     String getTemplatePath();
+
+    /**
+     * Get the specified title for this page, returning an <code>Optional</code> if the corresponding title property is
+     * not present.
+     *
+     * @param titleType title type
+     * @return optional title for the given type
+     */
+    Optional<String> getTitle(TitleType titleType);
 }
