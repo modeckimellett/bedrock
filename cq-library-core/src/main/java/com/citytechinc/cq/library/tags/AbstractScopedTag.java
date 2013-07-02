@@ -12,6 +12,10 @@ import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+/**
+ * Base class for scoped tag handlers containing a "scope" attribute corresponding to a <code>PageContext</code> scope
+ * constant.
+ */
 public abstract class AbstractScopedTag extends TagSupport {
 
     private static final Map<String, Integer> SCOPES;

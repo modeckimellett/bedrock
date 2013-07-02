@@ -103,7 +103,7 @@ public final class ComponentTag extends AbstractScopedTag {
         return admin;
     }
 
-    public void setAdmin(String admin) {
+    public void setAdmin(final String admin) {
         this.admin = admin;
     }
 

@@ -11,6 +11,9 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+/**
+ * Base class for tag handlers that access a <code>ComponentNode</code> from the current context.
+ */
 public abstract class AbstractComponentTag extends TagSupport {
 
     private static final long serialVersionUID = 1L;

@@ -167,7 +167,7 @@
         <name>image</name>
         <tag-class>com.citytechinc.cq.library.tags.ImageTag</tag-class>
         <attribute>
-            <name>propertyName</name>
+            <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

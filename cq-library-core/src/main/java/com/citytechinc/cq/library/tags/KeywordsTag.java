@@ -16,6 +16,9 @@ import java.io.IOException;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
+/**
+ * Render the keywords for the current page.
+ */
 public final class KeywordsTag extends TagSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeywordsTag.class);

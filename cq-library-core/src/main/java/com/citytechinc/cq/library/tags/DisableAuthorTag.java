@@ -14,6 +14,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+/**
+ * Tag that forces "disabled" WCM mode in the tag body.
+ */
 public final class DisableAuthorTag extends TagSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(DisableAuthorTag.class);

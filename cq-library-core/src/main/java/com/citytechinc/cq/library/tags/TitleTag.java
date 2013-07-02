@@ -15,6 +15,9 @@ import java.io.IOException;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
+/**
+ * Render the title for the current page.
+ */
 public final class TitleTag extends AbstractPropertyTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(TitleTag.class);

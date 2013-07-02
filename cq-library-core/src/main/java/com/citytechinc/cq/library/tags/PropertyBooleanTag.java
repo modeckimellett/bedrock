@@ -14,6 +14,9 @@ import java.io.IOException;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+/**
+ * Render a boolean property value, optionally setting arbitrary string values to use instead of "true" and "false".
+ */
 public final class PropertyBooleanTag extends AbstractPropertyTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(PropertyTag.class);
@@ -62,18 +65,6 @@ public final class PropertyBooleanTag extends AbstractPropertyTag {
         return EVAL_PAGE;
     }
 
-    private String getResult(final boolean value, final String text) {
-        final String result;
-
-        if (isEmpty(text)) {
-            result = String.valueOf(value);
-        } else {
-            result = text;
-        }
-
-        return result;
-    }
-
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -96,5 +87,17 @@ public final class PropertyBooleanTag extends AbstractPropertyTag {
 
     public void setTrue(final String t) {
         this.t = t;
+    }
+
+    private String getResult(final boolean value, final String text) {
+        final String result;
+
+        if (isEmpty(text)) {
+            result = String.valueOf(value);
+        } else {
+            result = text;
+        }
+
+        return result;
     }
 }

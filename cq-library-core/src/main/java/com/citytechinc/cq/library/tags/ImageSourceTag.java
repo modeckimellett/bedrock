@@ -17,6 +17,9 @@ import static com.google.common.base.CharMatcher.DIGIT;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+/**
+ * Render an image source path for the current component.
+ */
 public final class ImageSourceTag extends AbstractComponentTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageTag.class);

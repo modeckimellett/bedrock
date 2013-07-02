@@ -13,11 +13,18 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
-public final class ImageTag extends AbstractPropertyTag {
+import static com.google.common.base.Strings.isNullOrEmpty;
+
+/**
+ * Draw an HTML image tag for the current component.
+ */
+public final class ImageTag extends AbstractComponentTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageTag.class);
 
     private static final long serialVersionUID = 1L;
+
+    private String name;
 
     @Override
     public int doEndTag() throws JspTagException {
@@ -25,22 +32,30 @@ public final class ImageTag extends AbstractPropertyTag {
 
         final Image image;
 
-        if (hasPropertyName()) {
-            image = new Image(resource, propertyName);
-        } else {
+        if (isNullOrEmpty(name)) {
             image = new Image(resource);
+        } else {
+            image = new Image(resource, name);
         }
 
         if (image.hasContent()) {
             try {
                 image.draw(pageContext.getOut());
             } catch (IOException ioe) {
-                LOG.error("error writing tag for image name = " + propertyName, ioe);
+                LOG.error("error writing image tag for name = " + name, ioe);
 
                 throw new JspTagException(ioe);
             }
         }
 
         return EVAL_PAGE;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 }

@@ -17,6 +17,9 @@ import java.io.IOException;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
+/**
+ * Render the description for the current page.
+ */
 public final class DescriptionTag extends AbstractPropertyTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(DescriptionTag.class);

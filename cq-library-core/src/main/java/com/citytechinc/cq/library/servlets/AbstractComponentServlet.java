@@ -21,7 +21,7 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doDelete(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
+    protected final void doDelete(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
         throws ServletException, IOException {
         processDelete(new DefaultComponentServletRequest(request, response));
     }
@@ -39,7 +39,7 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
     }
 
     @Override
-    protected void doPut(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
+    protected final void doPut(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
         throws ServletException, IOException {
         processPut(new DefaultComponentServletRequest(request, response));
     }
@@ -77,7 +77,7 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
      * @throws IOException if I/O error occurs
      */
     protected void processPost(final ComponentServletRequest request) throws ServletException, IOException {
-
+        handleMethodNotImplemented(request.getSlingRequest(), request.getSlingResponse());
     }
 
     /**

@@ -7,6 +7,9 @@ package com.citytechinc.cq.library.tags;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+/**
+ * Base class for component tag handlers that access a JCR property.
+ */
 public abstract class AbstractPropertyTag extends AbstractComponentTag {
 
     private static final long serialVersionUID = 1L;

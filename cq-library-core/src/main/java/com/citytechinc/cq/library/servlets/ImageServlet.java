@@ -40,6 +40,8 @@ public final class ImageServlet extends AbstractImageServlet {
 
     private static final String PAGE_IMAGE_NAME = "image";
 
+    private static final double GIF_QUALITY = 255;
+
     private static final long serialVersionUID = 1L;
 
     private static boolean isPage(final SlingHttpServletRequest request) {
@@ -126,7 +128,7 @@ public final class ImageServlet extends AbstractImageServlet {
 
             response.setContentType(mimeType);
 
-            imageLayer.write(mimeType, mimeType.equals("image/gif") ? 255 : 1.0, response.getOutputStream());
+            imageLayer.write(mimeType, mimeType.equals("image/gif") ? GIF_QUALITY : 1.0, response.getOutputStream());
         } else {
             // do not re-encode layer, just spool
             final javax.jcr.Property data = image.getData();

@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+/**
+ * Render an href attribute value for the given property name.
+ */
 public final class HrefTag extends AbstractPropertyTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(HrefTag.class);

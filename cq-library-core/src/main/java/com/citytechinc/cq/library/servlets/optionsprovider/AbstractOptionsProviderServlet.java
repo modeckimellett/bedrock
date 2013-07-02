@@ -40,7 +40,7 @@ public abstract class AbstractOptionsProviderServlet extends AbstractComponentSe
      */
     protected abstract Optional<String> getOptionsRoot(final ComponentServletRequest request);
 
-    protected void processGet(final ComponentServletRequest request) throws ServletException, IOException {
+    protected final void processGet(final ComponentServletRequest request) throws ServletException, IOException {
         final List<Option> result = getOptions(request);
 
         final Optional<String> optionsRoot = getOptionsRoot(request);

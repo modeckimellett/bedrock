@@ -13,16 +13,21 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 
+import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_COMPONENT_REQUEST;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+/**
+ * Serializes a component as JSON.  The component should be annotated using Jackson annotations (e.g.
+ * <code>JsonGetter</code>, <code>JsonProperty</code>) to indicate which fields or methods should be serialized.
+ */
 public final class SerializeJsonTag extends AbstractScopedTag {
-
-    private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = LoggerFactory.getLogger(SerializeJsonTag.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Component class to instantiate.
@@ -30,7 +35,7 @@ public final class SerializeJsonTag extends AbstractScopedTag {
     private String className;
 
     /**
-     * Name of existing component object in page context.  "className" is checked first.
+     * Name of existing component object in page context.  "className" attribute is checked first.
      */
     private String instanceName;
 
@@ -38,10 +43,8 @@ public final class SerializeJsonTag extends AbstractScopedTag {
     public int doEndTag() throws JspException {
         checkArgument(!isNullOrEmpty(className) || !isNullOrEmpty(instanceName),
             "className or instanceName is required");
-        checkScopeAttribute();
 
-        final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(
-            DefineObjectsTag.ATTR_COMPONENT_REQUEST);
+        checkScopeAttribute();
 
         try {
             final Object component;
@@ -52,6 +55,8 @@ public final class SerializeJsonTag extends AbstractScopedTag {
                 component = pageContext.getAttribute(instanceName, getScopeValue());
             } else {
                 LOG.info("doEndTag() serializing JSON for class name = {}", className);
+
+                final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(ATTR_COMPONENT_REQUEST);
 
                 component = Class.forName(className).getConstructor(ComponentRequest.class).newInstance(request);
             }

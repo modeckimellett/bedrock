@@ -35,7 +35,7 @@ public abstract class AbstractSlingService {
      * Close the administrative resource resolver.  This method should be called by the <code>@Deactivate</code> method
      * of the implementing class if the <code>getAdministrativeResourceResolver()</code> method was used at any time.
      */
-    protected void closeResourceResolver() {
+    protected final void closeResourceResolver() {
         if (resourceResolver != null) {
             resourceResolver.close();
         }
@@ -45,7 +45,7 @@ public abstract class AbstractSlingService {
      * Close the administrative session.  This method should be called by the <code>@Deactivate</code> method of the
      * implementing class if the <code>getAdministrativeSession()</code> method was used at any time.
      */
-    protected void closeSession() {
+    protected final void closeSession() {
         if (session != null) {
             session.logout();
         }
@@ -57,7 +57,7 @@ public abstract class AbstractSlingService {
      * @return resource resolver
      * @throws LoginException if error occurs during authentication
      */
-    protected ResourceResolver getAdministrativeResourceResolver() throws LoginException {
+    protected final ResourceResolver getAdministrativeResourceResolver() throws LoginException {
         if (resourceResolver == null) {
             resourceResolver = resourceResolverFactory.getAdministrativeResourceResolver(null);
         }
@@ -71,7 +71,7 @@ public abstract class AbstractSlingService {
      * @return session
      * @throws RepositoryException if error occurs during authentication
      */
-    protected Session getAdministrativeSession() throws RepositoryException {
+    protected final Session getAdministrativeSession() throws RepositoryException {
         if (session == null) {
             session = repository.loginAdministrative(null);
         }

@@ -15,7 +15,7 @@ import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
 /**
- * Render a page or component property.
+ * Render a page or component property value.
  */
 public final class PropertyTag extends AbstractPropertyTag {
 
