@@ -42,6 +42,13 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     private static final Predicate<PageDecorator> ALL = Predicates.alwaysTrue();
 
+    private static final Filter<Page> ALL_PAGES = new Filter<Page>() {
+        @Override
+        public boolean includes(final Page page) {
+            return true;
+        }
+    };
+
     private static final Predicate<PageDecorator> DISPLAYABLE_ONLY = new Predicate<PageDecorator>() {
         @Override
         public boolean apply(final PageDecorator page) {
@@ -106,17 +113,22 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public List<PageDecorator> getChildren() {
-        return filterChildren(ALL);
+        return filterChildren(ALL, false);
     }
 
     @Override
     public List<PageDecorator> getChildren(final boolean displayableOnly) {
-        return displayableOnly ? filterChildren(DISPLAYABLE_ONLY) : filterChildren(ALL);
+        return displayableOnly ? filterChildren(DISPLAYABLE_ONLY, false) : filterChildren(ALL, false);
     }
 
     @Override
     public List<PageDecorator> getChildren(final Predicate<PageDecorator> predicate) {
-        return filterChildren(checkNotNull(predicate));
+        return filterChildren(checkNotNull(predicate), false);
+    }
+
+    @Override
+    public List<PageDecorator> getChildren(final Predicate<PageDecorator> predicate, final boolean deep) {
+        return filterChildren(checkNotNull(predicate), deep);
     }
 
     @Override
@@ -342,16 +354,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public Optional<String> getTitle(final TitleType titleType) {
-        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
-            @Override
-            public Optional<String> apply(final ComponentNode componentNode) {
-                return componentNode.get(titleType.getPropertyName());
-            }
-        }).or(Optional.<String>absent());
-    }
-
-    @Override
     public String getTitle() {
         return getProperties().get(NameConstants.PN_TITLE, "");
     }
@@ -421,10 +423,10 @@ public final class DefaultPageDecorator implements PageDecorator {
         page.unlock();
     }
 
-    private List<PageDecorator> filterChildren(final Predicate<PageDecorator> predicate) {
+    private List<PageDecorator> filterChildren(final Predicate<PageDecorator> predicate, final boolean deep) {
         final List<PageDecorator> pages = new ArrayList<PageDecorator>();
 
-        final Iterator<Page> children = page.listChildren();
+        final Iterator<Page> children = page.listChildren(ALL_PAGES, deep);
 
         final PageManagerDecorator pageManager = getPageManagerDecorator();
 

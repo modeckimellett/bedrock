@@ -10,7 +10,6 @@ import com.citytechinc.cq.library.content.link.ImageSource;
 import com.citytechinc.cq.library.content.link.Linkable;
 import com.citytechinc.cq.library.content.link.NavigationLink;
 import com.citytechinc.cq.library.content.node.ComponentNode;
-import com.citytechinc.cq.library.content.page.enums.TitleType;
 import com.day.cq.wcm.api.Page;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -27,25 +26,56 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
      */
     Optional<PageDecorator> findAncestor(Predicate<PageDecorator> predicate);
 
+    /**
+     * Returns the absolute parent page. If no page exists at that level, <code>null</code> is returned.
+     * <p/>
+     * Example (this path == /content/geometrixx/en/products)
+     * <pre>
+     * | level | returned                        |
+     * |     0 | /content                        |
+     * |     1 | /content/geometrixx             |
+     * |     2 | /content/geometrixx/en          |
+     * |     3 | /content/geometrixx/en/products |
+     * |     4 | null                            |
+     * </pre>
+     *
+     * @param level hierarchy level of the parent page to retrieve
+     * @return the respective parent page or <code>null</code>
+     */
     @Override
     PageDecorator getAbsoluteParent(int level);
 
     /**
+     * Get the child pages of the current page.
+     *
      * @return all child pages of current page
      */
     List<PageDecorator> getChildren();
 
     /**
+     * Get the child pages of the current page, excluding children that are not "displayable" (i.e. hidden in nav).
+     *
      * @param displayableOnly if true, only pages that are not hidden in navigation will be returned
      * @return child pages of current page
      */
     List<PageDecorator> getChildren(boolean displayableOnly);
 
     /**
+     * Get the child pages of the current page filtered using the given predicate.
+     *
      * @param predicate predicate to filter pages on
      * @return filtered list of child pages
      */
     List<PageDecorator> getChildren(Predicate<PageDecorator> predicate);
+
+    /**
+     * Get the descendant pages of the current page filtered using the given predicate.
+     *
+     * @param predicate predicate to filter pages on
+     * @param deep false traverses only children; true traverses all descendants
+     * @return filtered list of descendant pages
+     */
+    List<PageDecorator> getChildren(Predicate<PageDecorator> predicate, boolean deep);
 
     /**
      * Get the component node for the "jcr:content" node for this page.  If the page does not have a content node, an
@@ -86,6 +116,11 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
      */
     Optional<String> getNavigationTitleOptional();
 
+    /**
+     * Convenience method that returns the manager of this page.
+     *
+     * @return the page manager
+     */
     @Override
     PageManagerDecorator getPageManager();
 
@@ -98,9 +133,30 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
      */
     Optional<String> getPageTitleOptional();
 
+    /**
+     * Returns the parent page if it's resource adapts to page.
+     *
+     * @return the parent page or <code>null</code>
+     */
     @Override
     PageDecorator getParent();
 
+    /**
+     * Returns the relative parent page. If no page exists at that level, <code>null</code> is returned.
+     * <p/>
+     * Example (this path == /content/geometrixx/en/products)
+     * <pre>
+     * | level | returned                        |
+     * |     0 | /content/geometrixx/en/products |
+     * |     1 | /content/geometrixx/en          |
+     * |     2 | /content/geometrixx             |
+     * |     3 | /content                        |
+     * |     4 | null                            |
+     * </pre>
+     *
+     * @param level hierarchy level of the parent page to retrieve
+     * @return the respective parent page or <code>null</code>
+     */
     @Override
     PageDecorator getParent(int level);
 
@@ -111,13 +167,4 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
      * @return value of cq:template property or empty string if none exists
      */
     String getTemplatePath();
-
-    /**
-     * Get the specified title for this page, returning an <code>Optional</code> if the corresponding title property is
-     * not present.
-     *
-     * @param titleType title type
-     * @return optional title for the given type
-     */
-    Optional<String> getTitle(TitleType titleType);
 }
