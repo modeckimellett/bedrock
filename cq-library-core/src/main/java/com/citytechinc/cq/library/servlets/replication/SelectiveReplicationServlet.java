@@ -13,12 +13,10 @@ import com.day.cq.replication.ReplicationException;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.osgi.framework.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +32,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * Selectively replicate content to one or more replication agents.
  */
-@SlingServlet(paths = "/bin/replicate/selective", label = "Selective Replication Servlet")
-@Property(name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc.")
+@SlingServlet(paths = "/bin/replicate/selective")
 public final class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(SelectiveReplicationServlet.class);

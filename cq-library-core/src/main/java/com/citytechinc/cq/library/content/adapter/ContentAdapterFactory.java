@@ -23,10 +23,9 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.osgi.framework.Constants;
 
 @Component
-@Service(AdapterFactory.class)
+@Service
 @Properties({
     @Property(name = Constants.SERVICE_DESCRIPTION, value = "CQ Library Content API Adapter Factory"),
-    @Property(name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc."),
     @Property(name = "adaptables", value = {
         "org.apache.sling.api.resource.Resource",
         "org.apache.sling.api.resource.ResourceResolver"

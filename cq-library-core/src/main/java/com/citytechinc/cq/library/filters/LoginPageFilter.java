@@ -17,7 +17,6 @@ import org.apache.felix.scr.annotations.sling.SlingFilter;
 import org.apache.felix.scr.annotations.sling.SlingFilterScope;
 import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.commons.osgi.PropertiesUtil;
-import org.osgi.framework.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +36,6 @@ import java.util.Set;
     description = "Filters requests to a configurable set of pages to " + "customize default Sling authentication messages.",
     scope = SlingFilterScope.REQUEST, metatype = true,
     order = Integer.MIN_VALUE)
-@Property(name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc.")
 public final class LoginPageFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoginPageFilter.class);

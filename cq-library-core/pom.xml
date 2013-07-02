@@ -74,6 +74,11 @@
 						<goals>
 							<goal>scr</goal>
 						</goals>
+                        <configuration>
+                            <properties>
+                                <service.vendor>CITYTECH, Inc.</service.vendor>
+                            </properties>
+                        </configuration>
 					</execution>
 				</executions>
 			</plugin>

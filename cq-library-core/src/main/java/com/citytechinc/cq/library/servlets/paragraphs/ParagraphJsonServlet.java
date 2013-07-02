@@ -12,14 +12,11 @@ import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.WCMMode;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.felix.scr.annotations.Properties;
-import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.wrappers.SlingHttpServletResponseWrapper;
-import org.osgi.framework.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,11 +53,6 @@ import java.util.Set;
  */
 @SlingServlet(resourceTypes = { NameConstants.NT_PAGE }, selectors = { ParagraphJsonServlet.SELECTOR },
     extensions = { ParagraphJsonServlet.EXTENSION }, methods = { "GET" })
-@Properties({
-    @Property(name = Constants.SERVICE_DESCRIPTION, value = "Requests, in JSON format, the path and html for all "
-        + "non-container components on the page."),
-    @Property(name = Constants.SERVICE_VENDOR, value = "CITYTECH, Inc.")
-})
 public final class ParagraphJsonServlet extends AbstractComponentServlet {
 
     public static final String SELECTOR = "ctparagraphs";

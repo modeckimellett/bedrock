@@ -30,21 +30,17 @@ import java.io.InputStream;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
-@SlingServlet(label = "CITYTECH Image Servlet", description = "Image rendering servlet.", methods = "GET",
-    selectors = "img", resourceTypes = "sling/servlet/default")
+/**
+ * Image rendering servlet.
+ */
+@SlingServlet(methods = "GET", selectors = "img", resourceTypes = "sling/servlet/default")
 public final class ImageServlet extends AbstractImageServlet {
-
-    private static final long serialVersionUID = 1L;
-
-    private static final String PAGE_IMAGE_NAME = "image";
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServlet.class);
 
-    private static boolean isPageContent(final SlingHttpServletRequest request) {
-        final Resource resource = request.getResource();
+    private static final String PAGE_IMAGE_NAME = "image";
 
-        return JcrConstants.JCR_CONTENT.equals(resource.getName());
-    }
+    private static final long serialVersionUID = 1L;
 
     private static boolean isPage(final SlingHttpServletRequest request) {
         final Resource resource = request.getResource();
@@ -61,6 +57,17 @@ public final class ImageServlet extends AbstractImageServlet {
         }
 
         return isPage;
+    }
+
+    private static boolean isPageContent(final SlingHttpServletRequest request) {
+        final Resource resource = request.getResource();
+
+        return JcrConstants.JCR_CONTENT.equals(resource.getName());
+    }
+
+    @Override
+    protected Layer createLayer(final ImageContext context) throws RepositoryException, IOException {
+        return null;
     }
 
     @Override
@@ -105,8 +112,8 @@ public final class ImageServlet extends AbstractImageServlet {
         // will force revalidation using If-Modified-Since or If-None-Match every time,
         // avoiding aggressive browser caching
         if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
-        	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-        	response.setHeader("Expires", "0");
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Expires", "0");
         }
 
         if (modified) {
@@ -141,11 +148,6 @@ public final class ImageServlet extends AbstractImageServlet {
         response.flushBuffer();
     }
 
-    @Override
-    protected Layer createLayer(final ImageContext context) throws RepositoryException, IOException {
-        return null;
-    }
-
     private boolean resizeLayer(final ImageWrapper wrapper, final Layer layer) {
         final int ratioW = layer.getWidth();
         final int ratioH = layer.getHeight();
@@ -169,11 +171,11 @@ public final class ImageServlet extends AbstractImageServlet {
 
     static class ImageWrapper {
 
-        private final int width;
-
         private final String name;
 
         private final Resource resource;
+
+        private final int width;
 
         public ImageWrapper(final SlingHttpServletRequest request) {
             final String[] selectors = request.getRequestPathInfo().getSelectors();
