@@ -19,12 +19,14 @@ import org.apache.felix.scr.annotations.Deactivate;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.resource.LoginException;
 import org.osgi.service.event.EventConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
 @Component(immediate = true)
 @Service
@@ -37,6 +39,8 @@ public final class PageReplicationListener extends AbstractReplicationListener {
     private Replicator replicator;
 
     private PageManager pageManager;
+
+    private Session session;
 
     @Override
     protected void handleActivate(final String path) {
@@ -83,18 +87,14 @@ public final class PageReplicationListener extends AbstractReplicationListener {
     }
 
     @Activate
-    @Override
-    protected void activate() throws Exception {
-        super.activate();
-
-        pageManager = resourceResolver.adaptTo(PageManager.class);
+    protected void activate() throws LoginException, RepositoryException {
+        session = getAdministrativeSession();
+        pageManager = getAdministrativeResourceResolver().adaptTo(PageManager.class);
     }
 
     @Deactivate
-    @Override
-    protected void deactivate() throws Exception {
-        pageManager = null;
-
-        super.deactivate();
+    protected void deactivate() {
+        closeSession();
+        closeResourceResolver();
     }
 }
