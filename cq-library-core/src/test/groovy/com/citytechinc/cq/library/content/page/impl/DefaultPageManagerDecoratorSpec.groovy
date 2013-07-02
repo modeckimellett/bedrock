@@ -5,9 +5,11 @@
  */
 package com.citytechinc.cq.library.content.page.impl
 
+import com.citytechinc.cq.library.content.page.PageDecorator
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.day.cq.tagging.TagConstants
+import com.google.common.base.Predicate
 import spock.lang.Shared
 
 import javax.jcr.query.Query
@@ -40,6 +42,15 @@ class DefaultPageManagerDecoratorSpec extends AbstractCqSpec {
             other {
                 "jcr:content"("cq:template": "template", "cq:tags": ["/etc/tags/tag1", "/etc/tags/tag2"].toArray(new String[0]))
             }
+            hierarchy {
+                one {
+                    child1()
+                    child2()
+                    child3()
+                }
+                two()
+                three()
+            }
         }
 
         def taggableNodePaths = ["/content/citytechinc/child/jcr:content", "/content/other/jcr:content", "/content/citytechinc/jcr:content/component/one"]
@@ -51,6 +62,19 @@ class DefaultPageManagerDecoratorSpec extends AbstractCqSpec {
         session.save()
 
         pageManager = resourceResolver.adaptTo(PageManagerDecorator)
+    }
+
+    def "find pages for predicate"() {
+        setup:
+        def predicate = new Predicate<PageDecorator>() {
+            @Override
+            boolean apply(PageDecorator pageDecorator) {
+                return pageDecorator.name.startsWith("child")
+            }
+        }
+
+        expect:
+        pageManager.findPages("/content/hierarchy", predicate).size() == 3
     }
 
     def "find pages for tag IDs"() {
@@ -74,7 +98,7 @@ class DefaultPageManagerDecoratorSpec extends AbstractCqSpec {
         def query = session.workspace.queryManager.createQuery(statement, Query.XPATH)
 
         expect:
-        pageManager.search(query).size() == 3
+        pageManager.search(query).size() == 10
     }
 
     def "search with limit"() {

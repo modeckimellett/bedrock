@@ -178,26 +178,12 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
         if (page == null) {
             result = Collections.emptyList();
         } else {
-            result = findRecursive(page, predicate);
+            result = page.getChildren(predicate, true);
         }
 
         stopwatch.stop();
 
         LOG.debug("findPages() found {} result(s) in {}ms", result.size(), stopwatch.elapsed(MILLISECONDS));
-
-        return result;
-    }
-
-    private List<PageDecorator> findRecursive(final PageDecorator page, final Predicate<PageDecorator> predicate) {
-        final List<PageDecorator> result = new ArrayList<PageDecorator>();
-
-        for (final PageDecorator child : page.getChildren()) {
-            if (predicate.apply(child)) {
-                result.add(child);
-            }
-
-            result.addAll(findRecursive(child, predicate));
-        }
 
         return result;
     }

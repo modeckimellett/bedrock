@@ -16,6 +16,10 @@ import com.google.common.base.Predicate;
 
 import java.util.List;
 
+/**
+ * Decorates the CQ <code>Page</code> interface with additional convenience methods for traversing the content hierarchy
+ * and getters for CQ library classes.
+ */
 public interface PageDecorator extends Page, Linkable, ImageSource {
 
     /**
