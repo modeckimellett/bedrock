@@ -31,88 +31,103 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
+public final class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
 
     private static final String FIELD_CONFIGS = "fieldConfigs";
 
     @Override
-    public DialogElement make(String xtype, AccessibleObject widgetField, CtMember ctWidgetField,
-        Class<?> containingClass, CtClass ctContainingClass, Map<Class<?>, WidgetConfigHolder> xtypeMap,
-        Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool,
-        boolean useDotSlashInName)
+    public DialogElement make(final String xtype, final AccessibleObject widgetField, final CtMember ctWidgetField,
+        final Class<?> containingClass, final CtClass ctContainingClass, final Map<Class<?>, WidgetConfigHolder> xtypeMap,
+        final Map<String, WidgetMaker> xTypeToWidgetMakerMap, final ClassLoader classLoader, final ClassPool classPool,
+        final boolean useDotSlashInName)
         throws ClassNotFoundException, InvalidComponentFieldException, CannotCompileException, NotFoundException,
         SecurityException, NoSuchFieldException {
-        MultiCompositeField multiCompositeFieldAnnotation = (MultiCompositeField) ctWidgetField.getAnnotation(
+        final MultiCompositeField multiCompositeFieldAnnotation = (MultiCompositeField) ctWidgetField.getAnnotation(
             MultiCompositeField.class);
-        DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
+        final DialogField dialogFieldAnnotation = (DialogField) ctWidgetField.getAnnotation(DialogField.class);
 
-        boolean matchBaseName = multiCompositeFieldAnnotation.matchBaseName();
-        String prefix = multiCompositeFieldAnnotation.prefix();
+        final boolean matchBaseName = multiCompositeFieldAnnotation.matchBaseName();
+        final String prefix = multiCompositeFieldAnnotation.prefix();
 
-        String name = getNameForField(dialogFieldAnnotation, widgetField, useDotSlashInName);
-        String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
-        String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
-        String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
-        Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
-        Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
-        String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
-        boolean hideLabel = dialogFieldAnnotation.hideLabel();
+        final String name = getNameForField(dialogFieldAnnotation, widgetField, useDotSlashInName);
+        final String fieldName = getFieldNameForField(dialogFieldAnnotation, widgetField);
+        final String fieldLabel = getFieldLabelForField(dialogFieldAnnotation, widgetField);
+        final String fieldDescription = getFieldDescriptionForField(dialogFieldAnnotation);
+        final Boolean isRequired = getIsRequiredForField(dialogFieldAnnotation);
+        final Map<String, String> additionalProperties = getAdditionalPropertiesForField(dialogFieldAnnotation);
+        final String defaultValue = getDefaultValueForField(dialogFieldAnnotation);
+        final boolean hideLabel = dialogFieldAnnotation.hideLabel();
 
-        List<DialogElement> widgetCollection = buildWidgetCollection(ctContainingClass, ctWidgetField, widgetField,
+        final List<DialogElement> widgetCollection = buildWidgetCollection(ctContainingClass, ctWidgetField, widgetField,
             xtypeMap, xTypeToWidgetMakerMap, classLoader, classPool);
 
         return new MultiCompositeFieldWidget(matchBaseName, prefix, fieldLabel, fieldDescription, !isRequired,
             hideLabel, defaultValue, name, fieldName, additionalProperties, widgetCollection);
     }
 
-    private List<DialogElement> buildWidgetCollection(CtClass componentClass, CtMember curField,
-        AccessibleObject trueField, Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
-        Map<String, WidgetMaker> xTypeToWidgetMakerMap, ClassLoader classLoader, ClassPool classPool)
+    private List<DialogElement> buildWidgetCollection(final CtClass componentClass, final CtMember curField,
+        final AccessibleObject trueField, final Map<Class<?>, WidgetConfigHolder> classToXTypeMap,
+        final Map<String, WidgetMaker> xTypeToWidgetMakerMap, final ClassLoader classLoader, final ClassPool classPool)
         throws InvalidComponentFieldException, ClassNotFoundException, CannotCompileException, NotFoundException,
         SecurityException, NoSuchFieldException {
-        CtClass clazz = null;
-        Class<?> fieldType;
+        CtClass clazz;
+
+        final Class<?> fieldType;
+
         if (curField instanceof CtField) {
-            CtField field = (CtField) curField;
+            final CtField field = (CtField) curField;
             clazz = field.getType();
             fieldType = ((Field) trueField).getType();
         } else {
-            CtMethod method = (CtMethod) curField;
+            final CtMethod method = (CtMethod) curField;
             clazz = method.getReturnType();
             fieldType = ((Method) trueField).getReturnType();
         }
+
         if (List.class.isAssignableFrom(fieldType)) {
-            ParameterizedType parameterizedType = null;
+            ParameterizedType parameterizedType;
+
             if (trueField instanceof Field) {
-                Field field = (Field) trueField;
+                final Field field = (Field) trueField;
                 parameterizedType = (ParameterizedType) field.getGenericType();
             } else {
-                Method method = (Method) trueField;
+                final Method method = (Method) trueField;
                 parameterizedType = (ParameterizedType) method.getGenericReturnType();
             }
+
             clazz = classPool.get(((Class<?>) parameterizedType.getActualTypeArguments()[0]).getName());
         }
+
         if (clazz.isArray()) {
             clazz = clazz.getComponentType();
         }
-        List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+
+        final List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+
         fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(clazz));
         fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(clazz));
-        List<DialogElement> elements = new ArrayList<DialogElement>();
-        for (CtMember field : fieldsAndMethods) {
+
+        final List<DialogElement> elements = new ArrayList<DialogElement>();
+
+        for (final CtMember field : fieldsAndMethods) {
             if (field.hasAnnotation(DialogField.class)) {
-                AccessibleObject mcTrueField = null;
-                Class<?> fieldClass = classLoader.loadClass(field.getDeclaringClass().getName());
+                AccessibleObject mcTrueField;
+
+                final Class<?> fieldClass = classLoader.loadClass(field.getDeclaringClass().getName());
+
                 if (field instanceof CtField) {
                     mcTrueField = ComponentMojoUtil.getField(fieldClass, field.getName());
                 } else {
                     mcTrueField = ComponentMojoUtil.getMethod(fieldClass, field.getName());
                 }
-                DialogElement builtFieldWidget = WidgetFactory.make(componentClass, field, mcTrueField, classToXTypeMap,
+
+                final DialogElement builtFieldWidget = WidgetFactory.make(componentClass, field, mcTrueField, classToXTypeMap,
                     xTypeToWidgetMakerMap, classLoader, classPool, false, -1);
+
                 elements.add(builtFieldWidget);
             }
         }
+
         return Arrays.asList(new DialogElement[]{ new WidgetCollection(elements, FIELD_CONFIGS) });
     }
 }
