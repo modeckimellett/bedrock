@@ -67,7 +67,6 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-scr-plugin</artifactId>
-				<extensions>true</extensions>
 				<executions>
 					<execution>
 						<id>generate-scr-scrdescriptor</id>

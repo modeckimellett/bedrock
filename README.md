@@ -6,23 +6,9 @@
 
 The CITYTECH CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript modules for bootstrapping and simplifying Adobe CQ5 implementations.
 
-## `Optional` Usage
+## User Guide
 
-Many of the component and page decorator methods now return an `Optional` wrapper for nullable values.  See the [Google Guava user guide](https://code.google.com/p/guava-libraries/wiki/UsingAndAvoidingNullExplained#Optional) for a more thorough explanation, but here are a few examples of `Optional` usage in a CQ context:
-
-    String href = getAsHref("path").or("#");
-    String redirectHref = getAsHref("redirectPath").or(currentPage.getHref());
-
-    Optional<PageDecorator> pageOptional = getAsPage("pagePath");
-
-    if (pageOptional.isPresent()) {
-        PageDecorator page = pageOptional.get();
-        String title = page.getNavigationTitleOptional().or(page.getTitle());
-
-        ...
-    }
-
-The [Javadoc](http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/base/Optional.html) has the full list of available methods.
+See the [Wiki](https://github.com/Citytechinc/cq-library/wiki) for details.
 
 ## Versioning
 
