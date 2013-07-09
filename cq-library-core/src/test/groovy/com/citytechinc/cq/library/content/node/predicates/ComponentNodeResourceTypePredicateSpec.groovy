@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.content.node.predicates
 
-import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 
 class ComponentNodeResourceTypePredicateSpec extends AbstractCqSpec {
@@ -37,8 +36,7 @@ class ComponentNodeResourceTypePredicateSpec extends AbstractCqSpec {
 
     def "node with matching resource type is included"() {
         setup:
-        def resource = resourceResolver.getResource("/sabbath")
-        def node = new DefaultComponentNode(resource)
+        def node = getComponentNode("/sabbath")
         def predicate = new ComponentNodeResourceTypePredicate("black")
 
         expect:
@@ -47,8 +45,7 @@ class ComponentNodeResourceTypePredicateSpec extends AbstractCqSpec {
 
     def "node with non-matching resource type is not included"() {
         setup:
-        def resource = resourceResolver.getResource("/sabbath")
-        def node = new DefaultComponentNode(resource)
+        def node = getComponentNode("/sabbath")
         def predicate = new ComponentNodeResourceTypePredicate("purple")
 
         expect:
@@ -57,8 +54,7 @@ class ComponentNodeResourceTypePredicateSpec extends AbstractCqSpec {
 
     def "node with no resource type is not included"() {
         setup:
-        def resource = resourceResolver.getResource("/sabbath/paranoid")
-        def node = new DefaultComponentNode(resource)
+        def node = getComponentNode("/sabbath/paranoid")
         def predicate = new ComponentNodeResourceTypePredicate("purple")
 
         expect:

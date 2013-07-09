@@ -38,6 +38,16 @@ abstract class AbstractCqSpec extends AbstractSlingRepositorySpec {
         })
     }
 
+    def getComponentNode(path) {
+        def resource = resourceResolver.getResource(path)
+
+        new DefaultComponentNode(resource)
+    }
+
+    def getPage(path) {
+        resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
+    }
+
     def setupSpec() {
         GroovyExtensionMetaClassRegistry.registerMetaClasses()
 

@@ -58,7 +58,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "as map"() {
         setup:
-        def map = createBasicNode("/content/citytechinc/jcr:content").asMap()
+        def map = getBasicNode("/content/citytechinc/jcr:content").asMap()
 
         expect:
         map["jcr:title"] == "CITYTECH, Inc."
@@ -67,7 +67,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get optional"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.get("otherPagePath").get() == "/content/ales/esb"
@@ -77,7 +77,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get as href"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.getAsHref(propertyName).get() == href
@@ -91,7 +91,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get as href returns absent where appropriate"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         !node.getAsHref(propertyName).present
@@ -102,7 +102,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as mapped href"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.getAsMappedHref("otherPagePath").get() == "/content/ales/esb.html"
@@ -110,7 +110,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as href for null"() {
         when:
-        createBasicNode("/content/citytechinc/jcr:content").getAsHref(null)
+        getBasicNode("/content/citytechinc/jcr:content").getAsHref(null)
 
         then:
         thrown NullPointerException
@@ -118,7 +118,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as link"() {
         setup:
-        def link = createBasicNode("/content/citytechinc/jcr:content").getAsLink("otherPagePath")
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("otherPagePath")
 
         expect:
         link.get().path == "/content/ales/esb"
@@ -126,7 +126,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as mapped link"() {
         setup:
-        def link = createBasicNode("/content/citytechinc/jcr:content").getAsMappedLink("otherPagePath")
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsMappedLink("otherPagePath")
 
         expect:
         link.get().path == "/content/ales/esb"
@@ -134,7 +134,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as link for null"() {
         when:
-        createBasicNode("/content/citytechinc/jcr:content").getAsLink(null)
+        getBasicNode("/content/citytechinc/jcr:content").getAsLink(null)
 
         then:
         thrown NullPointerException
@@ -142,7 +142,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as link for non-existent property"() {
         setup:
-        def linkOptional = createBasicNode("/content/citytechinc/jcr:content").getAsLink("beer")
+        def linkOptional = getBasicNode("/content/citytechinc/jcr:content").getAsLink("beer")
 
         expect:
         !linkOptional.present
@@ -150,7 +150,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as page"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.getAsPage("otherPagePath").get().path == "/content/ales/esb"
@@ -159,7 +159,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get href"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.href == "/content/citytechinc/jcr:content.html"
@@ -168,7 +168,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get image reference"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.imageReference.present == isPresent
@@ -182,7 +182,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get image source optional"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.imageSource.present == isPresent
@@ -198,7 +198,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get image source"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.imageSource.get() == imageSrc
@@ -212,7 +212,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get named image source"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.getImageSource(name).get() == imageSrc
@@ -228,7 +228,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get image source with width"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.getImageSource(width).get() == imageSrc
@@ -244,7 +244,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get named image source with width"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.getImageSource(name, width).get() == imageSrc
@@ -263,7 +263,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get index"() {
         setup:
-        def node = createBasicNode("/content/ales/esb/jcr:content/morland")
+        def node = getBasicNode("/content/ales/esb/jcr:content/morland")
 
         expect:
         node.index == 1
@@ -271,7 +271,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get index for resource type"() {
         setup:
-        def node = createBasicNode("/content/lagers/jcr:content/stiegl")
+        def node = getBasicNode("/content/lagers/jcr:content/stiegl")
 
         expect:
         node.getIndex("de") == 0
@@ -279,7 +279,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get named image reference"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.getImageReference("nsfwImage").get() == "omg.png"
@@ -288,7 +288,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get link"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.link.path == "/content/citytechinc/jcr:content"
@@ -296,7 +296,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get link builder"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.linkBuilder.build().path == "/content/citytechinc/jcr:content"
@@ -304,7 +304,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get node"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.node.get().path == "/content/citytechinc/jcr:content"
@@ -312,7 +312,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get path"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.path == "/content/citytechinc/jcr:content"
@@ -320,7 +320,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get properties"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content/beer")
+        def node = getBasicNode("/content/citytechinc/jcr:content/beer")
         def predicate = new PropertyNamePredicate("label")
 
         expect:
@@ -329,7 +329,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get resource"() {
         setup:
-        def node = createBasicNode("/content/citytechinc/jcr:content")
+        def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
         node.resource.path == "/content/citytechinc/jcr:content"
@@ -338,7 +338,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "has image"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.hasImage == hasImage
@@ -352,7 +352,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     @Unroll
     def "has named image"() {
         setup:
-        def node = createBasicNode(path)
+        def node = getBasicNode(path)
 
         expect:
         node.isHasImage(name) == hasImage
@@ -365,7 +365,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         "/content/ales/esb/jcr:content"    | "image"       | false
     }
 
-    def createBasicNode(path) {
+    def getBasicNode(path) {
         def resource = resourceResolver.getResource(path)
 
         new DefaultBasicNode(resource)

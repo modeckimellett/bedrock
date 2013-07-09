@@ -118,7 +118,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "find ancestor with property"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
         def ancestorNodeOptional = node.findAncestorWithProperty("jcr:title")
 
         expect:
@@ -134,7 +134,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "find ancestor returns absent"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
         def ancestorNodeOptional = node.findAncestorWithProperty("jcr:description")
 
         expect:
@@ -147,7 +147,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "find ancestor with property value"() {
         setup:
-        def node = createComponentNode("/content/inheritance/child/jcr:content/component")
+        def node = getComponentNode("/content/inheritance/child/jcr:content/component")
         def ancestorNodeOptional = node.findAncestorWithPropertyValue(propertyName, propertyValue)
 
         expect:
@@ -162,7 +162,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "find ancestor with property value returns absent"() {
         setup:
-        def node = createComponentNode("/content/inheritance/child/jcr:content/component")
+        def node = getComponentNode("/content/inheritance/child/jcr:content/component")
         def ancestorNodeOptional = node.findAncestorWithPropertyValue("jcr:title", "Komponent")
 
         expect:
@@ -172,7 +172,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get as href inherited"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         node.getAsHrefInherited(propertyName).get() == href
@@ -190,7 +190,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get as href inherited returns absent where appropriate"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         !node.getAsHrefInherited(propertyName).present
@@ -204,7 +204,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get as link inherited"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         node.getAsLinkInherited(propertyName).get().href == href
@@ -222,7 +222,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get as link inherited returns absent where appropriate"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         !node.getAsLinkInherited("nonExistentPath").present
@@ -235,7 +235,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get as page inherited"() {
         setup:
-        def node = createComponentNode("/content/ales/esb/lace/jcr:content")
+        def node = getComponentNode("/content/ales/esb/lace/jcr:content")
 
         expect:
         node.getAsPageInherited("otherPagePath").get().path == "/content/citytechinc"
@@ -244,7 +244,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get nodes inherited"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         node.getNodesInherited("container").size() == size
@@ -260,7 +260,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get image source inherited optional"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         node.imageSourceInherited.present == isPresent
@@ -280,7 +280,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get inherited"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         node.getInherited(propertyName, "") == propertyValue
@@ -295,7 +295,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get inherited optional"() {
         setup:
-        def node = createComponentNode("/content/ales/esb/lace/jcr:content")
+        def node = getComponentNode("/content/ales/esb/lace/jcr:content")
 
         expect:
         node.getInherited("otherPagePath").present
@@ -304,7 +304,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get component node at relative path"() {
         setup:
-        def node = createComponentNode("/content/citytechinc/jcr:content")
+        def node = getComponentNode("/content/citytechinc/jcr:content")
 
         expect:
         node.getComponentNode("whiskey").present
@@ -314,7 +314,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
     @Unroll
     def "get component nodes"() {
         setup:
-        def node = createComponentNode(path)
+        def node = getComponentNode(path)
 
         expect:
         node.getComponentNodes().size() == size
@@ -327,7 +327,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get component nodes for predicate"() {
         setup:
-        def node = createComponentNode("/content/citytechinc/jcr:content/malort")
+        def node = getComponentNode("/content/citytechinc/jcr:content/malort")
         def predicate = new Predicate<ComponentNode>() {
             @Override
             boolean apply(ComponentNode input) {
@@ -341,7 +341,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get component nodes at relative path"() {
         setup:
-        def node = createComponentNode("/content/citytechinc/jcr:content")
+        def node = getComponentNode("/content/citytechinc/jcr:content")
 
         expect:
         node.getComponentNodes(relativePath).size() == size
@@ -354,7 +354,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get component nodes at relative path for resource type"() {
         setup:
-        def node = createComponentNode("/content/citytechinc/jcr:content")
+        def node = getComponentNode("/content/citytechinc/jcr:content")
 
         expect:
         node.getComponentNodes("malort", resourceType).size() == size
@@ -367,7 +367,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
     def "get component nodes at relative path for predicate"() {
         setup:
-        def node = createComponentNode("/content/ales/esb/lace/jcr:content")
+        def node = getComponentNode("/content/ales/esb/lace/jcr:content")
         def predicate = new Predicate<ComponentNode>() {
             @Override
             boolean apply(ComponentNode input) {
@@ -377,11 +377,5 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
         expect:
         node.getComponentNodes("parent", predicate).size() == 2
-    }
-
-    def createComponentNode(path) {
-        def resource = resourceResolver.getResource(path)
-
-        new DefaultComponentNode(resource)
     }
 }

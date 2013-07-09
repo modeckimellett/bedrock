@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.content.page.predicates
 
-import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 
 class TemplatePredicateSpec extends AbstractCqSpec {
@@ -24,7 +23,7 @@ class TemplatePredicateSpec extends AbstractCqSpec {
 
     def "page has no template property"() {
         setup:
-        def page = createPage("/content/citytechinc/child2")
+        def page = getPage("/content/citytechinc/child2")
         def predicate = new TemplatePredicate("template")
 
         expect:
@@ -33,7 +32,7 @@ class TemplatePredicateSpec extends AbstractCqSpec {
 
     def "template matches page template"() {
         setup:
-        def page = createPage("/content/citytechinc/child1")
+        def page = getPage("/content/citytechinc/child1")
         def predicate = new TemplatePredicate("template")
 
         expect:
@@ -42,14 +41,10 @@ class TemplatePredicateSpec extends AbstractCqSpec {
 
     def "template does not match page template"() {
         setup:
-        def page = createPage("/content/citytechinc")
+        def page = getPage("/content/citytechinc")
         def predicate = new TemplatePredicate("template")
 
         expect:
         !predicate.apply(page)
-    }
-
-    def createPage(path) {
-        resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
     }
 }

@@ -19,8 +19,7 @@ class ComponentNodePropertyExistsPredicateSpec extends AbstractCqSpec {
 
     def "node where property exists is included"() {
         setup:
-        def resource = resourceResolver.getResource("/content/citytechinc")
-        def node = new DefaultComponentNode(resource)
+        def node = getComponentNode("/content/citytechinc")
         def predicate = new ComponentNodePropertyExistsPredicate("jcr:title")
 
         expect:
@@ -29,8 +28,7 @@ class ComponentNodePropertyExistsPredicateSpec extends AbstractCqSpec {
 
     def "node where property does not exist is not included"() {
         setup:
-        def resource = resourceResolver.getResource("/content/citytechinc")
-        def node = new DefaultComponentNode(resource)
+        def node = getComponentNode("/content/citytechinc")
         def predicate = new ComponentNodePropertyExistsPredicate("jcr:description")
 
         expect:
