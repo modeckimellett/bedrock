@@ -48,14 +48,14 @@ public abstract class AbstractComponent implements ComponentNode {
      * @param componentNode node for component
      */
     public AbstractComponent(final ComponentNode componentNode) {
+        this.componentNode = componentNode;
+
         request = null;
 
         final Resource resource = componentNode.getResource();
         final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
 
         currentPage = pageManager.getContainingPage(resource);
-
-        this.componentNode = componentNode;
     }
 
     /**
