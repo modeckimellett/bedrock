@@ -12,6 +12,9 @@ import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * JCR path utilities.
+ */
 public final class PathUtils {
 
     /**
