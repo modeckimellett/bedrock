@@ -9,6 +9,9 @@ import com.day.cq.commons.jcr.JcrConstants;
 
 import java.util.regex.Pattern;
 
+/**
+ * JCR path constants.
+ */
 public final class PathConstants {
 
     public static final String EXTENSION_HTML = "html";

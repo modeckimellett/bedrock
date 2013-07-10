@@ -14,8 +14,8 @@ import com.citytechinc.cq.library.content.link.enums.LinkTarget;
 import com.citytechinc.cq.library.content.link.impl.DefaultImageLink;
 import com.citytechinc.cq.library.content.link.impl.DefaultLink;
 import com.citytechinc.cq.library.content.link.impl.DefaultNavigationLink;
-import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.enums.TitleType;
+import com.day.cq.wcm.api.Page;
 import com.google.common.base.Charsets;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimaps;
@@ -80,11 +80,6 @@ public final class LinkBuilder {
         external = isExternal(path);
     }
 
-    private LinkBuilder() {
-        path = "";
-        external = true;
-    }
-
     /**
      * Get a builder instance for an existing <code>Link</code>.  The path, extension, title, and target are copied from
      * the link argument.
@@ -106,7 +101,7 @@ public final class LinkBuilder {
      * @param page page
      * @return builder containing the path of the given page
      */
-    public static LinkBuilder forPage(final PageDecorator page) {
+    public static LinkBuilder forPage(final Page page) {
         return forPage(page, false, TitleType.TITLE);
     }
 
@@ -117,7 +112,7 @@ public final class LinkBuilder {
      * @param titleType type of page title to set on the builder
      * @return builder containing the path and title of the given page
      */
-    public static LinkBuilder forPage(final PageDecorator page, final TitleType titleType) {
+    public static LinkBuilder forPage(final Page page, final TitleType titleType) {
         checkNotNull(page);
 
         final String title = page.getProperties().get(titleType.getPropertyName(), page.getTitle());
@@ -133,7 +128,7 @@ public final class LinkBuilder {
      * @param mappedPath if true, link path will be mapped through resource resolver
      * @return builder containing the mapped path of the given page
      */
-    public static LinkBuilder forPage(final PageDecorator page, final boolean mappedPath) {
+    public static LinkBuilder forPage(final Page page, final boolean mappedPath) {
         return forPage(page, mappedPath, TitleType.TITLE);
     }
 
@@ -145,7 +140,7 @@ public final class LinkBuilder {
      * @param titleType type of page title to set on the builder
      * @return builder containing the path and title of the given page
      */
-    public static LinkBuilder forPage(final PageDecorator page, final boolean mappedPath, final TitleType titleType) {
+    public static LinkBuilder forPage(final Page page, final boolean mappedPath, final TitleType titleType) {
         checkNotNull(page);
 
         final String title = page.getProperties().get(titleType.getPropertyName(), page.getTitle());
@@ -162,7 +157,7 @@ public final class LinkBuilder {
     public static LinkBuilder forPath(final String path) {
         checkNotNull(path);
 
-        return path.isEmpty() ? new LinkBuilder() : new LinkBuilder(path);
+        return new LinkBuilder(path);
     }
 
     /**
@@ -198,7 +193,7 @@ public final class LinkBuilder {
         return new LinkBuilder(path);
     }
 
-    private static String getPagePath(final PageDecorator page, final boolean mapped) {
+    private static String getPagePath(final Page page, final boolean mapped) {
         final String redirect = page.getProperties().get(PropertyConstants.REDIRECT_TARGET, "");
         final String path = redirect.isEmpty() ? page.getPath() : redirect;
 
