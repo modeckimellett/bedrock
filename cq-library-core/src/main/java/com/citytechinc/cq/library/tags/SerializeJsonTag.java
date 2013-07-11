@@ -50,11 +50,11 @@ public final class SerializeJsonTag extends AbstractScopedTag {
             final Object component;
 
             if (isNullOrEmpty(className)) {
-                LOG.info("doEndTag() serializing JSON for instance name = {}", instanceName);
+                LOG.debug("doEndTag() serializing JSON for instance name = {}", instanceName);
 
                 component = pageContext.getAttribute(instanceName, getScopeValue());
             } else {
-                LOG.info("doEndTag() serializing JSON for class name = {}", className);
+                LOG.debug("doEndTag() serializing JSON for class name = {}", className);
 
                 final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(ATTR_COMPONENT_REQUEST);
 
