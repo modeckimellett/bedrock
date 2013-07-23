@@ -1342,7 +1342,7 @@ CQ.Ext.form.SuperBoxSelect = CQ.Ext.extend(CQ.Ext.form.SuperBoxSelect,CQ.Ext.for
     /**
      * Sets the value of the SuperBoxSelect component, adding new items that don't exist in the data store if the {@link #CQ.Ext.form.SuperBoxSelect-allowAddNewData} config is set to true.
      * @methodOf CQ.Ext.form.SuperBoxSelect
-     * @name setValue
+     * @name setValueEx
      * @param {Array} data An Array of item objects containing the {@link #CQ.Ext.form.SuperBoxSelect-displayField}, {@link #CQ.Ext.form.SuperBoxSelect-valueField} and {@link #CQ.Ext.form.SuperBoxSelect-classField} properties.
      */
     setValueEx : function(data){
