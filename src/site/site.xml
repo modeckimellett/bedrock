@@ -32,10 +32,7 @@
                 <name>${project.name}</name>
                 <href>./index.html</href>
             </brand>
-            <slogan>
-                The CITYTECH CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
-                modules for bootstrapping and simplifying Adobe CQ5 implementations.
-            </slogan>
+            <slogan />
             <body />
             <bottomNav maxSpan="3">
                 <column>reports</column>
