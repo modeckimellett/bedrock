@@ -54,7 +54,7 @@
         <attribute>
             <name>className</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>name</name>
