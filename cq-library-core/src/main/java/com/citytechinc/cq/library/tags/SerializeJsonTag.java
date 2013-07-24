@@ -39,6 +39,11 @@ public final class SerializeJsonTag extends AbstractScopedTag {
      */
     private String instanceName;
 
+    /**
+     * Optional name to set in pageContext for the component instance.  This only applies when 'className' is used.
+     */
+    private String name;
+
     @Override
     public int doEndTag() throws JspException {
         checkArgument(!isNullOrEmpty(className) || !isNullOrEmpty(instanceName),
@@ -59,6 +64,10 @@ public final class SerializeJsonTag extends AbstractScopedTag {
                 final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(ATTR_COMPONENT_REQUEST);
 
                 component = Class.forName(className).getConstructor(ComponentRequest.class).newInstance(request);
+
+                if (!isNullOrEmpty(name)) {
+                    pageContext.setAttribute(name, component, getScopeValue());
+                }
             }
 
             pageContext.getOut().write(MAPPER.writeValueAsString(component));
@@ -85,5 +94,13 @@ public final class SerializeJsonTag extends AbstractScopedTag {
 
     public void setInstanceName(final String instanceName) {
         this.instanceName = instanceName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 }
