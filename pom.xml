@@ -282,6 +282,11 @@
                     <version>1.2.1</version>
                 </plugin>
                 <plugin>
+                    <groupId>com.cognifide.maven.plugins</groupId>
+                    <artifactId>maven-crx-plugin</artifactId>
+                    <version>1.0.3</version>
+                </plugin>
+                <plugin>
                     <groupId>com.citytechinc.maven.plugins</groupId>
                     <artifactId>osgi-bundle-status-maven-plugin</artifactId>
                     <version>1.2.0</version>
