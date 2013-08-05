@@ -3,17 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
 
     <skin>
-        <groupId>lt.velykis.maven.skins</groupId>
-        <artifactId>reflow-maven-skin</artifactId>
+        <groupId>com.citytechinc.maven</groupId>
+        <artifactId>citytech-maven-skin</artifactId>
         <version>1.0.0</version>
     </skin>
 
-    <bannerLeft>
+    <bannerRight>
         <name>${project.name}</name>
-        <href>http://code.citytechinc.com/cq-library</href>
-    </bannerLeft>
-
-    <!--<googleAnalyticsAccountId>UA-928005-4</googleAnalyticsAccountId>-->
+        <href>./index.html</href>
+    </bannerRight>
 
     <custom>
         <reflowSkin>
@@ -24,7 +22,6 @@
             <breadcrumbs>false</breadcrumbs>
             <markPageHeader>false</markPageHeader>
             <toc>false</toc>
-            <theme>default</theme>
             <highlightJs>true</highlightJs>
             <highlightJsTheme>github</highlightJsTheme>
             <topNav>reports</topNav>
@@ -32,7 +29,7 @@
                 <name>${project.name}</name>
                 <href>./index.html</href>
             </brand>
-            <slogan />
+            <slogan></slogan>
             <body />
             <bottomNav maxSpan="3">
                 <column>reports</column>
@@ -41,9 +38,9 @@
     </custom>
 
     <body>
-        <menu ref="reports"/>
         <links>
-            <item name="GitHub Project" href="https://github.com/Citytechinc/osgi-bundle-status-maven-plugin" />
+            <item name="GitHub" href="https://github.com/Citytechinc/cq-library" />
         </links>
+        <menu ref="reports"/>
     </body>
 </project>
