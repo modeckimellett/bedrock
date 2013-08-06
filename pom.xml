@@ -425,6 +425,21 @@
                                 </reportSet>
                             </reportSets>
                         </plugin>
+                        <plugin>
+                            <groupId>nl.windgazer</groupId>
+                            <artifactId>jsdoctk-plugin</artifactId>
+                            <configuration>
+                                <directory>${project.build.directory}/jsdoc</directory>
+                                <recurse>3</recurse>
+                                <ext>js</ext>
+                                <srcDir>${basedir}/cq-library-ui/src/main/content/jcr_root/etc/clientlibs/cq-library</srcDir>
+                                <exclude>
+                                    <param>jquery*</param>
+                                </exclude>
+                                <allfunctions>true</allfunctions>
+                                <directory>${project.build.directory}/site/jsdoc</directory>
+                            </configuration>
+                        </plugin>
                     </reportPlugins>
                 </configuration>
             </plugin>
