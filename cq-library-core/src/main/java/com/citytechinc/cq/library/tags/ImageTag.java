@@ -24,7 +24,11 @@ public final class ImageTag extends AbstractComponentTag {
 
     private static final long serialVersionUID = 1L;
 
+    private String alt;
+
     private String name;
+
+    private String title;
 
     @Override
     public int doEndTag() throws JspTagException {
@@ -37,6 +41,16 @@ public final class ImageTag extends AbstractComponentTag {
         } else {
             image = new Image(resource, name);
         }
+
+        if (!isNullOrEmpty(alt)) {
+            image.setAlt(alt);
+        }
+
+        if (!isNullOrEmpty(title)) {
+            image.setTitle(title);
+        }
+
+        image.setHref("");
 
         if (image.hasContent()) {
             try {
@@ -51,11 +65,27 @@ public final class ImageTag extends AbstractComponentTag {
         return EVAL_PAGE;
     }
 
+    public String getAlt() {
+        return alt;
+    }
+
+    public void setAlt(final String alt) {
+        this.alt = alt;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(final String title) {
+        this.title = title;
     }
 }
