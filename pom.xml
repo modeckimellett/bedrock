@@ -318,7 +318,7 @@
                 <plugin>
                     <groupId>com.atlassian.maven.plugins</groupId>
                     <artifactId>maven-jgitflow-plugin</artifactId>
-                    <version>1.0-alpha9</version>
+                    <version>1.0-alpha14</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -336,6 +336,9 @@
                 <artifactId>maven-jgitflow-plugin</artifactId>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <enableFeatureVersions>false</enableFeatureVersions>
+                    <noFeatureBuild>true</noFeatureBuild>
+                    <noReleaseBuild>true</noReleaseBuild>
                     <flowInitContext>
                         <featureBranchPrefix>feature-</featureBranchPrefix>
                         <releaseBranchPrefix>release-</releaseBranchPrefix>
