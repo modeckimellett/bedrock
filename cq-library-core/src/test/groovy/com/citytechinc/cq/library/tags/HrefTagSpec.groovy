@@ -25,7 +25,7 @@ class HrefTagSpec extends AbstractPropertyTagSpec {
 
     def "href for existing property"() {
         setup:
-        setComponentNode("/content/citytechinc/jcr:content")
+        setupComponentNode("/content/citytechinc/jcr:content")
 
         when:
         tag.propertyName = "path"
@@ -39,7 +39,7 @@ class HrefTagSpec extends AbstractPropertyTagSpec {
 
     def "href for non-existent property"() {
         setup:
-        setComponentNode("/content/citytechinc/ctmsp/jcr:content")
+        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
 
         when:
         tag.propertyName = "path"
@@ -53,7 +53,7 @@ class HrefTagSpec extends AbstractPropertyTagSpec {
 
     def "href for inherited property"() {
         setup:
-        setComponentNode("/content/citytechinc/ctmsp/jcr:content")
+        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
 
         when:
         tag.propertyName = "path"
@@ -68,7 +68,7 @@ class HrefTagSpec extends AbstractPropertyTagSpec {
 
     def "href for non-existent inherited property"() {
         setup:
-        setComponentNode("/content/citytechinc/ctmsp/jcr:content")
+        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
 
         when:
         tag.propertyName = "nonExistentPath"

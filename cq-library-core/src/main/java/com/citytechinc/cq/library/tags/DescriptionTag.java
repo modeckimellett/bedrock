@@ -26,6 +26,10 @@ public final class DescriptionTag extends AbstractPropertyTag {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String TAG_START = "<meta name=\"description\" content=\"";
+
+    private static final String TAG_END = "\"/>";
+
     private String suffix;
 
     @Override
@@ -35,6 +39,8 @@ public final class DescriptionTag extends AbstractPropertyTag {
         final ValueMap properties = currentPage.getProperties();
 
         final StringBuilder builder = new StringBuilder();
+
+        builder.append(TAG_START);
 
         final String description;
 
@@ -52,10 +58,12 @@ public final class DescriptionTag extends AbstractPropertyTag {
             }
         }
 
+        builder.append(TAG_END);
+
         try {
             pageContext.getOut().write(builder.toString());
         } catch (IOException ioe) {
-            LOG.error("error writing description for page = " + currentPage.getPath(), ioe);
+            LOG.error("error writing description tag for page = " + currentPage.getPath(), ioe);
 
             throw new JspTagException(ioe);
         }
