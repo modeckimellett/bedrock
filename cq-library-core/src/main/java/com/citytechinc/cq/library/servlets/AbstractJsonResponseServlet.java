@@ -6,10 +6,8 @@
 package com.citytechinc.cq.library.servlets;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonGenerator.Feature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.MediaType;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -28,13 +26,13 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_ENUMS_US
  */
 public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet {
 
-    private static final long serialVersionUID = 1L;
+    private static final JsonFactory FACTORY = new JsonFactory().disable(Feature.AUTO_CLOSE_TARGET);
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractJsonResponseServlet.class);
 
-    private static final JsonFactory FACTORY = new JsonFactory().disable(Feature.AUTO_CLOSE_TARGET);
-
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Write an object to the response as JSON.
@@ -130,12 +128,8 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
             }
 
             MAPPER.writeValue(generator, object);
-        } catch (JsonGenerationException jge) {
-            LOG.error("error generating JSON response", jge);
-        } catch (JsonMappingException jme) {
-            LOG.error("error mapping JSON response", jme);
-        } catch (IOException ioe) {
-            LOG.error("error writing JSON response", ioe);
+        } catch (IOException e) {
+            LOG.error("error writing JSON response", e);
         }
     }
 }
