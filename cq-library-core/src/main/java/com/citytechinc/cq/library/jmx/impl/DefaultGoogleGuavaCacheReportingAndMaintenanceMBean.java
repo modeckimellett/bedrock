@@ -7,7 +7,7 @@ package com.citytechinc.cq.library.jmx.impl;
 
 import com.adobe.granite.jmx.annotation.AnnotatedStandardMBean;
 import com.citytechinc.cq.library.jmx.GoogleGuavaCacheReportingAndMaintenanceMBean;
-import com.citytechinc.cq.library.services.CacheService;
+import com.citytechinc.cq.library.services.cache.CacheService;
 import com.google.common.base.Function;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.Lists;

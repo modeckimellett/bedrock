@@ -3,7 +3,7 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.cq.library.services;
+package com.citytechinc.cq.library.services.cache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheStats;
