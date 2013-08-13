@@ -10,7 +10,7 @@
 
     <bannerRight>
         <name>${project.name}</name>
-        <href>./index.html</href>
+        <href>http://code.citytechinc.com/cq-library</href>
     </bannerRight>
 
     <custom>
@@ -27,7 +27,7 @@
             <topNav>reports</topNav>
             <brand>
                 <name>${project.name}</name>
-                <href>./index.html</href>
+                <href>http://code.citytechinc.com/cq-library</href>
             </brand>
             <slogan></slogan>
             <body />
