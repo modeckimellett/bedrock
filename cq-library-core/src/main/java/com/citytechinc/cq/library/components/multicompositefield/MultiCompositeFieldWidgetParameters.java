@@ -8,43 +8,45 @@ package com.citytechinc.cq.library.components.multicompositefield;
 import com.citytechinc.cq.component.dialog.widget.WidgetParameters;
 import com.citytechinc.cq.component.util.Constants;
 
-public class MultiCompositeFieldWidgetParameters extends WidgetParameters {
-	private boolean matchBaseName;
+public final class MultiCompositeFieldWidgetParameters extends WidgetParameters {
+
+    private boolean matchBaseName;
+
     private String prefix;
 
-	public boolean isMatchBaseName() {
-		return matchBaseName;
-	}
+    public String getPrefix() {
+        return prefix;
+    }
 
-	public void setMatchBaseName(boolean matchBaseName) {
-		this.matchBaseName = matchBaseName;
-	}
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
 
-	public String getPrefix() {
-		return prefix;
-	}
+    @Override
+    public String getPrimaryType() {
+        return Constants.CQ_WIDGET;
+    }
 
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
+    @Override
+    public void setPrimaryType(String primaryType) {
+        throw new UnsupportedOperationException("PrimaryType is Static for DialogFieldSetWidget");
+    }
 
-	@Override
-	public String getPrimaryType() {
-		return Constants.CQ_WIDGET;
-	}
+    @Override
+    public String getXtype() {
+        return MultiCompositeFieldWidget.XTYPE;
+    }
 
-	@Override
-	public void setPrimaryType(String primaryType) {
-		throw new UnsupportedOperationException("PrimaryType is Static for DialogFieldSetWidget");
-	}
+    @Override
+    public void setXtype(String xtype) {
+        throw new UnsupportedOperationException("xtype is Static for DialogFieldSetWidget");
+    }
 
-	@Override
-	public String getXtype() {
-		return MultiCompositeFieldWidget.XTYPE;
-	}
+    public boolean isMatchBaseName() {
+        return matchBaseName;
+    }
 
-	@Override
-	public void setXtype(String xtype) {
-		throw new UnsupportedOperationException("xtype is Static for DialogFieldSetWidget");
-	}
+    public void setMatchBaseName(boolean matchBaseName) {
+        this.matchBaseName = matchBaseName;
+    }
 }

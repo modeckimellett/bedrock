@@ -8,7 +8,8 @@ package com.citytechinc.cq.library.components.multicompositefield;
 import com.citytechinc.cq.component.annotations.config.Widget;
 import com.citytechinc.cq.component.dialog.AbstractWidget;
 
-@Widget(annotationClass = MultiCompositeField.class, makerClass = MultiCompositeFieldWidgetMaker.class,xtype = MultiCompositeFieldWidget.XTYPE)
+@Widget(annotationClass = MultiCompositeField.class, makerClass = MultiCompositeFieldWidgetMaker.class,
+    xtype = MultiCompositeFieldWidget.XTYPE)
 public final class MultiCompositeFieldWidget extends AbstractWidget {
 
     public static final String XTYPE = "multicompositefield";
