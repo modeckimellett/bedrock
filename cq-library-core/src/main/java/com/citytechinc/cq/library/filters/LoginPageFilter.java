@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SlingFilter(label = "Login Page Filter",
-    description = "Filters requests to a configurable set of pages to " + "customize default Sling authentication messages.",
+    description = "Filters requests to a configurable set of pages to customize default Sling authentication messages.",
     scope = SlingFilterScope.REQUEST, metatype = true,
     order = Integer.MIN_VALUE)
 public final class LoginPageFilter implements Filter {

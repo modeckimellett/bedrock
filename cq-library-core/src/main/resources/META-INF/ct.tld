@@ -54,7 +54,7 @@
         <attribute>
             <name>className</name>
             <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
+            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>name</name>
@@ -77,6 +77,11 @@
         </attribute>
         <attribute>
             <name>instanceName</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>name</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -163,6 +168,16 @@
         <tag-class>com.citytechinc.cq.library.tags.ImageTag</tag-class>
         <attribute>
             <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>alt</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

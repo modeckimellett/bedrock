@@ -18,8 +18,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
- * Serializes a component as JSON.  The component should be annotated using Jackson annotations (e.g.
- * <code>JsonGetter</code>, <code>JsonProperty</code>) to indicate which fields or methods should be serialized.
+ * Serializes a component class or object instance as JSON.  The class to be serialized should be annotated using
+ * Jackson annotations (e.g. <code>JsonGetter</code>, <code>JsonProperty</code>) to indicate which fields or methods
+ * should be serialized (this is not necessary for all types, e.g. basic POJOs and collections).
  */
 public final class SerializeJsonTag extends AbstractScopedTag {
 
@@ -35,35 +36,43 @@ public final class SerializeJsonTag extends AbstractScopedTag {
     private String className;
 
     /**
-     * Name of existing component object in page context.  "className" attribute is checked first.
+     * Name of existing component or object in page context.  "className" attribute is checked first.
      */
     private String instanceName;
+
+    /**
+     * Optional name to set in pageContext for the component instance.  This only applies when 'className' is used.
+     */
+    private String name;
 
     @Override
     public int doEndTag() throws JspException {
         checkArgument(!isNullOrEmpty(className) || !isNullOrEmpty(instanceName),
             "className or instanceName is required");
-
         checkScopeAttribute();
 
         try {
-            final Object component;
+            final Object object;
 
             if (isNullOrEmpty(className)) {
                 LOG.debug("doEndTag() serializing JSON for instance name = {}", instanceName);
 
-                component = pageContext.getAttribute(instanceName, getScopeValue());
+                object = pageContext.getAttribute(instanceName, getScopeValue());
             } else {
                 LOG.debug("doEndTag() serializing JSON for class name = {}", className);
 
                 final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(ATTR_COMPONENT_REQUEST);
 
-                component = Class.forName(className).getConstructor(ComponentRequest.class).newInstance(request);
+                object = Class.forName(className).getConstructor(ComponentRequest.class).newInstance(request);
+
+                if (!isNullOrEmpty(name)) {
+                    pageContext.setAttribute(name, object, getScopeValue());
+                }
             }
 
-            pageContext.getOut().write(MAPPER.writeValueAsString(component));
+            pageContext.getOut().write(MAPPER.writeValueAsString(object));
         } catch (Exception e) {
-            LOG.error("error serializing component JSON", e);
+            LOG.error("error serializing JSON", e);
 
             throw new JspTagException(e);
         }
@@ -85,5 +94,13 @@ public final class SerializeJsonTag extends AbstractScopedTag {
 
     public void setInstanceName(final String instanceName) {
         this.instanceName = instanceName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 }

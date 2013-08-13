@@ -8,16 +8,15 @@ package com.citytechinc.cq.library.testing.specs
 import com.citytechinc.cq.groovy.extension.builders.PageBuilder
 import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
 import com.citytechinc.cq.groovy.testing.specs.tag.AbstractTagSpec
-import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
 import com.citytechinc.cq.library.tags.DefineObjectsTag
 import spock.lang.Shared
 
 /**
- * Spock specification for testing CQ component-based tag support classes.
+ * Spock specification for testing CQ page-based tag support classes.
  */
-abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
+abstract class AbstractPageTagSpec extends AbstractTagSpec {
 
     @Shared pageBuilder
 
@@ -35,16 +34,14 @@ abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
     }
 
     /**
-     * Set a <code>ComponentNode</code> for the given path in the <code>PageContext</code> for the tag under test.
+     * Set a <code>PageDecorator</code> for the given path in the <code>PageContext</code> for the tag under test.
      *
-     * @param path node path
+     * @param path page path
      */
-    void setupComponentNode(path) {
-        def resource = resourceResolver.getResource(path)
-        def componentNode = new DefaultComponentNode(resource)
-
+    void setupPage(path) {
         def pageContext = mockPageContext()
+        def page = resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
 
-        pageContext.getAttribute(DefineObjectsTag.ATTR_COMPONENT_NODE) >> componentNode
+        pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE) >> page
     }
 }

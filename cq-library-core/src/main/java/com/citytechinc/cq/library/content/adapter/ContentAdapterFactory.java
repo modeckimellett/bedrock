@@ -72,12 +72,11 @@ public final class ContentAdapterFactory implements AdapterFactory {
     private <AdapterType> AdapterType getAdapter(final Resource resource, final Class<AdapterType> type) {
         final AdapterType result;
 
-        final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
-
         if (type == PageDecorator.class) {
+            final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
             final Page page = resource.adaptTo(Page.class);
 
-            result = (AdapterType) pageManager.getPage(page);
+            result = page == null ? null : (AdapterType) pageManager.getPage(page);
         } else if (type == ComponentNode.class) {
             result = (AdapterType) new DefaultComponentNode(resource);
         } else if (type == BasicNode.class) {

@@ -25,14 +25,24 @@ public final class KeywordsTag extends TagSupport {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String TAG_START = "<meta name=\"keywords\" content=\"";
+
+    private static final String TAG_END = "\"/>";
+
     @Override
     public int doEndTag() throws JspTagException {
         final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
 
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append(TAG_START);
+        builder.append(escapeHtml4(WCMUtils.getKeywords(currentPage, false)));
+        builder.append(TAG_END);
+
         try {
-            pageContext.getOut().write(escapeHtml4(WCMUtils.getKeywords(currentPage, false)));
+            pageContext.getOut().write(builder.toString());
         } catch (IOException ioe) {
-            LOG.error("error writing keywords for page = " + currentPage.getPath(), ioe);
+            LOG.error("error writing keywords tag for page = " + currentPage.getPath(), ioe);
 
             throw new JspTagException(ioe);
         }

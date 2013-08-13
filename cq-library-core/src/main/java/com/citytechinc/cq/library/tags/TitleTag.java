@@ -24,15 +24,21 @@ public final class TitleTag extends AbstractPropertyTag {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String TAG_START = "<title>";
+
+    private static final String TAG_END = "</title>";
+
     private String suffix;
 
     @Override
     public int doEndTag() throws JspTagException {
         final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
 
-        final String title = currentPage.getTitle() == null ? currentPage.getName() : currentPage.getTitle();
+        final String title = isNullOrEmpty(currentPage.getTitle()) ? currentPage.getName() : currentPage.getTitle();
 
         final StringBuilder builder = new StringBuilder();
+
+        builder.append(TAG_START);
 
         if (hasPropertyName()) {
             builder.append(escapeHtml4(currentPage.getProperties().get(propertyName, title)));
@@ -44,14 +50,12 @@ public final class TitleTag extends AbstractPropertyTag {
             builder.append(suffix);
         }
 
-        final String content = builder.toString();
-
-        LOG.debug("doEndTag() title content = {}", content);
+        builder.append(TAG_END);
 
         try {
-            pageContext.getOut().write(content);
+            pageContext.getOut().write(builder.toString());
         } catch (IOException ioe) {
-            LOG.error("error writing title content = " + content, ioe);
+            LOG.error("error writing title tag", ioe);
 
             throw new JspTagException(ioe);
         }

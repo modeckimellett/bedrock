@@ -1,52 +1,92 @@
 Namespace.create('CITYTECH.Utilities');
 
-CITYTECH.Utilities = function () {
-    return {
-        isAuthor: function () {
-            return Boolean(CQ.WCM);
-        },
+/**
+ * A set of utilities for CQ
+ * @class CITYTECH.Utilities
+ */
+CITYTECH.Utilities = {
 
-        isPublish: function () {
-            return !CITYTECH.Utilities.isAuthor();
-        },
+	/**
+     * Checks to see if the current wcm mode is not disabled
+     * @methodOf CITYTECH.Utilities
+     * @name isAuthor
+     */
+    isAuthor: function () {
+        return Boolean(CQ.WCM);
+    },
 
-        isEditMode: function () {
-            var mode = CITYTECH.Utilities.getMode();
+    /**
+     * Checks to see if the current wcm mode is disabled
+     * @methodOf CITYTECH.Utilities
+     * @name isPublish
+     */
+    isPublish: function () {
+        return !CITYTECH.Utilities.isAuthor();
+    },
 
-            return CITYTECH.Utilities.isAuthor() && (mode == 'edit' || mode == null);
-        },
+    /**
+     * Checks to see if the current wcm mode is edit
+     * @methodOf CITYTECH.Utilities
+     * @name isEditMode
+     */
+    isEditMode: function () {
+        var mode = CITYTECH.Utilities.getMode();
 
-        isDesignMode: function () {
-            return CITYTECH.Utilities.isAuthor() && CITYTECH.Utilities.getMode() == 'design';
-        },
+        return CITYTECH.Utilities.isAuthor() && (mode == 'edit' || mode == null);
+    },
 
-        isPreviewMode: function () {
-            return CITYTECH.Utilities.isAuthor() && CITYTECH.Utilities.getMode() == 'preview';
-        },
+    /**
+     * Checks to see if the current wcm mode is design
+     * @methodOf CITYTECH.Utilities
+     * @name isDesignMode
+     */
+    isDesignMode: function () {
+        return CITYTECH.Utilities.isAuthor() && CITYTECH.Utilities.getMode() == 'design';
+    },
 
-        getMode: function () {
-            return $.cookie('wcmmode');
-        },
+    /**
+     * Checks to see if the current wcm mode is preview
+     * @methodOf CITYTECH.Utilities
+     * @name isPreviewMode
+     */
+    isPreviewMode: function () {
+        return CITYTECH.Utilities.isAuthor() && CITYTECH.Utilities.getMode() == 'preview';
+    },
 
-        hideEditables: function (names, comparePath) {
-            if (CITYTECH.Utilities.isAuthor()) {
-                var pagePath = CQ.WCM.getPagePath();
-                var noCompare = typeof comparePath === 'undefined';
+    /**
+     * Returns the current wcm mode
+     * @methodOf CITYTECH.Utilities
+     * @name getMode
+     */
+    getMode: function () {
+        return $.cookie('wcmmode');
+    },
 
-                $.each(names, function (i, name) {
-                    var path = pagePath + '/jcr:content/' + name;
+    /**
+     * Returns the current wcm mode
+     * @methodOf CITYTECH.Utilities
+     * @name hideEditables
+     * @param {Array} names The names of the editables that should be hidden
+     * @param {String} comparePath The path of a page that the editables should not be hidden
+     */
+    hideEditables: function (names, comparePath) {
+        if (CITYTECH.Utilities.isAuthor()) {
+            var pagePath = CQ.WCM.getPagePath();
+            var noCompare = typeof comparePath === 'undefined';
 
-                    CQ.WCM.onEditableReady(path, function (dialog) {
-                        if (noCompare) {
+            $.each(names, function (i, name) {
+                var path = pagePath + '/jcr:content/' + name;
+
+                CQ.WCM.onEditableReady(path, function (dialog) {
+                    if (noCompare) {
+                        dialog.hide();
+                    } else {
+                        if (pagePath != comparePath) {
                             dialog.hide();
-                        } else {
-                            if (pagePath != comparePath) {
-                                dialog.hide();
-                            }
                         }
-                    });
+                    }
                 });
-            }
+            });
         }
-    };
-}();
+    }
+};

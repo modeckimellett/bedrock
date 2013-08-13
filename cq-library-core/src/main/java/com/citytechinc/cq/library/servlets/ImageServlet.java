@@ -14,6 +14,7 @@ import com.day.cq.wcm.foundation.Image;
 import com.day.image.Layer;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
+import com.google.common.net.MediaType;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -123,12 +124,12 @@ public final class ImageServlet extends AbstractImageServlet {
 
             if (ImageHelper.getExtensionFromType(mimeType) == null) {
                 // get default mime type
-                mimeType = "image/png";
+                mimeType = MediaType.PNG.toString();
             }
 
             response.setContentType(mimeType);
 
-            imageLayer.write(mimeType, mimeType.equals("image/gif") ? GIF_QUALITY : 1.0, response.getOutputStream());
+            imageLayer.write(mimeType, mimeType.equals(MediaType.GIF.toString()) ? GIF_QUALITY : 1.0, response.getOutputStream());
         } else {
             // do not re-encode layer, just spool
             final javax.jcr.Property data = image.getData();
