@@ -1,4 +1,4 @@
-# CITYTECH, Inc. CQ Library
+# CQ Library
 
 [CITYTECH, Inc.](http://www.citytechinc.com)
 
