@@ -28,8 +28,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Base class for CQ component classes instantiated by the {@link com.citytechinc.cq.library.tags.ComponentTag}.
- * <p/>
- * For documentation on the methods available here, see {@link com.citytechinc.cq.library.content.node.ComponentNode}.
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE,
     isGetterVisibility = JsonAutoDetect.Visibility.NONE)
