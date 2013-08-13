@@ -10,9 +10,9 @@
     <groupId>com.citytechinc.cq.library</groupId>
     <artifactId>cq-library</artifactId>
     <packaging>pom</packaging>
-
     <version>5.3.1-SNAPSHOT</version>
-    <name>CQ Library</name>
+    <name>CITYTECH, Inc. CQ Library</name>
+
     <description>
         The CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
         modules for bootstrapping and simplifying Adobe CQ5 implementations.
@@ -82,6 +82,7 @@
         <maven.junit.usefile>false</maven.junit.usefile>
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss.SSSZ</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
+        <component.plugin.version>2.0.0</component.plugin.version>
     </properties>
 
     <profiles>
@@ -286,7 +287,7 @@
                 <plugin>
                     <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
                     <artifactId>cq-component-maven-plugin</artifactId>
-                    <version>1.1.3</version>
+                    <version>${component.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -467,12 +468,14 @@
             <dependency>
                 <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
                 <artifactId>cq-component-maven-plugin</artifactId>
-                <version>1.1.5</version>
+                <version>${component.plugin.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
                 <artifactId>cq-component-annotations</artifactId>
-                <version>1.1.5</version>
+                <version>${component.plugin.version}</version>
+
             </dependency>
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
