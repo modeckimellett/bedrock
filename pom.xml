@@ -11,8 +11,7 @@
     <artifactId>cq-library</artifactId>
     <packaging>pom</packaging>
     <version>5.3.1-SNAPSHOT</version>
-    <name>CITYTECH, Inc. CQ Library</name>
-
+    <name>CQ Library</name>
     <description>
         The CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
         modules for bootstrapping and simplifying Adobe CQ5 implementations.
@@ -461,21 +460,19 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.scr.annotations</artifactId>
-                <version>1.9.4</version>
-            </dependency>
-            <dependency>
                 <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
                 <artifactId>cq-component-maven-plugin</artifactId>
                 <version>${component.plugin.version}</version>
-
             </dependency>
             <dependency>
                 <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
                 <artifactId>cq-component-annotations</artifactId>
                 <version>${component.plugin.version}</version>
-
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.scr.annotations</artifactId>
+                <version>1.9.4</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
