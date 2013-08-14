@@ -385,6 +385,8 @@
                             <reportSets>
                                 <reportSet>
                                     <reports>
+                                        <report>plugins</report>
+                                        <report>plugin-management</report>
                                         <report>license</report>
                                         <report>scm</report>
                                         <report>summary</report>
