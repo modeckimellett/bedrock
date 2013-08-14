@@ -8,6 +8,7 @@ CITYTECH.Utilities.Dialog = {
 
     /**
      * Create a new dialog.
+     *
      * @methodOf CITYTECH.Utilities.Dialog
      * @name createDialog
      * @param pathToDialog  path to the xml file defining the dialog layout.
@@ -40,7 +41,7 @@ CITYTECH.Utilities.Dialog = {
 
         // get dialog
         var dialog = CQ.WCM.getDialog(dialogConfig, pathToDialog);
-        
+
         return dialog;
     },
 
@@ -58,6 +59,7 @@ CITYTECH.Utilities.Dialog = {
 
     /**
      * Create and show a new dialog.
+     *
      * @methodOf CITYTECH.Utilities.Dialog
      * @name createDialog
      * @param {String} pathToDialog path to the xml file defining the dialog layout.
@@ -69,7 +71,7 @@ CITYTECH.Utilities.Dialog = {
     },
 
     /**
-     *  Create a new dialog accessible through the sidekick
+     * Create a new dialog accessible through the sidekick.
      *
      * @methodOf CITYTECH.Utilities.Dialog
      * @name createSidekickDialog
@@ -106,5 +108,25 @@ CITYTECH.Utilities.Dialog = {
             // no index, push it to end of sidekick actions
             defaultActions.push(sidekickAction);
         }
+    },
+
+    /**
+     * Validate a dialog field.  This requires the component being validated to have a validation servlet configured as
+     * outlined by the <a href="http://code.citytechinc.com/cq-library/servlets.html">User Guide</a>.
+     *
+     * @methodOf CITYTECH.Utilities.Dialog
+     * @param field dialog field being validated (i.e. 'this' if calling function within a validator)
+     * @param value field value
+     * @param invalidMessage message to display if value is not valid
+     * @returns {boolean} true if valid, invalid message if invalid
+     */
+    validateField: function (field, value, invalidMessage) {
+        var dialog = field.findParentByType('dialog');
+
+        var url = CQ.HTTP.addParameter(dialog.path + '.validator.json', 'value', value);
+
+        var result = CQ.HTTP.eval(url);
+
+        return result.valid ? true : invalidMessage;
     }
 };

@@ -10,7 +10,7 @@ The component JSP needs to include the CQ Library `global.jsp` to define the tag
 
     <%@include file="/apps/cq-library/components/global.jsp"%>
 
-    <ct:component className="com.companyname.cq.components.content.Navigation" name="navigation"/>
+    <ct:component className="com.projectname.cq.components.content.Navigation" name="navigation"/>
 
     <h1>${navigation.title}</h1>
 
@@ -22,7 +22,7 @@ The component JSP needs to include the CQ Library `global.jsp` to define the tag
 
 The backing Java class for the component should expose getters for the values that required to render the component's view.
 
-    package com.companyname.cq.library.components.content;
+    package com.projectname.cq.library.components.content;
 
     import com.citytechinc.cq.library.components.AbstractComponent;
     import com.citytechinc.cq.library.content.page.PageDecorator;

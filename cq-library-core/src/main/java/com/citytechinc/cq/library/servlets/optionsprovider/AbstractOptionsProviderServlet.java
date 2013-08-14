@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Base class for providing a list of "options" to a component dialog widget.  An option is simply a text/value pair to
  * be rendered in a selection box.  The implementing class determines how these options are retrieved from the
- * repository or third-party provider.
+ * repository (or external provider, such as a web service).
  */
 public abstract class AbstractOptionsProviderServlet extends AbstractComponentServlet {
 

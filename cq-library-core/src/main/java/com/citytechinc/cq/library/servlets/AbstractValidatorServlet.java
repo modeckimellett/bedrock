@@ -19,7 +19,7 @@ import java.util.Collections;
  * <p/>
  * <pre>
  * {@literal @}SlingServlet(resourceTypes = "citytechlib/components/content/example", selectors = "validator",
- * extensions = "json", methods = "GET", description = "Validator Servlet")
+ * extensions = "json", methods = "GET")
  * </pre>
  * <p/>
  * The "resourceTypes" annotation will need to be updated to match the resource type of the component being validated.
@@ -29,13 +29,7 @@ import java.util.Collections;
  * {@code
  * <name jcr:primaryType="cq:Widget" fieldLabel="Name" name="./name" xtype="textfield"
  *     validator="function(value) {
- *         var dialog = this.findParentByType('dialog');
- *
- *         var url = CQ.HTTP.addParameter(dialog.path + '.validator.json', 'value', value);
- *
- *         var result = CQ.HTTP.eval(url);
- *
- *         return result.valid ? true : 'Name is invalid.';
+ *         return CITYTECH.Utilities.Dialog.validateField(this, value, 'Name is invalid');
  *     }" />
  * }
  * </pre>
