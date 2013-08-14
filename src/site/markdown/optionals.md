@@ -1,3 +1,5 @@
+## Optionals
+
 Many of the component and page decorator methods return an `Optional` wrapper for nullable values.  See the [Google Guava user guide](https://code.google.com/p/guava-libraries/wiki/UsingAndAvoidingNullExplained#Optional) for a more thorough explanation, but here are a few examples of `Optional` usage in a CQ context:
 
     String href = getAsHref("path").or("#");

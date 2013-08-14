@@ -1,3 +1,5 @@
+## Component Framework
+
 ### Overview
 
 Component JSPs should contain only the HTML markup and JSTL tags necessary to render the component and it's view permutations, rather than Java "scriptlet" blocks containing business logic.  To facilitate the separation of controller logic from presentation, the CQ Library provides a custom JSP tag to associate a Java class (or "backing bean") to a component JSP.  The library also provides an abstract template class containing accessors and convenience methods for objects that are typically available in the JSP page context (e.g. current page, current node, Sling resource resolver, etc.).  Decorator instances for the current page and component node implement common use cases to reduce boilerplate code and encourage the use of established conventions.  This allows the developer to focus on project-specific concerns rather than reimplementing functionality that is frequently required for a typical CQ implementation but may not be provided by the CQ APIs.

@@ -1,3 +1,5 @@
+## Image Rendering
+
 ### Overview
 
 CQ5 has default servlets for handling page and component level images.  However, the default image servlets only allow for a single image per page or component; the custom CQ Library Image Servlet adds the ability to provide additional selectors to specify named images and a width value for resizing the rendered image.

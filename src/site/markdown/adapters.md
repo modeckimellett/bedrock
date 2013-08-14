@@ -1,3 +1,5 @@
+## Adapters
+
 Sling `Resource` and `ResourceResolver` instances are adaptable to CQ Library types as outlined below.
 
 ### Resource

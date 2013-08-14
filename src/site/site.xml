@@ -24,7 +24,7 @@
             <toc>false</toc>
             <highlightJs>true</highlightJs>
             <highlightJsTheme>github</highlightJsTheme>
-            <topNav>User Guide|reports</topNav>
+            <topNav>Overview|User Guide|reports</topNav>
             <brand>
                 <name>${project.name}</name>
                 <href>http://code.citytechinc.com/cq-library</href>
@@ -32,6 +32,7 @@
             <slogan></slogan>
             <body />
             <bottomNav>
+                <column>Overview</column>
                 <column>User Guide</column>
                 <column>reports</column>
             </bottomNav>
@@ -42,6 +43,9 @@
         <links>
             <item name="GitHub" href="https://github.com/Citytechinc/cq-library" />
         </links>
+        <menu name="Overview">
+            <item name="Introduction" href="index.html"/>
+        </menu>
         <menu name="User Guide">
             <item name="Adapters" href="adapters.html"/>
             <item name="Component Framework" href="component-framework.html"/>

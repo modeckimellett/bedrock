@@ -1,3 +1,7 @@
+#set($symbol_pound = '#')
+
+$symbol_pound$symbol_pound Including in Client Projects
+
 New projects should use the [CITYTECH CQ5 Maven Archetype](https://github.com/Citytechinc/cq5-archetype) rather than including the library manually as outlined below.  The details are provided here for reference.
 
 Define the CQ Library as the parent of a Maven project to inherit dependency and plugin management.
