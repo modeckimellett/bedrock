@@ -1,0 +1,58 @@
+New projects should use the [CITYTECH CQ5 Maven Archetype](https://github.com/Citytechinc/cq5-archetype) rather than including the library manually as outlined below.  The details are provided here for reference.
+
+Define the CQ Library as the parent of a Maven project to inherit dependency and plugin management.
+
+    <parent>
+        <groupId>com.citytechinc.cq.library</groupId>
+        <artifactId>cq-library</artifactId>
+        <version>${project.version}</version>
+    </parent>
+
+The including project's Core module POM must also include the CQ Library Core module as a compile-scoped dependency.
+
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.citytechinc.cq.library</groupId>
+            <artifactId>cq-library-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+Additionally, the project's UI module POM must include the CQ Library UI dependency.
+
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.citytechinc.cq.library</groupId>
+            <artifactId>cq-library-ui</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+        </dependency>
+    </dependencies>
+
+The UI dependency is used by the Maven Assembly Plugin to include the CQ Library zip artifact in the package created by the including project's build process.
+
+The project's assembly descriptor (typically src/main/assembly/zip.xml in the UI module) must define a dependency set to include and unpack the CQ Library UI artifact.
+
+    <dependencySets>
+        ...
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <useProjectArtifact>false</useProjectArtifact>
+            <scope>compile</scope>
+            <includes>
+                <include>com.citytechinc.cq.library:cq-library-ui:zip</include>
+            </includes>
+            <unpack>true</unpack>
+            <unpackOptions>
+                <includes>
+                    <include>jcr_root/apps/cq-library/**/*</include>
+                    <include>jcr_root/etc/clientlibs/cq-library/**/*</include>
+                </includes>
+            </unpackOptions>
+            <useStrictFiltering>true</useStrictFiltering>
+        </dependencySet>
+    </dependencySets>
+
+Including the CQ Library in this manner eliminates the need to build and install the CQ Library package separately and/or activate additional Maven profiles.
