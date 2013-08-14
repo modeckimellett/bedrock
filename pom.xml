@@ -385,11 +385,10 @@
                             <reportSets>
                                 <reportSet>
                                     <reports>
+                                        <report>summary</report>
                                         <report>plugins</report>
                                         <report>plugin-management</report>
                                         <report>license</report>
-                                        <report>scm</report>
-                                        <report>summary</report>
                                     </reports>
                                 </reportSet>
                             </reportSets>
