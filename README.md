@@ -11,7 +11,3 @@ See the [Maven site](http://code.citytechinc.com/cq-library) for the User Guide 
 ## Versioning
 
 Follows [Semantic Versioning](http://semver.org/) guidelines.
-
-## License
-
-Copyright 2013, CITYTECH, Inc.
