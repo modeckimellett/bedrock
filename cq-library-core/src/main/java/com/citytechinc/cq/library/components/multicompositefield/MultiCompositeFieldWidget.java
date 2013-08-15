@@ -18,8 +18,9 @@ public final class MultiCompositeFieldWidget extends AbstractWidget {
 
     private final String prefix;
 
-    public MultiCompositeFieldWidget(MultiCompositeFieldWidgetParameters parameters) {
+    public MultiCompositeFieldWidget(final MultiCompositeFieldWidgetParameters parameters) {
         super(parameters);
+
         this.matchBaseName = parameters.isMatchBaseName();
         this.prefix = parameters.getPrefix();
     }

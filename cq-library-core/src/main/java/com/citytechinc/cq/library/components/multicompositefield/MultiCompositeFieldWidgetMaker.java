@@ -27,18 +27,18 @@ public final class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
 
     private static final String FIELD_CONFIGS = "fieldConfigs";
 
-    public MultiCompositeFieldWidgetMaker(WidgetMakerParameters parameters) {
+    public MultiCompositeFieldWidgetMaker(final WidgetMakerParameters parameters) {
         super(parameters);
     }
 
     @Override
     public DialogElement make()
-        throws ClassNotFoundException, SecurityException, InvalidComponentFieldException, NotFoundException,
-        CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        MultiCompositeField multiCompositeFieldAnnotation = getAnnotation(MultiCompositeField.class);
+        throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException, CannotCompileException,
+        NoSuchFieldException, InstantiationException, IllegalAccessException, InvocationTargetException,
+        NoSuchMethodException {
+        final MultiCompositeField multiCompositeFieldAnnotation = getAnnotation(MultiCompositeField.class);
 
-        MultiCompositeFieldWidgetParameters widgetParameters = new MultiCompositeFieldWidgetParameters();
+        final MultiCompositeFieldWidgetParameters widgetParameters = new MultiCompositeFieldWidgetParameters();
 
         widgetParameters.setMatchBaseName(multiCompositeFieldAnnotation.matchBaseName());
         widgetParameters.setPrefix(multiCompositeFieldAnnotation.prefix());
@@ -56,35 +56,38 @@ public final class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
         return new MultiCompositeFieldWidget(widgetParameters);
     }
 
-    private List<DialogElement> buildWidgetCollection(MultiCompositeField multiCompositeFieldAnnotation)
-        throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException, SecurityException,
-        CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException,
-        IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-
-        List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+    private List<DialogElement> buildWidgetCollection(final MultiCompositeField multiCompositeFieldAnnotation)
+        throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException, CannotCompileException,
+        NoSuchFieldException, InstantiationException, IllegalAccessException, InvocationTargetException,
+        NoSuchMethodException {
+        final List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 
         fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(getCtType()));
         fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(getCtType()));
 
-        List<DialogElement> elements = new ArrayList<DialogElement>();
+        final List<DialogElement> elements = new ArrayList<DialogElement>();
 
-        for (CtMember curField : fieldsAndMethods) {
+        for (final CtMember curField : fieldsAndMethods) {
             if (curField.hasAnnotation(DialogField.class)) {
+                final Class<?> fieldClass = parameters.getClassLoader().loadClass(
+                    curField.getDeclaringClass().getName());
 
-                Class<?> fieldClass = parameters.getClassLoader().loadClass(curField.getDeclaringClass().getName());
+                final WidgetMakerParameters curFieldMember = new WidgetMakerParameters(
+                    (DialogField) curField.getAnnotation(DialogField.class), curField, fieldClass,
+                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
+                    false);
 
-                WidgetMakerParameters curFieldMember = new WidgetMakerParameters((DialogField) curField.getAnnotation(
-                    DialogField.class), curField, fieldClass, parameters.getClassLoader(), parameters.getClassPool(),
-                    parameters.getWidgetRegistry(), null, false);
+                final DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
 
-                DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
                 elements.add(builtFieldWidget);
             }
         }
 
-        WidgetCollectionParameters wcp = new WidgetCollectionParameters();
+        final WidgetCollectionParameters wcp = new WidgetCollectionParameters();
+
         wcp.setContainedElements(elements);
         wcp.setFieldName(FIELD_CONFIGS);
+
         return Arrays.asList(new DialogElement[]{ new WidgetCollection(wcp) });
     }
 }

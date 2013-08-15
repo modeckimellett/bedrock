@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class AbstractCacheService implements CacheService {
 
     @Override
-    public void clearAllCaches() {
+    public final void clearAllCaches() {
         for (final Field field : collectFields(this.getClass())) {
             if (field.getType() == Cache.class || Cache.class.isAssignableFrom(field.getType())) {
                 try {
@@ -41,7 +41,7 @@ public abstract class AbstractCacheService implements CacheService {
     }
 
     @Override
-    public void clearSpecificCache(String cacheVariableName) {
+    public final void clearSpecificCache(final String cacheVariableName) {
         for (final Field field : collectFields(this.getClass())) {
             if ((StringUtils.equals(cacheVariableName, field.getName())) && (field
                 .getType() == Cache.class || Cache.class.isAssignableFrom(field.getType()))) {
@@ -60,7 +60,7 @@ public abstract class AbstractCacheService implements CacheService {
     }
 
     @Override
-    public Long getCacheSize(final String cacheVariableName) {
+    public final Long getCacheSize(final String cacheVariableName) {
         Long cacheSize = 0L;
 
         for (final Field field : collectFields(this.getClass())) {
@@ -83,7 +83,7 @@ public abstract class AbstractCacheService implements CacheService {
     }
 
     @Override
-    public CacheStats getCacheStats(String cacheVariableName) {
+    public final CacheStats getCacheStats(final String cacheVariableName) {
         CacheStats cacheStats = null;
 
         for (final Field field : collectFields(this.getClass())) {
@@ -106,7 +106,7 @@ public abstract class AbstractCacheService implements CacheService {
     }
 
     @Override
-    public List<String> listCaches() {
+    public final List<String> listCaches() {
         final ImmutableList.Builder<String> cachesBuilder = new ImmutableList.Builder<String>();
 
         for (final Field field : collectFields(this.getClass())) {
@@ -120,8 +120,8 @@ public abstract class AbstractCacheService implements CacheService {
 
     protected abstract Logger getLogger();
 
-    private static List<Field> collectFields(Class clazz) {
-        List<Field> fields = new ArrayList<Field>();
+    private static List<Field> collectFields(final Class clazz) {
+        final List<Field> fields = new ArrayList<Field>();
 
         if (clazz != null) {
             fields.addAll(Arrays.asList(clazz.getDeclaredFields()));

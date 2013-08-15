@@ -18,7 +18,7 @@ public final class MultiCompositeFieldWidgetParameters extends WidgetParameters 
         return prefix;
     }
 
-    public void setPrefix(String prefix) {
+    public void setPrefix(final String prefix) {
         this.prefix = prefix;
     }
 
@@ -28,7 +28,7 @@ public final class MultiCompositeFieldWidgetParameters extends WidgetParameters 
     }
 
     @Override
-    public void setPrimaryType(String primaryType) {
+    public void setPrimaryType(final String primaryType) {
         throw new UnsupportedOperationException("PrimaryType is Static for DialogFieldSetWidget");
     }
 
@@ -38,7 +38,7 @@ public final class MultiCompositeFieldWidgetParameters extends WidgetParameters 
     }
 
     @Override
-    public void setXtype(String xtype) {
+    public void setXtype(final String xtype) {
         throw new UnsupportedOperationException("xtype is Static for DialogFieldSetWidget");
     }
 
@@ -46,7 +46,7 @@ public final class MultiCompositeFieldWidgetParameters extends WidgetParameters 
         return matchBaseName;
     }
 
-    public void setMatchBaseName(boolean matchBaseName) {
+    public void setMatchBaseName(final boolean matchBaseName) {
         this.matchBaseName = matchBaseName;
     }
 }
