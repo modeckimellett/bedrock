@@ -45,6 +45,8 @@ The backing Java class for the component should expose getters for the values th
         }
     }
 
+Because component classes are stateless and read-only, they should be immutable -- the class itself and fields should be marked `final`, and the class should contain no setters.
+
 ### Abstract Component Java Class
 
 The `AbstractComponent` class should be extended by all component backing classes.  This base class enforces the creation of a single argument constructor that takes a `ComponentRequest` argument, which is required by the `<ct:component/>` JSP tag to instantiate the component class and provide the required page context attributes.  The additional `ComponentNode` constructor allows for component classes to instantiate other component classes directly.
