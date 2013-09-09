@@ -6,6 +6,7 @@
 package com.citytechinc.cq.library.content.node.impl
 
 import com.citytechinc.cq.library.content.node.ComponentNode
+import com.citytechinc.cq.library.content.node.predicates.ComponentNodePropertyExistsPredicate
 import com.citytechinc.cq.library.testing.specs.AbstractCqSpec
 import com.google.common.base.Predicate
 import spock.lang.Unroll
@@ -167,6 +168,15 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
 
         expect:
         !ancestorNodeOptional.present
+    }
+
+    def "find descendants"() {
+        setup:
+        def node = getComponentNode("/content/citytechinc/jcr:content")
+        def predicate = new ComponentNodePropertyExistsPredicate("sling:resourceType")
+
+        expect:
+        node.findDescendants(predicate).size() == 3
     }
 
     @Unroll
@@ -331,7 +341,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
         def predicate = new Predicate<ComponentNode>() {
             @Override
             boolean apply(ComponentNode input) {
-                return input.resource.resourceType == "tew"
+                input.resource.resourceType == "tew"
             }
         }
 
@@ -371,7 +381,7 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
         def predicate = new Predicate<ComponentNode>() {
             @Override
             boolean apply(ComponentNode input) {
-                return input.resource.resourceType == "unknown"
+                input.resource.resourceType == "unknown"
             }
         }
 

@@ -80,6 +80,11 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
+    public final List<ComponentNode> findDescendants(final Predicate<ComponentNode> predicate) {
+        return componentNode.findDescendants(predicate);
+    }
+
+    @Override
     public final Optional<ComponentNode> findAncestorWithProperty(final String propertyName) {
         return componentNode.findAncestorWithProperty(propertyName);
     }

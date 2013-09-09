@@ -31,6 +31,14 @@ public interface ComponentNode extends BasicNode {
     Optional<ComponentNode> findAncestor(Predicate<ComponentNode> predicate);
 
     /**
+     * Get a list of descendant nodes that match the given predicate condition.
+     *
+     * @param predicate predicate to match descendant nodes against
+     * @return list of nodes that match the predicate condition
+     */
+    List<ComponentNode> findDescendants(Predicate<ComponentNode> predicate);
+
+    /**
      * Find the first ancestor node containing the given property name.
      *
      * @param propertyName property name to find on ancestor nodes

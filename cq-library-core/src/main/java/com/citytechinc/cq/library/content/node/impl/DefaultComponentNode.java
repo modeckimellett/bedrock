@@ -25,6 +25,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -71,6 +72,23 @@ public final class DefaultComponentNode implements ComponentNode {
     @Override
     public Optional<ComponentNode> findAncestor(final Predicate<ComponentNode> predicate) {
         return findAncestorForPredicate(predicate);
+    }
+
+    @Override
+    public List<ComponentNode> findDescendants(final Predicate<ComponentNode> predicate) {
+        final List<ComponentNode> descendantNodes = Lists.newArrayList();
+
+        final List<ComponentNode> nodes = getComponentNodes();
+
+        for (final ComponentNode node : nodes) {
+            if (predicate.apply(node)) {
+                descendantNodes.add(node);
+            }
+
+            descendantNodes.addAll(node.findDescendants(predicate));
+        }
+
+        return descendantNodes;
     }
 
     @Override
