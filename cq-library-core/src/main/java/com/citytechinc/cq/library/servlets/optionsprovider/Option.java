@@ -5,12 +5,17 @@
  */
 package com.citytechinc.cq.library.servlets.optionsprovider;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Text/value pair for displaying in a selection dialog widget, used in conjunction with the
+ * <code>AbstractOptionsProviderServlet</code>.
+ */
 public final class Option {
 
     public static final Comparator<Option> ALPHA = new Comparator<Option>() {
@@ -41,7 +46,7 @@ public final class Option {
      * @return list of options created from map
      */
     public static List<Option> fromMap(final Map<String, String> map) {
-        final List<Option> options = new ArrayList<Option>();
+        final List<Option> options = Lists.newArrayList();
 
         for (final Entry<String, String> entry : map.entrySet()) {
             final String value = entry.getKey();

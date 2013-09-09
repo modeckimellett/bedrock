@@ -21,6 +21,7 @@ import com.day.cq.wcm.api.msm.Blueprint;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
@@ -32,7 +33,6 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -72,7 +72,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
         final RangeIterator<Resource> iterator = resourceResolver.adaptTo(TagManager.class).find(path, tagIds.toArray(
             new String[tagIds.size()]), matchOne);
 
-        final List<PageDecorator> pages = new ArrayList<PageDecorator>();
+        final List<PageDecorator> pages = Lists.newArrayList();
 
         if (iterator != null) {
             while (iterator.hasNext()) {
@@ -110,7 +110,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
         stopwatch.start();
 
-        final List<PageDecorator> pages = new ArrayList<PageDecorator>();
+        final List<PageDecorator> pages = Lists.newArrayList();
 
         int count = 0;
 

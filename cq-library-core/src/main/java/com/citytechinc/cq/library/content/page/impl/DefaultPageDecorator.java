@@ -25,11 +25,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -424,7 +424,7 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     private List<PageDecorator> filterChildren(final Predicate<PageDecorator> predicate, final boolean deep) {
-        final List<PageDecorator> pages = new ArrayList<PageDecorator>();
+        final List<PageDecorator> pages = Lists.newArrayList();
 
         final Iterator<Page> children = page.listChildren(ALL_PAGES, deep);
 

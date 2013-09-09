@@ -8,12 +8,12 @@ package com.citytechinc.cq.library.services.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -121,7 +121,7 @@ public abstract class AbstractCacheService implements CacheService {
     protected abstract Logger getLogger();
 
     private static List<Field> collectFields(final Class clazz) {
-        final List<Field> fields = new ArrayList<Field>();
+        final List<Field> fields = Lists.newArrayList();
 
         if (clazz != null) {
             fields.addAll(Arrays.asList(clazz.getDeclaredFields()));

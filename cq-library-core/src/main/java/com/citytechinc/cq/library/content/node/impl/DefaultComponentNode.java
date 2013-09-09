@@ -78,9 +78,7 @@ public final class DefaultComponentNode implements ComponentNode {
     public List<ComponentNode> findDescendants(final Predicate<ComponentNode> predicate) {
         final List<ComponentNode> descendantNodes = Lists.newArrayList();
 
-        final List<ComponentNode> nodes = getComponentNodes();
-
-        for (final ComponentNode node : nodes) {
+        for (final ComponentNode node : getComponentNodes()) {
             if (predicate.apply(node)) {
                 descendantNodes.add(node);
             }
