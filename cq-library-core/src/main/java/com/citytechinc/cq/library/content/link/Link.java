@@ -46,6 +46,11 @@ public interface Link extends Serializable {
     List<String> getSelectors();
 
     /**
+     * @return suffix
+     */
+    String getSuffix();
+
+    /**
      * @return link target
      */
     String getTarget();

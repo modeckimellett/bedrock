@@ -15,6 +15,8 @@ class DefaultLink implements Link {
 
     String extension
 
+    String suffix
+
     String href
 
     List<String> selectors

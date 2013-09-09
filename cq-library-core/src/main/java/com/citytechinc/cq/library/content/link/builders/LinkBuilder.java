@@ -18,6 +18,8 @@ import com.citytechinc.cq.library.content.page.enums.TitleType;
 import com.day.cq.wcm.api.Page;
 import com.google.common.base.Charsets;
 import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import org.apache.sling.api.resource.Resource;
@@ -27,8 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +46,7 @@ public final class LinkBuilder {
 
     private static final String UTF_8 = Charsets.UTF_8.name();
 
-    private final List<NavigationLink> children = new ArrayList<NavigationLink>();
+    private final List<NavigationLink> children = Lists.newArrayList();
 
     private final boolean external;
 
@@ -54,9 +54,9 @@ public final class LinkBuilder {
 
     private final String path;
 
-    private final Map<String, String> properties = new HashMap<String, String>();
+    private final Map<String, String> properties = Maps.newHashMap();
 
-    private final List<String> selectors = new ArrayList<String>();
+    private final List<String> selectors = Lists.newArrayList();
 
     private boolean active;
 
@@ -69,6 +69,8 @@ public final class LinkBuilder {
     private int port;
 
     private boolean secure;
+
+    private String suffix = "";
 
     private String target = LinkTarget.SELF.getTarget();
 
@@ -339,6 +341,8 @@ public final class LinkBuilder {
             }
         }
 
+        builder.append(suffix);
+
         final String queryString = buildQueryString();
 
         builder.append(queryString);
@@ -347,7 +351,7 @@ public final class LinkBuilder {
 
         LOG.debug("build() href = {}", href);
 
-        return new DefaultLink(path, extension, href, selectors, queryString, external, target, title, properties);
+        return new DefaultLink(path, extension, suffix, href, selectors, queryString, external, target, title, properties);
     }
 
     /**
@@ -454,6 +458,18 @@ public final class LinkBuilder {
      */
     public LinkBuilder setSecure(final boolean secure) {
         this.secure = secure;
+
+        return this;
+    }
+
+    /**
+     * Set the suffix.
+     *
+     * @param suffix suffix
+     * @return builder
+     */
+    public LinkBuilder setSuffix(final String suffix) {
+        this.suffix = suffix;
 
         return this;
     }

@@ -104,6 +104,7 @@ class LinkBuilderSpec extends AbstractCqSpec {
         def builder = LinkBuilder.forPath("/content")
 
         builder.extension = extension
+        builder.suffix = suffix
         builder.host = host
         builder.port = port
         builder.secure = secure
@@ -114,13 +115,16 @@ class LinkBuilderSpec extends AbstractCqSpec {
         link.href == href
 
         where:
-        extension | host        | port | secure | href
-        null      | "localhost" | 0    | false  | "http://localhost/content.html"
-        ""        | "localhost" | 0    | false  | "http://localhost/content"
-        "html"    | "localhost" | 0    | false  | "http://localhost/content.html"
-        "json"    | "localhost" | 0    | false  | "http://localhost/content.json"
-        null      | "localhost" | 4502 | false  | "http://localhost:4502/content.html"
-        null      | "localhost" | 0    | true   | "https://localhost/content.html"
+        extension | suffix    | host        | port | secure | href
+        null      | ""        | "localhost" | 0    | false  | "http://localhost/content.html"
+        null      | "/suffix" | "localhost" | 0    | false  | "http://localhost/content.html/suffix"
+        ""        | ""        | "localhost" | 0    | false  | "http://localhost/content"
+        ""        | "/suffix" | "localhost" | 0    | false  | "http://localhost/content/suffix"
+        "html"    | ""        | "localhost" | 0    | false  | "http://localhost/content.html"
+        "html"    | "/suffix" | "localhost" | 0    | false  | "http://localhost/content.html/suffix"
+        "json"    | ""        | "localhost" | 0    | false  | "http://localhost/content.json"
+        null      | ""        | "localhost" | 4502 | false  | "http://localhost:4502/content.html"
+        null      | ""        | "localhost" | 0    | true   | "https://localhost/content.html"
     }
 
     @Unroll
