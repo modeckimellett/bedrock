@@ -11,6 +11,8 @@ import com.citytechinc.cq.library.servlets.AbstractComponentServlet;
 import com.day.cq.wcm.api.NameConstants;
 import com.day.cq.wcm.api.WCMMode;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -35,11 +37,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import static com.citytechinc.cq.library.constants.PathConstants.EXTENSION_HTML;
 
 /**
  * Retrieves HTML for all contained components on a Page.  This differs from the OOB Paragraph servlet,
@@ -81,16 +82,18 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
         try {
             final List<Paragraph> paragraphs = getParagraphs(request);
 
-            if (paragraphs.isEmpty()) {
-                LOG.debug("{} Paragraphs found on page", paragraphs.size());
+            if (paragraphs != null) {
+                LOG.debug("{} paragraphs found on page", paragraphs.size());
 
                 writeJsonResponse(slingResponse, ImmutableMap.of("paragraphs", paragraphs));
             } else {
-                LOG.info("Null returned indicating a lack of page or a lack of content");
+                LOG.info("null returned, indicating a lack of page or a lack of content");
+
                 slingResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } catch (RepositoryException e) {
-            LOG.error("RepositoryException hit when requesting paragraph HTML for contained components", e);
+            LOG.error("error requesting paragraph HTML for contained components", e);
+
             slingResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
@@ -110,43 +113,38 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
     @SuppressWarnings("deprecation")
     private List<Paragraph> getParagraphs(final ComponentServletRequest request)
         throws RepositoryException, ServletException, IOException {
-        /*
-         * Request the current page
-         */
+        // Request the current page
         final PageDecorator currentPage = request.getCurrentPage();
 
         if (currentPage == null) {
             LOG.info("The request is not within the context of a Page");
+
             return null;
         }
 
-        /*
-         * Request the page's content node
-         */
+        // Request the page's content node
         final Resource pageContentResource = currentPage.getContentResource();
 
         if (pageContentResource == null) {
             LOG.info("The requested resource does not have a child content resource");
+
             return null;
         }
 
-        /*
-         * Get a handle to the query manager
-         */
+        // Get a handle to the query manager
         final Session session = request.getResourceResolver().adaptTo(Session.class);
 
         final QueryManager queryManager = session.getWorkspace().getQueryManager();
 
-        /*
-         * Find all container components which are children of the requested resources content node
-         */
+        // Find all container components which are children of the requested resources content node
         final Set<String> containerComponentResourceTypes = getContainerComponents(queryManager);
 
         /*
          * Construct a query which will request all resources under the current page's content
          * node which are of a type indicated to be a container via the cq:isContainer property.
          */
-        final List<String> resourceTypeAttributeQueryStrings = new ArrayList<String>();
+        final List<String> resourceTypeAttributeQueryStrings = Lists.newArrayListWithExpectedSize(
+            containerComponentResourceTypes.size());
 
         for (final String curContainerResourceType : containerComponentResourceTypes) {
             resourceTypeAttributeQueryStrings.add("@sling:resourceType='" + curContainerResourceType + "'");
@@ -157,31 +155,27 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
         final String resourceQueryString = "/jcr:root" + pageContentResource
             .getPath() + "//element(*,nt:unstructured)[" + resourceTypeAttributeQueryString + "]";
 
-        LOG.debug("Resource Query String: {}", resourceQueryString);
+        LOG.debug("resource query string = {}", resourceQueryString);
 
-        /*
-         * Execute the query
-         */
+        // Execute the query
         final Query resourceQuery = queryManager.createQuery(resourceQueryString, Query.XPATH);
 
         final QueryResult resourceQueryResult = resourceQuery.execute();
         final NodeIterator resourceQueryResultIterator = resourceQueryResult.getNodes();
 
-        final List<Paragraph> retList = new ArrayList<Paragraph>();
+        final List<Paragraph> paragraphs = Lists.newArrayList();
 
         /*
          * Go through the direct children of each container resource, adding them to the
          * final list of Paragraphs
          */
         while (resourceQueryResultIterator.hasNext()) {
-            retList.addAll(getChildParagraphs(request, resourceQueryResultIterator.nextNode().getPath(),
+            paragraphs.addAll(getChildParagraphs(request, resourceQueryResultIterator.nextNode().getPath(),
                 containerComponentResourceTypes));
         }
 
-        /*
-         * Return the list of paragraphs
-         */
-        return retList;
+        // Return the list of paragraphs
+        return paragraphs;
     }
 
     /**
@@ -195,30 +189,25 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
      */
     private List<Paragraph> getChildParagraphs(final ComponentServletRequest request, final String parentPath,
         final Set<String> containerResourceTypes) throws ServletException, IOException {
-
-        final List<Paragraph> retList = new ArrayList<Paragraph>();
+        final List<Paragraph> paragraphs = Lists.newArrayList();
 
         final Resource parentResource = request.getResourceResolver().getResource(parentPath);
 
         if (parentResource != null) {
-            final Iterator<Resource> childResources = parentResource.listChildren();
-
-            while (childResources.hasNext()) {
-                final Resource curResource = childResources.next();
-
-                if (!containerResourceTypes.contains(curResource.getResourceType())) {
-                    retList.add(new Paragraph(curResource.getPath(), renderResourceHtml(curResource,
+            for (final Resource resource : parentResource.getChildren()) {
+                if (!containerResourceTypes.contains(resource.getResourceType())) {
+                    paragraphs.add(new Paragraph(resource.getPath(), renderResourceHtml(resource,
                         request.getSlingRequest(), request.getSlingResponse())));
                 }
             }
         }
 
-        return retList;
+        return paragraphs;
     }
 
     @SuppressWarnings("deprecation")
     private Set<String> getContainerComponents(final QueryManager queryManager) throws RepositoryException {
-        final Set<String> containerComponentSet = new HashSet<String>();
+        final Set<String> containerComponentSet = Sets.newHashSet();
 
         final Query containerComponentsFromLibsQuery = queryManager.createQuery(
             CONTAINER_COMPONENTS_FROM_LIBS_XPATH_QUERY, Query.XPATH);
@@ -233,14 +222,14 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
         final NodeIterator containerComponentsFromAppsQueryResultIterator = containerComponentsFromAppsQueryResult
             .getNodes();
 
-        LOG.debug("Query execution complete");
+        LOG.debug("query execution complete");
 
         while (containerComponentsFromLibsQueryResultIterator.hasNext()) {
             final Node curContainerComponentNode = containerComponentsFromLibsQueryResultIterator.nextNode();
 
             final String curNodePath = curContainerComponentNode.getPath();
 
-            LOG.debug("Adding {} from libs as a container resource type", curNodePath);
+            LOG.debug("adding {} from libs as a container resource type", curNodePath);
 
             if (curNodePath.startsWith(LIBS_PATH_STRING)) {
                 containerComponentSet.add(curNodePath.substring(LIBS_PATH_STRING.length()));
@@ -254,7 +243,7 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
 
             final String curNodePath = curContainerComponentNode.getPath();
 
-            LOG.debug("Adding {} from apps as a container resource type", curNodePath);
+            LOG.debug("adding {} from apps as a container resource type", curNodePath);
 
             if (curNodePath.startsWith(APPS_PATH_STRING)) {
                 containerComponentSet.add(curNodePath.substring(APPS_PATH_STRING.length()));
@@ -289,7 +278,8 @@ public final class ParagraphJsonServlet extends AbstractComponentServlet {
             }
         };
 
-        final RequestDispatcher requestDispatcher = request.getRequestDispatcher(resource.getPath() + ".html");
+        final RequestDispatcher requestDispatcher = request.getRequestDispatcher(
+            resource.getPath() + "." + EXTENSION_HTML);
 
         requestDispatcher.include(request, responseWrapper);
 
