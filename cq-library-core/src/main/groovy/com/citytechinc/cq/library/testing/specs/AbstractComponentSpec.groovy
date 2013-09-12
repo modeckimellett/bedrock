@@ -10,7 +10,7 @@ import com.citytechinc.cq.library.testing.builders.ComponentRequestBuilder
 /**
  * Spock specification for testing CQ components with builder for creating <code>ComponentRequest</code> instances.
  */
-class AbstractComponentSpec extends AbstractCqSpec {
+abstract class AbstractComponentSpec extends AbstractCqSpec {
 
     /**
      * Get a component request builder for the current session.
