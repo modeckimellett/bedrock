@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,29 +47,30 @@ public final class SelectiveReplicationServlet extends AbstractJsonResponseServl
     private static final long serialVersionUID = 1L;
 
     @Reference
-    private AgentManager agentManager;
+    protected AgentManager agentManager;
 
     @Reference
-    private SelectiveReplicationService selectiveReplicationService;
+    protected SelectiveReplicationService selectiveReplicationService;
 
     @Override
     protected void doPost(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
         throws ServletException, IOException {
         final String[] paths = request.getParameterValues(PARAMETER_PATHS);
-        final String action = request.getParameter(PARAMETER_ACTION);
         final String[] agentIds = request.getParameterValues(PARAMETER_AGENT_IDS);
 
-        checkArgument(paths != null, "paths parameter must be non-null");
-        checkArgument(action != null, "action parameter must be non null");
+        checkArgument(!(paths == null || paths.length == 0), "paths parameter must be non-null and non-empty");
         checkArgument(!(agentIds == null || agentIds.length == 0), "agentIds parameter must be non-null and non-empty");
 
-        final Set<String> uniquePaths = Sets.newHashSet(paths);
-        final Set<String> uniqueAgentIds = Sets.newHashSet(agentIds);
+        final String action = request.getParameter(PARAMETER_ACTION);
+        final ReplicationActionType actionType = ReplicationActionType.fromName(action);
+
+        checkArgument(actionType != null, "invalid action parameter = %s", action);
+
+        final Set<String> uniquePaths = Sets.newLinkedHashSet(Arrays.asList(paths));
+        final Set<String> uniqueAgentIds = Sets.newLinkedHashSet(Arrays.asList(agentIds));
 
         checkArgument(agentsExist(uniqueAgentIds),
             "invalid agent IDs, one or more of the provided agent IDs does not exist");
-
-        final ReplicationActionType actionType = ReplicationActionType.fromName(action);
 
         final Session session = request.getResourceResolver().adaptTo(Session.class);
 
