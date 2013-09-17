@@ -51,12 +51,12 @@ public final class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
         widgetParameters.setAllowBlank(!getIsRequiredForField());
         widgetParameters.setDefaultValue(getDefaultValueForField());
         widgetParameters.setListeners(getListeners());
-        widgetParameters.setContainedElements(buildWidgetCollection(multiCompositeFieldAnnotation));
+        widgetParameters.setContainedElements(buildWidgetCollection());
 
         return new MultiCompositeFieldWidget(widgetParameters);
     }
 
-    private List<DialogElement> buildWidgetCollection(final MultiCompositeField multiCompositeFieldAnnotation)
+    private List<DialogElement> buildWidgetCollection()
         throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException, CannotCompileException,
         NoSuchFieldException, InstantiationException, IllegalAccessException, InvocationTargetException,
         NoSuchMethodException {

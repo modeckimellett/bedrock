@@ -21,7 +21,7 @@ public abstract class AbstractComponentTag extends TagSupport {
     /**
      * Should property value be inherited? Defaults to false.
      */
-    protected String inherit;
+    private String inherit;
 
     public final String getInherit() {
         return inherit;

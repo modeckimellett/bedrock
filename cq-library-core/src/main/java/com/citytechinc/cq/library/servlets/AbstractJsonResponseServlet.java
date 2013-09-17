@@ -32,6 +32,8 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    private static final String DATE_FORMAT = "MM/dd/yyyy hh:mm aaa z";
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -41,7 +43,7 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      * @param object object to be written as JSON
      */
     protected final void writeJsonResponse(final SlingHttpServletResponse response, final Object object) {
-        writeJsonResponseWithEnums(response, object, false, Locale.US);
+        writeJsonResponseWithEnums(response, object, false, DATE_FORMAT, Locale.US);
     }
 
     /**
@@ -76,7 +78,7 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      * @param object enum object to be written as JSON
      */
     protected final void writeJsonResponseEnumStrings(final SlingHttpServletResponse response, final Object object) {
-        writeJsonResponseWithEnums(response, object, true, Locale.US);
+        writeJsonResponseWithEnums(response, object, true, DATE_FORMAT, Locale.US);
     }
 
     /**
@@ -102,11 +104,6 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
     protected final void writeJsonResponseEnumStrings(final SlingHttpServletResponse response, final Object object,
         final String dateFormat, final Locale locale) {
         writeJsonResponseWithEnums(response, object, true, dateFormat, locale);
-    }
-
-    private void writeJsonResponseWithEnums(final SlingHttpServletResponse response, final Object object,
-        final boolean useStrings, final Locale locale) {
-        writeJsonResponseWithEnums(response, object, useStrings, "MM/dd/yyyy hh:mm aaa z", locale);
     }
 
     private void writeJsonResponseWithEnums(final SlingHttpServletResponse response, final Object object,

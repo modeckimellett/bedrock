@@ -15,6 +15,8 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Base class for providing a list of "options" to a component dialog widget.  An option is simply a text/value pair to
  * be rendered in a selection box.  The implementing class determines how these options are retrieved from the
@@ -41,16 +43,18 @@ public abstract class AbstractOptionsProviderServlet extends AbstractComponentSe
     protected abstract Optional<String> getOptionsRoot(final ComponentServletRequest request);
 
     protected final void processGet(final ComponentServletRequest request) throws ServletException, IOException {
-        final List<Option> result = getOptions(request);
+        final List<Option> options = getOptions(request);
+
+        checkNotNull(options, "option list must not be null");
 
         final Optional<String> optionsRoot = getOptionsRoot(request);
 
         final SlingHttpServletResponse slingResponse = request.getSlingResponse();
 
         if (optionsRoot.isPresent()) {
-            writeJsonResponse(slingResponse, ImmutableMap.of(optionsRoot.get(), result));
+            writeJsonResponse(slingResponse, ImmutableMap.of(optionsRoot.get(), options));
         } else {
-            writeJsonResponse(slingResponse, result);
+            writeJsonResponse(slingResponse, options);
         }
     }
 }

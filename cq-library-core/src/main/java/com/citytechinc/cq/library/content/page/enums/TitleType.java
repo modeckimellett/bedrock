@@ -27,7 +27,7 @@ public enum TitleType {
      */
     NAVIGATION_TITLE(NameConstants.PN_NAV_TITLE);
 
-    private String propertyName;
+    private final String propertyName;
 
     private TitleType(final String propertyName) {
         this.propertyName = propertyName;
