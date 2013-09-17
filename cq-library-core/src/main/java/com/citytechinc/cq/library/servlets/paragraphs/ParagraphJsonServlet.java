@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.citytechinc.cq.library.constants.PathConstants.EXTENSION_HTML;
+import static com.citytechinc.cq.library.constants.PathConstants.EXTENSION_JSON;
 
 /**
  * Retrieves HTML for all contained components on a Page.  This differs from the OOB Paragraph servlet,
@@ -52,13 +53,9 @@ import static com.citytechinc.cq.library.constants.PathConstants.EXTENSION_HTML;
  * This Servlet is suitable for overriding the OOB behavior of xtypes such as paragraphreference, causing it to pull all
  * components on a page as opposed to the top level components.
  */
-@SlingServlet(resourceTypes = { NameConstants.NT_PAGE }, selectors = { ParagraphJsonServlet.SELECTOR },
-    extensions = { ParagraphJsonServlet.EXTENSION }, methods = { "GET" })
+@SlingServlet(resourceTypes = { NameConstants.NT_PAGE }, selectors = { "ctparagraphs" },
+    extensions = { EXTENSION_JSON }, methods = { "GET" })
 public final class ParagraphJsonServlet extends AbstractComponentServlet {
-
-    public static final String SELECTOR = "ctparagraphs";
-
-    public static final String EXTENSION = "json";
 
     private static final long serialVersionUID = 1L;
 

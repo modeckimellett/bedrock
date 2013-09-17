@@ -83,30 +83,21 @@ public final class DefaultComponentServletRequest implements ComponentServletReq
         final Page page = pageManager.getContainingPage(resource);
 
         currentPage = pageManager.getPage(page);
-
         componentNode = resource.adaptTo(ComponentNode.class);
     }
 
     protected DefaultComponentServletRequest(final PageContext pageContext) {
-        this(pageContext, null);
-    }
-
-    protected DefaultComponentServletRequest(final PageContext pageContext,
-        final ResourceResolver adminResourceResolver) {
         slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(ATTR_SLING_REQUEST);
         slingResponse = (SlingHttpServletResponse) pageContext.getAttribute(ATTR_SLING_RESPONSE);
-
         resource = (Resource) pageContext.getAttribute(DEFAULT_RESOURCE_NAME);
-        resourceResolver = adminResourceResolver == null ? resource.getResourceResolver() : adminResourceResolver;
+        resourceResolver = resource.getResourceResolver();
         pageManager = resourceResolver.adaptTo(PageManagerDecorator.class);
 
         final Page page = (Page) pageContext.getAttribute(ATTR_CURRENT_PAGE);
 
         currentPage = pageManager.getPage(page);
-
         currentNode = (Node) pageContext.getAttribute(DEFAULT_NODE_NAME);
         properties = (ValueMap) pageContext.getAttribute(DEFAULT_PROPERTIES_NAME);
-
         componentNode = resource.adaptTo(ComponentNode.class);
     }
 
