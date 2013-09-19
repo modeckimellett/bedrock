@@ -6,7 +6,8 @@
 package com.citytechinc.cq.library.tags;
 
 import com.citytechinc.cq.library.content.node.ComponentNode;
-import org.apache.commons.lang3.StringEscapeUtils;
+import com.google.common.escape.Escaper;
+import com.google.common.xml.XmlEscapers;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ public final class PropertyTag extends AbstractPropertyTag {
     private static final Logger LOG = LoggerFactory.getLogger(PropertyTag.class);
 
     private static final long serialVersionUID = 1L;
+
+    private static final Escaper ESCAPER = XmlEscapers.xmlContentEscaper();
 
     /**
      * Default value if property does not exist.
@@ -49,7 +52,7 @@ public final class PropertyTag extends AbstractPropertyTag {
 
         try {
             if (escapeXml) {
-                pageContext.getOut().write(StringEscapeUtils.escapeXml(value));
+                pageContext.getOut().write(ESCAPER.escape(value));
             } else {
                 pageContext.getOut().write(value);
             }

@@ -65,9 +65,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
         LOG.debug("findPages() path = {}, tag IDs = {}", path, tagIds);
 
-        final Stopwatch stopwatch = new Stopwatch();
-
-        stopwatch.start();
+        final Stopwatch stopwatch = Stopwatch.createStarted();
 
         final RangeIterator<Resource> iterator = resourceResolver.adaptTo(TagManager.class).find(path, tagIds.toArray(
             new String[tagIds.size()]), matchOne);
@@ -106,9 +104,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
         LOG.debug("search() query statement = {}", query.getStatement());
 
-        final Stopwatch stopwatch = new Stopwatch();
-
-        stopwatch.start();
+        final Stopwatch stopwatch = Stopwatch.createStarted();
 
         final List<PageDecorator> pages = Lists.newArrayList();
 
@@ -169,9 +165,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
         final PageDecorator page = getPage(path);
 
-        final Stopwatch stopwatch = new Stopwatch();
-
-        stopwatch.start();
+        final Stopwatch stopwatch = Stopwatch.createStarted();
 
         final List<PageDecorator> result;
 

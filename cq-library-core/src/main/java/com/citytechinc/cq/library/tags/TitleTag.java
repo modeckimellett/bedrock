@@ -6,6 +6,8 @@
 package com.citytechinc.cq.library.tags;
 
 import com.day.cq.wcm.api.Page;
+import com.google.common.escape.Escaper;
+import com.google.common.html.HtmlEscapers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +15,6 @@ import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
  * Render the title for the current page.
@@ -28,6 +29,8 @@ public final class TitleTag extends AbstractPropertyTag {
 
     private static final String TAG_END = "</title>";
 
+    private static final Escaper ESCAPER = HtmlEscapers.htmlEscaper();
+
     private String suffix;
 
     @Override
@@ -41,9 +44,9 @@ public final class TitleTag extends AbstractPropertyTag {
         builder.append(TAG_START);
 
         if (hasPropertyName()) {
-            builder.append(escapeHtml4(currentPage.getProperties().get(propertyName, title)));
+            builder.append(ESCAPER.escape(currentPage.getProperties().get(propertyName, title)));
         } else {
-            builder.append(escapeHtml4(title));
+            builder.append(ESCAPER.escape(title));
         }
 
         if (!isNullOrEmpty(suffix)) {

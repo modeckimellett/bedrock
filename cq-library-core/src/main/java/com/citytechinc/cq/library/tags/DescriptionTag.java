@@ -7,6 +7,8 @@ package com.citytechinc.cq.library.tags;
 
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.Page;
+import com.google.common.escape.Escaper;
+import com.google.common.html.HtmlEscapers;
 import org.apache.sling.api.resource.ValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,6 @@ import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
  * Render the description for the current page.
@@ -29,6 +30,8 @@ public final class DescriptionTag extends AbstractPropertyTag {
     private static final String TAG_START = "<meta name=\"description\" content=\"";
 
     private static final String TAG_END = "\"/>";
+
+    private static final Escaper ESCAPER = HtmlEscapers.htmlEscaper();
 
     private String suffix;
 
@@ -51,7 +54,7 @@ public final class DescriptionTag extends AbstractPropertyTag {
         }
 
         if (!isNullOrEmpty(description)) {
-            builder.append(escapeHtml4(description));
+            builder.append(ESCAPER.escape(description));
 
             if (!isNullOrEmpty(suffix)) {
                 builder.append(suffix);
