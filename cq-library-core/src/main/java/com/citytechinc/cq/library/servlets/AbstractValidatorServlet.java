@@ -5,6 +5,7 @@
  */
 package com.citytechinc.cq.library.servlets;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Collections;
 
 /**
  * Validators extending this class need to add the following SCR annotation to register the servlet:
@@ -50,7 +50,7 @@ public abstract class AbstractValidatorServlet extends AbstractJsonResponseServl
 
         LOG.debug("doGet() path = {}, is valid = {}", path, valid);
 
-        writeJsonResponse(response, Collections.singletonMap("valid", valid));
+        writeJsonResponse(response, ImmutableMap.of("valid", valid));
     }
 
     /**

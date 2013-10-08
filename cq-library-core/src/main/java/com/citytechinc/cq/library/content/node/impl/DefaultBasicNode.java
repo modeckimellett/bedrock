@@ -219,7 +219,7 @@ public final class DefaultBasicNode implements BasicNode {
 
     @Override
     public Optional<String> getImageSource(final String name, final int width) {
-        final String imageSource;
+        final Optional<String> optionalImageSource;
 
         if (isHasImage(name)) {
             final StringBuilder builder = new StringBuilder();
@@ -242,12 +242,12 @@ public final class DefaultBasicNode implements BasicNode {
 
             builder.append('.').append(EXTENSION_PNG);
 
-            imageSource = builder.toString();
+            optionalImageSource = Optional.of(builder.toString());
         } else {
-            imageSource = null;
+            optionalImageSource = Optional.absent();
         }
 
-        return Optional.fromNullable(imageSource);
+        return optionalImageSource;
     }
 
     @Override
