@@ -19,7 +19,6 @@ import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.commons.inherit.InheritanceValueMap;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.designer.Designer;
-import com.day.cq.wcm.api.designer.Style;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -244,9 +243,8 @@ public final class DefaultComponentNode implements ComponentNode {
     public Optional<BasicNode> getDesignNode() {
         final ResourceResolver resourceResolver = resource.getResourceResolver();
 
-        final Style style = resourceResolver.adaptTo(Designer.class).getStyle(resource);
-
-        final Resource styleResource = resourceResolver.getResource(style.getPath());
+        final Resource styleResource = resourceResolver.getResource(resourceResolver.adaptTo(Designer.class).getStyle(
+            resource).getPath());
 
         return Optional.fromNullable(styleResource).transform(RESOURCE_TO_BASIC_NODE);
     }

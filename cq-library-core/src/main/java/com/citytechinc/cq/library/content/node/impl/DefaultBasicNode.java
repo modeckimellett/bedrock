@@ -140,9 +140,7 @@ public final class DefaultBasicNode implements BasicNode {
         if (path.isEmpty()) {
             pageOptional = Optional.absent();
         } else {
-            final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
-
-            pageOptional = pageManager.getPageOptional(path);
+            pageOptional = resource.getResourceResolver().adaptTo(PageManagerDecorator.class).getPageOptional(path);
         }
 
         return pageOptional;

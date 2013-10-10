@@ -22,11 +22,11 @@ import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.Template;
 import com.day.cq.wcm.api.WCMException;
 import com.google.common.base.Function;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 
@@ -415,7 +415,8 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("path", getPath()).append("title", getTitle()).toString();
+        return Objects.toStringHelper(this).add("path", getPath()).add("title", getTitle())
+            .toString();
     }
 
     @Override
@@ -442,7 +443,15 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     private Optional<String> getImageSource(final Function<ComponentNode, Optional<String>> function) {
-        return componentNodeOptional.transform(function).or(Optional.<String>absent());
+        final Optional<String> imageSourceOptional;
+
+        if (componentNodeOptional.isPresent()) {
+            imageSourceOptional = function.apply(componentNodeOptional.get());
+        } else {
+            imageSourceOptional = Optional.absent();
+        }
+
+        return imageSourceOptional;
     }
 
     private PageManagerDecorator getPageManagerDecorator() {
