@@ -275,6 +275,11 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
+    public NavigationLink getNavigationLink(final boolean isActive) {
+        return LinkBuilder.forPage(this, false, TitleType.NAVIGATION_TITLE).setActive(isActive).buildNavigationLink();
+    }
+
+    @Override
     public String getNavigationTitle() {
         return page.getNavigationTitle();
     }

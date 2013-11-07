@@ -114,6 +114,15 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
     NavigationLink getNavigationLink();
 
     /**
+     * Get a navigation link for this page containing an active state.  The returned link will use the navigation title
+     * as the link title, defaulting to the JCR title if it does not exist.
+     *
+     * @param isActive active state to be set on returned link
+     * @return navigation link
+     */
+    NavigationLink getNavigationLink(boolean isActive);
+
+    /**
      * Get the navigation title for this page.
      *
      * @return optional navigation title
