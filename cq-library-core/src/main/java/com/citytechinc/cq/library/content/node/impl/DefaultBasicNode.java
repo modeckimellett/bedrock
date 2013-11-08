@@ -35,6 +35,8 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -107,6 +109,14 @@ public final class DefaultBasicNode implements BasicNode {
         final Optional<String> pathOptional = get(propertyName);
 
         return pathOptional.transform(PATH_TO_LINK);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getAsList(final String propertyName, final Class<T> type) {
+        final T[] defaultValue = (T[]) Array.newInstance(type, 0);
+
+        return Arrays.asList(properties.get(propertyName, defaultValue));
     }
 
     @Override

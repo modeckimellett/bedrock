@@ -14,7 +14,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     def setupSpec() {
         pageBuilder.content {
             citytechinc("CITYTECH, Inc.") {
-                "jcr:content"(otherPagePath: "/content/ales/esb", externalPath: "http://www.reddit.com") {
+                "jcr:content"(otherPagePath: "/content/ales/esb", externalPath: "http://www.reddit.com", multiValue: ["one", "two"]) {
                     image(fileReference: "/content/dam/image")
                     secondimage(fileReference: "/content/dam/image")
                     nsfwImage(fileReference: "omg.png")
@@ -63,6 +63,14 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         expect:
         map["jcr:title"] == "CITYTECH, Inc."
         map["otherPagePath"] == "/content/ales/esb"
+    }
+
+    def "get as list"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        node.getAsList("multiValue", String) == ["one", "two"]
     }
 
     def "get optional"() {

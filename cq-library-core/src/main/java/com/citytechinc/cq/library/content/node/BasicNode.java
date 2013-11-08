@@ -81,6 +81,8 @@ public interface BasicNode extends Linkable, ImageSource {
      */
     Optional<Link> getAsLink(String propertyName);
 
+    <T> List<T> getAsList(String propertyName, Class<T> type);
+
     /**
      * Given a property on this resource containing the path of another resource, get an <code>Optional</code>
      * containing the mapped href to the resource.

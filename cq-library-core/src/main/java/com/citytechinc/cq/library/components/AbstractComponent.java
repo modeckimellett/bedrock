@@ -131,6 +131,11 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
+    public final <T> List<T> getAsList(final String propertyName, final Class<T> type) {
+        return componentNode.getAsList(propertyName, type);
+    }
+
+    @Override
     public final Optional<Link> getAsLinkInherited(final String propertyName) {
         return componentNode.getAsLinkInherited(propertyName);
     }

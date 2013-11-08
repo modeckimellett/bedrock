@@ -40,7 +40,7 @@ class DefaultPageManagerDecoratorSpec extends AbstractCqSpec {
                 }
             }
             other {
-                "jcr:content"("cq:template": "template", "cq:tags": ["/etc/tags/tag1", "/etc/tags/tag2"].toArray(new String[0]))
+                "jcr:content"("cq:template": "template", "cq:tags": ["/etc/tags/tag1", "/etc/tags/tag2"])
             }
             hierarchy {
                 one {

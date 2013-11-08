@@ -134,6 +134,11 @@ public final class DefaultComponentNode implements ComponentNode {
     }
 
     @Override
+    public <T> List<T> getAsList(final String propertyName, final Class<T> type) {
+        return basicNode.getAsList(propertyName, type);
+    }
+
+    @Override
     public Optional<Link> getAsLinkInherited(final String propertyName) {
         final Optional<String> pathOptional = getInherited(propertyName);
 
