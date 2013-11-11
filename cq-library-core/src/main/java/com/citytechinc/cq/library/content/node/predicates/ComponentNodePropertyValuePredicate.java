@@ -6,8 +6,8 @@
 package com.citytechinc.cq.library.content.node.predicates;
 
 import com.citytechinc.cq.library.content.node.ComponentNode;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import org.apache.sling.api.resource.ValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,12 +30,12 @@ public final class ComponentNodePropertyValuePredicate<T> implements Predicate<C
     public boolean apply(final ComponentNode componentNode) {
         checkNotNull(componentNode);
 
-        final Optional<T> optional = componentNode.get(propertyName);
-
         final boolean result;
 
-        if (optional.isPresent()) {
-            result = optional.get().equals(propertyValue);
+        final ValueMap properties = componentNode.asMap();
+
+        if (properties.containsKey(propertyName)) {
+            result = properties.get(propertyName, propertyValue.getClass()).equals(propertyValue);
 
             LOG.debug("apply() property name = {}, value = {}, result = {} for component node = {}",
                 new Object[]{ propertyName, propertyValue, result, componentNode });

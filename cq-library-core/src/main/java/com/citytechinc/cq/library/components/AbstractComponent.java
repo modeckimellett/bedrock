@@ -96,13 +96,13 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
-    public final <T> Optional<T> get(final String name) {
-        return componentNode.get(name);
+    public final <T> T get(final String name, final T defaultValue) {
+        return componentNode.get(name, defaultValue);
     }
 
     @Override
-    public final <T> T get(final String name, final T defaultValue) {
-        return componentNode.get(name, defaultValue);
+    public final <T> Optional<T> get(final String propertyName, final Class<T> type) {
+        return componentNode.get(propertyName, type);
     }
 
     @Override
@@ -111,8 +111,13 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
-    public final String getAsHref(final String propertyName, final String defaultValue) {
-        return componentNode.getAsHref(propertyName, defaultValue);
+    public final Optional<String> getAsHref(final String propertyName, final boolean strict) {
+        return componentNode.getAsHref(propertyName, strict);
+    }
+
+    @Override
+    public final Optional<String> getAsHref(final String propertyName, final boolean strict, final boolean mapped) {
+        return componentNode.getAsHref(propertyName, strict, mapped);
     }
 
     @Override
@@ -121,13 +126,29 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
-    public final String getAsHrefInherited(final String propertyName, final String defaultValue) {
-        return componentNode.getAsHrefInherited(propertyName, defaultValue);
+    public final Optional<String> getAsHrefInherited(final String propertyName, final boolean strict) {
+        return componentNode.getAsHrefInherited(propertyName, strict);
+    }
+
+    @Override
+    public final Optional<String> getAsHrefInherited(final String propertyName, final boolean strict,
+        final boolean mapped) {
+        return componentNode.getAsHrefInherited(propertyName, strict, mapped);
     }
 
     @Override
     public final Optional<Link> getAsLink(final String propertyName) {
         return componentNode.getAsLink(propertyName);
+    }
+
+    @Override
+    public final Optional<Link> getAsLink(final String propertyName, final boolean strict) {
+        return componentNode.getAsLink(propertyName, strict);
+    }
+
+    @Override
+    public final Optional<Link> getAsLink(final String propertyName, final boolean strict, final boolean mapped) {
+        return componentNode.getAsLink(propertyName, strict, mapped);
     }
 
     @Override
@@ -141,33 +162,19 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
-    public final Optional<String> getAsMappedHref(final String propertyName) {
-        return componentNode.getAsMappedHref(propertyName);
+    public final Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict) {
+        return componentNode.getAsLinkInherited(propertyName, strict);
     }
 
     @Override
-    public final String getAsMappedHref(final String propertyName, final String defaultValue) {
-        return componentNode.getAsMappedHref(propertyName, defaultValue);
+    public final Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict,
+        final boolean mapped) {
+        return componentNode.getAsLinkInherited(propertyName, strict, mapped);
     }
 
     @Override
-    public final Optional<String> getAsMappedHrefInherited(final String propertyName) {
-        return componentNode.getAsMappedHrefInherited(propertyName);
-    }
-
-    @Override
-    public final String getAsMappedHrefInherited(final String propertyName, final String defaultValue) {
-        return componentNode.getAsMappedHrefInherited(propertyName, defaultValue);
-    }
-
-    @Override
-    public final Optional<Link> getAsMappedLink(final String propertyName) {
-        return componentNode.getAsMappedLink(propertyName);
-    }
-
-    @Override
-    public final Optional<Link> getAsMappedLinkInherited(final String propertyName) {
-        return componentNode.getAsMappedLinkInherited(propertyName);
+    public final <T> List<T> getAsListInherited(final String propertyName, final Class<T> type) {
+        return componentNode.getAsListInherited(propertyName, type);
     }
 
     @Override
@@ -225,6 +232,11 @@ public abstract class AbstractComponent implements ComponentNode {
     @Override
     public String getHref() {
         return componentNode.getHref();
+    }
+
+    @Override
+    public final String getHref(final boolean mapped) {
+        return componentNode.getHref(mapped);
     }
 
     @Override
@@ -313,8 +325,8 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
-    public final <T> Optional<T> getInherited(final String propertyName) {
-        return componentNode.getInherited(propertyName);
+    public final <T> Optional<T> getInherited(final String propertyName, final Class<T> type) {
+        return componentNode.getInherited(propertyName, type);
     }
 
     /**
@@ -329,23 +341,18 @@ public abstract class AbstractComponent implements ComponentNode {
     }
 
     @Override
+    public final Link getLink(final boolean mapped) {
+        return componentNode.getLink(mapped);
+    }
+
+    @Override
     public final LinkBuilder getLinkBuilder() {
         return componentNode.getLinkBuilder();
     }
 
     @Override
-    public final String getMappedHref() {
-        return componentNode.getMappedHref();
-    }
-
-    @Override
-    public final Link getMappedLink() {
-        return componentNode.getMappedLink();
-    }
-
-    @Override
-    public final LinkBuilder getMappedLinkBuilder() {
-        return componentNode.getMappedLinkBuilder();
+    public final LinkBuilder getLinkBuilder(final boolean mapped) {
+        return componentNode.getLinkBuilder(mapped);
     }
 
     @Override

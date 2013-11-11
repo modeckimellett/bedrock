@@ -76,6 +76,12 @@ public final class LinkBuilder {
 
     private String title = "";
 
+    private LinkBuilder(final ResourceResolver resourceResolver, final String path) {
+        this.path = path;
+
+        external = resourceResolver.getResource(path) == null;
+    }
+
     private LinkBuilder(final String path) {
         this.path = path;
 
@@ -127,27 +133,27 @@ public final class LinkBuilder {
      * rather than the page path.
      *
      * @param page page
-     * @param mappedPath if true, link path will be mapped through resource resolver
+     * @param mapped if true, link path will be mapped through resource resolver
      * @return builder containing the mapped path of the given page
      */
-    public static LinkBuilder forPage(final Page page, final boolean mappedPath) {
-        return forPage(page, mappedPath, TitleType.TITLE);
+    public static LinkBuilder forPage(final Page page, final boolean mapped) {
+        return forPage(page, mapped, TitleType.TITLE);
     }
 
     /**
      * Get a builder instance for a page using the specified title type on the returned builder.
      *
      * @param page page
-     * @param mappedPath if true, link path will be mapped through resource resolver
+     * @param mapped if true, link path will be mapped through resource resolver
      * @param titleType type of page title to set on the builder
      * @return builder containing the path and title of the given page
      */
-    public static LinkBuilder forPage(final Page page, final boolean mappedPath, final TitleType titleType) {
+    public static LinkBuilder forPage(final Page page, final boolean mapped, final TitleType titleType) {
         checkNotNull(page);
 
         final String title = page.getProperties().get(titleType.getPropertyName(), page.getTitle());
 
-        return new LinkBuilder(getPagePath(page, mappedPath)).setTitle(title);
+        return new LinkBuilder(getPagePath(page, mapped)).setTitle(title);
     }
 
     /**
@@ -160,6 +166,21 @@ public final class LinkBuilder {
         checkNotNull(path);
 
         return new LinkBuilder(path);
+    }
+
+    /**
+     * Get a builder instance for a path, using strict resource resolution to determine if the path is external.  Links
+     * will only be considered external if the given path does not resolve to a resource.
+     *
+     * @param resourceResolver resource resolver
+     * @param path content or external path
+     * @return builder containing the given path
+     */
+    public static LinkBuilder forPath(final ResourceResolver resourceResolver, final String path) {
+        checkNotNull(resourceResolver);
+        checkNotNull(path);
+
+        return new LinkBuilder(resourceResolver, path);
     }
 
     /**
@@ -176,15 +197,15 @@ public final class LinkBuilder {
      * Get a builder instance for a resource using the mapped path on the returned builder.
      *
      * @param resource resource
-     * @param mappedPath if true, link path will be mapped through resource resolver
+     * @param mapped if true, link path will be mapped through resource resolver
      * @return builder containing the mapped path of the given resource
      */
-    public static LinkBuilder forResource(final Resource resource, final boolean mappedPath) {
+    public static LinkBuilder forResource(final Resource resource, final boolean mapped) {
         checkNotNull(resource);
 
         final String path;
 
-        if (mappedPath) {
+        if (mapped) {
             final ResourceResolver resourceResolver = resource.getResourceResolver();
 
             path = resourceResolver.map(resource.getPath());
@@ -333,11 +354,15 @@ public final class LinkBuilder {
         if (path.contains(PathConstants.SELECTOR)) {
             extension = path.substring(path.indexOf(PathConstants.SELECTOR) + 1);
         } else {
-            extension = this.extension == null ? PathConstants.EXTENSION_HTML : this.extension;
+            if (external) {
+                extension = "";
+            } else {
+                extension = this.extension == null ? PathConstants.EXTENSION_HTML : this.extension;
 
-            if (!external && !extension.isEmpty()) {
-                builder.append('.');
-                builder.append(extension);
+                if (!extension.isEmpty()) {
+                    builder.append('.');
+                    builder.append(extension);
+                }
             }
         }
 
@@ -351,7 +376,8 @@ public final class LinkBuilder {
 
         LOG.debug("build() href = {}", href);
 
-        return new DefaultLink(path, extension, suffix, href, selectors, queryString, external, target, title, properties);
+        return new DefaultLink(path, extension, suffix, href, selectors, queryString, external, target, title,
+            properties);
     }
 
     /**

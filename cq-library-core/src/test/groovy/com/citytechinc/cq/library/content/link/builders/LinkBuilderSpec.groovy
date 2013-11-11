@@ -128,6 +128,23 @@ class LinkBuilderSpec extends AbstractCqSpec {
     }
 
     @Unroll
+    def "build link for strict path"() {
+        setup:
+        def builder = LinkBuilder.forPath(resourceResolver, path)
+
+        expect:
+        builder.href == href
+
+        where:
+        path                          | href
+        "/content/global"             | "/content/global.html"
+        "/content/global/jcr:content" | "/content/global/jcr:content.html"
+        "/content/page"               | "/content/page"
+        "etc"                         | "etc"
+        "/webapp"                     | "/webapp"
+    }
+
+    @Unroll
     def "build link for path with selectors"() {
         setup:
         def link = LinkBuilder.forPath(path).addSelectors(selectors).build()

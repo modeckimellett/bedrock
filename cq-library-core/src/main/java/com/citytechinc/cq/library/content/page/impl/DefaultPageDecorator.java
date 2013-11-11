@@ -171,7 +171,12 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public String getHref() {
-        return getLink().getHref();
+        return getHref(false);
+    }
+
+    @Override
+    public String getHref(final boolean mapped) {
+        return getLink(mapped).getHref();
     }
 
     @Override
@@ -236,32 +241,27 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public Link getLink() {
-        return getLinkBuilder().build();
+        return getLink(false);
+    }
+
+    @Override
+    public Link getLink(final boolean mapped) {
+        return getLinkBuilder(mapped).build();
     }
 
     @Override
     public LinkBuilder getLinkBuilder() {
-        return LinkBuilder.forPage(this);
+        return getLinkBuilder(false);
+    }
+
+    @Override
+    public LinkBuilder getLinkBuilder(final boolean mapped) {
+        return LinkBuilder.forPage(this, mapped);
     }
 
     @Override
     public String getLockOwner() {
         return page.getLockOwner();
-    }
-
-    @Override
-    public String getMappedHref() {
-        return getMappedLink().getHref();
-    }
-
-    @Override
-    public Link getMappedLink() {
-        return getMappedLinkBuilder().build();
-    }
-
-    @Override
-    public LinkBuilder getMappedLinkBuilder() {
-        return LinkBuilder.forPage(this, true);
     }
 
     @Override

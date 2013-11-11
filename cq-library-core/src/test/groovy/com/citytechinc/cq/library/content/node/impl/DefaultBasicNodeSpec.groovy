@@ -14,7 +14,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
     def setupSpec() {
         pageBuilder.content {
             citytechinc("CITYTECH, Inc.") {
-                "jcr:content"(otherPagePath: "/content/ales/esb", externalPath: "http://www.reddit.com", multiValue: ["one", "two"]) {
+                "jcr:content"(otherPagePath: "/content/ales/esb", nonExistentPagePath: "/content/home", externalPath: "http://www.reddit.com", multiValue: ["one", "two"]) {
                     image(fileReference: "/content/dam/image")
                     secondimage(fileReference: "/content/dam/image")
                     nsfwImage(fileReference: "omg.png")
@@ -73,15 +73,6 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         node.getAsList("multiValue", String) == ["one", "two"]
     }
 
-    def "get optional"() {
-        setup:
-        def node = getBasicNode("/content/citytechinc/jcr:content")
-
-        expect:
-        node.get("otherPagePath").get() == "/content/ales/esb"
-        !node.get("beer").present
-    }
-
     @Unroll
     def "get as href"() {
         setup:
@@ -94,6 +85,21 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         propertyName    | href
         "otherPagePath" | "/content/ales/esb.html"
         "externalPath"  | "http://www.reddit.com"
+    }
+
+    @Unroll
+    def "get as href strict"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        node.getAsHref(propertyName, true).get() == href
+
+        where:
+        propertyName          | href
+        "otherPagePath"       | "/content/ales/esb.html"
+        "nonExistentPagePath" | "/content/home"
+        "externalPath"        | "http://www.reddit.com"
     }
 
     @Unroll
@@ -116,6 +122,21 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         node.getAsMappedHref("otherPagePath").get() == "/content/ales/esb.html"
     }
 
+    @Unroll
+    def "get as mapped href strict"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        node.getAsMappedHref(propertyName, true).get() == href
+
+        where:
+        propertyName          | href
+        "otherPagePath"       | "/content/ales/esb.html"
+        "nonExistentPagePath" | "/content/home"
+        "externalPath"        | "http://www.reddit.com"
+    }
+
     def "get as href for null"() {
         when:
         getBasicNode("/content/citytechinc/jcr:content").getAsHref(null)
@@ -126,18 +147,38 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as link"() {
         setup:
-        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("otherPagePath")
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("otherPagePath").get()
 
         expect:
-        link.get().path == "/content/ales/esb"
+        link.path == "/content/ales/esb"
+    }
+
+    def "get as link strict"() {
+        setup:
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("nonExistentPagePath").get()
+
+        expect:
+        link.path == "/content/home"
+        link.external
+        link.extension == ""
     }
 
     def "get as mapped link"() {
         setup:
-        def link = getBasicNode("/content/citytechinc/jcr:content").getAsMappedLink("otherPagePath")
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsMappedLink("otherPagePath").get()
 
         expect:
-        link.get().path == "/content/ales/esb"
+        link.path == "/content/ales/esb"
+    }
+
+    def "get as mapped link strict"() {
+        setup:
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsMappedLink("nonExistentPagePath").get()
+
+        expect:
+        link.path == "/content/home"
+        link.external
+        link.extension == ""
     }
 
     def "get as link for null"() {

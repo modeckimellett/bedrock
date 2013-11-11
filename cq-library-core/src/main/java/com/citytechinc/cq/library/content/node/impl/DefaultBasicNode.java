@@ -43,10 +43,9 @@ import java.util.List;
 import static com.citytechinc.cq.library.constants.ComponentConstants.DEFAULT_IMAGE_NAME;
 import static com.citytechinc.cq.library.constants.PathConstants.EXTENSION_PNG;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
-import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class DefaultBasicNode implements BasicNode {
+public final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     private static final Predicate<Resource> ALL = Predicates.alwaysTrue();
 
@@ -66,12 +65,8 @@ public final class DefaultBasicNode implements BasicNode {
 
     private final ValueMap properties;
 
-    private final Resource resource;
-
     public DefaultBasicNode(final Resource resource) {
-        checkNotNull(resource);
-
-        this.resource = resource;
+        super(resource);
 
         properties = ResourceUtil.getValueMap(resource);
     }
@@ -82,33 +77,43 @@ public final class DefaultBasicNode implements BasicNode {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> Optional<T> get(final String propertyName) {
-        final T value = (T) properties.get(checkNotNull(propertyName));
-
-        return Optional.fromNullable(value);
-    }
-
-    @Override
     public <T> T get(final String propertyName, final T defaultValue) {
         return properties.get(checkNotNull(propertyName), defaultValue);
     }
 
     @Override
-    public Optional<String> getAsHref(final String propertyName) {
-        return getAsLink(propertyName).transform(LINK_TO_HREF);
+    public <T> Optional<T> get(final String propertyName, final Class<T> type) {
+        return Optional.fromNullable(properties.get(propertyName, type));
     }
 
     @Override
-    public String getAsHref(final String propertyName, final String defaultValue) {
-        return getAsHref(propertyName).or(defaultValue);
+    public Optional<String> getAsHref(final String propertyName) {
+        return getAsHref(propertyName, false);
+    }
+
+    @Override
+    public Optional<String> getAsHref(final String propertyName, final boolean strict) {
+        return getAsHref(propertyName, strict, false);
+    }
+
+    @Override
+    public Optional<String> getAsHref(final String propertyName, final boolean strict, final boolean mapped) {
+        return getAsLink(propertyName, strict, mapped).transform(LINK_TO_HREF);
     }
 
     @Override
     public Optional<Link> getAsLink(final String propertyName) {
-        final Optional<String> pathOptional = get(propertyName);
+        return getAsLink(propertyName, false);
+    }
 
-        return pathOptional.transform(PATH_TO_LINK);
+    @Override
+    public Optional<Link> getAsLink(final String propertyName, final boolean strict) {
+        return getAsLink(propertyName, strict, false);
+    }
+
+    @Override
+    public Optional<Link> getAsLink(final String propertyName, final boolean strict, final boolean mapped) {
+        return getLinkOptional(get(propertyName, String.class), strict, mapped);
     }
 
     @Override
@@ -117,28 +122,6 @@ public final class DefaultBasicNode implements BasicNode {
         final T[] defaultValue = (T[]) Array.newInstance(type, 0);
 
         return Arrays.asList(properties.get(propertyName, defaultValue));
-    }
-
-    @Override
-    public Optional<String> getAsMappedHref(final String propertyName) {
-        return getAsMappedLink(propertyName).transform(LINK_TO_HREF);
-    }
-
-    @Override
-    public String getAsMappedHref(final String propertyName, final String defaultValue) {
-        return getAsMappedHref(propertyName).or(defaultValue);
-    }
-
-    @Override
-    public Optional<Link> getAsMappedLink(final String propertyName) {
-        final Optional<String> pathOptional = get(propertyName);
-
-        return pathOptional.transform(new Function<String, String>() {
-            @Override
-            public String apply(final String path) {
-                return resource.getResourceResolver().map(path);
-            }
-        }).transform(PATH_TO_LINK);
     }
 
     @Override
@@ -158,7 +141,12 @@ public final class DefaultBasicNode implements BasicNode {
 
     @Override
     public String getHref() {
-        return getLink().getHref();
+        return getHref(false);
+    }
+
+    @Override
+    public String getHref(final boolean mapped) {
+        return getLink(mapped).getHref();
     }
 
     @Override
@@ -270,27 +258,22 @@ public final class DefaultBasicNode implements BasicNode {
 
     @Override
     public Link getLink() {
-        return getLinkBuilder().build();
+        return getLink(false);
+    }
+
+    @Override
+    public Link getLink(final boolean mapped) {
+        return getLinkBuilder(true).build();
     }
 
     @Override
     public LinkBuilder getLinkBuilder() {
-        return LinkBuilder.forResource(resource);
+        return getLinkBuilder(false);
     }
 
     @Override
-    public String getMappedHref() {
-        return getMappedLink().getHref();
-    }
-
-    @Override
-    public Link getMappedLink() {
-        return getMappedLinkBuilder().build();
-    }
-
-    @Override
-    public LinkBuilder getMappedLinkBuilder() {
-        return LinkBuilder.forResource(resource, true);
+    public LinkBuilder getLinkBuilder(final boolean mapped) {
+        return LinkBuilder.forResource(resource, mapped);
     }
 
     @Override

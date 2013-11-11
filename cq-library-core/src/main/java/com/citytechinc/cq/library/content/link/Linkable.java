@@ -20,11 +20,29 @@ public interface Linkable {
     String getHref();
 
     /**
+     * Get the mapped URL for this item.
+     *
+     * @param mapped if true, the path will be routed through the Resource Resolver to determine the mapped path (e.g.
+     * without leading "/content").
+     * @return mapped href
+     */
+    String getHref(boolean mapped);
+
+    /**
      * Get a link for this item.
      *
-     * @return link object
+     * @return link
      */
     Link getLink();
+
+    /**
+     * Get a link for this item.
+     *
+     * @param mapped if true, the <code>Link</code> path will be routed through the Resource Resolver to determine the
+     * mapped path (e.g. without leading "/content").
+     * @return mapped link
+     */
+    Link getLink(boolean mapped);
 
     /**
      * @return builder instance for this item
@@ -32,25 +50,10 @@ public interface Linkable {
     LinkBuilder getLinkBuilder();
 
     /**
-     * Get the mapped URL for this item.
-     * <p/>
-     * "Mapped" paths have been routed through the Sling Resource Resolver to obtain the internally mapped path from the
-     * resolver configuration (e.g. leading "/content" has been removed).
-     *
-     * @return mapped href
-     */
-    String getMappedHref();
-
-    /**
-     * Get the mapped link for this item.
-     *
-     * @return mapped link
-     */
-    Link getMappedLink();
-
-    /**
+     * @param mapped if true, the <code>LinkBuilder</code> for this resource will be routed through the Resource
+     * Resolver to determine the mapped path (e.g. without leading "/content").
      * @return builder instance for this item containing the mapped link
      */
-    LinkBuilder getMappedLinkBuilder();
+    LinkBuilder getLinkBuilder(boolean mapped);
 
 }

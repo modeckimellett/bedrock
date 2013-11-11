@@ -34,17 +34,18 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static com.citytechinc.cq.library.constants.ComponentConstants.DEFAULT_IMAGE_NAME;
 import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.LINK_TO_HREF;
-import static com.citytechinc.cq.library.content.link.impl.LinkFunctions.PATH_TO_LINK;
 import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.RESOURCE_TO_BASIC_NODE;
 import static com.citytechinc.cq.library.content.node.impl.NodeFunctions.RESOURCE_TO_COMPONENT_NODE;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class DefaultComponentNode implements ComponentNode {
+public final class DefaultComponentNode extends AbstractNode implements ComponentNode {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultComponentNode.class);
 
@@ -52,12 +53,8 @@ public final class DefaultComponentNode implements ComponentNode {
 
     private final InheritanceValueMap properties;
 
-    private final Resource resource;
-
     public DefaultComponentNode(final Resource resource) {
-        checkNotNull(resource);
-
-        this.resource = resource;
+        super(resource);
 
         basicNode = new DefaultBasicNode(resource);
         properties = new HierarchyNodeInheritanceValueMap(resource);
@@ -99,13 +96,13 @@ public final class DefaultComponentNode implements ComponentNode {
     }
 
     @Override
-    public <T> Optional<T> get(final String propertyName) {
-        return basicNode.get(propertyName);
+    public <T> T get(final String propertyName, final T defaultValue) {
+        return basicNode.get(propertyName, defaultValue);
     }
 
     @Override
-    public <T> T get(final String propertyName, final T defaultValue) {
-        return basicNode.get(propertyName, defaultValue);
+    public <T> Optional<T> get(final String propertyName, final Class<T> type) {
+        return basicNode.get(propertyName, type);
     }
 
     @Override
@@ -114,23 +111,43 @@ public final class DefaultComponentNode implements ComponentNode {
     }
 
     @Override
-    public String getAsHref(final String propertyName, final String defaultValue) {
-        return basicNode.getAsHref(propertyName, defaultValue);
+    public Optional<String> getAsHref(final String propertyName, final boolean strict) {
+        return basicNode.getAsHref(propertyName, strict);
+    }
+
+    @Override
+    public Optional<String> getAsHref(final String propertyName, final boolean strict, final boolean mapped) {
+        return basicNode.getAsHref(propertyName, strict, mapped);
     }
 
     @Override
     public Optional<String> getAsHrefInherited(final String propertyName) {
-        return getAsLinkInherited(propertyName).transform(LINK_TO_HREF);
+        return getAsHrefInherited(propertyName, false);
     }
 
     @Override
-    public String getAsHrefInherited(final String propertyName, final String defaultValue) {
-        return getAsHrefInherited(propertyName).or(defaultValue);
+    public Optional<String> getAsHrefInherited(final String propertyName, final boolean strict) {
+        return getAsHrefInherited(propertyName, strict, false);
+    }
+
+    @Override
+    public Optional<String> getAsHrefInherited(final String propertyName, final boolean strict, final boolean mapped) {
+        return getAsLinkInherited(propertyName, strict, mapped).transform(LINK_TO_HREF);
     }
 
     @Override
     public Optional<Link> getAsLink(final String propertyName) {
         return basicNode.getAsLink(propertyName);
+    }
+
+    @Override
+    public Optional<Link> getAsLink(final String propertyName, final boolean strict) {
+        return basicNode.getAsLink(propertyName, strict);
+    }
+
+    @Override
+    public Optional<Link> getAsLink(final String propertyName, final boolean strict, final boolean mapped) {
+        return basicNode.getAsLink(propertyName, strict, mapped);
     }
 
     @Override
@@ -140,46 +157,25 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public Optional<Link> getAsLinkInherited(final String propertyName) {
-        final Optional<String> pathOptional = getInherited(propertyName);
-
-        return pathOptional.transform(PATH_TO_LINK);
+        return getAsLinkInherited(propertyName, false);
     }
 
     @Override
-    public Optional<String> getAsMappedHref(final String propertyName) {
-        return basicNode.getAsMappedHref(propertyName);
+    public Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict) {
+        return getAsLinkInherited(propertyName, strict, false);
     }
 
     @Override
-    public String getAsMappedHref(final String propertyName, final String defaultValue) {
-        return basicNode.getAsMappedHref(propertyName, defaultValue);
+    public Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict, final boolean mapped) {
+        return getLinkOptional(getInherited(propertyName, String.class), strict, mapped);
     }
 
     @Override
-    public Optional<String> getAsMappedHrefInherited(final String propertyName) {
-        return getAsMappedLinkInherited(propertyName).transform(LINK_TO_HREF);
-    }
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getAsListInherited(final String propertyName, final Class<T> type) {
+        final T[] defaultValue = (T[]) Array.newInstance(type, 0);
 
-    @Override
-    public String getAsMappedHrefInherited(final String propertyName, final String defaultValue) {
-        return getAsMappedHrefInherited(propertyName).or(defaultValue);
-    }
-
-    @Override
-    public Optional<Link> getAsMappedLink(final String propertyName) {
-        return basicNode.getAsMappedLink(propertyName);
-    }
-
-    @Override
-    public Optional<Link> getAsMappedLinkInherited(final String propertyName) {
-        final Optional<String> pathOptional = getInherited(propertyName);
-
-        return pathOptional.transform(new Function<String, String>() {
-            @Override
-            public String apply(final String path) {
-                return resource.getResourceResolver().map(path);
-            }
-        }).transform(PATH_TO_LINK);
+        return Arrays.asList(properties.getInherited(propertyName, defaultValue));
     }
 
     @Override
@@ -256,7 +252,12 @@ public final class DefaultComponentNode implements ComponentNode {
 
     @Override
     public String getHref() {
-        return getLink().getHref();
+        return basicNode.getHref();
+    }
+
+    @Override
+    public String getHref(final boolean mapped) {
+        return basicNode.getHref(mapped);
     }
 
     @Override
@@ -357,9 +358,8 @@ public final class DefaultComponentNode implements ComponentNode {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> Optional<T> getInherited(final String propertyName) {
-        return (Optional<T>) Optional.fromNullable(properties.getInherited(propertyName, null));
+    public <T> Optional<T> getInherited(final String propertyName, final Class<T> type) {
+        return Optional.fromNullable(properties.getInherited(propertyName, type));
     }
 
     @Override
@@ -368,23 +368,18 @@ public final class DefaultComponentNode implements ComponentNode {
     }
 
     @Override
+    public Link getLink(final boolean mapped) {
+        return basicNode.getLink(mapped);
+    }
+
+    @Override
     public LinkBuilder getLinkBuilder() {
         return basicNode.getLinkBuilder();
     }
 
     @Override
-    public String getMappedHref() {
-        return basicNode.getMappedHref();
-    }
-
-    @Override
-    public Link getMappedLink() {
-        return basicNode.getMappedLink();
-    }
-
-    @Override
-    public LinkBuilder getMappedLinkBuilder() {
-        return basicNode.getMappedLinkBuilder();
+    public LinkBuilder getLinkBuilder(final boolean mapped) {
+        return basicNode.getLinkBuilder(mapped);
     }
 
     @Override
