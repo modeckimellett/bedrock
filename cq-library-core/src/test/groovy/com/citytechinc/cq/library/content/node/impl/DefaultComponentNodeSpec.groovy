@@ -308,8 +308,8 @@ class DefaultComponentNodeSpec extends AbstractCqSpec {
         def node = getComponentNode("/content/ales/esb/lace/jcr:content")
 
         expect:
-        node.getInherited("otherPagePath").present
-        !node.getInherited("nonExistentProperty").present
+        node.getInherited("otherPagePath", String).present
+        !node.getInherited("nonExistentProperty", String).present
     }
 
     def "get component node at relative path"() {

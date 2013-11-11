@@ -119,7 +119,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
-        node.getAsMappedHref("otherPagePath").get() == "/content/ales/esb.html"
+        node.getAsHref("otherPagePath", false, true).get() == "/content/ales/esb.html"
     }
 
     @Unroll
@@ -128,7 +128,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
         def node = getBasicNode("/content/citytechinc/jcr:content")
 
         expect:
-        node.getAsMappedHref(propertyName, true).get() == href
+        node.getAsHref(propertyName, true, true).get() == href
 
         where:
         propertyName          | href
@@ -155,7 +155,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as link strict"() {
         setup:
-        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("nonExistentPagePath").get()
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("nonExistentPagePath", true).get()
 
         expect:
         link.path == "/content/home"
@@ -165,7 +165,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as mapped link"() {
         setup:
-        def link = getBasicNode("/content/citytechinc/jcr:content").getAsMappedLink("otherPagePath").get()
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("otherPagePath", false, true).get()
 
         expect:
         link.path == "/content/ales/esb"
@@ -173,7 +173,7 @@ class DefaultBasicNodeSpec extends AbstractCqSpec {
 
     def "get as mapped link strict"() {
         setup:
-        def link = getBasicNode("/content/citytechinc/jcr:content").getAsMappedLink("nonExistentPagePath").get()
+        def link = getBasicNode("/content/citytechinc/jcr:content").getAsLink("nonExistentPagePath", true, true).get()
 
         expect:
         link.path == "/content/home"
