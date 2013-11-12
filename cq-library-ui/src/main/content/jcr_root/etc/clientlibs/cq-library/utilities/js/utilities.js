@@ -1,13 +1,15 @@
 Namespace.create('CITYTECH.Utilities');
 
 /**
- * A set of utilities for CQ
+ * A set of utilities for CQ.
+ *
  * @class CITYTECH.Utilities
  */
 CITYTECH.Utilities = {
 
 	/**
-     * Checks to see if the current wcm mode is not disabled
+     * Checks to see if the current wcm mode is not disabled.
+     *
      * @methodOf CITYTECH.Utilities
      * @name isAuthor
      */
@@ -16,7 +18,8 @@ CITYTECH.Utilities = {
     },
 
     /**
-     * Checks to see if the current wcm mode is disabled
+     * Checks to see if the current wcm mode is disabled.
+     *
      * @methodOf CITYTECH.Utilities
      * @name isPublish
      */
@@ -25,7 +28,8 @@ CITYTECH.Utilities = {
     },
 
     /**
-     * Checks to see if the current wcm mode is edit
+     * Checks to see if the current wcm mode is edit.
+     *
      * @methodOf CITYTECH.Utilities
      * @name isEditMode
      */
@@ -36,7 +40,8 @@ CITYTECH.Utilities = {
     },
 
     /**
-     * Checks to see if the current wcm mode is design
+     * Checks to see if the current wcm mode is design.
+     *
      * @methodOf CITYTECH.Utilities
      * @name isDesignMode
      */
@@ -45,7 +50,8 @@ CITYTECH.Utilities = {
     },
 
     /**
-     * Checks to see if the current wcm mode is preview
+     * Checks to see if the current wcm mode is preview.
+     *
      * @methodOf CITYTECH.Utilities
      * @name isPreviewMode
      */
@@ -54,7 +60,8 @@ CITYTECH.Utilities = {
     },
 
     /**
-     * Returns the current wcm mode
+     * Returns the current mode.
+     *
      * @methodOf CITYTECH.Utilities
      * @name getMode
      */
@@ -63,7 +70,8 @@ CITYTECH.Utilities = {
     },
 
     /**
-     * Returns the current wcm mode
+     * Hide editable elements on the current page.
+     *
      * @methodOf CITYTECH.Utilities
      * @name hideEditables
      * @param {Array} names The names of the editables that should be hidden

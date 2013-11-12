@@ -1,4 +1,4 @@
 #base=js
 
 utilities.js
-dialogUtils.js
+dialogutils.js

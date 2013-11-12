@@ -11,6 +11,11 @@ package com.citytechinc.cq.library.constants;
 public final class ComponentConstants {
 
     /**
+     * Relative path to content components.
+     */
+    public static final String COMPONENT_PATH_CONTENT = "/content";
+
+    /**
      * Default page/component image name.
      */
     public static final String DEFAULT_IMAGE_NAME = "image";
