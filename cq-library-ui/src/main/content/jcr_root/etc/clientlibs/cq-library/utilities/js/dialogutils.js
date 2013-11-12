@@ -1,7 +1,8 @@
 Namespace.create('CITYTECH.Utilities.Dialog');
 
 /**
- * A set of utilities to create and dialogs
+ * A set of utilities to create and dialogs.
+ *
  * @class CITYTECH.Utilities.Dialog
  */
 CITYTECH.Utilities.Dialog = {
@@ -47,6 +48,7 @@ CITYTECH.Utilities.Dialog = {
 
     /**
      * Populate a dialog with properties and show it.
+     *
      * @methodOf CITYTECH.Utilities.Dialog
      * @name populateAndShowDialog
      * @param dialog            dialog object to show.
