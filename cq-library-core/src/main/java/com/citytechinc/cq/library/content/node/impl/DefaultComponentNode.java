@@ -19,6 +19,7 @@ import com.day.cq.commons.inherit.HierarchyNodeInheritanceValueMap;
 import com.day.cq.commons.inherit.InheritanceValueMap;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.designer.Designer;
+import com.day.cq.wcm.api.designer.Style;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -175,7 +176,7 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
     public <T> List<T> getAsListInherited(final String propertyName, final Class<T> type) {
         final T[] defaultValue = (T[]) Array.newInstance(type, 0);
 
-        return Arrays.asList(properties.getInherited(propertyName, defaultValue));
+        return Arrays.asList(properties.getInherited(checkNotNull(propertyName), defaultValue));
     }
 
     @Override
@@ -185,9 +186,7 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public Optional<PageDecorator> getAsPageInherited(final String propertyName) {
-        final String path = properties.getInherited(propertyName, "");
-
-        return resource.getResourceResolver().adaptTo(PageManagerDecorator.class).getPageOptional(path);
+        return getPageOptional(properties.getInherited(checkNotNull(propertyName), ""));
     }
 
     @Override
@@ -244,8 +243,10 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
     public Optional<BasicNode> getDesignNode() {
         final ResourceResolver resourceResolver = resource.getResourceResolver();
 
-        final Resource styleResource = resourceResolver.getResource(resourceResolver.adaptTo(Designer.class).getStyle(
-            resource).getPath());
+        final Designer designer = resourceResolver.adaptTo(Designer.class);
+        final Style style = designer.getStyle(resource);
+
+        final Resource styleResource = resourceResolver.getResource(style.getPath());
 
         return Optional.fromNullable(styleResource).transform(RESOURCE_TO_BASIC_NODE);
     }

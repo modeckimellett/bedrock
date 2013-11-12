@@ -7,6 +7,8 @@ package com.citytechinc.cq.library.content.node.impl;
 
 import com.citytechinc.cq.library.content.link.Link;
 import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
+import com.citytechinc.cq.library.content.page.PageDecorator;
+import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import org.apache.sling.api.resource.Resource;
@@ -42,11 +44,25 @@ public abstract class AbstractNode {
             toLink = PATH_TO_LINK;
         }
 
-        return pathOptional.transform(new Function<String, String>() {
+        final Function<String, String> mapping = new Function<String, String>() {
             @Override
             public String apply(final String path) {
                 return mapped ? resourceResolver.map(path) : path;
             }
-        }).transform(toLink);
+        };
+
+        return pathOptional.transform(mapping).transform(toLink);
+    }
+
+    protected Optional<PageDecorator> getPageOptional(final String path) {
+        final Optional<PageDecorator> pageOptional;
+
+        if (path.isEmpty()) {
+            pageOptional = Optional.absent();
+        } else {
+            pageOptional = resource.getResourceResolver().adaptTo(PageManagerDecorator.class).getPageOptional(path);
+        }
+
+        return pageOptional;
     }
 }

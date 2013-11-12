@@ -9,7 +9,6 @@ import com.citytechinc.cq.library.content.link.Link;
 import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.citytechinc.cq.library.content.node.BasicNode;
 import com.citytechinc.cq.library.content.page.PageDecorator;
-import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.citytechinc.cq.library.content.resource.predicates.PathPredicate;
 import com.citytechinc.cq.library.content.resource.predicates.ResourceTypePredicate;
 import com.day.cq.commons.DownloadResource;
@@ -121,22 +120,12 @@ public final class DefaultBasicNode extends AbstractNode implements BasicNode {
     public <T> List<T> getAsList(final String propertyName, final Class<T> type) {
         final T[] defaultValue = (T[]) Array.newInstance(type, 0);
 
-        return Arrays.asList(properties.get(propertyName, defaultValue));
+        return Arrays.asList(properties.get(checkNotNull(propertyName), defaultValue));
     }
 
     @Override
     public Optional<PageDecorator> getAsPage(final String propertyName) {
-        final Optional<PageDecorator> pageOptional;
-
-        final String path = properties.get(checkNotNull(propertyName), "");
-
-        if (path.isEmpty()) {
-            pageOptional = Optional.absent();
-        } else {
-            pageOptional = resource.getResourceResolver().adaptTo(PageManagerDecorator.class).getPageOptional(path);
-        }
-
-        return pageOptional;
+        return getPageOptional(properties.get(checkNotNull(propertyName), ""));
     }
 
     @Override
