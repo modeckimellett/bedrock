@@ -93,9 +93,6 @@
                 <artifactId>maven-source-plugin</artifactId>
             </plugin>
             <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <artifactId>maven-site-plugin</artifactId>
                 <configuration>
                     <generateReports>false</generateReports>
