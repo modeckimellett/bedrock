@@ -13,21 +13,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
 /**
  * Render the keywords for the current page.
  */
-public final class KeywordsTag extends TagSupport {
+public final class KeywordsTag extends AbstractMetaTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(KeywordsTag.class);
 
     private static final long serialVersionUID = 1L;
 
     private static final String TAG_START = "<meta name=\"keywords\" content=\"";
-
-    private static final String TAG_END = "\"/>";
 
     private static final Escaper ESCAPER = HtmlEscapers.htmlEscaper();
 
@@ -39,7 +36,7 @@ public final class KeywordsTag extends TagSupport {
 
         builder.append(TAG_START);
         builder.append(ESCAPER.escape(WCMUtils.getKeywords(currentPage, false)));
-        builder.append(TAG_END);
+        builder.append(getTagEnd());
 
         try {
             pageContext.getOut().write(builder.toString());

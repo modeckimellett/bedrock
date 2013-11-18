@@ -19,7 +19,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 /**
  * Render the title for the current page.
  */
-public final class TitleTag extends AbstractPropertyTag {
+public final class TitleTag extends AbstractMetaTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(TitleTag.class);
 
@@ -36,24 +36,26 @@ public final class TitleTag extends AbstractPropertyTag {
     @Override
     public int doEndTag() throws JspTagException {
         final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
-
-        final String title = isNullOrEmpty(currentPage.getTitle()) ? currentPage.getName() : currentPage.getTitle();
+        final String pageTitle = isNullOrEmpty(currentPage.getTitle()) ? currentPage.getName() : currentPage.getTitle();
 
         final StringBuilder builder = new StringBuilder();
 
         builder.append(TAG_START);
 
+        final StringBuilder title = new StringBuilder();
+
         if (hasPropertyName()) {
-            builder.append(ESCAPER.escape(currentPage.getProperties().get(propertyName, title)));
+            title.append(ESCAPER.escape(currentPage.getProperties().get(propertyName, pageTitle)));
         } else {
-            builder.append(ESCAPER.escape(title));
+            title.append(ESCAPER.escape(pageTitle));
         }
 
         if (!isNullOrEmpty(suffix)) {
-            builder.append(suffix);
+            title.append(suffix);
         }
 
-        builder.append(TAG_END);
+        builder.append(getXssApi().encodeForHTML(title.toString()));
+        builder.append(getTagEnd());
 
         try {
             pageContext.getOut().write(builder.toString());

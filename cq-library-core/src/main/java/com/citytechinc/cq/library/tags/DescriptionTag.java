@@ -21,7 +21,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 /**
  * Render the description for the current page.
  */
-public final class DescriptionTag extends AbstractPropertyTag {
+public final class DescriptionTag extends AbstractMetaTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(DescriptionTag.class);
 
@@ -38,7 +38,6 @@ public final class DescriptionTag extends AbstractPropertyTag {
     @Override
     public int doEndTag() throws JspTagException {
         final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
-
         final ValueMap properties = currentPage.getProperties();
 
         final StringBuilder builder = new StringBuilder();
@@ -54,14 +53,16 @@ public final class DescriptionTag extends AbstractPropertyTag {
         }
 
         if (!isNullOrEmpty(description)) {
-            builder.append(ESCAPER.escape(description));
+            final StringBuilder content = new StringBuilder(ESCAPER.escape(description));
 
             if (!isNullOrEmpty(suffix)) {
-                builder.append(suffix);
+                content.append(suffix);
             }
+
+            builder.append(getXssApi().encodeForHTMLAttr(content.toString()));
         }
 
-        builder.append(TAG_END);
+        builder.append(getTagEnd());
 
         try {
             pageContext.getOut().write(builder.toString());
