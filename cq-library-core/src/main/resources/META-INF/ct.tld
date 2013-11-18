@@ -49,6 +49,10 @@
         </attribute>
     </tag>
     <tag>
+        <name>favicon</name>
+        <tag-class>com.citytechinc.cq.library.tags.FavIconTag</tag-class>
+    </tag>
+    <tag>
         <name>component</name>
         <tag-class>com.citytechinc.cq.library.tags.ComponentTag</tag-class>
         <attribute>
