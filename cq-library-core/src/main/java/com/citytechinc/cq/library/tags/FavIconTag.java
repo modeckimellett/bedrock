@@ -1,6 +1,10 @@
+/**
+ * Copyright 2013, CITYTECH, Inc.
+ * All rights reserved - Do Not Redistribute
+ * Confidential and Proprietary
+ */
 package com.citytechinc.cq.library.tags;
 
-import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.designer.Design;
 import com.google.common.collect.ImmutableList;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -27,7 +31,6 @@ public final class FavIconTag extends AbstractMetaTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
         final Design currentDesign = (Design) pageContext.getAttribute(ATTR_CURRENT_DESIGN_NAME);
         final ResourceResolver resourceResolver = (ResourceResolver) pageContext.getAttribute(
             ATTR_RESOURCE_RESOLVER_NAME);
@@ -48,7 +51,7 @@ public final class FavIconTag extends AbstractMetaTag {
                 html.append(iterator.next());
                 html.append('"');
                 html.append(" type=\"image/vnd.microsoft.icon\" href=\"");
-                html.append(favIcon);
+                html.append(getXssApi().getValidHref(favIcon));
                 html.append(getTagEnd());
 
                 if (iterator.hasNext()) {
@@ -59,7 +62,7 @@ public final class FavIconTag extends AbstractMetaTag {
             try {
                 pageContext.getOut().write(html.toString());
             } catch (IOException ioe) {
-                LOG.error("error writing favicons for page = " + currentPage.getPath(), ioe);
+                LOG.error("error writing favicon", ioe);
 
                 throw new JspTagException(ioe);
             }

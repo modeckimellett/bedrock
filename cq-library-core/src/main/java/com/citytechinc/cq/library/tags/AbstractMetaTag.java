@@ -6,7 +6,7 @@
 package com.citytechinc.cq.library.tags;
 
 import com.adobe.granite.xss.XSSAPI;
-import com.day.cq.commons.Doctype;
+import com.day.cq.widget.Doctype;
 
 import static com.day.cq.wcm.tags.DefineObjectsTEI.ATTR_XSSAPI_NAME;
 

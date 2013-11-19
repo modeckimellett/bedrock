@@ -5,10 +5,9 @@
  */
 package com.citytechinc.cq.library.tags
 
-import com.citytechinc.cq.library.testing.specs.AbstractPageTagSpec
 import spock.lang.Unroll
 
-class TitleTagSpec extends AbstractPageTagSpec {
+class TitleTagSpec extends AbstractMetaTagSpec {
 
     def setupSpec() {
         pageBuilder.content {

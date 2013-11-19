@@ -55,7 +55,7 @@ public final class TitleTag extends AbstractMetaTag {
         }
 
         builder.append(getXssApi().encodeForHTML(title.toString()));
-        builder.append(getTagEnd());
+        builder.append(TAG_END);
 
         try {
             pageContext.getOut().write(builder.toString());

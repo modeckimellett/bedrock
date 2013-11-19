@@ -5,10 +5,9 @@
  */
 package com.citytechinc.cq.library.tags
 
-import com.citytechinc.cq.library.testing.specs.AbstractPageTagSpec
 import spock.lang.Unroll
 
-class DescriptionTagSpec extends AbstractPageTagSpec {
+class DescriptionTagSpec extends AbstractMetaTagSpec {
 
     def setupSpec() {
         pageBuilder.content {
@@ -43,10 +42,10 @@ class DescriptionTagSpec extends AbstractPageTagSpec {
 
         where:
         propertyName  | suffix           | html
-        ""            | ""               | "<meta name=\"description\" content=\"JCR Description\"/>"
-        ""            | " | Chicago, IL" | "<meta name=\"description\" content=\"JCR Description | Chicago, IL\"/>"
-        "description" | ""               | "<meta name=\"description\" content=\"Description\"/>"
-        "description" | " | Chicago, IL" | "<meta name=\"description\" content=\"Description | Chicago, IL\"/>"
+        ""            | ""               | '<meta name="description" content="JCR Description">'
+        ""            | " | Chicago, IL" | '<meta name="description" content="JCR Description | Chicago, IL">'
+        "description" | ""               | '<meta name="description" content="Description">'
+        "description" | " | Chicago, IL" | '<meta name="description" content="Description | Chicago, IL">'
     }
 
     def "empty description"() {
@@ -57,6 +56,6 @@ class DescriptionTagSpec extends AbstractPageTagSpec {
         tag.doEndTag()
 
         then:
-        result == "<meta name=\"description\" content=\"\"/>"
+        result == '<meta name="description" content="">'
     }
 }

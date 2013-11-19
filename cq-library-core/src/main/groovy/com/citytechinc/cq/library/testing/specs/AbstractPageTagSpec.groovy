@@ -5,6 +5,7 @@
  */
 package com.citytechinc.cq.library.testing.specs
 
+import com.citytechinc.cq.groovy.extension.builders.NodeBuilder
 import com.citytechinc.cq.groovy.extension.builders.PageBuilder
 import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
 import com.citytechinc.cq.groovy.testing.specs.tag.AbstractTagSpec
@@ -20,6 +21,8 @@ abstract class AbstractPageTagSpec extends AbstractTagSpec {
 
     @Shared pageBuilder
 
+    @Shared nodeBuilder
+
     @Override
     void addResourceResolverAdapters() {
         addResourceResolverAdapter(PageManagerDecorator, {
@@ -31,6 +34,7 @@ abstract class AbstractPageTagSpec extends AbstractTagSpec {
         GroovyExtensionMetaClassRegistry.registerMetaClasses()
 
         pageBuilder = new PageBuilder(session)
+        nodeBuilder = new NodeBuilder(session)
     }
 
     /**

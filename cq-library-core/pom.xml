@@ -182,6 +182,10 @@
         </dependency>
         <dependency>
             <groupId>com.adobe.granite</groupId>
+            <artifactId>com.adobe.granite.ui.commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.granite</groupId>
             <artifactId>com.adobe.granite.jmx</artifactId>
         </dependency>
         <dependency>
