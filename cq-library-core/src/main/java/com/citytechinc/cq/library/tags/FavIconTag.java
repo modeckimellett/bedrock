@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.day.cq.wcm.tags.DefineObjectsTEI.ATTR_CURRENT_DESIGN_NAME;
-import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTEI.ATTR_RESOURCE_RESOLVER_NAME;
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_DESIGN_NAME;
+import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_RESOLVER_NAME;
 
 public final class FavIconTag extends AbstractMetaTag {
 
@@ -31,9 +31,9 @@ public final class FavIconTag extends AbstractMetaTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final Design currentDesign = (Design) pageContext.getAttribute(ATTR_CURRENT_DESIGN_NAME);
+        final Design currentDesign = (Design) pageContext.getAttribute(DEFAULT_CURRENT_DESIGN_NAME);
         final ResourceResolver resourceResolver = (ResourceResolver) pageContext.getAttribute(
-            ATTR_RESOURCE_RESOLVER_NAME);
+            DEFAULT_RESOURCE_RESOLVER_NAME);
 
         final String favIconPath = currentDesign.getPath() + "/favicon.ico";
         final String favIcon = resourceResolver.getResource(favIconPath) == null ? null : favIconPath;

@@ -8,7 +8,7 @@ package com.citytechinc.cq.library.tags;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.widget.Doctype;
 
-import static com.day.cq.wcm.tags.DefineObjectsTEI.ATTR_XSSAPI_NAME;
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_XSSAPI_NAME;
 
 public abstract class AbstractMetaTag extends AbstractPropertyTag {
 
@@ -24,6 +24,6 @@ public abstract class AbstractMetaTag extends AbstractPropertyTag {
     }
 
     protected final XSSAPI getXssApi() {
-        return (XSSAPI) pageContext.getAttribute(ATTR_XSSAPI_NAME);
+        return (XSSAPI) pageContext.getAttribute(DEFAULT_XSSAPI_NAME);
     }
 }
