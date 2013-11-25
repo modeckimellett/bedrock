@@ -6,7 +6,10 @@
 package com.citytechinc.cq.library.tags
 
 import com.day.cq.wcm.api.designer.Design
-import com.day.cq.wcm.tags.DefineObjectsTEI
+
+import javax.servlet.jsp.tagext.TagSupport
+
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_DESIGN_NAME
 
 class FavIconTagSpec extends AbstractMetaTagSpec {
 
@@ -16,7 +19,7 @@ class FavIconTagSpec extends AbstractMetaTagSpec {
     }
 
     @Override
-    def createTag() {
+    TagSupport createTag() {
         new FavIconTag()
     }
 
@@ -32,9 +35,7 @@ class FavIconTagSpec extends AbstractMetaTagSpec {
 
     def "no favicon, no output"() {
         setup:
-        setupPageContext()
-
-        tag.pageContext.getAttribute(DefineObjectsTEI.ATTR_CURRENT_DESIGN_NAME) >> Mock(Design) {
+        tag.pageContext.getAttribute(DEFAULT_CURRENT_DESIGN_NAME) >> Mock(Design) {
             getPath() >> ""
         }
 
@@ -47,9 +48,7 @@ class FavIconTagSpec extends AbstractMetaTagSpec {
 
     def "valid favicon, HTML output"() {
         setup:
-        setupPageContext()
-
-        tag.pageContext.getAttribute(DefineObjectsTEI.ATTR_CURRENT_DESIGN_NAME) >> Mock(Design) {
+        tag.pageContext.getAttribute(DEFAULT_CURRENT_DESIGN_NAME) >> Mock(Design) {
             getPath() >> "/etc/designs/citytechinc"
         }
 

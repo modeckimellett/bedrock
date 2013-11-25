@@ -43,8 +43,6 @@ abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
         def resource = resourceResolver.getResource(path)
         def componentNode = new DefaultComponentNode(resource)
 
-        def pageContext = mockPageContext()
-
-        pageContext.getAttribute(DefineObjectsTag.ATTR_COMPONENT_NODE) >> componentNode
+        tag.pageContext.getAttribute(DefineObjectsTag.ATTR_COMPONENT_NODE) >> componentNode
     }
 }

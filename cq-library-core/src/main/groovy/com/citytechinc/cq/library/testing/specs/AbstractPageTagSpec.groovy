@@ -43,9 +43,8 @@ abstract class AbstractPageTagSpec extends AbstractTagSpec {
      * @param path page path
      */
     void setupPage(path) {
-        def pageContext = mockPageContext()
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
 
-        pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE) >> page
+        tag.pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE) >> page
     }
 }

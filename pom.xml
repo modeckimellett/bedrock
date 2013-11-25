@@ -467,7 +467,7 @@
             <dependency>
                 <groupId>com.citytechinc.cq</groupId>
                 <artifactId>cq-groovy-testing</artifactId>
-                <version>0.3.6</version>
+                <version>0.4.0</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>

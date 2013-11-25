@@ -7,6 +7,8 @@ package com.citytechinc.cq.library.tags
 
 import com.citytechinc.cq.library.testing.specs.AbstractPropertyTagSpec
 
+import javax.servlet.jsp.tagext.TagSupport
+
 class HrefTagSpec extends AbstractPropertyTagSpec {
 
     def setupSpec() {
@@ -19,7 +21,7 @@ class HrefTagSpec extends AbstractPropertyTagSpec {
     }
 
     @Override
-    def createTag() {
+    TagSupport createTag() {
         new HrefTag()
     }
 

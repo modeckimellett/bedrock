@@ -7,6 +7,8 @@ package com.citytechinc.cq.library.tags
 
 import spock.lang.Unroll
 
+import javax.servlet.jsp.tagext.TagSupport
+
 class TitleTagSpec extends AbstractMetaTagSpec {
 
     def setupSpec() {
@@ -21,7 +23,7 @@ class TitleTagSpec extends AbstractMetaTagSpec {
     }
 
     @Override
-    def createTag() {
+    TagSupport createTag() {
         new TitleTag()
     }
 
