@@ -5,9 +5,12 @@
  */
 package com.citytechinc.cq.library.tags;
 
+import com.citytechinc.cq.library.components.annotations.AutoInstantiate;
 import com.citytechinc.cq.library.content.request.ComponentRequest;
 import com.citytechinc.cq.library.content.request.impl.DefaultComponentRequest;
 import com.day.cq.wcm.api.WCMMode;
+import com.day.cq.wcm.api.components.Component;
+import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.slf4j.Logger;
@@ -49,6 +52,11 @@ public final class DefineObjectsTag extends TagSupport {
 
     public static final String PARAMETER_DEBUG = "debug";
 
+    /**
+     * Property name in component descriptor containing annotated class name.
+     */
+    private static final String PROPERTY_COMPONENT_CLASS_NAME = "className";
+
     private static final Logger LOG = LoggerFactory.getLogger(DefineObjectsTag.class);
 
     private static final long serialVersionUID = 1L;
@@ -82,6 +90,44 @@ public final class DefineObjectsTag extends TagSupport {
         pageContext.setAttribute(ATTR_PAGE_MANAGER, componentRequest.getPageManager());
         pageContext.setAttribute(ATTR_CURRENT_PAGE, componentRequest.getCurrentPage());
 
+        instantiateComponent(componentRequest);
+
         return EVAL_PAGE;
+    }
+
+    private void instantiateComponent(final ComponentRequest componentRequest) {
+        final Component component = componentRequest.getComponent();
+
+        if (component != null) {
+            final String className = component.getProperties().get(PROPERTY_COMPONENT_CLASS_NAME, "");
+
+            if (!className.isEmpty()) {
+                try {
+                    final Class<?> clazz = Class.forName(className);
+
+                    if (clazz.isAnnotationPresent(AutoInstantiate.class)) {
+                        LOG.debug("instantiateComponent() instantiating component for class name = {}", className);
+
+                        final AutoInstantiate autoInstantiate = clazz.getAnnotation(AutoInstantiate.class);
+                        final String instanceName = autoInstantiate.instanceName();
+
+                        final Object instance = clazz.getConstructor(ComponentRequest.class).newInstance(
+                            componentRequest);
+
+                        if (instanceName.isEmpty()) {
+                            pageContext.setAttribute(StringUtils.uncapitalize(clazz.getSimpleName()), instance);
+                        } else {
+                            pageContext.setAttribute(instanceName, instance);
+                        }
+                    } else {
+                        LOG.debug(
+                            "instantiateComponent() auto instantiate annotation not present for class name = {}, skipping",
+                            className);
+                    }
+                } catch (Exception e) {
+                    LOG.error("error instantiating component for class name = " + className, e);
+                }
+            }
+        }
     }
 }
