@@ -8,6 +8,13 @@ Component JSPs should contain only the HTML markup and JSTL tags necessary to re
 
 The component JSP needs to include the CQ Library `global.jsp` to define the tag namespace and ensure that required variables are set in the page context.
 
+Component Java classes can be instantiated in one of two ways:
+
+* Include the `<ct:component/>` tag in the JSP as shown below.
+* Define a "className" attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.cq.library.components.annotations.AutoInstantiate` annotation.
+
+In the latter case, the `global.jsp` will instantiate the component class via the `<ct:defineObjects/>` tag included therein.
+
     <%@include file="/apps/cq-library/components/global.jsp"%>
 
     <ct:component className="com.projectname.cq.components.content.Navigation" name="navigation"/>
