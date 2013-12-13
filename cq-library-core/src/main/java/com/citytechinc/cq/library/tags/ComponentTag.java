@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.tags;
 
-import com.citytechinc.cq.library.content.request.ComponentRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,7 @@ import javax.servlet.jsp.JspTagException;
 /**
  * Instantiates a Component class and sets it in JSP page context.
  */
-public final class ComponentTag extends AbstractScopedTag {
+public final class ComponentTag extends AbstractComponentInstanceTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(ComponentTag.class);
 
@@ -37,15 +36,11 @@ public final class ComponentTag extends AbstractScopedTag {
         checkScopeAttribute();
 
         try {
-            final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(
-                DefineObjectsTag.ATTR_COMPONENT_REQUEST);
-
-            final Object component = Class.forName(className).getConstructor(ComponentRequest.class).newInstance(
-                request);
+            final Object component = getInstance(className);
 
             pageContext.setAttribute(name, component, getScopeValue());
         } catch (Exception e) {
-            LOG.error("error instantiating class = " + className, e);
+            LOG.error("error instantiating component for class name = " + className, e);
             throw new JspTagException(e);
         }
 

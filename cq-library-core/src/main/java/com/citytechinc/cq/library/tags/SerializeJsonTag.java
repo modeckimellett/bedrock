@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.tags;
 
-import com.citytechinc.cq.library.content.request.ComponentRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 
-import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_COMPONENT_REQUEST;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -22,7 +20,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * Jackson annotations (e.g. <code>JsonGetter</code>, <code>JsonProperty</code>) to indicate which fields or methods
  * should be serialized (this is not necessary for all types, e.g. basic POJOs and collections).
  */
-public final class SerializeJsonTag extends AbstractScopedTag {
+public final class SerializeJsonTag extends AbstractComponentInstanceTag {
 
     private static final Logger LOG = LoggerFactory.getLogger(SerializeJsonTag.class);
 
@@ -61,9 +59,7 @@ public final class SerializeJsonTag extends AbstractScopedTag {
             } else {
                 LOG.debug("doEndTag() serializing JSON for class name = {}", className);
 
-                final ComponentRequest request = (ComponentRequest) pageContext.getAttribute(ATTR_COMPONENT_REQUEST);
-
-                object = Class.forName(className).getConstructor(ComponentRequest.class).newInstance(request);
+                object = getInstance(className);
 
                 if (!isNullOrEmpty(name)) {
                     pageContext.setAttribute(name, object, getScopeValue());

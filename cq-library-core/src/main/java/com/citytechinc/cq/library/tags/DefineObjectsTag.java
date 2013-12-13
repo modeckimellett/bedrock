@@ -17,12 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Add to and/or override attributes set in pageContext for use in JSPs.
  */
-public final class DefineObjectsTag extends TagSupport {
+public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     // attribute names
 
@@ -103,25 +102,25 @@ public final class DefineObjectsTag extends TagSupport {
 
             if (!className.isEmpty()) {
                 try {
-                    final Class<?> clazz = Class.forName(className);
+                    final Class<?> clazz = getClass(className);
 
                     if (clazz.isAnnotationPresent(AutoInstantiate.class)) {
                         LOG.debug("instantiateComponent() instantiating component for class name = {}", className);
 
                         final AutoInstantiate autoInstantiate = clazz.getAnnotation(AutoInstantiate.class);
-                        final String instanceName = autoInstantiate.instanceName();
+                        final String instanceName;
 
-                        final Object instance = clazz.getConstructor(ComponentRequest.class).newInstance(
-                            componentRequest);
-
-                        if (instanceName.isEmpty()) {
-                            pageContext.setAttribute(StringUtils.uncapitalize(clazz.getSimpleName()), instance);
+                        if (autoInstantiate.instanceName().isEmpty()) {
+                            instanceName = StringUtils.uncapitalize(clazz.getSimpleName());
                         } else {
-                            pageContext.setAttribute(instanceName, instance);
+                            instanceName = autoInstantiate.instanceName();
                         }
+
+                        final Object instance = getInstance(clazz);
+
+                        pageContext.setAttribute(instanceName, instance);
                     } else {
-                        LOG.debug(
-                            "instantiateComponent() auto instantiate annotation not present for class name = {}, skipping",
+                        LOG.debug("instantiateComponent() annotation not present for class name = {}, skipping",
                             className);
                     }
                 } catch (Exception e) {
