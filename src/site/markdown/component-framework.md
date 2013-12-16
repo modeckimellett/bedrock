@@ -59,10 +59,12 @@ The `AbstractComponent` class should be extended by all component backing classe
     final PageDecorator homepage = request.getPageManager().getPage("/content/home");
 
     // get the component node for the Homepage Latest News component
-    final ComponentNode latestNewsComponentNode = homepage.getComponentNode("latestnews");
+    final Optional<ComponentNode> latestNewsComponentNode = homepage.getComponentNode("latestnews");
 
-    // get an instance of the Latest News component for the given component node
-    final LatestNews latestNews = new LatestNews(latestNewsComponentNode);
+    if (latestNewsComponentNode.isPresent()) {
+        // get an instance of the Latest News component for the given component node
+        final LatestNews latestNews = new LatestNews(latestNewsComponentNode.get());
+    }
 
 See the [Javadoc](http://code.citytechinc.com/cq-library/apidocs/com/citytechinc/cq/library/components/AbstractComponent.html) for details of the available methods.
 
