@@ -2,7 +2,7 @@
 
 ### Widgets
 
-MultiCompositeField and [SuperBoxSelect](http://www.sencha.com/forum/showthread.php?69307-3.x-Ext.ux.form.SuperBoxSelect) widgets are automatically included for use in author mode when the CQ Library package is installed.
+`MultiCompositeField` and [`SuperBoxSelect`](http://www.sencha.com/forum/showthread.php?69307-3.x-Ext.ux.form.SuperBoxSelect) widgets are automatically included for use in author mode when the CQ Library package is installed.
 
 ### Utilities
 

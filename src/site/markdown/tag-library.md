@@ -39,7 +39,7 @@ Render the title for the current page.
 
 Attribute | Required | Description
 :---------|:---------|:-----------
-propertyName | false | Name of property containing the title to display.  Defaults to "jcr:title".
+propertyName | false | Name of property containing the title to display.  Defaults to `jcr:title`.
 suffix | false | Value to append after the title property value.
 
     <head>
@@ -60,7 +60,7 @@ Render the description for the current page.
 
 Attribute | Required | Description
 :---------|:---------|:-----------
-propertyName | false | Name of property containing the description to display.  Defaults to "jcr:description".
+propertyName | false | Name of property containing the description to display.  Defaults to `jcr:description`.
 suffix | false | Value to append after the description property value.
 
     <head>
@@ -75,7 +75,7 @@ Attribute | Required | Description
 :---------|:---------|:-----------
 className | true | Name of component class to instantiate.
 name | true | Name to use for page context attribute containing the instantiated component class.
-scope | false | JSP scope for component in page context.  Defaults to "page".  Must be one of "page", "request", "session", or "application".
+scope | false | JSP scope for component in page context.  Defaults to `page`.  Must be one of `page`, `request`, `session`, or `application`.
 
     <ct:component className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
 
@@ -86,9 +86,9 @@ Serializes a component class or object instance as JSON.
 Attribute | Required | Description
 :---------|:---------|:-----------
 className | false | Name of component class to instantiate.
-instanceName | false | Name of existing component or object in page context.  "className" attribute is checked first.
-name | false | Name to use for page context attribute containing the instantiated component class.  Only applies when "className" is set.
-scope | false | JSP scope for class in page context.  Defaults to "page".  Must be one of "page", "request", "session", or "application".
+instanceName | false | Name of existing component or object in page context.  `className` attribute is checked first.
+name | false | Name to use for page context attribute containing the instantiated component class.  Only applies when `className` is set.
+scope | false | JSP scope for class in page context.  Defaults to `page`.  Must be one of `page`, `request`, `session`, or `application`.
 
     <ct:serializeJson className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
 
@@ -104,22 +104,22 @@ Attribute | Required | Description
 :---------|:---------|:-----------
 propertyName | true | Name of property containing the value to display.
 defaultValue | false | Value to display if the named property does not exist on the current component.
-escapeXml | false | If "false", XML property values will not be escaped.  This should be set to "false" if the property value may contain markup (e.g. rich text editor).  Defaults to "true".
-inherit | false | If "true", value will be inherited from ancestor components before returning the default value if not found.  Defaults to "false".
+escapeXml | false | If `false`, XML property values will not be escaped.  This should be set to `false` if the property value may contain markup (e.g. rich text editor).  Defaults to `true`.
+inherit | false | If `true`, value will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
     <ct:property propertyName="heading" defaultValue="Heading" escapeXml="false" inherit="true"/>
 
 ### Property Boolean
 
-Render a boolean property value for the current component, optionally setting arbitrary string values to use instead of "true" and "false".
+Render a boolean property value for the current component, optionally setting arbitrary string values to use instead of `true` and `false`.
 
 Attribute | Required | Description
 :---------|:---------|:-----------
 propertyName | true | Name of property containing the boolean value to display.
 defaultValue | false | Value to display if the named property does not exist on the current component.
-true | false | Value to display instead of "true" if the property value is "true", e.g. "Yes".
-false | false | Value to display instead of "false" if the property value is "false", e.g. "No".
-inherit | false | If "true", value will be inherited from ancestor components before returning the default value if not found.  Defaults to "false".
+true | false | Value to display instead of `true` if the property value is `true`, e.g. "Yes".
+false | false | Value to display instead of `false` if the property value is `false`, e.g. "No".
+inherit | false | If `true`, value will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
     <ct:propertyBoolean propertyName="isSelected" defaultValue="true" true="Yes" false="No"/>
 
@@ -131,7 +131,7 @@ Attribute | Required | Description
 :---------|:---------|:-----------
 propertyName | true | Name of property containing a path or external URL value to display.
 defaultValue | false | Value to display if the named property does not exist on the current component.
-inherit | false | If "true", value will be inherited from ancestor components before returning the default value if not found.  Defaults to "false".
+inherit | false | If `true`, value will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
     <a href="<ct:href propertyName="path" defaultValue="/page.html" inherit="true"/>">Link</a>
 
@@ -141,7 +141,7 @@ Draw an HTML image tag for the current component.  See [Image](http://dev.day.co
 
 Attribute | Required | Description
 :---------|:---------|:-----------
-name | false | Name of image for the current component.  Defaults to "image".
+name | false | Name of image for the current component.  Defaults to `image`.
 alt | false | Image alt text.
 title | false | Image title.
 
@@ -153,9 +153,9 @@ Render an image source path for the current component.  The resulting URL trigge
 
 Attribute | Required | Description
 :---------|:---------|:-----------
-name | true | Name of image for the current component.  Defaults to "image".
+name | true | Name of image for the current component.  Defaults to `image`.
 width | false | Width in pixels to render the image.  The width value will be used as a selector in the image servlet URL to resize the image.
 defaultValue | false | Image source to display if the named image does not exist on the current component.  Defaults to "".
-inherit | false | If "true", image source will be inherited from ancestor components before returning the default value if not found.  Defaults to "false".
+inherit | false | If `true`, image source will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
     <img src="<ct:imageSource name="thumbnailImage" width="500"/>">

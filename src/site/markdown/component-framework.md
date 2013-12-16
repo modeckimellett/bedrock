@@ -11,7 +11,7 @@ The component JSP needs to include the CQ Library `global.jsp` to define the tag
 Component Java classes can be instantiated in one of two ways:
 
 * Include the `<ct:component/>` tag in the JSP as shown below.
-* Define a "className" attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.cq.library.components.annotations.AutoInstantiate` annotation.
+* Define a `className` attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.cq.library.components.annotations.AutoInstantiate` annotation.
 
 In the latter case, the `global.jsp` will instantiate the component class via the `<ct:defineObjects/>` tag included therein.
 
