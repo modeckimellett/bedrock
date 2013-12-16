@@ -16,10 +16,6 @@ import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_COMPONENT_RE
  */
 public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
-    protected final Class<?> getClass(final String className) throws ClassNotFoundException {
-        return Class.forName(className);
-    }
-
     protected final Object getInstance(final Class<?> clazz)
         throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         final ComponentRequest componentRequest = (ComponentRequest) pageContext.getAttribute(ATTR_COMPONENT_REQUEST);
@@ -30,7 +26,7 @@ public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
     protected final Object getInstance(final String className)
         throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException,
         IllegalAccessException {
-        final Class<?> clazz = getClass(className);
+        final Class<?> clazz = Class.forName(className);
 
         return getInstance(clazz);
     }

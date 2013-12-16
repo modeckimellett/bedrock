@@ -29,17 +29,18 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Component class to instantiate.
+     * Component class to instantiate and serialize.
      */
     private String className;
 
     /**
-     * Name of existing component or object in page context.  "className" attribute is checked first.
+     * Name of existing component or object in page context.  <code>className</code> attribute is checked first.
      */
     private String instanceName;
 
     /**
-     * Optional name to set in pageContext for the component instance.  This only applies when 'className' is used.
+     * Optional name to set in pageContext for the component instance.  This only applies when the
+     * <code>className</code> attribute is used.
      */
     private String name;
 

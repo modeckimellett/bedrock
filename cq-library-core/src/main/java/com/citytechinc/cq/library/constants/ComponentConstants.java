@@ -40,6 +40,11 @@ public final class ComponentConstants {
      */
     public static final String RESOURCE_TYPE_PARSYS = "foundation/components/parsys";
 
+    /**
+     * Property name in component descriptor containing annotated class name.
+     */
+    public static final String PROPERTY_CLASS_NAME = "className";
+
     private ComponentConstants() {
 
     }

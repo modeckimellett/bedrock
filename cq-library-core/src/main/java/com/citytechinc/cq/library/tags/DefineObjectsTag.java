@@ -6,6 +6,7 @@
 package com.citytechinc.cq.library.tags;
 
 import com.citytechinc.cq.library.components.annotations.AutoInstantiate;
+import com.citytechinc.cq.library.constants.ComponentConstants;
 import com.citytechinc.cq.library.content.request.ComponentRequest;
 import com.citytechinc.cq.library.content.request.impl.DefaultComponentRequest;
 import com.day.cq.wcm.api.WCMMode;
@@ -29,6 +30,8 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     public static final String ATTR_COMPONENT_NODE = "componentNode";
 
+    public static final String ATTR_COMPONENT_INSTANCE_NAME = "componentInstanceName";
+
     public static final String ATTR_CURRENT_PAGE = "currentPage";
 
     public static final String ATTR_IS_AUTHOR = "isAuthor";
@@ -51,11 +54,6 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     public static final String PARAMETER_DEBUG = "debug";
 
-    /**
-     * Property name in component descriptor containing annotated class name.
-     */
-    private static final String PROPERTY_COMPONENT_CLASS_NAME = "className";
-
     private static final Logger LOG = LoggerFactory.getLogger(DefineObjectsTag.class);
 
     private static final long serialVersionUID = 1L;
@@ -75,58 +73,72 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
         pageContext.setAttribute(ATTR_IS_PREVIEW_MODE, mode.equals(WCMMode.PREVIEW));
         pageContext.setAttribute(ATTR_IS_DEBUG, Boolean.valueOf(slingRequest.getParameter(PARAMETER_DEBUG)));
 
-        final ComponentRequest componentRequest = new DefaultComponentRequest(pageContext);
+        final ComponentRequest request = new DefaultComponentRequest(pageContext);
 
         if (LOG.isDebugEnabled()) {
-            final Resource resource = componentRequest.getResource();
+            final Resource resource = request.getResource();
 
             LOG.debug("doEndTag() instantiated component request for resource = {} with type = {}", resource.getPath(),
                 resource.getResourceType());
         }
 
-        pageContext.setAttribute(ATTR_COMPONENT_REQUEST, componentRequest);
-        pageContext.setAttribute(ATTR_COMPONENT_NODE, componentRequest.getComponentNode());
-        pageContext.setAttribute(ATTR_PAGE_MANAGER, componentRequest.getPageManager());
-        pageContext.setAttribute(ATTR_CURRENT_PAGE, componentRequest.getCurrentPage());
+        pageContext.setAttribute(ATTR_COMPONENT_REQUEST, request);
+        pageContext.setAttribute(ATTR_COMPONENT_NODE, request.getComponentNode());
+        pageContext.setAttribute(ATTR_PAGE_MANAGER, request.getPageManager());
+        pageContext.setAttribute(ATTR_CURRENT_PAGE, request.getCurrentPage());
 
-        instantiateComponent(componentRequest);
+        instantiateComponentClass(request);
 
         return EVAL_PAGE;
     }
 
-    private void instantiateComponent(final ComponentRequest componentRequest) {
-        final Component component = componentRequest.getComponent();
+    private void instantiateComponentClass(final ComponentRequest request) {
+        try {
+            final Component component = request.getComponent();
 
-        if (component != null) {
-            final String className = component.getProperties().get(PROPERTY_COMPONENT_CLASS_NAME, "");
+            if (component != null) {
+                final String className = component.getProperties().get(ComponentConstants.PROPERTY_CLASS_NAME,
+                    String.class);
 
-            if (!className.isEmpty()) {
-                try {
-                    final Class<?> clazz = getClass(className);
+                if (className != null) {
+                    final Class<?> clazz = Class.forName(className);
 
                     if (clazz.isAnnotationPresent(AutoInstantiate.class)) {
-                        LOG.debug("instantiateComponent() instantiating component for class name = {}", className);
-
-                        final AutoInstantiate autoInstantiate = clazz.getAnnotation(AutoInstantiate.class);
-                        final String instanceName;
-
-                        if (autoInstantiate.instanceName().isEmpty()) {
-                            instanceName = StringUtils.uncapitalize(clazz.getSimpleName());
-                        } else {
-                            instanceName = autoInstantiate.instanceName();
-                        }
-
+                        final String instanceName = getInstanceName(clazz);
                         final Object instance = getInstance(clazz);
 
                         pageContext.setAttribute(instanceName, instance);
+                        pageContext.setAttribute(ATTR_COMPONENT_INSTANCE_NAME, instanceName);
                     } else {
-                        LOG.debug("instantiateComponent() annotation not present for class name = {}, skipping",
+                        LOG.debug(
+                            "instantiateComponentClass() annotation not present for class name = {}, not instantiating component class",
                             className);
                     }
-                } catch (Exception e) {
-                    LOG.error("error instantiating component for class name = " + className, e);
+                } else {
+                    LOG.debug(
+                        "instantiateComponentClass() class name attribute not present for component = {}, not instantiating component class",
+                        component.getResourceType());
                 }
+            } else {
+                LOG.debug("instantiateComponentClass() component is null, not instantiating component class");
             }
+        } catch (Exception e) {
+            LOG.error("error instantiating component class", e);
         }
+    }
+
+    private String getInstanceName(final Class<?> clazz) {
+        final AutoInstantiate autoInstantiate = clazz.getAnnotation(AutoInstantiate.class);
+        final String instanceName;
+
+        if (autoInstantiate.instanceName().isEmpty()) {
+            instanceName = StringUtils.uncapitalize(clazz.getSimpleName());
+        } else {
+            instanceName = autoInstantiate.instanceName();
+        }
+
+        LOG.debug("getInstanceName() component instance name = {}", instanceName);
+
+        return instanceName;
     }
 }
