@@ -29,8 +29,6 @@ public final class DescriptionTag extends AbstractMetaTag {
 
     private static final String TAG_START = "<meta name=\"description\" content=\"";
 
-    private static final String TAG_END = "\"/>";
-
     private static final Escaper ESCAPER = HtmlEscapers.htmlEscaper();
 
     private String suffix;

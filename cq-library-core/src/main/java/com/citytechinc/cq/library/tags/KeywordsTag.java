@@ -7,8 +7,6 @@ package com.citytechinc.cq.library.tags;
 
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.commons.WCMUtils;
-import com.google.common.escape.Escaper;
-import com.google.common.html.HtmlEscapers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +24,6 @@ public final class KeywordsTag extends AbstractMetaTag {
 
     private static final String TAG_START = "<meta name=\"keywords\" content=\"";
 
-    private static final Escaper ESCAPER = HtmlEscapers.htmlEscaper();
-
     @Override
     public int doEndTag() throws JspTagException {
         final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
@@ -35,7 +31,7 @@ public final class KeywordsTag extends AbstractMetaTag {
         final StringBuilder builder = new StringBuilder();
 
         builder.append(TAG_START);
-        builder.append(ESCAPER.escape(WCMUtils.getKeywords(currentPage, false)));
+        builder.append(getXssApi().encodeForHTMLAttr(WCMUtils.getKeywords(currentPage, false)));
         builder.append(getTagEnd());
 
         try {

@@ -6,8 +6,6 @@
 package com.citytechinc.cq.library.tags;
 
 import com.day.cq.wcm.api.Page;
-import com.google.common.escape.Escaper;
-import com.google.common.html.HtmlEscapers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +27,6 @@ public final class TitleTag extends AbstractMetaTag {
 
     private static final String TAG_END = "</title>";
 
-    private static final Escaper ESCAPER = HtmlEscapers.htmlEscaper();
-
     private String suffix;
 
     @Override
@@ -45,9 +41,9 @@ public final class TitleTag extends AbstractMetaTag {
         final StringBuilder title = new StringBuilder();
 
         if (hasPropertyName()) {
-            title.append(ESCAPER.escape(currentPage.getProperties().get(propertyName, pageTitle)));
+            title.append(currentPage.getProperties().get(propertyName, pageTitle));
         } else {
-            title.append(ESCAPER.escape(pageTitle));
+            title.append(pageTitle);
         }
 
         if (!isNullOrEmpty(suffix)) {
