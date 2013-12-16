@@ -20,6 +20,9 @@ import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.resource.LoginException;
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.sling.jcr.api.SlingRepository;
 import org.osgi.service.event.EventConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +39,19 @@ public final class PageReplicationListener extends AbstractReplicationListener {
     private static final Logger LOG = LoggerFactory.getLogger(PageReplicationListener.class);
 
     @Reference
+    private ResourceResolverFactory resourceResolverFactory;
+
+    @Reference
+    private SlingRepository repository;
+
+    @Reference
     private Replicator replicator;
 
     private PageManager pageManager;
 
     private Session session;
+
+    private ResourceResolver resourceResolver;
 
     @Override
     protected void handleActivate(final String path) {
@@ -88,13 +99,20 @@ public final class PageReplicationListener extends AbstractReplicationListener {
 
     @Activate
     protected void activate() throws LoginException, RepositoryException {
-        session = getAdministrativeSession();
-        pageManager = getAdministrativeResourceResolver().adaptTo(PageManager.class);
+        session = repository.loginAdministrative(null);
+        resourceResolver = resourceResolverFactory.getAdministrativeResourceResolver(null);
+
+        pageManager = resourceResolver.adaptTo(PageManager.class);
     }
 
     @Deactivate
     protected void deactivate() {
-        closeSession();
-        closeResourceResolver();
+        if (session != null) {
+            session.logout();
+        }
+
+        if (resourceResolver != null) {
+            resourceResolver.close();
+        }
     }
 }

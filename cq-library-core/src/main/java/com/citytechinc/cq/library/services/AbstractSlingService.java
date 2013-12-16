@@ -19,6 +19,7 @@ import javax.jcr.Session;
  * Base class for services that require an administrative <code>Session</code> and/or <code>ResourceResolver</code>.
  */
 @Component(componentAbstract = true)
+@Deprecated
 public abstract class AbstractSlingService {
 
     @Reference
