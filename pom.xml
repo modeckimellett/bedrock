@@ -10,7 +10,7 @@
     <groupId>com.citytechinc.cq.library</groupId>
     <artifactId>cq-library</artifactId>
     <packaging>pom</packaging>
-    <version>6.1.1</version>
+    <version>6.1.2-SNAPSHOT</version>
     <name>CQ Library</name>
     <description>
         The CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
@@ -24,7 +24,7 @@
 
     <issueManagement>
         <system>JIRA</system>
-        <url>http://tasks.citytech.ctmsp.com/browse/CTCQLIBRRY</url>
+        <url>https://tasks.citytech.ctmsp.com/browse/CTCQLIBRRY</url>
     </issueManagement>
 
     <url>http://code.citytechinc.com/cq-library</url>
