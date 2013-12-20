@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
@@ -35,7 +36,7 @@ public final class DescriptionTag extends AbstractMetaTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
+        final Page currentPage = (Page) pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME);
         final ValueMap properties = currentPage.getProperties();
 
         final StringBuilder builder = new StringBuilder();

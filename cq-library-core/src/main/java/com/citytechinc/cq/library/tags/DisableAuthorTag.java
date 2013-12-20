@@ -14,6 +14,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_REQUEST_NAME;
+
 /**
  * Force "disabled" WCM mode in the tag body.
  */
@@ -28,7 +30,7 @@ public final class DisableAuthorTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(
-            DefineObjectsTag.ATTR_SLING_REQUEST);
+            DEFAULT_REQUEST_NAME);
 
         final String path = slingRequest.getResource().getPath();
 
@@ -44,7 +46,7 @@ public final class DisableAuthorTag extends TagSupport {
     @Override
     public int doEndTag() throws JspTagException {
         final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(
-            DefineObjectsTag.ATTR_SLING_REQUEST);
+            DEFAULT_REQUEST_NAME);
 
         final String path = slingRequest.getResource().getPath();
 

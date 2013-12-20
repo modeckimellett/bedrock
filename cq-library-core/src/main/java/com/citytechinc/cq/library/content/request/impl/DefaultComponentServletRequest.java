@@ -26,10 +26,10 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.servlet.jsp.PageContext;
 
-import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_CURRENT_PAGE;
-import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_SLING_REQUEST;
-import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_SLING_RESPONSE;
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_PROPERTIES_NAME;
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_REQUEST_NAME;
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_RESPONSE_NAME;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_NODE_NAME;
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME;
@@ -87,13 +87,13 @@ public final class DefaultComponentServletRequest implements ComponentServletReq
     }
 
     protected DefaultComponentServletRequest(final PageContext pageContext) {
-        slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(ATTR_SLING_REQUEST);
-        slingResponse = (SlingHttpServletResponse) pageContext.getAttribute(ATTR_SLING_RESPONSE);
+        slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(DEFAULT_REQUEST_NAME);
+        slingResponse = (SlingHttpServletResponse) pageContext.getAttribute(DEFAULT_RESPONSE_NAME);
         resource = (Resource) pageContext.getAttribute(DEFAULT_RESOURCE_NAME);
         resourceResolver = resource.getResourceResolver();
         pageManager = resourceResolver.adaptTo(PageManagerDecorator.class);
 
-        final Page page = (Page) pageContext.getAttribute(ATTR_CURRENT_PAGE);
+        final Page page = (Page) pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME);
 
         currentPage = pageManager.getPage(page);
         currentNode = (Node) pageContext.getAttribute(DEFAULT_NODE_NAME);

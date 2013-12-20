@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME;
+
 /**
  * Render the keywords for the current page.
  */
@@ -26,7 +28,7 @@ public final class KeywordsTag extends AbstractMetaTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final Page currentPage = (Page) pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE);
+        final Page currentPage = (Page) pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME);
 
         final StringBuilder builder = new StringBuilder();
 
