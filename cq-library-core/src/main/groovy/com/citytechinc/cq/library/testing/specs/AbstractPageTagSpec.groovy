@@ -11,8 +11,9 @@ import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassReg
 import com.citytechinc.cq.groovy.testing.specs.tag.AbstractTagSpec
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
-import com.citytechinc.cq.library.tags.DefineObjectsTag
 import spock.lang.Shared
+
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
 
 /**
  * Spock specification for testing CQ page-based tag support classes.
@@ -45,6 +46,6 @@ abstract class AbstractPageTagSpec extends AbstractTagSpec {
     void setupPage(path) {
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
 
-        tag.pageContext.getAttribute(DefineObjectsTag.ATTR_CURRENT_PAGE) >> page
+        tag.pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME) >> page
     }
 }
