@@ -6,7 +6,6 @@
 package com.citytechinc.cq.library.tags.xss;
 
 import com.adobe.granite.xss.XSSAPI;
-import org.apache.sling.api.SlingHttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_REQUEST_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_XSSAPI_NAME;
 
 /**
@@ -26,13 +24,9 @@ public abstract class AbstractXssTag extends TagSupport {
 
     @Override
     public int doEndTag() throws JspException {
-        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(
-            DEFAULT_REQUEST_NAME);
-
         final XSSAPI xssApi = (XSSAPI) pageContext.getAttribute(DEFAULT_XSSAPI_NAME);
-        final XSSAPI requestXssApi = xssApi.getRequestSpecificAPI(slingRequest);
 
-        final String value = getOutput(requestXssApi);
+        final String value = getOutput(xssApi);
 
         try {
             pageContext.getOut().write(value);

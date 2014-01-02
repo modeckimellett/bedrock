@@ -8,6 +8,57 @@
     <short-name>xss</short-name>
     <uri>http://www.citytechinc.com/taglibs/xss</uri>
 
+    <function>
+        <name>encodeForHTMLAttr</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String encodeForHTMLAttr(com.adobe.granite.xss.XSSAPI,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>encodeForHTML</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String encodeForHTML(com.adobe.granite.xss.XSSAPI,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>encodeForJSString</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String encodeForJSString(com.adobe.granite.xss.XSSAPI,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>encodeForXMLAttr</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String encodeForXMLAttr(com.adobe.granite.xss.XSSAPI,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>encodeForXML</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String encodeForXML(com.adobe.granite.xss.XSSAPI,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>filterHTML</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String filterHTML(com.adobe.granite.xss.XSSAPI,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>validDimension</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String validDimension(com.adobe.granite.xss.XSSAPI,java.lang.String,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>validHref</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String validHref(com.adobe.granite.xss.XSSAPI,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>validInteger</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>int validInteger(com.adobe.granite.xss.XSSAPI,java.lang.String,int)</function-signature>
+    </function>
+    <function>
+        <name>validJSToken</name>
+        <function-class>com.citytechinc.cq.library.tags.xss.Functions</function-class>
+        <function-signature>java.lang.String validJSToken(com.adobe.granite.xss.XSSAPI,java.lang.String,java.lang.String)</function-signature>
+    </function>
+
     <tag>
         <name>encodeForHTMLAttr</name>
         <tag-class>com.citytechinc.cq.library.tags.xss.EncodeForHtmlAttrTag</tag-class>
@@ -36,6 +87,24 @@
         </attribute>
     </tag>
     <tag>
+        <name>encodeForXMLAttr</name>
+        <tag-class>com.citytechinc.cq.library.tags.xss.EncodeForXmlAttrTag</tag-class>
+        <attribute>
+            <name>source</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>encodeForXML</name>
+        <tag-class>com.citytechinc.cq.library.tags.xss.EncodeForXmlTag</tag-class>
+        <attribute>
+            <name>source</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
         <name>filterHTML</name>
         <tag-class>com.citytechinc.cq.library.tags.xss.FilterHtmlTag</tag-class>
         <attribute>
@@ -54,7 +123,7 @@
         </attribute>
         <attribute>
             <name>defaultValue</name>
-            <required>false</required>
+            <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
@@ -77,7 +146,7 @@
         </attribute>
         <attribute>
             <name>defaultValue</name>
-            <required>false</required>
+            <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
@@ -91,7 +160,7 @@
         </attribute>
         <attribute>
             <name>defaultValue</name>
-            <required>false</required>
+            <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
