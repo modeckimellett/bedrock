@@ -30,8 +30,8 @@ public final class ComponentTag extends AbstractComponentInstanceTag {
     private String name;
 
     @Override
-    public int doStartTag() throws JspTagException {
-        LOG.debug("doStartTag() class name = {}, attribute name = {}", className, name);
+    public int doEndTag() throws JspTagException {
+        LOG.debug("doEndTag() class name = {}, attribute name = {}", className, name);
 
         checkScopeAttribute();
 
@@ -41,10 +41,11 @@ public final class ComponentTag extends AbstractComponentInstanceTag {
             pageContext.setAttribute(name, component, getScopeValue());
         } catch (Exception e) {
             LOG.error("error instantiating component for class name = " + className, e);
+
             throw new JspTagException(e);
         }
 
-        return EVAL_BODY_INCLUDE;
+        return EVAL_PAGE;
     }
 
     public String getClassName() {

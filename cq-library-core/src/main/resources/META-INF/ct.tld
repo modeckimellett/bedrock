@@ -6,7 +6,7 @@
 
     <tlib-version>${project.parent.version}</tlib-version>
     <short-name>ct</short-name>
-    <uri>http://www.citytechinc.com/tags</uri>
+    <uri>http://www.citytechinc.com/taglibs/cq-library</uri>
 
     <tag>
         <name>defineObjects</name>
