@@ -5,7 +5,6 @@
  */
 package com.citytechinc.cq.library.replication;
 
-import com.citytechinc.cq.library.services.AbstractSlingService;
 import com.day.cq.replication.ReplicationAction;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
@@ -21,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * {@literal @}Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC)
  * </pre>
  */
-public abstract class AbstractReplicationListener extends AbstractSlingService implements EventHandler {
+public abstract class AbstractReplicationListener implements EventHandler {
 
     private static final String TYPE_ACTIVATE = "ACTIVATE";
 
