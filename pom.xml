@@ -10,7 +10,7 @@
     <groupId>com.citytechinc.cq.library</groupId>
     <artifactId>cq-library</artifactId>
     <packaging>pom</packaging>
-    <version>6.2.0</version>
+    <version>6.2.1-SNAPSHOT</version>
     <name>CQ Library</name>
     <description>
         The CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
