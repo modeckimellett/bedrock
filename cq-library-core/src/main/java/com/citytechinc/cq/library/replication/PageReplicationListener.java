@@ -31,6 +31,9 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+/**
+ * Replication listener that ensures ancestor pages are activated when any page receives an activation request.
+ */
 @Component(immediate = true)
 @Service
 @Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC)

@@ -88,7 +88,13 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <excludePackageNames>*.impl</excludePackageNames>
+                            <excludePackageNames>
+                                *.impl,
+                                *.predicates,
+                                com.citytechinc.cq.library.components.multicompositefield,
+                                com.citytechinc.cq.library.content.adapter,
+                                com.citytechinc.cq.library.filters
+                            </excludePackageNames>
                         </configuration>
                         <phase>deploy</phase>
                         <goals>

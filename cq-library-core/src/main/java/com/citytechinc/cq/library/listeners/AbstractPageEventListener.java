@@ -20,6 +20,10 @@ import javax.jcr.observation.EventListener;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Base listener for <code>Page</code> events.  Implementing classes can register a listener instance using the {@link
+ * javax.jcr.observation.ObservationManager} API.
+ */
 public abstract class AbstractPageEventListener implements EventListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractPageEventListener.class);
@@ -61,5 +65,10 @@ public abstract class AbstractPageEventListener implements EventListener {
         }
     }
 
+    /**
+     * Process a <code>Page</code> event.
+     *
+     * @param path page path
+     */
     public abstract void processPage(final String path);
 }
