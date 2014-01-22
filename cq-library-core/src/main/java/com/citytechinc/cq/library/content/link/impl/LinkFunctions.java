@@ -9,9 +9,6 @@ import com.citytechinc.cq.library.content.link.Link;
 import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.google.common.base.Function;
 
-/**
- * Functions for transforming to and from Link objects.
- */
 public final class LinkFunctions {
 
     public static final Function<Link, String> LINK_TO_HREF = new Function<Link, String>() {

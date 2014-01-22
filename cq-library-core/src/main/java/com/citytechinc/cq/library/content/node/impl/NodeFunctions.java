@@ -10,9 +10,6 @@ import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.google.common.base.Function;
 import org.apache.sling.api.resource.Resource;
 
-/**
- * Functions for transforming resources to node decorators.
- */
 public final class NodeFunctions {
 
     public static final Function<Resource, BasicNode> RESOURCE_TO_BASIC_NODE = new Function<Resource, BasicNode>() {

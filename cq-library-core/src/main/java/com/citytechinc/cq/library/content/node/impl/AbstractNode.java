@@ -44,14 +44,12 @@ public abstract class AbstractNode {
             toLink = PATH_TO_LINK;
         }
 
-        final Function<String, String> mapping = new Function<String, String>() {
+        return pathOptional.transform(new Function<String, String>() {
             @Override
             public String apply(final String path) {
                 return mapped ? resourceResolver.map(path) : path;
             }
-        };
-
-        return pathOptional.transform(mapping).transform(toLink);
+        }).transform(toLink);
     }
 
     protected Optional<PageDecorator> getPageOptional(final String path) {

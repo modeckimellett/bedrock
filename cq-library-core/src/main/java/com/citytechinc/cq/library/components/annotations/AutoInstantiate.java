@@ -14,9 +14,9 @@ import java.lang.annotation.Target;
 
 /**
  * Marker for components that can be automatically instantiated by the {@code <ct:defineObjects/>} in a component JSP.
- * If the component's <code>.content.xml</code> has a "className" attribute value set to a valid component Java class
- * name, the class will be instantiated and set in page context without the need to use the {@code <ct:component/>}
- * tag.
+ * If the component's <code>.content.xml</code> has a <code>className</code> attribute value set to a valid component
+ * Java class name, the class will be instantiated and set in page context without the need to use the {@code
+ * <ct:component/>} tag.
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.TYPE)
