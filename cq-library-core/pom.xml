@@ -22,8 +22,8 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
                 <configuration>
                     <header>../LICENSE</header>
                     <strictCheck>true</strictCheck>
@@ -31,6 +31,9 @@
                         <include>**/*.java</include>
                         <include>**/*.groovy</include>
                     </includes>
+                    <properties>
+                        <year>${license.year}</year>
+                    </properties>
                 </configuration>
                 <executions>
                     <execution>
