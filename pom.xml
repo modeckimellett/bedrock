@@ -10,7 +10,7 @@
     <groupId>com.citytechinc.cq.library</groupId>
     <artifactId>cq-library</artifactId>
     <packaging>pom</packaging>
-    <version>6.2.1-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <name>CQ Library</name>
     <description>
         The CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
@@ -38,7 +38,6 @@
         <connection>scm:git:git@github.com:Citytechinc/cq-library.git</connection>
         <url>https://github.com/Citytechinc/cq-library</url>
         <developerConnection>scm:git:git@github.com:Citytechinc/cq-library.git</developerConnection>
-        <tag>HEAD</tag>
     </scm>
 
     <repositories>
