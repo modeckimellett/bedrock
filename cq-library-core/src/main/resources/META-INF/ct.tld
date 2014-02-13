@@ -17,6 +17,19 @@
         <tag-class>com.citytechinc.cq.library.tags.DisableAuthorTag</tag-class>
     </tag>
     <tag>
+        <name>includeDeferredClientLib</name>
+        <tag-class>com.citytechinc.cq.library.tags.IncludeDeferredClientLibTag</tag-class>
+        <attribute>
+            <name>js</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>deferredClientLib</name>
+        <tag-class>com.citytechinc.cq.library.tags.DeferredClientLibTag</tag-class>
+    </tag>
+    <tag>
         <name>title</name>
         <tag-class>com.citytechinc.cq.library.tags.TitleTag</tag-class>
         <attribute>
