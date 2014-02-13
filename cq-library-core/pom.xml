@@ -86,32 +86,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>tldgen</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>javadoc</goal>
-                        </goals>
-                        <configuration>
-                            <doclet>org.tldgen.TldDoclet</doclet>
-                            <docletArtifacts>
-                                <docletArtifact>
-                                    <groupId>org.extrema-sistemas</groupId>
-                                    <artifactId>tldgen</artifactId>
-                                    <version>1.4.4</version>
-                                </docletArtifact>
-                            </docletArtifacts>
-                            <show>private</show>
-                            <additionalparam>
-                                -htmlFolder ${basedir}/target/docs
-                                -tldFolder ${basedir}/target/classes/META-INF
-                                -license NONE
-                            </additionalparam>
-                            <useStandardDocletOptions>true</useStandardDocletOptions>
-                            <author>false</author>
-                            <encoding>utf-8</encoding>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <phase>deploy</phase>
                         <goals>
                             <goal>jar</goal>
@@ -253,6 +227,10 @@
             <artifactId>com.adobe.granite.jmx</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.adobe.granite</groupId>
+            <artifactId>com.adobe.granite.xssprotection</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.day.cq.wcm</groupId>
             <artifactId>cq-wcm-foundation</artifactId>
         </dependency>
@@ -285,8 +263,20 @@
             <artifactId>org.apache.sling.scripting.jsp.taglib</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.commons.osgi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.event</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.day.cq.wcm</groupId>
             <artifactId>cq-wcm-taglib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.day.commons</groupId>
+            <artifactId>day-commons-text</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -295,6 +285,10 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

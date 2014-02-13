@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.citytechinc.cq</groupId>
         <artifactId>parent</artifactId>
-        <version>5.6.5</version>
+        <version>6.0.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -14,7 +14,7 @@
     <name>CQ Library</name>
     <description>
         The CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
-        modules for bootstrapping and simplifying Adobe CQ5 implementations.
+        modules for bootstrapping and simplifying Adobe AEM implementations.
     </description>
 
     <organization>
@@ -23,8 +23,8 @@
     </organization>
 
     <issueManagement>
-        <system>JIRA</system>
-        <url>https://tasks.citytech.ctmsp.com/browse/CTCQLIBRRY</url>
+        <system>GitHub</system>
+        <url>https://github.com/Citytechinc/cq-library/issues</url>
     </issueManagement>
 
     <url>http://code.citytechinc.com/cq-library</url>
@@ -48,6 +48,10 @@
         <repository>
             <id>jsdoctk1</id>
             <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
+        </repository>
+        <repository>
+            <id>localhost</id>
+            <url>http://localhost:4502/maven/repository</url>
         </repository>
     </repositories>
 
@@ -413,6 +417,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- compile -->
             <dependency>
                 <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
                 <artifactId>cq-component-maven-plugin</artifactId>
@@ -429,39 +434,41 @@
                 <version>1.9.6</version>
             </dependency>
             <dependency>
+                <groupId>com.citytechinc.cq</groupId>
+                <artifactId>cq-groovy-testing</artifactId>
+                <version>0.5.0</version>
+            </dependency>
+
+            <!-- provided -->
+            <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
                 <version>2.1.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.citytechinc.cq</groupId>
                 <artifactId>cq-groovy-extension</artifactId>
                 <version>0.3.4</version>
-            </dependency>
-            <dependency>
-                <groupId>com.citytechinc.cq</groupId>
-                <artifactId>cq-groovy-testing</artifactId>
-                <version>0.5.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>2.2.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
                 <version>2.2.1</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>2.2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>15.0</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

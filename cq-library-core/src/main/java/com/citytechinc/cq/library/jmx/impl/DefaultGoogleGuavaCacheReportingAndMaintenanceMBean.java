@@ -11,7 +11,7 @@ import com.citytechinc.cq.library.services.cache.CacheService;
 import com.google.common.base.Function;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
