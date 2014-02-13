@@ -86,6 +86,36 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>tldgen</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <configuration>
+                            <doclet>org.tldgen.TldDoclet</doclet>
+                            <docletArtifacts>
+                                <docletArtifact>
+                                    <groupId>org.extrema-sistemas</groupId>
+                                    <artifactId>tldgen</artifactId>
+                                    <version>1.4.4</version>
+                                </docletArtifact>
+                            </docletArtifacts>
+                            <show>private</show>
+                            <additionalparam>
+                                -htmlFolder ${basedir}/target/docs
+                                -tldFolder ${basedir}/target/classes/META-INF
+                                -license NONE
+                            </additionalparam>
+                            <useStandardDocletOptions>true</useStandardDocletOptions>
+                            <author>false</author>
+                            <encoding>utf-8</encoding>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                         <configuration>
                             <excludePackageNames>
                                 *.impl,
@@ -95,10 +125,6 @@
                                 com.citytechinc.cq.library.filters
                             </excludePackageNames>
                         </configuration>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -167,6 +193,16 @@
     </profiles>
 
     <dependencies>
+        <!-- compile -->
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
+            <artifactId>cq-component-maven-plugin</artifactId>
+        </dependency>
+
         <!-- provided -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -187,10 +223,6 @@
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.scr.annotations</artifactId>
         </dependency>
         <dependency>
             <groupId>com.day.cq.wcm</groupId>
@@ -294,10 +326,8 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
-            <artifactId>cq-component-maven-plugin</artifactId>
-        </dependency>
+
+        <!-- test -->
         <dependency>
             <groupId>com.citytechinc.cq</groupId>
             <artifactId>cq-groovy-testing</artifactId>
