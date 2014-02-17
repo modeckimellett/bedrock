@@ -2,7 +2,6 @@
 .project
 .metadata
 .classpath
-.groovy
 .idea
 *.iml
 .settings/
