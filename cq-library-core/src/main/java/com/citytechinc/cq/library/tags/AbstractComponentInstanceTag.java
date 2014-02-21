@@ -5,11 +5,10 @@
  */
 package com.citytechinc.cq.library.tags;
 
+import com.citytechinc.cq.library.binding.ComponentBindings;
 import com.citytechinc.cq.library.content.request.ComponentRequest;
 
 import java.lang.reflect.InvocationTargetException;
-
-import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_COMPONENT_REQUEST;
 
 /**
  * Base class for tags that instantiate component classes.
@@ -17,15 +16,17 @@ import static com.citytechinc.cq.library.tags.DefineObjectsTag.ATTR_COMPONENT_RE
 public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
     protected final Object getInstance(final Class<?> clazz)
-        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        final ComponentRequest componentRequest = (ComponentRequest) pageContext.getAttribute(ATTR_COMPONENT_REQUEST);
+        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+        InstantiationException {
+        final ComponentRequest componentRequest = (ComponentRequest) pageContext.getAttribute(
+            ComponentBindings.COMPONENT_REQUEST);
 
         return clazz.getConstructor(ComponentRequest.class).newInstance(componentRequest);
     }
 
     protected final Object getInstance(final String className)
-        throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException,
-        IllegalAccessException {
+        throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException,
+        InstantiationException, IllegalAccessException {
         final Class<?> clazz = Class.forName(className);
 
         return getInstance(clazz);

@@ -5,6 +5,7 @@
  */
 package com.citytechinc.cq.library.tags;
 
+import com.citytechinc.cq.library.binding.ComponentBindings;
 import com.citytechinc.cq.library.content.node.ComponentNode;
 
 import javax.servlet.jsp.tagext.TagSupport;
@@ -28,7 +29,7 @@ public abstract class AbstractComponentTag extends TagSupport {
     }
 
     protected final ComponentNode getComponentNode() {
-        return (ComponentNode) pageContext.getAttribute(DefineObjectsTag.ATTR_COMPONENT_NODE);
+        return (ComponentNode) pageContext.getAttribute(ComponentBindings.COMPONENT_NODE);
     }
 
     protected final boolean isInherit() {

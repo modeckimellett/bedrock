@@ -5,24 +5,22 @@
  */
 package com.citytechinc.cq.library.tags;
 
+import com.citytechinc.cq.library.binding.ComponentBindings;
 import com.citytechinc.cq.library.components.annotations.AutoInstantiate;
-import com.citytechinc.cq.library.constants.ComponentConstants;
 import com.citytechinc.cq.library.content.request.ComponentRequest;
-import com.citytechinc.cq.library.content.request.impl.DefaultComponentRequest;
-import com.day.cq.wcm.api.WCMMode;
 import com.day.cq.wcm.api.components.Component;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspTagException;
+import java.util.Map;
 
+import static com.citytechinc.cq.library.constants.ComponentConstants.PROPERTY_CLASS_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_PAGE_MANAGER_NAME;
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_REQUEST_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_SLING_NAME;
 
 /**
@@ -32,25 +30,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     // attribute names
 
-    public static final String ATTR_COMPONENT_REQUEST = "componentRequest";
-
-    public static final String ATTR_COMPONENT_NODE = "componentNode";
-
     public static final String ATTR_COMPONENT_INSTANCE_NAME = "componentInstanceName";
-
-    public static final String ATTR_IS_AUTHOR = "isAuthor";
-
-    public static final String ATTR_IS_EDIT_MODE = "isEditMode";
-
-    public static final String ATTR_IS_DESIGN_MODE = "isDesignMode";
-
-    public static final String ATTR_IS_PREVIEW_MODE = "isPreviewMode";
-
-    public static final String ATTR_IS_PUBLISH = "isPublish";
-
-    public static final String ATTR_IS_DEBUG = "isDebug";
-
-    public static final String PARAMETER_DEBUG = "debug";
 
     private static final Logger LOG = LoggerFactory.getLogger(DefineObjectsTag.class);
 
@@ -58,23 +38,16 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(
-            DEFAULT_REQUEST_NAME);
+        final ComponentBindings bindings = ComponentBindings.fromPageContext(pageContext);
 
-        final WCMMode mode = WCMMode.fromRequest(slingRequest);
-        final boolean isPublish = mode.equals(WCMMode.DISABLED);
+        for (final Map.Entry<String, Object> entry : bindings.entrySet()) {
+            pageContext.setAttribute(entry.getKey(), entry.getValue());
+        }
 
-        pageContext.setAttribute(ATTR_IS_AUTHOR, !isPublish);
-        pageContext.setAttribute(ATTR_IS_PUBLISH, isPublish);
-        pageContext.setAttribute(ATTR_IS_EDIT_MODE, mode.equals(WCMMode.EDIT));
-        pageContext.setAttribute(ATTR_IS_DESIGN_MODE, mode.equals(WCMMode.DESIGN));
-        pageContext.setAttribute(ATTR_IS_PREVIEW_MODE, mode.equals(WCMMode.PREVIEW));
-        pageContext.setAttribute(ATTR_IS_DEBUG, Boolean.valueOf(slingRequest.getParameter(PARAMETER_DEBUG)));
-
-        final ComponentRequest request = new DefaultComponentRequest(pageContext);
+        final ComponentRequest componentRequest = bindings.getComponentRequest();
 
         if (LOG.isDebugEnabled()) {
-            final Resource resource = request.getResource();
+            final Resource resource = componentRequest.getResource();
             final SlingScriptHelper sling = (SlingScriptHelper) pageContext.getAttribute(DEFAULT_SLING_NAME);
             final String scriptResourcePath = sling.getScript().getScriptResource().getPath();
 
@@ -82,12 +55,10 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
                 new Object[]{ resource.getPath(), resource.getResourceType(), scriptResourcePath });
         }
 
-        pageContext.setAttribute(ATTR_COMPONENT_REQUEST, request);
-        pageContext.setAttribute(ATTR_COMPONENT_NODE, request.getComponentNode());
-        pageContext.setAttribute(DEFAULT_PAGE_MANAGER_NAME, request.getPageManager());
-        pageContext.setAttribute(DEFAULT_CURRENT_PAGE_NAME, request.getCurrentPage());
+        pageContext.setAttribute(DEFAULT_PAGE_MANAGER_NAME, componentRequest.getPageManager());
+        pageContext.setAttribute(DEFAULT_CURRENT_PAGE_NAME, componentRequest.getCurrentPage());
 
-        instantiateComponentClass(request);
+        instantiateComponentClass(componentRequest);
 
         return EVAL_PAGE;
     }
@@ -115,7 +86,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
     }
 
     private void setInstance(final Component component) throws Exception {
-        final String className = component.getProperties().get(ComponentConstants.PROPERTY_CLASS_NAME, String.class);
+        final String className = component.getProperties().get(PROPERTY_CLASS_NAME, String.class);
 
         if (className != null) {
             final Class<?> clazz = Class.forName(className);
