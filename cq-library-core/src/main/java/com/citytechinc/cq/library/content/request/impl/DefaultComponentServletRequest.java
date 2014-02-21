@@ -9,7 +9,6 @@ import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.citytechinc.cq.library.content.page.PageDecorator;
 import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.citytechinc.cq.library.content.request.ComponentServletRequest;
-import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.WCMMode;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -21,20 +20,36 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.scripting.SlingBindings;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.script.Bindings;
 import javax.servlet.jsp.PageContext;
 
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME;
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_PROPERTIES_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_REQUEST_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_RESPONSE_NAME;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_NODE_NAME;
-import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME;
 
 public final class DefaultComponentServletRequest implements ComponentServletRequest {
+
+    public static ComponentServletRequest fromBindings(final Bindings bindings) {
+        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) bindings.get(
+            SlingBindings.REQUEST);
+        final SlingHttpServletResponse slingResponse = (SlingHttpServletResponse) bindings.get(
+            SlingBindings.RESPONSE);
+
+        return new DefaultComponentServletRequest(slingRequest, slingResponse);
+    }
+
+    public static ComponentServletRequest fromPageContext(final PageContext pageContext) {
+        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext
+            .getAttribute(DEFAULT_REQUEST_NAME);
+        final SlingHttpServletResponse slingResponse = (SlingHttpServletResponse) pageContext
+            .getAttribute(DEFAULT_RESPONSE_NAME);
+
+        return new DefaultComponentServletRequest(slingRequest, slingResponse);
+    }
 
     private static final Function<RequestParameter, String> REQUEST_PARAMETER_TO_STRING = new Function<RequestParameter, String>() {
         @Override
@@ -46,8 +61,8 @@ public final class DefaultComponentServletRequest implements ComponentServletReq
     private static final Function<RequestParameter[], String[]> REQUEST_PARAMETERS_TO_STRING_ARRAY = new Function<RequestParameter[], String[]>() {
         @Override
         public String[] apply(final RequestParameter[] parameters) {
-            return Lists.transform(Lists.newArrayList(parameters), REQUEST_PARAMETER_TO_STRING).toArray(
-                new String[parameters.length]);
+            return Lists.transform(Lists.newArrayList(parameters), REQUEST_PARAMETER_TO_STRING)
+                .toArray(new String[parameters.length]);
         }
     };
 
@@ -75,30 +90,12 @@ public final class DefaultComponentServletRequest implements ComponentServletReq
         this.slingResponse = slingResponse;
 
         resource = slingRequest.getResource();
+        resourceResolver = slingRequest.getResourceResolver();
         properties = ResourceUtil.getValueMap(resource);
         currentNode = resource.adaptTo(Node.class);
-        resourceResolver = slingRequest.getResourceResolver();
-        pageManager = resourceResolver.adaptTo(PageManagerDecorator.class);
-
-        final Page page = pageManager.getContainingPage(resource);
-
-        currentPage = pageManager.getPage(page);
         componentNode = resource.adaptTo(ComponentNode.class);
-    }
-
-    protected DefaultComponentServletRequest(final PageContext pageContext) {
-        slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(DEFAULT_REQUEST_NAME);
-        slingResponse = (SlingHttpServletResponse) pageContext.getAttribute(DEFAULT_RESPONSE_NAME);
-        resource = (Resource) pageContext.getAttribute(DEFAULT_RESOURCE_NAME);
-        resourceResolver = resource.getResourceResolver();
         pageManager = resourceResolver.adaptTo(PageManagerDecorator.class);
-
-        final Page page = (Page) pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME);
-
-        currentPage = pageManager.getPage(page);
-        currentNode = (Node) pageContext.getAttribute(DEFAULT_NODE_NAME);
-        properties = (ValueMap) pageContext.getAttribute(DEFAULT_PROPERTIES_NAME);
-        componentNode = resource.adaptTo(ComponentNode.class);
+        currentPage = pageManager.getContainingPage(resource);
     }
 
     @Override
