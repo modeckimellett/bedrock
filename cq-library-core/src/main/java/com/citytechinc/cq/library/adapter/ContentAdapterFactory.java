@@ -5,13 +5,13 @@
  */
 package com.citytechinc.cq.library.adapter;
 
-import com.citytechinc.cq.library.decorators.node.BasicNode;
-import com.citytechinc.cq.library.decorators.node.ComponentNode;
-import com.citytechinc.cq.library.decorators.node.impl.DefaultBasicNode;
-import com.citytechinc.cq.library.decorators.node.impl.DefaultComponentNode;
-import com.citytechinc.cq.library.decorators.page.PageDecorator;
-import com.citytechinc.cq.library.decorators.page.PageManagerDecorator;
-import com.citytechinc.cq.library.decorators.page.impl.DefaultPageManagerDecorator;
+import com.citytechinc.cq.library.content.node.BasicNode;
+import com.citytechinc.cq.library.content.node.ComponentNode;
+import com.citytechinc.cq.library.content.node.impl.DefaultBasicNode;
+import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode;
+import com.citytechinc.cq.library.content.page.PageDecorator;
+import com.citytechinc.cq.library.content.page.PageManagerDecorator;
+import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator;
 import com.day.cq.wcm.api.Page;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Properties;
