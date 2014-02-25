@@ -5,8 +5,8 @@
  */
 package com.citytechinc.cq.library.testing.builders
 
-import com.citytechinc.cq.groovy.testing.builders.RequestBuilder
-import com.citytechinc.cq.groovy.testing.builders.ResponseBuilder
+import com.citytechinc.aem.spock.builders.RequestBuilder
+import com.citytechinc.aem.spock.builders.ResponseBuilder
 import com.citytechinc.cq.library.content.request.ComponentRequest
 import com.citytechinc.cq.library.content.request.impl.DefaultComponentServletRequest
 import com.citytechinc.cq.library.testing.mocks.MockComponentRequest

@@ -5,10 +5,10 @@
  */
 package com.citytechinc.cq.library.testing.specs
 
+import com.citytechinc.aem.spock.specs.tag.AbstractTagSpec
 import com.citytechinc.cq.groovy.extension.builders.NodeBuilder
 import com.citytechinc.cq.groovy.extension.builders.PageBuilder
 import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
-import com.citytechinc.cq.groovy.testing.specs.tag.AbstractTagSpec
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
 import com.citytechinc.cq.library.content.page.impl.DefaultPageManagerDecorator
 import spock.lang.Shared

@@ -336,8 +336,8 @@
 
         <!-- test -->
         <dependency>
-            <groupId>com.citytechinc.aem</groupId>
-            <artifactId>cq-groovy-testing</artifactId>
+            <groupId>com.citytechinc.aem.spock</groupId>
+            <artifactId>spock-aem</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

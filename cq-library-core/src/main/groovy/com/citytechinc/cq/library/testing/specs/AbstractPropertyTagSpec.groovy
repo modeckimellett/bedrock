@@ -5,9 +5,9 @@
  */
 package com.citytechinc.cq.library.testing.specs
 
+import com.citytechinc.aem.spock.specs.tag.AbstractTagSpec
 import com.citytechinc.cq.groovy.extension.builders.PageBuilder
 import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
-import com.citytechinc.cq.groovy.testing.specs.tag.AbstractTagSpec
 import com.citytechinc.cq.library.binding.ComponentBindings
 import com.citytechinc.cq.library.content.node.impl.DefaultComponentNode
 import com.citytechinc.cq.library.content.page.PageManagerDecorator
