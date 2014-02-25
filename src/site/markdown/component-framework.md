@@ -66,7 +66,7 @@ The `AbstractComponent` class should be extended by all component backing classe
         final LatestNews latestNews = new LatestNews(latestNewsComponentNode.get());
     }
 
-See the [Javadoc](http://code.citytechinc.com/bedrock/apidocs/com/citytechinc/cq/library/components/AbstractComponent.html) for details of the available methods.
+See the [Javadoc](http://code.citytechinc.com/bedrock/apidocs/com/citytechinc/aem/bedrock/components/AbstractComponent.html) for details of the available methods.
 
 ### Development Guidelines
 

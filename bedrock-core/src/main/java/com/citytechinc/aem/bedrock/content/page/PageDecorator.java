@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Decorates the CQ <code>Page</code> interface with additional convenience methods for traversing the content hierarchy
- * and getters for CQ library classes.
+ * and getters for Bedrock classes.
  */
 public interface PageDecorator extends Page, Linkable, ImageSource {
 

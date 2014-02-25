@@ -31,10 +31,10 @@ import org.osgi.framework.Constants;
         "org.apache.sling.api.resource.ResourceResolver"
     }),
     @Property(name = "adapters", value = {
-        "com.citytechinc.cq.library.content.page.PageManagerDecorator",
-        "com.citytechinc.cq.library.content.page.PageDecorator",
-        "com.citytechinc.cq.library.content.node.ComponentNode",
-        "com.citytechinc.cq.library.content.node.BasicNode"
+        "com.citytechinc.aem.bedrock.content.page.PageManagerDecorator",
+        "com.citytechinc.aem.bedrock.content.page.PageDecorator",
+        "com.citytechinc.aem.bedrock.content.node.ComponentNode",
+        "com.citytechinc.aem.bedrock.content.node.BasicNode"
     })
 })
 public final class ContentAdapterFactory implements AdapterFactory {

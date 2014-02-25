@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component(immediate = true)
-@Property(name = "jmx.objectname", value = "com.citytechinc.cq.library:type=Google Guava Cache Reporting and Maintenance")
+@Property(name = "jmx.objectname", value = "com.citytechinc.aem.bedrock:type=Google Guava Cache Reporting and Maintenance")
 @Service
 public final class DefaultGoogleGuavaCacheReportingAndMaintenanceMBean extends AnnotatedStandardMBean implements GoogleGuavaCacheReportingAndMaintenanceMBean {
 

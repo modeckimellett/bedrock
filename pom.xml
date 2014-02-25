@@ -404,7 +404,7 @@
                     <directory>${project.build.directory}/jsdoc</directory>
                     <recurse>3</recurse>
                     <ext>js</ext>
-                    <srcDir>${basedir}/cq-library-ui/src/main/content/jcr_root/etc/clientlibs/cq-library</srcDir>
+                    <srcDir>${basedir}/cq-library-ui/src/main/content/jcr_root/etc/clientlibs/bedrock</srcDir>
                     <exclude>
                         <param>jquery*</param>
                     </exclude>
