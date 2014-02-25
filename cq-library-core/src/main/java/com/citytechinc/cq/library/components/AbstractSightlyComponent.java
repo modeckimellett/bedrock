@@ -79,11 +79,21 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
      * @param type component class type
      * @return component instance or null if an error occurs
      */
-    @SuppressWarnings("unchecked")
     public <T extends AbstractSightlyComponent> Optional<T> getComponent(final String path, final Class<T> type) {
         final Resource resource = getResource().getResourceResolver().getResource(path);
 
         return getComponentForResource(resource, type);
+    }
+
+    /**
+     * Get a component instance for the given component node.
+     *
+     * @param componentNode component node representing resource of desired component
+     * @param type component class type
+     * @return component instance or null if an error occurs
+     */
+    public <T extends AbstractSightlyComponent> Optional<T> getComponent(final ComponentNode componentNode, final Class<T> type) {
+        return getComponentForResource(componentNode.getResource(), type);
     }
 
     /**
