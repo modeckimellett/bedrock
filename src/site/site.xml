@@ -10,7 +10,7 @@
 
     <bannerRight>
         <name>${project.name}</name>
-        <href>http://code.citytechinc.com/cq-library</href>
+        <href>http://code.citytechinc.com/bedrock</href>
     </bannerRight>
 
     <custom>
@@ -27,7 +27,7 @@
             <topNav>User Guide|reports</topNav>
             <brand>
                 <name>${project.name}</name>
-                <href>http://code.citytechinc.com/cq-library</href>
+                <href>http://code.citytechinc.com/bedrock</href>
             </brand>
             <slogan></slogan>
             <body />
@@ -40,7 +40,7 @@
 
     <body>
         <links>
-            <item name="GitHub" href="https://github.com/Citytechinc/cq-library" />
+            <item name="GitHub" href="https://github.com/Citytechinc/bedrock" />
             <item name="Overview" href="index.html" />
         </links>
         <menu name="User Guide">

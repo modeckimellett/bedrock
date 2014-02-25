@@ -2,7 +2,7 @@
 
 ### Overview
 
-CQ5 has default servlets for handling page and component level images.  However, the default image servlets only allow for a single image per page or component; the custom CQ Library Image Servlet adds the ability to provide additional selectors to specify named images and a width value for resizing the rendered image.
+CQ5 has default servlets for handling page and component level images.  However, the default image servlets only allow for a single image per page or component; the custom Bedrock Image Servlet adds the ability to provide additional selectors to specify named images and a width value for resizing the rendered image.
 
 ### Pages
 
@@ -21,7 +21,7 @@ The Page Properties dialog can be customized to add additional named images as f
 	    title="Second Image"
 	    xtype="html5smartimage" />
 
-The following URLs can be used to access the default and named images for a given page.  The corresponding CQ library page decorator method names are listed as well.
+The following URLs can be used to access the default and named images for a given page.  The corresponding Bedrock page decorator method names are listed as well.
 
 URL                                      | Image Name        | Width | Method Name
 :----------------------------------------|:------------------|:------|:----------------------------------
@@ -64,7 +64,7 @@ Named image (for adding multiple images to a component):
 	    title="Second Image"
 	    xtype="html5smartimage" />
 
-The following URLs can be used to access the default and named images for a given component.  The corresponding CQ library component (i.e. node) decorator method names are listed as well.
+The following URLs can be used to access the default and named images for a given component.  The corresponding Bedrock component (i.e. node) decorator method names are listed as well.
 
 URL                                                                | Image Name        | Width | Method Name
 :------------------------------------------------------------------|:------------------|:------|:-----------
@@ -75,6 +75,6 @@ URL                                                                | Image Name 
 
 ### Tag Library
 
-As detailed on the [Tag Library](https://github.com/Citytechinc/cq-library/wiki/Tag-Library) wiki page, the Image Source tag can be used to render URLs directly in JSPs without calling the above methods in a component Java class.
+As detailed on the [Tag Library](https://github.com/Citytechinc/bedrock/wiki/Tag-Library) wiki page, the Image Source tag can be used to render URLs directly in JSPs without calling the above methods in a component Java class.
 
     <img src="<ct:imageSource name="secondimage" width="100"/>">

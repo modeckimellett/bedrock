@@ -6,9 +6,9 @@ Add to and/or override attributes set in page context for use in JSPs.
 
     <ct:defineObjects/>
 
-This tag is already defined in the CQ library `global.jsp`, so most projects should just include this file in component JSPs rather than using the tag directly.
+This tag is already defined in the Bedrock `global.jsp`, so most projects should just include this file in component JSPs rather than using the tag directly.
 
-    <%@include file="/apps/cq-library/components/global.jsp"%>
+    <%@include file="/apps/bedrock/components/global.jsp"%>
 
 In addition to the attributes provided by the CQ5 `global.jsp`, the following attributes are also set in page context.
 
@@ -149,7 +149,7 @@ title | false | Image title.
 
 ### Image Source
 
-Render an image source path for the current component.  The resulting URL triggers the CQ Library Image Servlet rather than referencing the DAM asset path directly.
+Render an image source path for the current component.  The resulting URL triggers the Bedrock Image Servlet rather than referencing the DAM asset path directly.
 
 Attribute | Required | Description
 :---------|:---------|:-----------

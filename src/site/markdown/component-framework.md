@@ -2,20 +2,20 @@
 
 ### Overview
 
-Component JSPs should contain only the HTML markup and JSTL tags necessary to render the component and it's view permutations, rather than Java "scriptlet" blocks containing business logic.  To facilitate the separation of controller logic from presentation, the CQ Library provides a custom JSP tag to associate a Java class (or "backing bean") to a component JSP.  The library also provides an abstract template class containing accessors and convenience methods for objects that are typically available in the JSP page context (e.g. current page, current node, Sling resource resolver, etc.).  Decorator instances for the current page and component node implement common use cases to reduce boilerplate code and encourage the use of established conventions.  This allows the developer to focus on project-specific concerns rather than reimplementing functionality that is frequently required for a typical CQ implementation but may not be provided by the CQ APIs.
+Component JSPs should contain only the HTML markup and JSTL tags necessary to render the component and it's view permutations, rather than Java "scriptlet" blocks containing business logic.  To facilitate the separation of controller logic from presentation, Bedrock provides a custom JSP tag to associate a Java class (or "backing bean") to a component JSP.  The library also provides an abstract template class containing accessors and convenience methods for objects that are typically available in the JSP page context (e.g. current page, current node, Sling resource resolver, etc.).  Decorator instances for the current page and component node implement common use cases to reduce boilerplate code and encourage the use of established conventions.  This allows the developer to focus on project-specific concerns rather than reimplementing functionality that is frequently required for a typical CQ implementation but may not be provided by the CQ APIs.
 
 ### Usage
 
-The component JSP needs to include the CQ Library `global.jsp` to define the tag namespace and ensure that required variables are set in the page context.
+The component JSP needs to include the Bedrock `global.jsp` to define the tag namespace and ensure that required variables are set in the page context.
 
 Component Java classes can be instantiated in one of two ways:
 
 * Include the `<ct:component/>` tag in the JSP as shown below.
-* Define a `className` attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.cq.library.components.annotations.AutoInstantiate` annotation.
+* Define a `className` attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.aem.bedrock.components.annotations.AutoInstantiate` annotation.
 
 In the latter case, the `global.jsp` will instantiate the component class via the `<ct:defineObjects/>` tag included therein.
 
-    <%@include file="/apps/cq-library/components/global.jsp"%>
+    <%@include file="/apps/bedrock/components/global.jsp"%>
 
     <ct:component className="com.projectname.cq.components.content.Navigation" name="navigation"/>
 
@@ -29,11 +29,11 @@ In the latter case, the `global.jsp` will instantiate the component class via th
 
 The backing Java class for the component should expose getters for the values that required to render the component's view.
 
-    package com.projectname.cq.library.components.content;
+    package com.projectname.aem.bedrock.components.content;
 
-    import com.citytechinc.cq.library.components.AbstractComponent;
-    import com.citytechinc.cq.library.content.page.PageDecorator;
-    import com.citytechinc.cq.library.content.request.ComponentRequest;
+    import com.citytechinc.aem.bedrock.components.AbstractComponent;
+    import com.citytechinc.aem.bedrock.content.page.PageDecorator;
+    import com.citytechinc.aem.bedrock.content.request.ComponentRequest;
 
     import java.util.List;
 
@@ -66,7 +66,7 @@ The `AbstractComponent` class should be extended by all component backing classe
         final LatestNews latestNews = new LatestNews(latestNewsComponentNode.get());
     }
 
-See the [Javadoc](http://code.citytechinc.com/cq-library/apidocs/com/citytechinc/cq/library/components/AbstractComponent.html) for details of the available methods.
+See the [Javadoc](http://code.citytechinc.com/bedrock/apidocs/com/citytechinc/cq/library/components/AbstractComponent.html) for details of the available methods.
 
 ### Development Guidelines
 

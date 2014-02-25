@@ -2,7 +2,7 @@
 
 ### Login Page Filter
 
-`com.citytechinc.cq.library.filters.LoginPageFilter`
+`com.citytechinc.aem.bedrock.filters.LoginPageFilter`
 
 This filter is used customize the default Sling authentication failure and session timeout messages.  These messages are hard-coded into the Sling framework, so it is necessary to apply request filtering to replace the message content with client-appropriate values.
 

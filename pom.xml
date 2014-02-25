@@ -7,14 +7,14 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.citytechinc.cq.library</groupId>
-    <artifactId>cq-library</artifactId>
+    <groupId>com.citytechinc.aem.bedrock</groupId>
+    <artifactId>bedrock</artifactId>
     <packaging>pom</packaging>
     <version>7.0.0-SNAPSHOT</version>
-    <name>CQ Library</name>
+    <name>Bedrock</name>
     <description>
-        The CQ Library contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
-        modules for bootstrapping and simplifying Adobe AEM implementations.
+ 		Bedrock contains common utilities, decorators, abstract classes, tag libraries, and JavaScript
+        modules for bootstrapping and simplifying Adobe AEM (CQ5) projects.
     </description>
 
     <organization>
@@ -24,20 +24,20 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/Citytechinc/cq-library/issues</url>
+        <url>https://github.com/Citytechinc/bedrock/issues</url>
     </issueManagement>
 
-    <url>http://code.citytechinc.com/cq-library</url>
+    <url>http://code.citytechinc.com/bedrock</url>
 
     <modules>
-        <module>cq-library-core</module>
-        <module>cq-library-ui</module>
+        <module>bedrock-core</module>
+        <module>bedrock-ui</module>
     </modules>
 
     <scm>
-        <connection>scm:git:git@github.com:Citytechinc/cq-library.git</connection>
-        <url>https://github.com/Citytechinc/cq-library</url>
-        <developerConnection>scm:git:git@github.com:Citytechinc/cq-library.git</developerConnection>
+        <connection>scm:git:git@github.com:Citytechinc/bedrock.git</connection>
+        <url>https://github.com/Citytechinc/bedrock</url>
+        <developerConnection>scm:git:git@github.com:Citytechinc/bedrock.git</developerConnection>
     </scm>
 
     <repositories>
