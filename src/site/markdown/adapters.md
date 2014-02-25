@@ -1,6 +1,6 @@
 ## Adapters
 
-Sling `Resource` and `ResourceResolver` instances are adaptable to CQ Library types as outlined below.
+Sling `Resource` and `ResourceResolver` instances are adaptable to Bedrock types as outlined below.
 
 ### Resource
 
