@@ -10,63 +10,73 @@ import com.citytechinc.cq.library.content.link.builders.LinkBuilder;
 import com.citytechinc.cq.library.content.node.BasicNode;
 import com.citytechinc.cq.library.content.node.ComponentNode;
 import com.citytechinc.cq.library.content.page.PageDecorator;
-import com.citytechinc.cq.library.content.page.PageManagerDecorator;
 import com.citytechinc.cq.library.content.request.ComponentRequest;
+import com.citytechinc.cq.library.content.request.impl.DefaultComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
+import javax.script.Bindings;
+import javax.script.SimpleBindings;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Base class for CQ component classes instantiated by the {@link com.citytechinc.cq.library.tags.ComponentTag}.
+ * Base class for AEM components implemented with Sightly.
  */
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
-public abstract class AbstractComponent implements ComponentNode {
+public abstract class AbstractSightlyComponent implements ComponentNode, Use {
 
-    protected final PageDecorator currentPage;
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractSightlyComponent.class);
 
-    protected final ComponentRequest request;
+    private ComponentNode componentNode;
 
-    private final ComponentNode componentNode;
+    private Bindings bindings;
 
     /**
-     * Construct a component instance that is decoupled from a request.  For example, this constructor could be used to
-     * instantiate an arbitrary component instance from within another component class.
+     * Initialize this component.
      *
-     * @param componentNode node for component
+     * @param componentRequest component request
      */
-    public AbstractComponent(final ComponentNode componentNode) {
-        this.componentNode = componentNode;
+    public abstract void init(final ComponentRequest componentRequest);
 
-        request = null;
+    @Override
+    public void init(final Bindings bindings) {
+        this.bindings = bindings;
 
-        final Resource resource = componentNode.getResource();
-        final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
+        final Resource resource = (Resource) bindings.get(SlingBindings.RESOURCE);
 
-        currentPage = pageManager.getContainingPage(resource);
+        componentNode = resource.adaptTo(ComponentNode.class);
+
+        final ComponentRequest componentRequest = new DefaultComponentRequest(bindings);
+
+        init(componentRequest);
     }
 
     /**
-     * Construct a component instance from a request.  Typically this is called from the constructor of the concrete
-     * class that extends this class (which itself was instantiated by the {@link com.citytechinc.cq.library.tags.ComponentTag}).
+     * Get a component instance for the given path.
      *
-     * @param request component request
+     * @param path absolute JCR path to the resource of the component
+     * @param type component class type
+     * @return component instance or null if an error occurs
      */
-    public AbstractComponent(final ComponentRequest request) {
-        this.request = request;
+    @SuppressWarnings("unchecked")
+    public <T extends AbstractSightlyComponent> Optional<T> getComponent(final String path, final Class<T> type) {
+        final Resource resource = getResource().getResourceResolver().getResource(path);
 
-        currentPage = request.getCurrentPage();
-        componentNode = request.getComponentNode();
+        return getComponentForResource(resource, type);
     }
 
     /**
@@ -418,15 +428,32 @@ public abstract class AbstractComponent implements ComponentNode {
     // helpers
 
     private SlingScriptHelper getSlingScriptHelper() {
-        checkNotNull(request, "cannot get a service reference when request is null");
+        return (SlingScriptHelper) bindings.get(SlingBindings.SLING);
+    }
 
-        final SlingBindings bindings = (SlingBindings) request.getSlingRequest().getAttribute(
-            SlingBindings.class.getName());
+    private <T extends AbstractSightlyComponent> Optional<T> getComponentForResource(final Resource resource, final Class<T> type) {
+        final Bindings componentBindings = new SimpleBindings(bindings);
 
-        checkNotNull(bindings, "request does not contain bindings attribute");
+        componentBindings.put(SlingBindings.RESOURCE, resource);
 
-        final SlingScriptHelper sling = bindings.getSling();
+        T instance = null;
 
-        return checkNotNull(sling, "bindings do not contain " + SlingScriptHelper.class.getName());
+        try {
+            instance = type.newInstance();
+
+            final Method method = type.getMethod("init", ComponentRequest.class);
+
+            method.invoke(instance, componentBindings);
+        } catch (InstantiationException e) {
+            LOG.error("error instantiating component for type = " + type, e);
+        } catch (IllegalAccessException e) {
+            LOG.error("error instantiating component for type = " + type, e);
+        } catch (NoSuchMethodException e) {
+            LOG.error("component type has no init() method = " + type, e);
+        } catch (InvocationTargetException e) {
+            LOG.error("error initializing component type = " + type, e);
+        }
+
+        return Optional.fromNullable(instance);
     }
 }

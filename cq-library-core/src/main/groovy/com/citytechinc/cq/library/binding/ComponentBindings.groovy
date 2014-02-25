@@ -14,25 +14,25 @@ import javax.servlet.jsp.PageContext
 
 final class ComponentBindings implements Bindings {
 
-    public static final String COMPONENT_REQUEST = "componentRequest";
+    public static final String COMPONENT_REQUEST = "componentRequest"
 
-    public static final String COMPONENT_NODE = "componentNode";
+    public static final String COMPONENT_NODE = "componentNode"
 
-    public static final String IS_ANALYTICS_MODE = "isAnalyticsMode";
+    public static final String IS_ANALYTICS_MODE = "isAnalyticsMode"
 
-    public static final String IS_AUTHOR = "isAuthor";
+    public static final String IS_AUTHOR = "isAuthor"
 
-    public static final String IS_EDIT_MODE = "isEditMode";
+    public static final String IS_EDIT_MODE = "isEditMode"
 
-    public static final String IS_DESIGN_MODE = "isDesignMode";
+    public static final String IS_DESIGN_MODE = "isDesignMode"
 
-    public static final String IS_PREVIEW_MODE = "isPreviewMode";
+    public static final String IS_PREVIEW_MODE = "isPreviewMode"
 
-    public static final String IS_READ_ONLY_MODE = "isReadOnlyMode";
+    public static final String IS_READ_ONLY_MODE = "isReadOnlyMode"
 
-    public static final String IS_PUBLISH = "isPublish";
+    public static final String IS_PUBLISH = "isPublish"
 
-    public static final String IS_DEBUG = "isDebug";
+    public static final String IS_DEBUG = "isDebug"
 
     static final String PARAMETER_DEBUG = "debug"
 
@@ -48,11 +48,11 @@ final class ComponentBindings implements Bindings {
         new ComponentBindings(componentRequest)
     }
 
-    @Delegate Map<String, Object> map = [:]
+    private @Delegate Map<String, Object> map = [:]
 
-    final def componentRequest
+    private final def componentRequest
 
-    ComponentBindings(ComponentRequest componentRequest) {
+    private ComponentBindings(ComponentRequest componentRequest) {
         this.componentRequest = componentRequest
 
         def mode = componentRequest.getWCMMode()
