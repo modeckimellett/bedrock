@@ -450,8 +450,8 @@
                 <version>2.2.1</version>
             </dependency>
             <dependency>
-                <groupId>com.citytechinc.aem</groupId>
-                <artifactId>cq-groovy-extension</artifactId>
+                <groupId>com.citytechinc.aem.groovy.extension</groupId>
+                <artifactId>aem-groovy-extension-bundle</artifactId>
                 <version>0.6.0-SNAPSHOT</version>
             </dependency>
             <dependency>

@@ -324,8 +324,8 @@
             <artifactId>guava</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.citytechinc.aem</groupId>
-            <artifactId>cq-groovy-extension</artifactId>
+            <groupId>com.citytechinc.aem.groovy.extension</groupId>
+            <artifactId>aem-groovy-extension-bundle</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

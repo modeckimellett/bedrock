@@ -5,33 +5,22 @@
  */
 package com.citytechinc.aem.bedrock.testing.specs
 
-import com.citytechinc.aem.spock.specs.tag.AbstractTagSpec
-import com.citytechinc.cq.groovy.extension.builders.PageBuilder
-import com.citytechinc.cq.groovy.extension.metaclass.GroovyExtensionMetaClassRegistry
 import com.citytechinc.aem.bedrock.binding.ComponentBindings
 import com.citytechinc.aem.bedrock.content.node.impl.DefaultComponentNode
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.content.page.impl.DefaultPageManagerDecorator
-import spock.lang.Shared
+import com.citytechinc.aem.spock.specs.tag.AbstractTagSpec
 
 /**
  * Spock specification for testing CQ component-based tag support classes.
  */
 abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
 
-    @Shared pageBuilder
-
     @Override
     void addResourceResolverAdapters() {
         addResourceResolverAdapter(PageManagerDecorator, {
             resourceResolver -> new DefaultPageManagerDecorator(resourceResolver)
         })
-    }
-
-    def setupSpec() {
-        GroovyExtensionMetaClassRegistry.registerMetaClasses()
-
-        pageBuilder = new PageBuilder(session)
     }
 
     /**
