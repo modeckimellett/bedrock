@@ -7,11 +7,11 @@ package com.citytechinc.aem.bedrock.content.link.builders
 
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.content.page.enums.TitleType
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.day.cq.wcm.api.NameConstants
 import spock.lang.Unroll
 
-class LinkBuilderSpec extends AbstractCqSpec {
+class LinkBuilderSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {

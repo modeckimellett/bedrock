@@ -5,11 +5,11 @@
  */
 package com.citytechinc.aem.bedrock.content.request.impl
 
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import org.apache.sling.api.SlingHttpServletResponse
 import spock.lang.Unroll
 
-class ComponentServletRequestSpec extends AbstractCqSpec {
+class ComponentServletRequestSpec extends AbstractBedrockSpec {
 
     @Unroll
     def "get request parameter optional"() {

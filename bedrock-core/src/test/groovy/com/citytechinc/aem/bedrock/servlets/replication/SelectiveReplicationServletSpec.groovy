@@ -6,14 +6,14 @@
 package com.citytechinc.aem.bedrock.servlets.replication
 
 import com.citytechinc.aem.bedrock.services.replication.SelectiveReplicationService
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.day.cq.replication.Agent
 import com.day.cq.replication.AgentManager
 import com.day.cq.replication.ReplicationActionType
 import groovy.json.JsonBuilder
 import spock.lang.Unroll
 
-class SelectiveReplicationServletSpec extends AbstractCqSpec {
+class SelectiveReplicationServletSpec extends AbstractBedrockSpec {
 
     @Unroll
     def "invalid parameters throw exception"() {

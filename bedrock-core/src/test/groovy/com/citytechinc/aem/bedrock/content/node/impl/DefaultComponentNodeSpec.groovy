@@ -7,11 +7,11 @@ package com.citytechinc.aem.bedrock.content.node.impl
 
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.node.predicates.ComponentNodePropertyExistsPredicate
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.google.common.base.Predicate
 import spock.lang.Unroll
 
-class DefaultComponentNodeSpec extends AbstractCqSpec {
+class DefaultComponentNodeSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {

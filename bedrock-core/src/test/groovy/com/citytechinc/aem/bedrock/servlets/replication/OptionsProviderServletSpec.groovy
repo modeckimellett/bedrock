@@ -8,11 +8,11 @@ package com.citytechinc.aem.bedrock.servlets.replication
 import com.citytechinc.aem.bedrock.content.request.ComponentServletRequest
 import com.citytechinc.aem.bedrock.servlets.optionsprovider.AbstractOptionsProviderServlet
 import com.citytechinc.aem.bedrock.servlets.optionsprovider.Option
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.google.common.base.Optional
 import groovy.json.JsonBuilder
 
-class OptionsProviderServletSpec extends AbstractCqSpec {
+class OptionsProviderServletSpec extends AbstractBedrockSpec {
 
     static final def MAP = ["one": "One", "two": "Two"]
 

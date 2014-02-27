@@ -5,10 +5,10 @@
  */
 package com.citytechinc.aem.bedrock.content.resource.predicates
 
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import spock.lang.Unroll
 
-class ResourceTypePredicateSpec extends AbstractCqSpec {
+class ResourceTypePredicateSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         nodeBuilder.content {

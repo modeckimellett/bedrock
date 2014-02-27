@@ -6,10 +6,10 @@
 package com.citytechinc.aem.bedrock.content.node.predicates
 
 import com.citytechinc.aem.bedrock.content.node.impl.DefaultComponentNode
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import org.apache.sling.api.resource.NonExistingResource
 
-class ComponentNodePropertyExistsPredicateSpec extends AbstractCqSpec {
+class ComponentNodePropertyExistsPredicateSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         nodeBuilder.content {

@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bedrock-ui</artifactId>
     <packaging>jar</packaging>
-    <name>Bedrock - UI</name>
+    <name>Bedrock UI</name>
 
     <properties>
         <maven.test.skip>true</maven.test.skip>

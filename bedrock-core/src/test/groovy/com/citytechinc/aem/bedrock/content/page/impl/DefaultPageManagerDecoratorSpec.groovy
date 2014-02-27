@@ -7,14 +7,14 @@ package com.citytechinc.aem.bedrock.content.page.impl
 
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.day.cq.tagging.TagConstants
 import com.google.common.base.Predicate
 import spock.lang.Shared
 
 import javax.jcr.query.Query
 
-class DefaultPageManagerDecoratorSpec extends AbstractCqSpec {
+class DefaultPageManagerDecoratorSpec extends AbstractBedrockSpec {
 
     @Shared pageManager
 

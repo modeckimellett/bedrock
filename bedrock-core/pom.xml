@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bedrock-core</artifactId>
     <packaging>bundle</packaging>
-    <name>Bedrock - Core</name>
+    <name>Bedrock Core</name>
 
     <build>
         <resources>

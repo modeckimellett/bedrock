@@ -5,10 +5,10 @@
  */
 package com.citytechinc.aem.bedrock.testing.builders
 
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.day.cq.wcm.api.WCMMode
 
-class ComponentRequestBuilderSpec extends AbstractCqSpec {
+class ComponentRequestBuilderSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {

@@ -8,13 +8,13 @@ import com.citytechinc.aem.bedrock.content.node.BasicNode
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
 import com.citytechinc.aem.bedrock.content.page.predicates.TemplatePredicate
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.day.cq.wcm.api.NameConstants
 import com.google.common.base.Predicate
 import com.google.common.base.Predicates
 import spock.lang.Unroll
 
-class DefaultPageDecoratorSpec extends AbstractCqSpec {
+class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {

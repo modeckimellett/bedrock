@@ -5,9 +5,9 @@
  */
 package com.citytechinc.aem.bedrock.content.node.predicates
 
-import com.citytechinc.aem.bedrock.testing.specs.AbstractCqSpec
+import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 
-class ComponentNodeResourceTypePredicateSpec extends AbstractCqSpec {
+class ComponentNodeResourceTypePredicateSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         nodeBuilder.sabbath("sling:resourceType": "black") {
