@@ -379,21 +379,21 @@
                     <aggregate>true</aggregate>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <artifactId>maven-changes-plugin</artifactId>
                 <configuration>
-                    <onlyCurrentVersion>true</onlyCurrentVersion>
-                    <webUser>${jira.user}</webUser>
-                    <webPassword>${jira.password}</webPassword>
+                    <includeOpenIssues>false</includeOpenIssues>
                 </configuration>
                 <reportSets>
                     <reportSet>
                         <reports>
-                            <report>jira-report</report>
+                            <report>github-report</report>
                         </reports>
                     </reportSet>
                 </reportSets>
             </plugin>
+            -->
             <plugin>
                 <groupId>nl.windgazer</groupId>
                 <artifactId>jsdoctk-plugin</artifactId>
