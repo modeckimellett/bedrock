@@ -34,6 +34,12 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
 
     private static final String DATE_FORMAT = "MM/dd/yyyy hh:mm aaa z";
 
+    private static final MediaType MEDIA_TYPE = MediaType.JSON_UTF_8;
+
+    private static final String ENCODING = MEDIA_TYPE.charset().get().name();
+
+    private static final String CONTENT_TYPE = MEDIA_TYPE.withoutParameters().toString();
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -41,9 +47,11 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      *
      * @param response sling response
      * @param object object to be written as JSON
+     * @throws IOException if error occurs writing JSON response
      */
-    protected final void writeJsonResponse(final SlingHttpServletResponse response, final Object object) {
-        writeJsonResponseWithEnums(response, object, false, DATE_FORMAT, Locale.US);
+    protected final void writeJsonResponse(final SlingHttpServletResponse response, final Object object)
+        throws IOException {
+        writeJsonResponseInternal(response, object, false, DATE_FORMAT, Locale.US);
     }
 
     /**
@@ -52,10 +60,11 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      * @param response sling response
      * @param object object to be written as JSON
      * @param dateFormat SimpleDateFormat pattern for formatting Date objects using US locale
+     * @throws IOException if error occurs writing JSON response
      */
     protected final void writeJsonResponse(final SlingHttpServletResponse response, final Object object,
-        final String dateFormat) {
-        writeJsonResponseWithEnums(response, object, false, dateFormat, Locale.US);
+        final String dateFormat) throws IOException {
+        writeJsonResponseInternal(response, object, false, dateFormat, Locale.US);
     }
 
     /**
@@ -65,10 +74,11 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      * @param object object to be written as JSON
      * @param dateFormat SimpleDateFormat pattern for formatting Date objects
      * @param locale locale for date format
+     * @throws IOException if error occurs writing JSON response
      */
     protected final void writeJsonResponse(final SlingHttpServletResponse response, final Object object,
-        final String dateFormat, final Locale locale) {
-        writeJsonResponseWithEnums(response, object, false, dateFormat, locale);
+        final String dateFormat, final Locale locale) throws IOException {
+        writeJsonResponseInternal(response, object, false, dateFormat, locale);
     }
 
     /**
@@ -76,9 +86,11 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      *
      * @param response sling response
      * @param object enum object to be written as JSON
+     * @throws IOException if error occurs writing JSON response
      */
-    protected final void writeJsonResponseEnumStrings(final SlingHttpServletResponse response, final Object object) {
-        writeJsonResponseWithEnums(response, object, true, DATE_FORMAT, Locale.US);
+    protected final void writeJsonResponseEnumStrings(final SlingHttpServletResponse response, final Object object)
+        throws IOException {
+        writeJsonResponseInternal(response, object, true, DATE_FORMAT, Locale.US);
     }
 
     /**
@@ -87,10 +99,11 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      * @param response sling response
      * @param object enum object to be written as JSON
      * @param dateFormat SimpleDateFormat pattern for formatting Date objects using US locale
+     * @throws IOException if error occurs writing JSON response
      */
     protected final void writeJsonResponseEnumStrings(final SlingHttpServletResponse response, final Object object,
-        final String dateFormat) {
-        writeJsonResponseWithEnums(response, object, true, dateFormat, Locale.US);
+        final String dateFormat) throws IOException {
+        writeJsonResponseInternal(response, object, true, dateFormat, Locale.US);
     }
 
     /**
@@ -100,18 +113,17 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
      * @param object enum object to be written as JSON
      * @param dateFormat SimpleDateFormat pattern for formatting Date objects
      * @param locale locale for date format
+     * @throws IOException if error occurs writing JSON response
      */
     protected final void writeJsonResponseEnumStrings(final SlingHttpServletResponse response, final Object object,
-        final String dateFormat, final Locale locale) {
-        writeJsonResponseWithEnums(response, object, true, dateFormat, locale);
+        final String dateFormat, final Locale locale) throws IOException {
+        writeJsonResponseInternal(response, object, true, dateFormat, locale);
     }
 
-    private void writeJsonResponseWithEnums(final SlingHttpServletResponse response, final Object object,
-        final boolean useStrings, final String dateFormat, final Locale locale) {
-        final MediaType mediaType = MediaType.JSON_UTF_8;
-
-        response.setContentType(mediaType.withoutParameters().toString());
-        response.setCharacterEncoding(mediaType.charset().get().name());
+    private void writeJsonResponseInternal(final SlingHttpServletResponse response, final Object object,
+        final boolean useStrings, final String dateFormat, final Locale locale) throws IOException {
+        response.setContentType(CONTENT_TYPE);
+        response.setCharacterEncoding(ENCODING);
 
         try {
             final JsonGenerator generator = FACTORY.createGenerator(response.getWriter());
@@ -127,6 +139,8 @@ public abstract class AbstractJsonResponseServlet extends SlingAllMethodsServlet
             MAPPER.writeValue(generator, object);
         } catch (IOException e) {
             LOG.error("error writing JSON response", e);
+
+            throw e;
         }
     }
 }
