@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
     <version>7.0.0-SNAPSHOT</version>
     <name>Bedrock</name>
-    <description>Bedrock provides a sturdy foundation for bootstrapping and simplifying for Adobe AEM6 (CQ) projects.</description>
+    <description>Bedrock provides a sturdy foundation for bootstrapping and simplifying for AEM (Adobe CQ) projects.</description>
 
     <organization>
         <name>CITYTECH, Inc.</name>
@@ -76,7 +76,6 @@
     </distributionManagement>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.junit.usefile>false</maven.junit.usefile>
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss.SSSZ</maven.build.timestamp.format>
@@ -91,7 +90,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <cq.username>admin</cq.username>
+                <aem.username>admin</aem.username>
             </properties>
         </profile>
         <profile>
@@ -102,10 +101,10 @@
                 </property>
             </activation>
             <properties>
-                <cq.host>localhost</cq.host>
-                <cq.port>4502</cq.port>
-                <cq.username>admin</cq.username>
-                <cq.password>admin</cq.password>
+                <aem.host>localhost</aem.host>
+                <aem.port>4502</aem.port>
+                <aem.username>admin</aem.username>
+                <aem.password>admin</aem.password>
             </properties>
         </profile>
         <profile>
@@ -116,10 +115,10 @@
                 </property>
             </activation>
             <properties>
-                <cq.host>localhost</cq.host>
-                <cq.port>4503</cq.port>
-                <cq.username>admin</cq.username>
-                <cq.password>admin</cq.password>
+                <aem.host>localhost</aem.host>
+                <aem.port>4503</aem.port>
+                <aem.username>admin</aem.username>
+                <aem.password>admin</aem.password>
             </properties>
         </profile>
 
