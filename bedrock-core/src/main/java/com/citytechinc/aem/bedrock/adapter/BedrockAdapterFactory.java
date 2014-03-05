@@ -11,6 +11,7 @@ import com.citytechinc.aem.bedrock.content.node.impl.DefaultBasicNode;
 import com.citytechinc.aem.bedrock.content.node.impl.DefaultComponentNode;
 import com.citytechinc.aem.bedrock.content.page.PageDecorator;
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator;
+import com.citytechinc.aem.bedrock.content.page.impl.DefaultPageDecorator;
 import com.citytechinc.aem.bedrock.content.page.impl.DefaultPageManagerDecorator;
 import com.day.cq.wcm.api.Page;
 import org.apache.felix.scr.annotations.Component;
@@ -37,7 +38,7 @@ import org.osgi.framework.Constants;
         "com.citytechinc.aem.bedrock.content.node.BasicNode"
     })
 })
-public final class ContentAdapterFactory implements AdapterFactory {
+public final class BedrockAdapterFactory implements AdapterFactory {
 
     @Override
     public <AdapterType> AdapterType getAdapter(final Object adaptable, final Class<AdapterType> type) {
@@ -73,10 +74,9 @@ public final class ContentAdapterFactory implements AdapterFactory {
         final AdapterType result;
 
         if (type == PageDecorator.class) {
-            final PageManagerDecorator pageManager = resource.getResourceResolver().adaptTo(PageManagerDecorator.class);
             final Page page = resource.adaptTo(Page.class);
 
-            result = page == null ? null : (AdapterType) pageManager.getPage(page);
+            result = page == null ? null : (AdapterType) new DefaultPageDecorator(page);
         } else if (type == ComponentNode.class) {
             result = (AdapterType) new DefaultComponentNode(resource);
         } else if (type == BasicNode.class) {
