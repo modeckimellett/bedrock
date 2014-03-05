@@ -26,7 +26,7 @@ import org.osgi.framework.Constants;
 @Component
 @Service
 @Properties({
-    @Property(name = Constants.SERVICE_DESCRIPTION, value = "CQ Library Content API Adapter Factory"),
+    @Property(name = Constants.SERVICE_DESCRIPTION, value = "Bedrock Content API Adapter Factory"),
     @Property(name = "adaptables", value = {
         "org.apache.sling.api.resource.Resource",
         "org.apache.sling.api.resource.ResourceResolver"

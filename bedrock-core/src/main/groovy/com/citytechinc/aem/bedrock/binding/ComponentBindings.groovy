@@ -57,13 +57,13 @@ final class ComponentBindings implements Bindings {
 
         def mode = componentRequest.getWCMMode()
 
-        map.put(IS_AUTHOR, !mode.equals(WCMMode.DISABLED))
-        map.put(IS_PUBLISH, mode.equals(WCMMode.DISABLED))
-        map.put(IS_EDIT_MODE, mode.equals(WCMMode.EDIT))
-        map.put(IS_DESIGN_MODE, mode.equals(WCMMode.DESIGN))
-        map.put(IS_PREVIEW_MODE, mode.equals(WCMMode.PREVIEW))
-        map.put(IS_ANALYTICS_MODE, mode.equals(WCMMode.ANALYTICS))
-        map.put(IS_READ_ONLY_MODE, mode.equals(WCMMode.READ_ONLY))
+        map.put(IS_AUTHOR, mode != WCMMode.DISABLED)
+        map.put(IS_PUBLISH, mode == WCMMode.DISABLED)
+        map.put(IS_EDIT_MODE, mode == WCMMode.EDIT)
+        map.put(IS_DESIGN_MODE, mode == WCMMode.DESIGN)
+        map.put(IS_PREVIEW_MODE, mode == WCMMode.PREVIEW)
+        map.put(IS_ANALYTICS_MODE, mode == WCMMode.ANALYTICS)
+        map.put(IS_READ_ONLY_MODE, mode == WCMMode.READ_ONLY)
 
         def debug = componentRequest.getRequestParameter(PARAMETER_DEBUG).or(Boolean.FALSE.toString())
 
