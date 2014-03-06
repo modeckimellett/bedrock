@@ -3,7 +3,7 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.aem.bedrock.binding;
+package com.citytechinc.aem.bedrock.bindings;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;

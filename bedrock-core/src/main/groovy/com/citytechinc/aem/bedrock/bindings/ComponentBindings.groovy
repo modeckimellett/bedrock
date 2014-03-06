@@ -3,7 +3,7 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.aem.bedrock.binding
+package com.citytechinc.aem.bedrock.bindings
 
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 import com.citytechinc.aem.bedrock.content.request.impl.DefaultComponentRequest
@@ -35,6 +35,10 @@ final class ComponentBindings implements Bindings {
     public static final String IS_DEBUG = "isDebug"
 
     static final String PARAMETER_DEBUG = "debug"
+
+    static ComponentBindings fromRequest(ComponentRequest componentRequest) {
+        new ComponentBindings(componentRequest)
+    }
 
     static ComponentBindings fromBindings(Bindings bindings) {
         def componentRequest = new DefaultComponentRequest(bindings)

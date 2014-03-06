@@ -378,7 +378,6 @@
                     <aggregate>true</aggregate>
                 </configuration>
             </plugin>
-            <!--
             <plugin>
                 <artifactId>maven-changes-plugin</artifactId>
                 <configuration>
@@ -392,7 +391,6 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-            -->
             <plugin>
                 <groupId>nl.windgazer</groupId>
                 <artifactId>jsdoctk-plugin</artifactId>
@@ -456,7 +454,7 @@
             <dependency>
                 <groupId>com.citytechinc.aem.spock</groupId>
                 <artifactId>spock-aem</artifactId>
-                <version>0.7.0</version>
+                <version>0.7.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

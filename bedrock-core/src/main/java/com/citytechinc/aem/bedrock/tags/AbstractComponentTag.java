@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.tags;
 
-import com.citytechinc.aem.bedrock.binding.ComponentBindings;
+import com.citytechinc.aem.bedrock.bindings.ComponentBindings;
 import com.citytechinc.aem.bedrock.content.node.ComponentNode;
 
 import javax.servlet.jsp.tagext.TagSupport;

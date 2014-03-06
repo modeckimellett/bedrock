@@ -5,38 +5,34 @@
  */
 package com.citytechinc.aem.bedrock.testing.specs
 
+import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
-import com.citytechinc.aem.bedrock.content.node.impl.DefaultComponentNode
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.bedrock.content.page.impl.DefaultPageManagerDecorator
 import com.citytechinc.aem.spock.specs.AbstractSlingRepositorySpec
+import org.apache.sling.api.adapter.AdapterFactory
+import spock.lang.Shared
 
 /**
- * Spock specification for CQ testing.
+ * Spock specification for AEM testing.
  */
 abstract class AbstractBedrockSpec extends AbstractSlingRepositorySpec {
 
-    @Override
-    void addResourceAdapters() {
-        addResourceAdapter(ComponentNode, { resource ->
-            new DefaultComponentNode(resource)
-        })
-    }
+    @Shared pageManager
 
     @Override
-    void addResourceResolverAdapters() {
-        addResourceResolverAdapter(PageManagerDecorator, {
-            resourceResolver -> new DefaultPageManagerDecorator(resourceResolver)
-        })
+    Collection<AdapterFactory> addAdapterFactories() {
+        [new BedrockAdapterFactory()]
+    }
+
+    def setupSpec() {
+        pageManager = resourceResolver.adaptTo(PageManagerDecorator)
     }
 
     def getComponentNode(path) {
-        def resource = resourceResolver.getResource(path)
-
-        new DefaultComponentNode(resource)
+        resourceResolver.getResource(path).adaptTo(ComponentNode)
     }
 
     def getPage(path) {
-        resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
+        pageManager.getPage(path)
     }
 }

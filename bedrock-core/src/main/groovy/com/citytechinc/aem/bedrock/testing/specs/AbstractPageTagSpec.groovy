@@ -5,21 +5,21 @@
  */
 package com.citytechinc.aem.bedrock.testing.specs
 
+import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.bedrock.content.page.impl.DefaultPageManagerDecorator
 import com.citytechinc.aem.spock.specs.tag.AbstractTagSpec
+import org.apache.sling.api.adapter.AdapterFactory
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
+
 /**
  * Spock specification for testing CQ page-based tag support classes.
  */
 abstract class AbstractPageTagSpec extends AbstractTagSpec {
 
     @Override
-    void addResourceResolverAdapters() {
-        addResourceResolverAdapter(PageManagerDecorator, {
-            resourceResolver -> new DefaultPageManagerDecorator(resourceResolver)
-        })
+    Collection<AdapterFactory> addAdapterFactories() {
+        [new BedrockAdapterFactory()]
     }
 
     /**

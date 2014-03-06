@@ -11,7 +11,6 @@ import com.citytechinc.aem.bedrock.content.node.BasicNode;
 import com.citytechinc.aem.bedrock.content.node.ComponentNode;
 import com.citytechinc.aem.bedrock.content.page.PageDecorator;
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest;
-import com.citytechinc.aem.bedrock.content.request.impl.DefaultComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -31,8 +30,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import static com.citytechinc.aem.bedrock.bindings.ComponentBindings.COMPONENT_REQUEST;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
 
 /**
  * Base class for AEM components implemented with Sightly.
@@ -63,10 +64,8 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
     public void init(final Bindings bindings) {
         this.bindings = bindings;
 
-        final Resource resource = (Resource) bindings.get(SlingBindings.RESOURCE);
-
-        componentNode = resource.adaptTo(ComponentNode.class);
-        request = new DefaultComponentRequest(bindings);
+        request = (ComponentRequest) bindings.get(COMPONENT_REQUEST);
+        componentNode = request.getComponentNode();
         currentPage = request.getCurrentPage();
 
         init(request);
@@ -92,7 +91,8 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
      * @param type component class type
      * @return component instance or null if an error occurs
      */
-    public <T extends AbstractSightlyComponent> Optional<T> getComponent(final ComponentNode componentNode, final Class<T> type) {
+    public <T extends AbstractSightlyComponent> Optional<T> getComponent(final ComponentNode componentNode,
+        final Class<T> type) {
         return getComponentForResource(componentNode.getResource(), type);
     }
 
@@ -456,7 +456,7 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
         final Class<T> type) {
         final Bindings componentBindings = new SimpleBindings(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE));
 
-        componentBindings.put(SlingBindings.RESOURCE, resource);
+        componentBindings.put(RESOURCE, resource);
 
         T instance = null;
 
