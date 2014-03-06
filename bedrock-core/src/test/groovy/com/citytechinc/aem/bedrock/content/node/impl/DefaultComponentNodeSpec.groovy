@@ -11,6 +11,7 @@ import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.google.common.base.Predicate
 import spock.lang.Unroll
 
+@Unroll
 class DefaultComponentNodeSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
@@ -116,7 +117,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         }
     }
 
-    @Unroll
     def "find ancestor with property"() {
         setup:
         def node = getComponentNode(path)
@@ -132,7 +132,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         "/content/inheritance/child/jcr:content/component" | "/content/inheritance/jcr:content/component"
     }
 
-    @Unroll
     def "find ancestor returns absent"() {
         setup:
         def node = getComponentNode(path)
@@ -145,7 +144,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         path << ["/content/inheritance/child/jcr:content", "/content/inheritance/child/jcr:content/component"]
     }
 
-    @Unroll
     def "find ancestor with property value"() {
         setup:
         def node = getComponentNode("/content/inheritance/child/jcr:content/component")
@@ -179,7 +177,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         node.findDescendants(predicate).size() == 3
     }
 
-    @Unroll
     def "get as href inherited"() {
         setup:
         def node = getComponentNode(path)
@@ -197,7 +194,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         "/content/ales/esb/lace/jcr:content" | "externalPath"  | "http://www.reddit.com"
     }
 
-    @Unroll
     def "get as href inherited returns absent where appropriate"() {
         setup:
         def node = getComponentNode(path)
@@ -211,7 +207,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         "/content/ales/esb/suds/jcr:content" | "nonExistentPath"
     }
 
-    @Unroll
     def "get as link inherited"() {
         setup:
         def node = getComponentNode(path)
@@ -229,7 +224,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         "/content/ales/esb/lace/jcr:content" | "externalPath"  | "http://www.reddit.com"
     }
 
-    @Unroll
     def "get as link inherited returns absent where appropriate"() {
         setup:
         def node = getComponentNode(path)
@@ -267,7 +261,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         "/content/ales/esb/bar/tree/jcr:content/wood"    | 3
     }
 
-    @Unroll
     def "get image source inherited optional"() {
         setup:
         def node = getComponentNode(path)
@@ -287,7 +280,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         "/content/ales/esb/jcr:content/fullers"            | false
     }
 
-    @Unroll
     def "get inherited"() {
         setup:
         def node = getComponentNode(path)
@@ -321,7 +313,6 @@ class DefaultComponentNodeSpec extends AbstractBedrockSpec {
         !node.getComponentNode("vodka").present
     }
 
-    @Unroll
     def "get component nodes"() {
         setup:
         def node = getComponentNode(path)

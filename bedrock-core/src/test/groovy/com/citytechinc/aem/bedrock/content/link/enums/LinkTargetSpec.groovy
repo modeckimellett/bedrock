@@ -8,6 +8,7 @@ package com.citytechinc.aem.bedrock.content.link.enums
 import spock.lang.Specification
 import spock.lang.Unroll
 
+@Unroll
 class LinkTargetSpec extends Specification {
 
     def "for invalid target"() {
@@ -18,7 +19,6 @@ class LinkTargetSpec extends Specification {
         thrown(IllegalArgumentException)
     }
 
-    @Unroll
     def "for target"() {
         expect:
         LinkTarget.forTarget(target) == linkTarget

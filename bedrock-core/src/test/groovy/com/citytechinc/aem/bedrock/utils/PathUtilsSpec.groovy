@@ -10,9 +10,9 @@ import org.apache.sling.api.resource.Resource
 import spock.lang.Specification
 import spock.lang.Unroll
 
+@Unroll
 class PathUtilsSpec extends Specification {
 
-    @Unroll
     def "is external"() {
         expect:
         PathUtils.isExternal(path) == result
@@ -27,7 +27,6 @@ class PathUtilsSpec extends Specification {
         "/content/global/en/test" | false
     }
 
-    @Unroll
     def "get page path for string"() {
         expect:
         PathUtils.getPagePath(path) == result
@@ -40,7 +39,6 @@ class PathUtilsSpec extends Specification {
         "/content/foo/jcr:content/bar" | "/content/foo"
     }
 
-    @Unroll
     def "get page path for request"() {
         setup:
         def request = Mock(SlingHttpServletRequest)

@@ -4,6 +4,7 @@
  * Confidential and Proprietary
  */
 package com.citytechinc.aem.bedrock.content.page.impl
+
 import com.citytechinc.aem.bedrock.content.node.BasicNode
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
@@ -14,12 +15,14 @@ import com.google.common.base.Predicate
 import com.google.common.base.Predicates
 import spock.lang.Unroll
 
+@Unroll
 class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {
             citytechinc("CITYTECH, Inc.") {
-                "jcr:content"(otherPagePath: "/content/ales/esb", pageTitle: "Page Title", navTitle: "Navigation Title") {
+                "jcr:content"(otherPagePath: "/content/ales/esb", pageTitle: "Page Title",
+                    navTitle: "Navigation Title") {
                     component {
                         one("sling:resourceType": "one")
                         two("sling:resourceType": "two")
@@ -55,7 +58,6 @@ class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
         }
     }
 
-    @Unroll
     def "get image source optional"() {
         setup:
         def page = getPage(path)
@@ -77,7 +79,6 @@ class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
         page.imageSource.get() == "/content/citytechinc/child2.img.png"
     }
 
-    @Unroll
     def "get named image source"() {
         setup:
         def page = getPage("/content/citytechinc/child2")
@@ -91,7 +92,6 @@ class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
         "secondimage" | "/content/citytechinc/child2.img.secondimage.png"
     }
 
-    @Unroll
     def "get image source with width"() {
         setup:
         def page = getPage("/content/citytechinc/child2")
@@ -105,7 +105,6 @@ class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
         100   | "/content/citytechinc/child2.img.100.png"
     }
 
-    @Unroll
     def "get named image source with width"() {
         setup:
         def page = getPage("/content/citytechinc/child2")
@@ -121,7 +120,6 @@ class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
         "secondimage" | 100   | "/content/citytechinc/child2.img.secondimage.100.png"
     }
 
-    @Unroll
     def "find ancestor optional"() {
         setup:
         def page = getPage(path)
@@ -142,7 +140,6 @@ class DefaultPageDecoratorSpec extends AbstractBedrockSpec {
         "/content/other"              | false
     }
 
-    @Unroll
     def "get template path"() {
         setup:
         def page = getPage(path)

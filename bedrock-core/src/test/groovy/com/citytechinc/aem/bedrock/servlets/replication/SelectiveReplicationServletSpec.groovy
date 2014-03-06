@@ -13,9 +13,9 @@ import com.day.cq.replication.ReplicationActionType
 import groovy.json.JsonBuilder
 import spock.lang.Unroll
 
+@Unroll
 class SelectiveReplicationServletSpec extends AbstractBedrockSpec {
 
-    @Unroll
     def "invalid parameters throw exception"() {
         def request = requestBuilder.build {
             parameters paths: paths, agentIds: agentIds, action: action

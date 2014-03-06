@@ -8,6 +8,7 @@ package com.citytechinc.aem.bedrock.content.resource.predicates
 import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import spock.lang.Unroll
 
+@Unroll
 class ResourceTypePredicateSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
@@ -16,7 +17,6 @@ class ResourceTypePredicateSpec extends AbstractBedrockSpec {
         }
     }
 
-    @Unroll
     def "resource with matching resource type is included"() {
         setup:
         def resource = resourceResolver.getResource("/content/citytechinc")

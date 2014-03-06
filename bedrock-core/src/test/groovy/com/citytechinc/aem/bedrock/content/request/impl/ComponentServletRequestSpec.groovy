@@ -9,9 +9,9 @@ import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import org.apache.sling.api.SlingHttpServletResponse
 import spock.lang.Unroll
 
+@Unroll
 class ComponentServletRequestSpec extends AbstractBedrockSpec {
 
-    @Unroll
     def "get request parameter optional"() {
         setup:
         def slingRequest = getRequestBuilder().build {
@@ -32,7 +32,6 @@ class ComponentServletRequestSpec extends AbstractBedrockSpec {
         "c"           | false
     }
 
-    @Unroll
     def "get request parameter"() {
         setup:
         def slingRequest = getRequestBuilder().build {
@@ -52,7 +51,6 @@ class ComponentServletRequestSpec extends AbstractBedrockSpec {
         "b"           | ""
     }
 
-    @Unroll
     def "get request parameter with default value"() {
         setup:
         def slingRequest = getRequestBuilder().build {
@@ -73,7 +71,6 @@ class ComponentServletRequestSpec extends AbstractBedrockSpec {
         "c"           | "default"
     }
 
-    @Unroll
     def "get request parameters optional"() {
         setup:
         def slingRequest = getRequestBuilder().build {
@@ -94,7 +91,6 @@ class ComponentServletRequestSpec extends AbstractBedrockSpec {
         "c"           | false
     }
 
-    @Unroll
     def "get request parameters"() {
         setup:
         def slingRequest = getRequestBuilder().build {

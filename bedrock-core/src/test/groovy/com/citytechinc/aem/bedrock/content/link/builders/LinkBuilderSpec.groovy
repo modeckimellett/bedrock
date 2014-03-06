@@ -11,6 +11,7 @@ import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.day.cq.wcm.api.NameConstants
 import spock.lang.Unroll
 
+@Unroll
 class LinkBuilderSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
@@ -98,7 +99,6 @@ class LinkBuilderSpec extends AbstractBedrockSpec {
         link.title == "US"
     }
 
-    @Unroll
     def "build link for path"() {
         setup:
         def builder = LinkBuilder.forPath("/content")
@@ -127,7 +127,6 @@ class LinkBuilderSpec extends AbstractBedrockSpec {
         null      | ""        | "localhost" | 0    | true   | "https://localhost/content.html"
     }
 
-    @Unroll
     def "build link for strict path"() {
         setup:
         def builder = LinkBuilder.forPath(resourceResolver, path)
@@ -144,7 +143,6 @@ class LinkBuilderSpec extends AbstractBedrockSpec {
         "/webapp"                     | "/webapp"
     }
 
-    @Unroll
     def "build link for path with selectors"() {
         setup:
         def link = LinkBuilder.forPath(path).addSelectors(selectors).build()
@@ -160,7 +158,6 @@ class LinkBuilderSpec extends AbstractBedrockSpec {
         "http://www.reddit.com" | ["a", "b"] | "http://www.reddit.com"
     }
 
-    @Unroll
     def "build link for path with parameters"() {
         setup:
         def link = LinkBuilder.forPath("/content").addParameters(parameters).build()
@@ -192,7 +189,6 @@ class LinkBuilderSpec extends AbstractBedrockSpec {
         link.queryString == "?a=1&a=2&a=3"
     }
 
-    @Unroll
     def "build image link"() {
         setup:
         def imageLink = LinkBuilder.forPath("/content/global").setImageSource(imageSource).buildImageLink()
@@ -212,7 +208,6 @@ class LinkBuilderSpec extends AbstractBedrockSpec {
         !navigationLink.children
     }
 
-    @Unroll
     def "build navigation link without children with active state"() {
         setup:
         def navigationLink = LinkBuilder.forPath("/content/global").setActive(active).buildNavigationLink()

@@ -9,6 +9,7 @@ import com.citytechinc.aem.bedrock.content.node.predicates.PropertyNamePredicate
 import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import spock.lang.Unroll
 
+@Unroll
 class DefaultBasicNodeSpec extends AbstractBedrockSpec {
 
     def setupSpec() {
@@ -73,7 +74,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         node.getAsList("multiValue", String) == ["one", "two"]
     }
 
-    @Unroll
     def "get as href"() {
         setup:
         def node = getBasicNode("/content/citytechinc/jcr:content")
@@ -87,7 +87,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "externalPath"  | "http://www.reddit.com"
     }
 
-    @Unroll
     def "get as href strict"() {
         setup:
         def node = getBasicNode("/content/citytechinc/jcr:content")
@@ -102,7 +101,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "externalPath"        | "http://www.reddit.com"
     }
 
-    @Unroll
     def "get as href returns absent where appropriate"() {
         setup:
         def node = getBasicNode("/content/citytechinc/jcr:content")
@@ -122,7 +120,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         node.getAsHref("otherPagePath", false, true).get() == "/content/ales/esb.html"
     }
 
-    @Unroll
     def "get as mapped href strict"() {
         setup:
         def node = getBasicNode("/content/citytechinc/jcr:content")
@@ -214,7 +211,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         node.href == "/content/citytechinc/jcr:content.html"
     }
 
-    @Unroll
     def "get image reference"() {
         setup:
         def node = getBasicNode(path)
@@ -228,7 +224,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "/content/ales/esb/jcr:content"    | false
     }
 
-    @Unroll
     def "get image source optional"() {
         setup:
         def node = getBasicNode(path)
@@ -244,7 +239,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "/content/citytechinc/jcr:content/whiskey" | false
     }
 
-    @Unroll
     def "get image source"() {
         setup:
         def node = getBasicNode(path)
@@ -258,7 +252,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "/content/citytechinc/jcr:content/beer" | "/content/citytechinc/jcr:content/beer.img.png"
     }
 
-    @Unroll
     def "get named image source"() {
         setup:
         def node = getBasicNode(path)
@@ -274,7 +267,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "/content/citytechinc/jcr:content/beer" | "secondimage" | "/content/citytechinc/jcr:content/beer.img.secondimage.png"
     }
 
-    @Unroll
     def "get image source with width"() {
         setup:
         def node = getBasicNode(path)
@@ -290,7 +282,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "/content/citytechinc/jcr:content/beer" | 100   | "/content/citytechinc/jcr:content/beer.img.100.png"
     }
 
-    @Unroll
     def "get named image source with width"() {
         setup:
         def node = getBasicNode(path)
@@ -384,7 +375,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         node.resource.path == "/content/citytechinc/jcr:content"
     }
 
-    @Unroll
     def "has image"() {
         setup:
         def node = getBasicNode(path)
@@ -398,7 +388,6 @@ class DefaultBasicNodeSpec extends AbstractBedrockSpec {
         "/content/ales/esb/jcr:content"    | false
     }
 
-    @Unroll
     def "has named image"() {
         setup:
         def node = getBasicNode(path)

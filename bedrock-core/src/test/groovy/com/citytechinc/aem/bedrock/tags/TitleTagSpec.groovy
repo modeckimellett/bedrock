@@ -9,6 +9,7 @@ import spock.lang.Unroll
 
 import javax.servlet.jsp.tagext.TagSupport
 
+@Unroll
 class TitleTagSpec extends AbstractMetaTagSpec {
 
     def setupSpec() {
@@ -27,7 +28,6 @@ class TitleTagSpec extends AbstractMetaTagSpec {
         new TitleTag()
     }
 
-    @Unroll
     def "title variations"() {
         setup:
         setupPage("/content/citytechinc")

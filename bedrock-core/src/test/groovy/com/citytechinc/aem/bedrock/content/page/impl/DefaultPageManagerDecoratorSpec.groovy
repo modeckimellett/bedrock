@@ -6,17 +6,13 @@
 package com.citytechinc.aem.bedrock.content.page.impl
 
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
-import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
 import com.day.cq.tagging.TagConstants
 import com.google.common.base.Predicate
-import spock.lang.Shared
 
 import javax.jcr.query.Query
 
 class DefaultPageManagerDecoratorSpec extends AbstractBedrockSpec {
-
-    @Shared pageManager
 
     def setupSpec() {
         nodeBuilder.etc {
@@ -53,15 +49,14 @@ class DefaultPageManagerDecoratorSpec extends AbstractBedrockSpec {
             }
         }
 
-        def taggableNodePaths = ["/content/citytechinc/child/jcr:content", "/content/other/jcr:content", "/content/citytechinc/jcr:content/component/one"]
+        def taggableNodePaths = ["/content/citytechinc/child/jcr:content", "/content/other/jcr:content",
+            "/content/citytechinc/jcr:content/component/one"]
 
         taggableNodePaths.each { path ->
             session.getNode(path).addMixin(TagConstants.NT_TAGGABLE)
         }
 
         session.save()
-
-        pageManager = resourceResolver.adaptTo(PageManagerDecorator)
     }
 
     def "find pages for predicate"() {
