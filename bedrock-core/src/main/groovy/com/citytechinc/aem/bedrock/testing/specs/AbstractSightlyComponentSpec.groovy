@@ -21,7 +21,7 @@ abstract class AbstractSightlyComponentSpec extends AbstractComponentSpec {
      *
      * @param request component request built from <code>ComponentRequestBuilder</code>
      * @param type type of component
-     * @return component initialized from mocked request
+     * @return component initialized from mocked <code>ComponentRequest</code>
      */
     public <T extends AbstractSightlyComponent> T getComponent(ComponentRequest request, Class<T> type) {
         def bindings = ComponentBindings.fromRequest(request)
