@@ -9,12 +9,12 @@ import com.citytechinc.aem.bedrock.content.node.BasicNode
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
+import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
 import spock.lang.Shared
 import spock.lang.Unroll
 
 @Unroll
-class BedrockAdapterFactorySpec extends AbstractBedrockSpec {
+class BedrockAdapterFactorySpec extends BedrockSpec {
 
     @Shared adapterFactory = new BedrockAdapterFactory()
 

@@ -31,6 +31,20 @@ public abstract class AbstractNode {
         final boolean mapped) {
         final ResourceResolver resourceResolver = resource.getResourceResolver();
 
+        final Function<String, Link> linkFunction = getLinkFunction(strict);
+        final Function<String, String> mapFunction = new Function<String, String>() {
+            @Override
+            public String apply(final String path) {
+                return mapped ? resourceResolver.map(path) : path;
+            }
+        };
+
+        return pathOptional.transform(mapFunction).transform(linkFunction);
+    }
+
+    private Function<String, Link> getLinkFunction(final boolean strict) {
+        final ResourceResolver resourceResolver = resource.getResourceResolver();
+
         final Function<String, Link> toLink;
 
         if (strict) {
@@ -44,12 +58,7 @@ public abstract class AbstractNode {
             toLink = PATH_TO_LINK;
         }
 
-        return pathOptional.transform(new Function<String, String>() {
-            @Override
-            public String apply(final String path) {
-                return mapped ? resourceResolver.map(path) : path;
-            }
-        }).transform(toLink);
+        return toLink;
     }
 
     protected Optional<PageDecorator> getPageOptional(final String path) {

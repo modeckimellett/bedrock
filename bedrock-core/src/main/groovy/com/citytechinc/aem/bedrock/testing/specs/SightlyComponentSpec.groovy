@@ -14,7 +14,7 @@ import javax.script.Bindings
 /**
  * Base class for testing Sightly components.
  */
-abstract class AbstractSightlyComponentSpec extends AbstractComponentSpec {
+abstract class SightlyComponentSpec extends ComponentSpec {
 
     /**
      * Instantiate and initialize a Sightly component to be tested.

@@ -5,9 +5,9 @@
  */
 package com.citytechinc.aem.bedrock.content.page.predicates
 
-import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
+import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
 
-class TemplatePredicateSpec extends AbstractBedrockSpec {
+class TemplatePredicateSpec extends BedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {

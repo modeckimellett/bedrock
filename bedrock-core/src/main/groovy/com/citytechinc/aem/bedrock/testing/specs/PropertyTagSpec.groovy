@@ -4,15 +4,17 @@
  * Confidential and Proprietary
  */
 package com.citytechinc.aem.bedrock.testing.specs
+
 import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.bindings.ComponentBindings
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
-import com.citytechinc.aem.spock.specs.tag.AbstractTagSpec
+import com.citytechinc.aem.spock.specs.tag.TagSpec
 import org.apache.sling.api.adapter.AdapterFactory
+
 /**
  * Spock specification for testing CQ component-based tag support classes.
  */
-abstract class AbstractPropertyTagSpec extends AbstractTagSpec {
+abstract class PropertyTagSpec extends TagSpec {
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {

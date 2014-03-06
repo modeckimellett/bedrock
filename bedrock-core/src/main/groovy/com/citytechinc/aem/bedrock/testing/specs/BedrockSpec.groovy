@@ -7,17 +7,19 @@ package com.citytechinc.aem.bedrock.testing.specs
 
 import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
+import com.citytechinc.aem.bedrock.content.page.PageDecorator
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.spock.specs.AbstractSlingRepositorySpec
+import com.citytechinc.aem.spock.specs.AemSpec
 import org.apache.sling.api.adapter.AdapterFactory
 import spock.lang.Shared
 
 /**
  * Spock specification for AEM testing.
  */
-abstract class AbstractBedrockSpec extends AbstractSlingRepositorySpec {
+abstract class BedrockSpec extends AemSpec {
 
-    @Shared pageManager
+    @Shared
+    protected PageManagerDecorator pageManager
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {
@@ -28,11 +30,11 @@ abstract class AbstractBedrockSpec extends AbstractSlingRepositorySpec {
         pageManager = resourceResolver.adaptTo(PageManagerDecorator)
     }
 
-    def getComponentNode(path) {
+    ComponentNode getComponentNode(path) {
         resourceResolver.getResource(path).adaptTo(ComponentNode)
     }
 
-    def getPage(path) {
+    PageDecorator getPage(path) {
         pageManager.getPage(path)
     }
 }

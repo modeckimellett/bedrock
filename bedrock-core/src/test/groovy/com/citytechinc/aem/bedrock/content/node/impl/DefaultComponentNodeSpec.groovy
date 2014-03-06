@@ -7,12 +7,12 @@ package com.citytechinc.aem.bedrock.content.node.impl
 
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.node.predicates.ComponentNodePropertyExistsPredicate
-import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
+import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
 import com.google.common.base.Predicate
 import spock.lang.Unroll
 
 @Unroll
-class DefaultComponentNodeSpec extends AbstractBedrockSpec {
+class DefaultComponentNodeSpec extends BedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {

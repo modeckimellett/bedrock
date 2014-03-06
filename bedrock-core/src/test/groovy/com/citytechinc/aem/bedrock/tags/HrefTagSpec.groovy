@@ -5,11 +5,11 @@
  */
 package com.citytechinc.aem.bedrock.tags
 
-import com.citytechinc.aem.bedrock.testing.specs.AbstractPropertyTagSpec
+import com.citytechinc.aem.bedrock.testing.specs.PropertyTagSpec
 
 import javax.servlet.jsp.tagext.TagSupport
 
-class HrefTagSpec extends AbstractPropertyTagSpec {
+class HrefTagSpec extends PropertyTagSpec {
 
     def setupSpec() {
         pageBuilder.content {

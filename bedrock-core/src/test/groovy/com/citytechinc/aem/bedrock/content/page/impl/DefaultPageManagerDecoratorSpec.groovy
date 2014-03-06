@@ -6,13 +6,13 @@
 package com.citytechinc.aem.bedrock.content.page.impl
 
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
-import com.citytechinc.aem.bedrock.testing.specs.AbstractBedrockSpec
+import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
 import com.day.cq.tagging.TagConstants
 import com.google.common.base.Predicate
 
 import javax.jcr.query.Query
 
-class DefaultPageManagerDecoratorSpec extends AbstractBedrockSpec {
+class DefaultPageManagerDecoratorSpec extends BedrockSpec {
 
     def setupSpec() {
         nodeBuilder.etc {

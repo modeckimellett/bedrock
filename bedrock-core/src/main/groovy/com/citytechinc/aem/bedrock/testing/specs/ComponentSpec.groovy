@@ -10,7 +10,7 @@ import com.citytechinc.aem.bedrock.testing.builders.ComponentRequestBuilder
 /**
  * Spock specification for testing CQ components with builder for creating <code>ComponentRequest</code> instances.
  */
-abstract class AbstractComponentSpec extends AbstractBedrockSpec {
+abstract class ComponentSpec extends BedrockSpec {
 
     /**
      * Get a component request builder for the current session.

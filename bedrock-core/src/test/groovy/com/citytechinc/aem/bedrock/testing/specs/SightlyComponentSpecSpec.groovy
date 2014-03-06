@@ -5,15 +5,16 @@
  */
 package com.citytechinc.aem.bedrock.testing.specs
 
-import com.citytechinc.aem.bedrock.components.AbstractComponent
+import com.citytechinc.aem.bedrock.components.AbstractSightlyComponent
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 
-class ComponentSpec extends AbstractComponentSpec {
+class SightlyComponentSpecSpec extends SightlyComponentSpec {
 
-    class TestingComponent extends AbstractComponent {
+    class SightlyComponent extends AbstractSightlyComponent {
 
-        TestingComponent(ComponentRequest request) {
-            super(request)
+        @Override
+        void init(ComponentRequest request) {
+
         }
 
         def getTitle() {
@@ -32,13 +33,13 @@ class ComponentSpec extends AbstractComponentSpec {
         }
     }
 
-    def "testing component"() {
+    def "testing sightly component"() {
         setup:
         def request = getComponentRequestBuilder().build {
             path "/content/citytechinc/jcr:content/component"
         }
 
-        def component = new TestingComponent(request)
+        def component = getComponent(request, SightlyComponent)
 
         expect:
         component.title == "Testing Component"
