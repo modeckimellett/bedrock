@@ -100,6 +100,7 @@ public final class PageReplicationListener extends AbstractReplicationListener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Activate
     protected void activate() throws LoginException, RepositoryException {
         session = repository.loginAdministrative(null);
