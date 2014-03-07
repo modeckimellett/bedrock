@@ -17,13 +17,14 @@ import spock.lang.Unroll
 class SelectiveReplicationServletSpec extends BedrockSpec {
 
     def "invalid parameters throw exception"() {
+        setup:
         def request = requestBuilder.build {
             parameters paths: paths, agentIds: agentIds, action: action
         }
 
         def response = responseBuilder.build()
 
-        def servlet = new SelectiveReplicationServlet()
+        def servlet = new GroovySelectiveReplicationServlet()
 
         servlet.agentManager = Mock(AgentManager)
         servlet.selectiveReplicationService = Mock(SelectiveReplicationService)
@@ -44,13 +45,14 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
     }
 
     def "valid parameters"() {
+        setup:
         def request = requestBuilder.build {
             parameters paths: ["/content", "/etc"], agentIds: ["publish"], action: ReplicationActionType.ACTIVATE.name()
         }
 
         def response = responseBuilder.build()
 
-        def servlet = new SelectiveReplicationServlet()
+        def servlet = new GroovySelectiveReplicationServlet()
 
         def agent = Mock(Agent)
         def agentManager = Mock(AgentManager)
@@ -59,7 +61,7 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
         servlet.agentManager = agentManager
         servlet.selectiveReplicationService = selectiveReplicationService
 
-        def json = new JsonBuilder([["/content": true], ["/etc": true]]).toString()
+        def json = new JsonBuilder(["/content": true, "/etc": true]).toString()
 
         when:
         servlet.doPost(request, response)

@@ -22,6 +22,7 @@ import java.util.Map;
  * <code>ResourceResolver</code>.
  */
 @Component(componentAbstract = true)
+@SuppressWarnings("deprecated")
 public abstract class AbstractSlingService {
 
     @Reference

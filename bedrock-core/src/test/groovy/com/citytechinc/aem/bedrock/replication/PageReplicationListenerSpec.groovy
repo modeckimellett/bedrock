@@ -55,14 +55,15 @@ class PageReplicationListenerSpec extends BedrockSpec {
 
         listener.session = session
         listener.pageManager = pageManager
+        listener.replicator = Mock(Replicator)
     }
 
-    def "handle activate for invalid path fails gracefully"() {
+    def "handle activate for invalid path does nothing"() {
         when:
         listener.handleActivate("/content/invalid")
 
         then:
-        notThrown(Exception)
+        0 * listener.replicator.replicate(*_)
     }
 
     def "handle activate for non-page path does nothing"() {
@@ -70,33 +71,25 @@ class PageReplicationListenerSpec extends BedrockSpec {
         listener.handleActivate("/")
 
         then:
-        notThrown(Exception)
+        0 * listener.replicator.replicate(*_)
     }
 
     def "handle activate for page path activates ancestor pages"() {
-        setup:
-        def replicator = Mock(Replicator)
-
-        listener.replicator = replicator
-
         when:
         listener.handleActivate("/content/home/inactive1/inactive2")
 
         then:
-        1 * replicator.replicate(session, ReplicationActionType.ACTIVATE, "/content/home/inactive1")
-        1 * replicator.replicate(session, ReplicationActionType.ACTIVATE, "/content/home")
+        with(listener.replicator) {
+            1 * replicate(session, ReplicationActionType.ACTIVATE, "/content/home/inactive1")
+            1 * replicate(session, ReplicationActionType.ACTIVATE, "/content/home")
+        }
     }
 
     def "handle activate for page path ignores already activated ancestor pages"() {
-        setup:
-        def replicator = Mock(Replicator)
-
-        listener.replicator = replicator
-
         when:
         listener.handleActivate("/content/home/active1/active2")
 
         then:
-        1 * replicator.replicate(session, ReplicationActionType.ACTIVATE, "/content/home")
+        1 * listener.replicator.replicate(session, ReplicationActionType.ACTIVATE, "/content/home")
     }
 }
