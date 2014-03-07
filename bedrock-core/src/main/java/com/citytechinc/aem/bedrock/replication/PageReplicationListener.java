@@ -48,13 +48,13 @@ public final class PageReplicationListener extends AbstractReplicationListener {
     private SlingRepository repository;
 
     @Reference
-    private Replicator replicator;
+    protected Replicator replicator;
 
-    private PageManager pageManager;
+    protected PageManager pageManager;
 
-    private Session session;
+    protected Session session;
 
-    private ResourceResolver resourceResolver;
+    protected ResourceResolver resourceResolver;
 
     @Override
     protected void handleActivate(final String path) {
@@ -66,7 +66,7 @@ public final class PageReplicationListener extends AbstractReplicationListener {
 
                 Page parent = page.getParent();
 
-                while (parent != null && parent.getDepth() > 2) {
+                while (parent != null && parent.getDepth() > 1) {
                     final ReplicationStatus status = parent.getContentResource().adaptTo(ReplicationStatus.class);
 
                     if (!status.isActivated()) {
@@ -105,7 +105,6 @@ public final class PageReplicationListener extends AbstractReplicationListener {
     protected void activate() throws LoginException, RepositoryException {
         session = repository.loginAdministrative(null);
         resourceResolver = resourceResolverFactory.getAdministrativeResourceResolver(null);
-
         pageManager = resourceResolver.adaptTo(PageManager.class);
     }
 
