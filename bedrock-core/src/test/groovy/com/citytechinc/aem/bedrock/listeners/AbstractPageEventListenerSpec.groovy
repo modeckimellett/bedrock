@@ -33,35 +33,6 @@ class AbstractPageEventListenerSpec extends BedrockSpec {
         }
     }
 
-    class TestEventIterator implements EventIterator {
-
-        @Delegate Iterator<Event> iterator
-
-        @Override
-        long getPosition() {
-            0
-        }
-
-        @Override
-        long getSize() {
-            0
-        }
-
-        @Override
-        void skip(long skipNum) {
-
-        }
-
-        @Override
-        Event nextEvent() {
-            if (!iterator.hasNext()) {
-                throw new NoSuchElementException()
-            }
-
-            iterator.next()
-        }
-    }
-
     @Shared listener
 
     def setupSpec() {
@@ -81,7 +52,14 @@ class AbstractPageEventListenerSpec extends BedrockSpec {
             }
         }.iterator()
 
-        def events = new TestEventIterator(iterator: iterator)
+        def events = [
+            hasNext: {
+                iterator.hasNext()
+            },
+            nextEvent: {
+                iterator.next()
+            }
+        ] as EventIterator
 
         when:
         listener.onEvent(events)
