@@ -5,11 +5,11 @@
  */
 package com.citytechinc.aem.bedrock.testing.builders
 
-import com.citytechinc.aem.spock.builders.RequestBuilder
-import com.citytechinc.aem.spock.builders.ResponseBuilder
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 import com.citytechinc.aem.bedrock.content.request.impl.DefaultComponentServletRequest
 import com.citytechinc.aem.bedrock.testing.mocks.MockComponentRequest
+import com.citytechinc.aem.prosper.builders.RequestBuilder
+import com.citytechinc.aem.prosper.builders.ResponseBuilder
 import com.day.cq.wcm.api.WCMMode
 
 class ComponentRequestBuilder {

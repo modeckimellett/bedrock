@@ -9,7 +9,7 @@ import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.spock.specs.AemSpec
+import com.citytechinc.aem.prosper.specs.AemSpec
 import org.apache.sling.api.adapter.AdapterFactory
 import spock.lang.Shared
 

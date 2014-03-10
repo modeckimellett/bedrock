@@ -8,7 +8,7 @@ package com.citytechinc.aem.bedrock.testing.specs
 import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.bindings.ComponentBindings
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
-import com.citytechinc.aem.spock.specs.tag.TagSpec
+import com.citytechinc.aem.prosper.specs.tag.TagSpec
 import org.apache.sling.api.adapter.AdapterFactory
 
 /**

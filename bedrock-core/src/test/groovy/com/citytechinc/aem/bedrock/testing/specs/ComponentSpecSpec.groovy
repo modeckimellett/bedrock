@@ -4,7 +4,6 @@
  * Confidential and Proprietary
  */
 package com.citytechinc.aem.bedrock.testing.specs
-
 import com.citytechinc.aem.bedrock.components.AbstractComponent
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 
