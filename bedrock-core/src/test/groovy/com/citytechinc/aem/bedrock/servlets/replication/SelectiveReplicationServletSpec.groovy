@@ -24,7 +24,7 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
 
         def response = responseBuilder.build()
 
-        def servlet = new GroovySelectiveReplicationServlet()
+        def servlet = new SelectiveReplicationServlet()
 
         servlet.agentManager = Mock(AgentManager)
         servlet.selectiveReplicationService = Mock(SelectiveReplicationService)
@@ -52,7 +52,7 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
 
         def response = responseBuilder.build()
 
-        def servlet = new GroovySelectiveReplicationServlet()
+        def servlet = new SelectiveReplicationServlet()
 
         def agent = Mock(Agent)
         def agentManager = Mock(AgentManager)

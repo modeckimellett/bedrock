@@ -21,7 +21,7 @@ import javax.servlet.ServletException
 import static com.google.common.base.Preconditions.checkArgument
 
 @Slf4j("LOG")
-class GroovySelectiveReplicationServlet extends AbstractJsonResponseServlet {
+class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
 
     private static final String PARAMETER_ACTION = "action"
 
