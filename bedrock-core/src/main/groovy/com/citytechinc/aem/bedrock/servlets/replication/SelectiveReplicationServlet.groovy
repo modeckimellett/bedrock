@@ -12,6 +12,7 @@ import com.day.cq.replication.ReplicationActionType
 import com.day.cq.replication.ReplicationException
 import groovy.util.logging.Slf4j
 import org.apache.felix.scr.annotations.Reference
+import org.apache.felix.scr.annotations.sling.SlingServlet
 import org.apache.sling.api.SlingHttpServletRequest
 import org.apache.sling.api.SlingHttpServletResponse
 
@@ -20,6 +21,7 @@ import javax.servlet.ServletException
 
 import static com.google.common.base.Preconditions.checkArgument
 
+@SlingServlet(paths = "/bin/replicate/selective")
 @Slf4j("LOG")
 class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
 
