@@ -26,10 +26,9 @@ public final class DeferredClientLibTag extends AbstractDeferredClientLibTag {
 
     @Override
     public int doEndTag() throws JspException {
-        final SlingScriptHelper sling = (SlingScriptHelper) pageContext.getAttribute(
-            DEFAULT_SLING_NAME);
-        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext
-            .getAttribute(DEFAULT_REQUEST_NAME);
+        final SlingScriptHelper sling = (SlingScriptHelper) pageContext.getAttribute(DEFAULT_SLING_NAME);
+        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext.getAttribute(
+            DEFAULT_REQUEST_NAME);
 
         final HtmlLibraryManager htmlLibraryManager = sling.getService(HtmlLibraryManager.class);
 
@@ -39,8 +38,8 @@ public final class DeferredClientLibTag extends AbstractDeferredClientLibTag {
         LOG.debug("doEndTag() writing deferred client libraries = {}", uniqueCategories);
 
         try {
-            htmlLibraryManager.writeJsInclude(slingRequest, pageContext.getOut(),
-                uniqueCategories.toArray(new String[uniqueCategories.size()]));
+            htmlLibraryManager.writeJsInclude(slingRequest, pageContext.getOut(), uniqueCategories.toArray(
+                new String[uniqueCategories.size()]));
         } catch (IOException e) {
             LOG.error("error writing deferred client libraries = " + uniqueCategories, e);
         }

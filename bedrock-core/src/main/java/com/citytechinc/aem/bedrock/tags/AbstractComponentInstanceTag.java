@@ -16,8 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
     protected final Object getInstance(final Class<?> clazz)
-        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
-        InstantiationException {
+        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         final ComponentRequest componentRequest = (ComponentRequest) pageContext.getAttribute(
             ComponentBindings.COMPONENT_REQUEST);
 
@@ -25,8 +24,8 @@ public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
     }
 
     protected final Object getInstance(final String className)
-        throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException,
-        InstantiationException, IllegalAccessException {
+        throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException,
+        IllegalAccessException {
         final Class<?> clazz = Class.forName(className);
 
         return getInstance(clazz);

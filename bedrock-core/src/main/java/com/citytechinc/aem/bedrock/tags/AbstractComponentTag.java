@@ -5,11 +5,11 @@
  */
 package com.citytechinc.aem.bedrock.tags;
 
-import com.citytechinc.aem.bedrock.bindings.ComponentBindings;
 import com.citytechinc.aem.bedrock.content.node.ComponentNode;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
+import static com.citytechinc.aem.bedrock.bindings.ComponentBindings.COMPONENT_NODE;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
@@ -29,7 +29,7 @@ public abstract class AbstractComponentTag extends TagSupport {
     }
 
     protected final ComponentNode getComponentNode() {
-        return (ComponentNode) pageContext.getAttribute(ComponentBindings.COMPONENT_NODE);
+        return (ComponentNode) pageContext.getAttribute(COMPONENT_NODE);
     }
 
     protected final boolean isInherit() {

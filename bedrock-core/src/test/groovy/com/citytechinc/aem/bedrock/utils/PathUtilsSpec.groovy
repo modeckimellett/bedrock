@@ -13,6 +13,21 @@ import spock.lang.Unroll
 @Unroll
 class PathUtilsSpec extends Specification {
 
+    def "is content"() {
+        expect:
+        PathUtils.isContent(path) == result
+
+        where:
+        path                      | result
+        "http://www.google.com"   | false
+        "notcontent"              | false
+        "/content"                | false
+        "/content/"               | false
+        "/content/global"         | true
+        "/content/global/en"      | true
+        "/content/global/en/test" | true
+    }
+
     def "is external"() {
         expect:
         PathUtils.isExternal(path) == result
