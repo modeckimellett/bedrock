@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
     <version>7.0.0-SNAPSHOT</version>
     <name>Bedrock</name>
-    <description>Bedrock provides a sturdy foundation for bootstrapping and simplifying for AEM (Adobe CQ) projects.</description>
+    <description>Bedrock provides a sturdy foundation for bootstrapping and simplifying AEM (Adobe CQ) projects.</description>
 
     <organization>
         <name>CITYTECH, Inc.</name>
@@ -43,7 +43,7 @@
             <url>http://nexus.citytech.ctmsp.com/content/groups/public</url>
         </repository>
         <repository>
-            <id>jsdoctk1</id>
+            <id>jsdoctk</id>
             <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
         </repository>
         <repository>
@@ -58,7 +58,7 @@
             <url>http://nexus.citytech.ctmsp.com/content/groups/public</url>
         </pluginRepository>
         <pluginRepository>
-            <id>jsdoctk2</id>
+            <id>jsdoctk</id>
             <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
         </pluginRepository>
     </pluginRepositories>
@@ -358,6 +358,10 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <artifactId>maven-site-plugin</artifactId>
                 <dependencies>
                     <dependency>
@@ -412,17 +416,10 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <configuration>
-
+                    <aggregate>true</aggregate>
                 </configuration>
-
-                <!--
-                <configuration>
-                    <formats>
-                        <format>html</format>
-                    </formats>
-                </configuration>
-                -->
             </plugin>
+            <!--
             <plugin>
                 <artifactId>maven-changes-plugin</artifactId>
                 <configuration>
@@ -436,6 +433,7 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            -->
             <plugin>
                 <groupId>nl.windgazer</groupId>
                 <artifactId>jsdoctk-plugin</artifactId>

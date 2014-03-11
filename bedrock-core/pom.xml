@@ -93,6 +93,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <configuration>
                     <quiet>true</quiet>
+                    <outputDirectory>${project.parent.reporting.outputDirectory}/cobertura</outputDirectory>
                     <instrumentation>
                         <excludes>
                             <exclude>com/citytechinc/aem/bedrock/activator/*.class</exclude>
@@ -112,39 +113,16 @@
                         <totalLineRate>85</totalLineRate>
                         <packageLineRate>85</packageLineRate>
                         <packageBranchRate>85</packageBranchRate>
-                        <!--
-                        <regexes>
-                            <regex>
-                                <pattern>com.example.reallyimportant.*</pattern>
-                                <branchRate>90</branchRate>
-                                <lineRate>80</lineRate>
-                            </regex>
-                            <regex>
-                                <pattern>com.example.boringcode.*</pattern>
-                                <branchRate>40</branchRate>
-                                <lineRate>30</lineRate>
-                            </regex>
-                        </regexes>
-                        -->
                     </check>
                 </configuration>
                 <executions>
                     <execution>
+                        <phase>site</phase>
                         <goals>
-                            <goal>clean</goal>
-                            <goal>check</goal>
+                            <goal>cobertura</goal>
                         </goals>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.sun</groupId>
-                        <artifactId>tools</artifactId>
-                        <version>1.6</version>
-                        <scope>system</scope>
-                        <systemPath>${sun.tools.path}</systemPath>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
