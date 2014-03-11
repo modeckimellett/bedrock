@@ -7,6 +7,7 @@ package com.citytechinc.aem.bedrock.services.cache
 
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheStats
+import com.google.common.cache.LoadingCache
 import org.slf4j.Logger
 import spock.lang.Specification
 
@@ -16,7 +17,7 @@ class AbstractCacheServiceSpec extends Specification {
 
         Cache johnny
 
-        Cache june
+        LoadingCache june
 
         @Override
         protected Logger getLogger() {
@@ -28,7 +29,7 @@ class AbstractCacheServiceSpec extends Specification {
         setup:
         def cacheService = new TestCacheService()
         def johnny = Mock(Cache)
-        def june = Mock(Cache)
+        def june = Mock(LoadingCache)
 
         cacheService.johnny = johnny
         cacheService.june = june
@@ -45,7 +46,7 @@ class AbstractCacheServiceSpec extends Specification {
         setup:
         def cacheService = new TestCacheService()
         def johnny = Mock(Cache)
-        def june = Mock(Cache)
+        def june = Mock(LoadingCache)
 
         cacheService.johnny = johnny
         cacheService.june = june

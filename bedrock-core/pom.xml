@@ -105,6 +105,7 @@
                             <exclude>com/citytechinc/aem/bedrock/jmx/**/*</exclude>
                             <exclude>com/citytechinc/aem/bedrock/testing/mocks/*</exclude>
                         </excludes>
+                        <ignoreTrivial>true</ignoreTrivial>
                     </instrumentation>
                     <check>
                         <branchRate>85</branchRate>

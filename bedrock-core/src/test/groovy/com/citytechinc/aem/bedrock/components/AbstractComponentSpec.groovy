@@ -39,10 +39,7 @@ class AbstractComponentSpec extends ComponentSpec {
 
     def "instantiate component with component request"() {
         setup:
-        def request = getComponentRequestBuilder().build {
-            path "/content/citytechinc/jcr:content/component"
-        }
-
+        def request = getComponentRequestBuilder("/content/citytechinc/jcr:content/component").build()
         def component = new TestingComponent(request)
 
         expect:

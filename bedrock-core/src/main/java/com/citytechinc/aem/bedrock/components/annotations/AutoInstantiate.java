@@ -18,8 +18,8 @@ import java.lang.annotation.Target;
  * Java class name, the class will be instantiated and set in page context without the need to use the {@code
  * <ct:component/>} tag.
  */
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 @Inherited
 @Documented
 public @interface AutoInstantiate {

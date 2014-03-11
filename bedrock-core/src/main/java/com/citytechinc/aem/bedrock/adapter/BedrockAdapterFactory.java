@@ -18,6 +18,7 @@ import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Properties;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.SlingConstants;
 import org.apache.sling.api.adapter.AdapterFactory;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
@@ -27,11 +28,11 @@ import org.osgi.framework.Constants;
 @Service
 @Properties({
     @Property(name = Constants.SERVICE_DESCRIPTION, value = "Bedrock Content API Adapter Factory"),
-    @Property(name = "adaptables", value = {
+    @Property(name = SlingConstants.PROPERTY_ADAPTABLE_CLASSES, value = {
         "org.apache.sling.api.resource.Resource",
         "org.apache.sling.api.resource.ResourceResolver"
     }),
-    @Property(name = "adapters", value = {
+    @Property(name = SlingConstants.PROPERTY_ADAPTER_CLASSES, value = {
         "com.citytechinc.aem.bedrock.content.page.PageManagerDecorator",
         "com.citytechinc.aem.bedrock.content.page.PageDecorator",
         "com.citytechinc.aem.bedrock.content.node.ComponentNode",
