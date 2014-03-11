@@ -10,6 +10,7 @@ import org.apache.sling.api.SlingHttpServletRequest;
 
 import java.util.regex.Pattern;
 
+import static com.citytechinc.aem.bedrock.constants.PathConstants.PATH_JCR_CONTENT;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -61,7 +62,6 @@ public final class PathUtils {
      * @return page path
      */
     public static String getPagePath(final String path) {
-        return checkNotNull(path).contains(PathConstants.PATH_JCR_CONTENT) ? path.substring(0, path.indexOf(
-            PathConstants.PATH_JCR_CONTENT)) : path;
+        return checkNotNull(path).contains(PATH_JCR_CONTENT) ? path.substring(0, path.indexOf(PATH_JCR_CONTENT)) : path;
     }
 }

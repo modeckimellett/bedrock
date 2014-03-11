@@ -10,7 +10,7 @@ import com.day.cq.commons.jcr.JcrConstants;
 import java.util.regex.Pattern;
 
 /**
- * JCR path constants.
+ * JCR path and extension constants.
  */
 public final class PathConstants {
 
@@ -22,9 +22,7 @@ public final class PathConstants {
 
     public static final String PATH_CONTENT = "/content";
 
-    public static final String PATH_CONTENT_DAM_START = "/content/dam/";
-
-    public static final String PATH_CONTENT_START = "/content/";
+    public static final String PATH_CONTENT_DAM = "/content/dam";
 
     public static final String PATH_ETC = "/etc";
 
@@ -32,7 +30,7 @@ public final class PathConstants {
 
     public static final String PATH_SEPARATOR = "/";
 
-    public static final String REGEX_CONTENT = "/content/([^/]+)/?(.+)?";
+    public static final String REGEX_CONTENT = PATH_CONTENT + "/([^/]+)/?(.+)?";
 
     public static final Pattern PATTERN_CONTENT = Pattern.compile(REGEX_CONTENT);
 
