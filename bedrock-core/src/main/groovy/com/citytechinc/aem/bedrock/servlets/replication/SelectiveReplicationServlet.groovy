@@ -5,11 +5,13 @@
  */
 package com.citytechinc.aem.bedrock.servlets.replication
 
-import com.citytechinc.aem.bedrock.services.replication.SelectiveReplicationService
 import com.citytechinc.aem.bedrock.servlets.AbstractJsonResponseServlet
+import com.day.cq.replication.AgentIdFilter
 import com.day.cq.replication.AgentManager
 import com.day.cq.replication.ReplicationActionType
 import com.day.cq.replication.ReplicationException
+import com.day.cq.replication.ReplicationOptions
+import com.day.cq.replication.Replicator
 import groovy.util.logging.Slf4j
 import org.apache.felix.scr.annotations.Reference
 import org.apache.felix.scr.annotations.sling.SlingServlet
@@ -35,7 +37,7 @@ class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
     protected AgentManager agentManager
 
     @Reference
-    protected SelectiveReplicationService selectiveReplicationService
+    protected Replicator replicator
 
     @Override
     protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws
@@ -49,11 +51,9 @@ class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
         def action = request.getParameter(PARAMETER_ACTION)
         def actionType = ReplicationActionType.fromName(action)
 
-        checkArgument(actionType as Boolean , "invalid action parameter = $action")
+        checkArgument(actionType as Boolean, "invalid action parameter = $action")
 
-        def uniqueAgentIds = agentIds as LinkedHashSet
-
-        checkArgument(agentsExist(uniqueAgentIds), "invalid agent IDs, one or more of the provided agent IDs does not exist")
+        def options = getReplicationOptions(agentIds)
 
         def session = request.resourceResolver.adaptTo(Session)
 
@@ -65,7 +65,7 @@ class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
             LOG.info "doPost() executing replication action = $actionType for path = $path to agent IDs = $agentIds"
 
             try {
-                selectiveReplicationService.replicate(session, path, actionType, uniqueAgentIds)
+                replicator.replicate(session, actionType, path, options)
 
                 success = true
             } catch (ReplicationException e) {
@@ -78,7 +78,16 @@ class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
         writeJsonResponse(response, result)
     }
 
-    private boolean agentsExist(agentIds) {
-        agentManager.agents.keySet().containsAll(agentIds)
+    private def getReplicationOptions(agentIds) {
+        def uniqueAgentIds = agentIds as LinkedHashSet
+
+        checkArgument(agentManager.agents.keySet().containsAll(uniqueAgentIds),
+            "invalid agent IDs, one or more of the provided agent IDs does not exist")
+
+        def replicationOptions = new ReplicationOptions()
+
+        replicationOptions.setFilter(new AgentIdFilter(uniqueAgentIds.toArray() as String[]))
+
+        replicationOptions
     }
 }

@@ -5,11 +5,11 @@
  */
 package com.citytechinc.aem.bedrock.servlets.replication
 
-import com.citytechinc.aem.bedrock.services.replication.SelectiveReplicationService
 import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
 import com.day.cq.replication.Agent
 import com.day.cq.replication.AgentManager
 import com.day.cq.replication.ReplicationActionType
+import com.day.cq.replication.Replicator
 import groovy.json.JsonBuilder
 import spock.lang.Unroll
 
@@ -27,7 +27,7 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
         def servlet = new SelectiveReplicationServlet()
 
         servlet.agentManager = Mock(AgentManager)
-        servlet.selectiveReplicationService = Mock(SelectiveReplicationService)
+        servlet.replicator = Mock(Replicator)
 
         when:
         servlet.doPost(request, response)
@@ -56,10 +56,10 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
 
         def agent = Mock(Agent)
         def agentManager = Mock(AgentManager)
-        def selectiveReplicationService = Mock(SelectiveReplicationService)
+        def replicator = Mock(Replicator)
 
         servlet.agentManager = agentManager
-        servlet.selectiveReplicationService = selectiveReplicationService
+        servlet.replicator = replicator
 
         def json = new JsonBuilder(["/content": true, "/etc": true]).toString()
 
@@ -68,7 +68,7 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
 
         then:
         1 * agentManager.agents >> ["publish": agent]
-        2 * selectiveReplicationService.replicate(*_)
+        2 * replicator.replicate(*_)
 
         then:
         response.output == json
