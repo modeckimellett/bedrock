@@ -96,13 +96,14 @@
                     <outputDirectory>${project.parent.reporting.outputDirectory}/cobertura</outputDirectory>
                     <instrumentation>
                         <excludes>
-                            <exclude>com/citytechinc/aem/bedrock/activator/*.class</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/bindings/*.class</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/components/annotations/*.class</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/components/multicompositefield/*.class</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/constants/*.class</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/filters/*.class</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/jmx/**/*.class</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/activator/*</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/bindings/*</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/components/annotations/*</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/components/multicompositefield/*</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/constants/*</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/filters/*</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/jmx/**/*</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/testing/mocks/*</exclude>
                         </excludes>
                     </instrumentation>
                     <check>
