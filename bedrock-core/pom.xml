@@ -57,7 +57,12 @@
                         <Bundle-Name>${project.name}</Bundle-Name>
                         <Bundle-Vendor>${project.parent.organization.name}</Bundle-Vendor>
                         <Bundle-Activator>com.citytechinc.aem.bedrock.activator.Activator</Bundle-Activator>
-                        <Export-Package>!*.impl,!com.citytechinc.aem.bedrock.components.multicompositefield,com.citytechinc.aem.bedrock.*</Export-Package>
+                        <Export-Package>
+                            !*.impl,
+                            !com.citytechinc.aem.bedrock.components.multicompositefield,
+                            !com.citytechinc.aem.bedrock.testing,
+                            com.citytechinc.aem.bedrock.*
+                        </Export-Package>
                         <Import-Package>!com.citytechinc.cq.component.*,!javassist</Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
@@ -82,6 +87,64 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <configuration>
+                    <quiet>true</quiet>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>com/citytechinc/aem/bedrock/activator/*.class</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/bindings/*.class</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/components/annotations/*.class</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/components/multicompositefield/*.class</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/constants/*.class</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/filters/*.class</exclude>
+                            <exclude>com/citytechinc/aem/bedrock/jmx/**/*.class</exclude>
+                        </excludes>
+                    </instrumentation>
+                    <check>
+                        <branchRate>85</branchRate>
+                        <lineRate>85</lineRate>
+                        <haltOnFailure>false</haltOnFailure>
+                        <totalBranchRate>85</totalBranchRate>
+                        <totalLineRate>85</totalLineRate>
+                        <packageLineRate>85</packageLineRate>
+                        <packageBranchRate>85</packageBranchRate>
+                        <!--
+                        <regexes>
+                            <regex>
+                                <pattern>com.example.reallyimportant.*</pattern>
+                                <branchRate>90</branchRate>
+                                <lineRate>80</lineRate>
+                            </regex>
+                            <regex>
+                                <pattern>com.example.boringcode.*</pattern>
+                                <branchRate>40</branchRate>
+                                <lineRate>30</lineRate>
+                            </regex>
+                        </regexes>
+                        -->
+                    </check>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.sun</groupId>
+                        <artifactId>tools</artifactId>
+                        <version>1.6</version>
+                        <scope>system</scope>
+                        <systemPath>${sun.tools.path}</systemPath>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -135,20 +198,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>no-test-logging</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-nop</artifactId>
-                    <version>1.6.4</version>
-                </dependency>
-            </dependencies>
-        </profile>
-
         <!-- activate this profile to enable logging of test executions -->
         <profile>
             <id>test-logging</id>
@@ -162,6 +211,26 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
                     <version>1.7.5</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.citytechinc.aem.groovy.extension</groupId>
+                    <artifactId>aem-groovy-extension-bundle</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>slf4j-nop</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>com.citytechinc.aem.prosper</groupId>
+                    <artifactId>prosper</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>slf4j-nop</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
@@ -326,24 +395,12 @@
         <dependency>
             <groupId>com.citytechinc.aem.groovy.extension</groupId>
             <artifactId>aem-groovy-extension-bundle</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-nop</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- test -->
         <dependency>
             <groupId>com.citytechinc.aem.prosper</groupId>
             <artifactId>prosper</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-nop</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 </project>
