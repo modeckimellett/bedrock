@@ -7,6 +7,11 @@ package com.citytechinc.aem.bedrock.content.node.impl
 
 import com.citytechinc.aem.bedrock.content.node.predicates.PropertyNamePredicate
 import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.day.cq.dam.api.Asset
+import com.day.cq.dam.api.Rendition
+import com.google.common.base.Predicates
+import org.apache.sling.api.resource.NonExistingResource
+import org.apache.sling.api.resource.Resource
 import spock.lang.Unroll
 
 @Unroll
@@ -15,10 +20,13 @@ class DefaultBasicNodeSpec extends BedrockSpec {
     def setupSpec() {
         pageBuilder.content {
             citytechinc("CITYTECH, Inc.") {
-                "jcr:content"(otherPagePath: "/content/ales/esb", nonExistentPagePath: "/content/home", externalPath: "http://www.reddit.com", multiValue: ["one", "two"]) {
+                "jcr:content"(otherPagePath: "/content/ales/esb", nonExistentPagePath: "/content/home",
+                    externalPath: "http://www.reddit.com", multiValue: ["one", "two"]) {
                     image(fileReference: "/content/dam/image")
                     secondimage(fileReference: "/content/dam/image")
+                    thirdimage()
                     nsfwImage(fileReference: "omg.png")
+                    imageWithRenditions(fileReference: "/content/dam/image-renditions")
                     beer(label: "orval", abv: "9.0", oz: "12") {
                         image(fileReference: "/content/dam/image")
                         secondimage(fileReference: "/content/dam/image")
@@ -53,8 +61,28 @@ class DefaultBasicNodeSpec extends BedrockSpec {
                 image("dam:Asset") {
                     "jcr:content"("jcr:data": "data")
                 }
+                "image-renditions"("dam:Asset") {
+                    "jcr:content"("jcr:data": "data")
+                }
             }
         }
+    }
+
+    @Override
+    Map<Class, Closure> addResourceAdapters() {
+        [(Asset.class): { Resource resource ->
+            def asset = null
+
+            if (resource.path == "/content/dam/image-renditions") {
+                asset = [getRenditions: {
+                    ["one", "two", "three"].collect { renditionName ->
+                        [getName: { renditionName }, getPath: { "/content/dam/image-renditions/" + renditionName }] as Rendition
+                    }
+                }] as Asset
+            }
+
+            asset
+        }]
     }
 
     def "as map"() {
@@ -64,6 +92,33 @@ class DefaultBasicNodeSpec extends BedrockSpec {
         expect:
         map["jcr:title"] == "CITYTECH, Inc."
         map["otherPagePath"] == "/content/ales/esb"
+    }
+
+    def "get"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        node.get(propertyName, defaultValue) == result
+
+        where:
+        propertyName          | defaultValue | result
+        "otherPagePath"       | ""           | "/content/ales/esb"
+        "nonExistentProperty" | ""           | ""
+    }
+
+    def "get optional"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        node.get(propertyName, type).present == result
+
+        where:
+        propertyName          | type    | result
+        "otherPagePath"       | String  | true
+        "otherPagePath"       | Integer | false
+        "nonExistentProperty" | String  | false
     }
 
     def "get as list"() {
@@ -367,6 +422,15 @@ class DefaultBasicNodeSpec extends BedrockSpec {
         node.getProperties(predicate)*.name == ["label"]
     }
 
+    def "get properties for null node returns empty list"() {
+        setup:
+        def resource = new NonExistingResource(resourceResolver, "/content/non-existing")
+        def node = new DefaultBasicNode(resource)
+
+        expect:
+        !node.getProperties(Predicates.alwaysTrue())
+    }
+
     def "get resource"() {
         setup:
         def node = getBasicNode("/content/citytechinc/jcr:content")
@@ -400,7 +464,38 @@ class DefaultBasicNodeSpec extends BedrockSpec {
         "/content/citytechinc/jcr:content" | "image"       | true
         "/content/citytechinc/jcr:content" | "secondimage" | true
         "/content/citytechinc/jcr:content" | "thirdimage"  | false
+        "/content/citytechinc/jcr:content" | "fourthimage" | false
         "/content/ales/esb/jcr:content"    | "image"       | false
+    }
+
+    def "get image rendition returns absent"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        !node.getImageRendition("sfwImage", "").present
+    }
+
+    def "get image rendition"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        !node.getImageRendition("").present
+    }
+
+    def "get named image rendition"() {
+        setup:
+        def node = getBasicNode("/content/citytechinc/jcr:content")
+
+        expect:
+        node.getImageRendition(name, renditionName).present == result
+
+        where:
+        name                  | renditionName | result
+        "secondimage"         | ""            | false
+        "imageWithRenditions" | "one"         | true
+        "imageWithRenditions" | "four"        | false
     }
 
     def getBasicNode(path) {
