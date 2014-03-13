@@ -8,6 +8,7 @@ package com.citytechinc.aem.bedrock.components
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 import com.citytechinc.aem.bedrock.testing.specs.ComponentSpec
+import org.apache.sling.api.resource.ResourceResolverFactory
 
 class AbstractComponentSpec extends ComponentSpec {
 
@@ -55,6 +56,36 @@ class AbstractComponentSpec extends ComponentSpec {
         expect:
         component.title == "Testing Component"
         component.currentPage.path == "/content/citytechinc"
+    }
+
+    def "get service"() {
+        setup:
+        def mock = Mock(ResourceResolverFactory)
+
+        def request = getComponentRequestBuilder("/content/citytechinc/jcr:content/component").build {
+            service ResourceResolverFactory, mock
+        }
+
+        def component = new TestingComponent(request)
+
+        expect:
+        component.getService(ResourceResolverFactory)
+    }
+
+    def "get services"() {
+        setup:
+        def filter = "filter"
+        def mock = Mock(ResourceResolverFactory)
+
+        def request = getComponentRequestBuilder("/content/citytechinc/jcr:content/component").build {
+            services ResourceResolverFactory, [mock, mock] as ResourceResolverFactory[], filter
+        }
+
+        def component = new TestingComponent(request)
+
+        expect:
+        component.getServices(ResourceResolverFactory, filter).length == 2
+        !component.getServices(ResourceResolverFactory, "")
     }
 
     def "when instantiating component with component node, attempting to get a service throws exception"() {
