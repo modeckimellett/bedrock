@@ -60,7 +60,7 @@
                         <Export-Package>
                             !*.impl,
                             !com.citytechinc.aem.bedrock.components.multicompositefield,
-                            !com.citytechinc.aem.bedrock.testing,
+                            !com.citytechinc.aem.bedrock.testing.*,
                             com.citytechinc.aem.bedrock.*
                         </Export-Package>
                         <Import-Package>!com.citytechinc.cq.component.*,!javassist</Import-Package>
