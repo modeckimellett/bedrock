@@ -18,8 +18,7 @@ import spock.lang.Shared
  */
 abstract class BedrockSpec extends ProsperSpec {
 
-    @Shared
-    protected PageManagerDecorator pageManager
+    @Shared pageManagerDecorator
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {
@@ -27,14 +26,19 @@ abstract class BedrockSpec extends ProsperSpec {
     }
 
     def setupSpec() {
-        pageManager = resourceResolver.adaptTo(PageManagerDecorator)
+        pageManagerDecorator = resourceResolver.adaptTo(PageManagerDecorator)
     }
 
-    ComponentNode getComponentNode(path) {
+    ComponentNode getComponentNode(String path) {
         resourceResolver.getResource(path).adaptTo(ComponentNode)
     }
 
-    PageDecorator getPage(path) {
-        pageManager.getPage(path)
+    PageDecorator getPage(String path) {
+        pageManagerDecorator.getPage(path)
+    }
+
+    @Override
+    PageManagerDecorator getPageManager() {
+        pageManagerDecorator
     }
 }

@@ -26,7 +26,7 @@ abstract class PropertyTagSpec extends ProsperJspTagSpec {
      *
      * @param path node path
      */
-    void setupComponentNode(path) {
+    void setupComponentNode(String path) {
         def componentNode = resourceResolver.getResource(path).adaptTo(ComponentNode)
 
         tag.pageContext.getAttribute(ComponentBindings.COMPONENT_NODE) >> componentNode

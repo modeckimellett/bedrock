@@ -27,7 +27,7 @@ abstract class PageTagSpec extends ProsperJspTagSpec {
      *
      * @param path page path
      */
-    void setupPage(path) {
+    void setupPage(String path) {
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
 
         tag.pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME) >> page
