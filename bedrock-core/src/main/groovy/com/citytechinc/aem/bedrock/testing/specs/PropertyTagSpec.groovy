@@ -8,13 +8,13 @@ package com.citytechinc.aem.bedrock.testing.specs
 import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.bindings.ComponentBindings
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
-import com.citytechinc.aem.prosper.specs.tag.TagSpec
+import com.citytechinc.aem.prosper.specs.ProsperJspTagSpec
 import org.apache.sling.api.adapter.AdapterFactory
 
 /**
  * Spock specification for testing CQ component-based tag support classes.
  */
-abstract class PropertyTagSpec extends TagSpec {
+abstract class PropertyTagSpec extends ProsperJspTagSpec {
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {

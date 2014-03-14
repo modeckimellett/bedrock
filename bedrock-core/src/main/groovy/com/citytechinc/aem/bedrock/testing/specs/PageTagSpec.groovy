@@ -7,7 +7,7 @@ package com.citytechinc.aem.bedrock.testing.specs
 
 import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.prosper.specs.tag.TagSpec
+import com.citytechinc.aem.prosper.specs.ProsperJspTagSpec
 import org.apache.sling.api.adapter.AdapterFactory
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
@@ -15,7 +15,7 @@ import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
 /**
  * Spock specification for testing CQ page-based tag support classes.
  */
-abstract class PageTagSpec extends TagSpec {
+abstract class PageTagSpec extends ProsperJspTagSpec {
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {
