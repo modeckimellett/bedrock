@@ -59,40 +59,43 @@ class OptionsProviderServletSpec extends BedrockSpec {
 
     def "no options"() {
         def servlet = new NoOptionsProviderServlet()
+        def writer = new StringWriter()
 
         def request = requestBuilder.build()
-        def response = responseBuilder.build()
+        def response = getResponseBuilder(writer).build()
 
         when:
         servlet.doGet(request, response)
 
         then:
-        response.output == new JsonBuilder([]).toString()
+        writer.toString() == new JsonBuilder([]).toString()
     }
 
     def "options with root"() {
         def servlet = new RootOptionsProviderServlet()
+        def writer = new StringWriter()
 
         def request = requestBuilder.build()
-        def response = responseBuilder.build()
+        def response = getResponseBuilder(writer).build()
 
         when:
         servlet.doGet(request, response)
 
         then:
-        response.output == new JsonBuilder(["root": LIST]).toString()
+        writer.toString() == new JsonBuilder(["root": LIST]).toString()
     }
 
     def "options with no root"() {
         def servlet = new NoRootOptionsProviderServlet()
+        def writer = new StringWriter()
 
         def request = requestBuilder.build()
-        def response = responseBuilder.build()
+        def response = getResponseBuilder(writer).build()
 
         when:
         servlet.doGet(request, response)
 
         then:
-        response.output == new JsonBuilder(LIST).toString()
+        writer.toString() == new JsonBuilder(LIST).toString()
     }
 }

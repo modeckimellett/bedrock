@@ -18,13 +18,13 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
 
     def "invalid parameters throw exception"() {
         setup:
+        def servlet = new SelectiveReplicationServlet()
+
         def request = requestBuilder.build {
             parameters paths: paths, agentIds: agentIds, action: action
         }
 
         def response = responseBuilder.build()
-
-        def servlet = new SelectiveReplicationServlet()
 
         servlet.agentManager = Mock(AgentManager)
         servlet.replicator = Mock(Replicator)
@@ -46,13 +46,14 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
 
     def "valid parameters"() {
         setup:
+        def servlet = new SelectiveReplicationServlet()
+        def writer = new StringWriter()
+
         def request = requestBuilder.build {
             parameters paths: ["/content", "/etc"], agentIds: ["publish"], action: ReplicationActionType.ACTIVATE.name()
         }
 
-        def response = responseBuilder.build()
-
-        def servlet = new SelectiveReplicationServlet()
+        def response = getResponseBuilder(writer).build()
 
         def agent = Mock(Agent)
         def agentManager = Mock(AgentManager)
@@ -71,6 +72,6 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
         2 * replicator.replicate(*_)
 
         then:
-        response.output == json
+        writer.toString() == json
     }
 }
