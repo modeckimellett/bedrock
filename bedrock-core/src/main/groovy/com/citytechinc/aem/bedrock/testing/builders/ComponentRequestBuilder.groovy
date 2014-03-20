@@ -11,6 +11,7 @@ import com.citytechinc.aem.bedrock.testing.mocks.MockComponentRequest
 import com.citytechinc.aem.prosper.builders.RequestBuilder
 import com.citytechinc.aem.prosper.builders.ResponseBuilder
 import com.day.cq.wcm.api.WCMMode
+import org.apache.sling.api.resource.ResourceResolver
 import org.apache.sling.api.scripting.SlingBindings
 import org.apache.sling.api.scripting.SlingScriptHelper
 
@@ -18,7 +19,7 @@ class ComponentRequestBuilder {
 
     @Delegate RequestBuilder requestBuilder
 
-    @Delegate ResponseBuilder responseBuilder
+    @Delegate ResponseBuilder responseBuilder = new ResponseBuilder()
 
     def mode
 
@@ -26,14 +27,8 @@ class ComponentRequestBuilder {
 
     def servicesWithFilters = [:]
 
-    ComponentRequestBuilder(resourceResolver) {
+    ComponentRequestBuilder(ResourceResolver resourceResolver) {
         requestBuilder = new RequestBuilder(resourceResolver)
-        responseBuilder = new ResponseBuilder()
-    }
-
-    ComponentRequestBuilder(resourceResolver, path) {
-        requestBuilder = new RequestBuilder(resourceResolver, path)
-        responseBuilder = new ResponseBuilder()
     }
 
     /**
@@ -41,7 +36,7 @@ class ComponentRequestBuilder {
      *
      * @param mode WCMMode value
      */
-    void mode(WCMMode mode) {
+    void setMode(WCMMode mode) {
         this.mode = mode
     }
 
@@ -54,7 +49,7 @@ class ComponentRequestBuilder {
      * @param serviceType type of service to register for this request
      * @param instance service instance (real or mocked)
      */
-    public <T> void service(Class<T> serviceType, T instance) {
+    public <T> void addService(Class<T> serviceType, T instance) {
         services[serviceType] = instance
     }
 
@@ -69,7 +64,7 @@ class ComponentRequestBuilder {
      * @param instances array of service instances for the given service type and filter
      * @param filter filter string
      */
-    public <T> void services(Class<T> serviceType, T[] instances, String filter) {
+    public <T> void addServices(Class<T> serviceType, T[] instances, String filter) {
         def map = servicesWithFilters[serviceType] ?: [:]
 
         map[filter] = instances
@@ -116,6 +111,6 @@ class ComponentRequestBuilder {
 
         bindings.sling = scriptHelper
 
-        requestBuilder.attribute(SlingBindings.class.name, bindings)
+        requestBuilder.setAttribute SlingBindings.class.name, bindings
     }
 }

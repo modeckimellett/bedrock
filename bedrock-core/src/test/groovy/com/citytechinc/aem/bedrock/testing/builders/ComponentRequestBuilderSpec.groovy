@@ -21,7 +21,7 @@ class ComponentRequestBuilderSpec extends BedrockSpec {
     def "build request"() {
         setup:
         def request = new ComponentRequestBuilder(resourceResolver).build {
-            path "/content/citytechinc/jcr:content"
+            path = "/content/citytechinc/jcr:content"
         }
 
         expect:
@@ -40,8 +40,8 @@ class ComponentRequestBuilderSpec extends BedrockSpec {
     def "build request with mode"() {
         setup:
         def request = new ComponentRequestBuilder(resourceResolver).build {
-            path "/content/citytechinc/jcr:content"
-            mode WCMMode.DISABLED
+            path = "/content/citytechinc/jcr:content"
+            mode = WCMMode.DISABLED
         }
 
         expect:

@@ -12,10 +12,11 @@ import spock.lang.Unroll
 @Unroll
 class ComponentServletRequestSpec extends BedrockSpec {
 
+    @Unroll
     def "get request parameter optional"() {
         setup:
-        def slingRequest = getRequestBuilder().build {
-            parameters "a": ["1", "2"], "b": [""]
+        def slingRequest = requestBuilder.build {
+            parameters = ["a": ["1", "2"], "b": [""]]
         }
 
         def slingResponse = Mock(SlingHttpServletResponse)
@@ -32,10 +33,11 @@ class ComponentServletRequestSpec extends BedrockSpec {
         "c"           | false
     }
 
+    @Unroll
     def "get request parameter"() {
         setup:
-        def slingRequest = getRequestBuilder().build {
-            parameters "a": ["1", "2"], "b": [""]
+        def slingRequest = requestBuilder.build {
+            parameters = ["a": ["1", "2"], "b": [""]]
         }
 
         def slingResponse = Mock(SlingHttpServletResponse)
@@ -51,10 +53,11 @@ class ComponentServletRequestSpec extends BedrockSpec {
         "b"           | ""
     }
 
+    @Unroll
     def "get request parameter with default value"() {
         setup:
-        def slingRequest = getRequestBuilder().build {
-            parameters "a": ["1", "2"], "b": [""]
+        def slingRequest = requestBuilder.build {
+            parameters = ["a": ["1", "2"], "b": [""]]
         }
 
         def slingResponse = Mock(SlingHttpServletResponse)
@@ -71,10 +74,11 @@ class ComponentServletRequestSpec extends BedrockSpec {
         "c"           | "default"
     }
 
+    @Unroll
     def "get request parameters optional"() {
         setup:
-        def slingRequest = getRequestBuilder().build {
-            parameters "a": ["1", "2"], "b": ["1"]
+        def slingRequest = requestBuilder.build {
+            parameters = ["a": ["1", "2"], "b": ["1"]]
         }
 
         def slingResponse = Mock(SlingHttpServletResponse)
@@ -91,10 +95,11 @@ class ComponentServletRequestSpec extends BedrockSpec {
         "c"           | false
     }
 
+    @Unroll
     def "get request parameters"() {
         setup:
-        def slingRequest = getRequestBuilder().build {
-            parameters "a": ["1", "2"], "b": ["1"]
+        def slingRequest = requestBuilder.build {
+            parameters = ["a": ["1", "2"], "b": ["1"]]
         }
 
         def slingResponse = Mock(SlingHttpServletResponse)

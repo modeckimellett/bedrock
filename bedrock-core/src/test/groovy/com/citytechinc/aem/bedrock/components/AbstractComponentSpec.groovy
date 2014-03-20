@@ -40,7 +40,10 @@ class AbstractComponentSpec extends ComponentSpec {
 
     def "instantiate component with component request"() {
         setup:
-        def request = getComponentRequestBuilder("/content/citytechinc/jcr:content/component").build()
+        def request = componentRequestBuilder.build {
+            path = "/content/citytechinc/jcr:content/component"
+        }
+
         def component = new TestingComponent(request)
 
         expect:
@@ -62,8 +65,9 @@ class AbstractComponentSpec extends ComponentSpec {
         setup:
         def mock = Mock(ResourceResolverFactory)
 
-        def request = getComponentRequestBuilder("/content/citytechinc/jcr:content/component").build {
-            service ResourceResolverFactory, mock
+        def request = componentRequestBuilder.build {
+            path = "/content/citytechinc/jcr:content/component"
+            addService ResourceResolverFactory, mock
         }
 
         def component = new TestingComponent(request)
@@ -77,8 +81,9 @@ class AbstractComponentSpec extends ComponentSpec {
         def filter = "filter"
         def mock = Mock(ResourceResolverFactory)
 
-        def request = getComponentRequestBuilder("/content/citytechinc/jcr:content/component").build {
-            services ResourceResolverFactory, [mock, mock] as ResourceResolverFactory[], filter
+        def request = componentRequestBuilder.build {
+            path = "/content/citytechinc/jcr:content/component"
+            addServices ResourceResolverFactory, [mock, mock] as ResourceResolverFactory[], filter
         }
 
         def component = new TestingComponent(request)

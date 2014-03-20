@@ -20,14 +20,4 @@ abstract class ComponentSpec extends BedrockSpec {
     ComponentRequestBuilder getComponentRequestBuilder() {
         new ComponentRequestBuilder(resourceResolver)
     }
-
-    /**
-     * Get a component request builder for the current session.
-     *
-     * @param path content path for request
-     * @return builder
-     */
-    ComponentRequestBuilder getComponentRequestBuilder(String path) {
-        new ComponentRequestBuilder(resourceResolver, path)
-    }
 }

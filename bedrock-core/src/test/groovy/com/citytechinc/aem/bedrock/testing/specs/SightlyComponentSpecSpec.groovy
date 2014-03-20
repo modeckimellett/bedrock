@@ -35,7 +35,10 @@ class SightlyComponentSpecSpec extends SightlyComponentSpec {
 
     def "testing sightly component"() {
         setup:
-        def request = getComponentRequestBuilder("/content/citytechinc/jcr:content/component").build()
+        def request = componentRequestBuilder.build {
+            path = "/content/citytechinc/jcr:content/component"
+        }
+
         def component = getComponent(request, SightlyComponent)
 
         expect:
