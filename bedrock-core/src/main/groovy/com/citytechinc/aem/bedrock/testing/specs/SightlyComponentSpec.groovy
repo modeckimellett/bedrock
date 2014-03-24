@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.testing.specs
 
-import com.citytechinc.aem.bedrock.bindings.ComponentBindings
+import com.citytechinc.aem.bedrock.bindings.ComponentBindingsFactory
 import com.citytechinc.aem.bedrock.components.AbstractSightlyComponent
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 
@@ -24,7 +24,7 @@ abstract class SightlyComponentSpec extends ComponentSpec {
      * @return component initialized from mocked <code>ComponentRequest</code>
      */
     public <T extends AbstractSightlyComponent> T getComponent(ComponentRequest request, Class<T> type) {
-        def bindings = ComponentBindings.fromRequest(request)
+        def bindings = ComponentBindingsFactory.fromRequest(request)
 
         def instance = type.newInstance()
         def method = type.getMethod("init", Bindings)

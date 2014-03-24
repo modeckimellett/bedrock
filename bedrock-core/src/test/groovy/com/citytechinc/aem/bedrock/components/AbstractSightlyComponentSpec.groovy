@@ -28,7 +28,7 @@ class AbstractSightlyComponentSpec extends SightlyComponentSpec {
 
     def "get component from path"() {
         setup:
-        def request = getComponentRequestBuilder().build()
+        def request = componentRequestBuilder.build()
         def component = getComponent(request, UselessSightlyComponent)
 
         expect:
@@ -37,7 +37,7 @@ class AbstractSightlyComponentSpec extends SightlyComponentSpec {
 
     def "get component from component node"() {
         setup:
-        def request = getComponentRequestBuilder().build()
+        def request = componentRequestBuilder.build()
         def component = getComponent(request, UselessSightlyComponent)
         def componentNode = getComponentNode("/")
 

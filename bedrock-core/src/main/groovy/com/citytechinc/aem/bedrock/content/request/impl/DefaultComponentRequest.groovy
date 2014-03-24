@@ -47,8 +47,8 @@ final class DefaultComponentRequest implements ComponentRequest {
 
     final EditContext editContext
 
-    DefaultComponentRequest(Bindings bindings) {
-        componentServletRequest = DefaultComponentServletRequest.fromBindings(bindings)
+    DefaultComponentRequest(ComponentServletRequest componentServletRequest, Bindings bindings) {
+        this.componentServletRequest = componentServletRequest
 
         component = (Component) bindings.get(COMPONENT)
         componentContext = (ComponentContext) bindings.get(COMPONENT_CONTEXT)
@@ -58,8 +58,8 @@ final class DefaultComponentRequest implements ComponentRequest {
         currentStyle = (Style) bindings.get(CURRENT_STYLE)
     }
 
-    DefaultComponentRequest(PageContext pageContext) {
-        componentServletRequest = DefaultComponentServletRequest.fromPageContext(pageContext)
+    DefaultComponentRequest(ComponentServletRequest componentServletRequest, PageContext pageContext) {
+        this.componentServletRequest = componentServletRequest
 
         component = (Component) pageContext.getAttribute(DEFAULT_COMPONENT_NAME)
         componentContext = (ComponentContext) pageContext.getAttribute(DEFAULT_COMPONENT_CONTEXT_NAME)

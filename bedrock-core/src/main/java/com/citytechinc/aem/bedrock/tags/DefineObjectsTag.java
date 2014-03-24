@@ -6,6 +6,7 @@
 package com.citytechinc.aem.bedrock.tags;
 
 import com.citytechinc.aem.bedrock.bindings.ComponentBindings;
+import com.citytechinc.aem.bedrock.bindings.ComponentBindingsFactory;
 import com.citytechinc.aem.bedrock.components.annotations.AutoInstantiate;
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest;
 import com.day.cq.wcm.api.components.Component;
@@ -38,7 +39,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final ComponentBindings bindings = ComponentBindings.fromPageContext(pageContext);
+        final ComponentBindings bindings = ComponentBindingsFactory.fromPageContext(pageContext);
 
         for (final Map.Entry<String, Object> entry : bindings.entrySet()) {
             pageContext.setAttribute(entry.getKey(), entry.getValue());

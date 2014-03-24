@@ -20,36 +20,13 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.scripting.SlingBindings;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.script.Bindings;
-import javax.servlet.jsp.PageContext;
 
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_REQUEST_NAME;
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_RESPONSE_NAME;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class DefaultComponentServletRequest implements ComponentServletRequest {
-
-    public static ComponentServletRequest fromBindings(final Bindings bindings) {
-        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) bindings.get(
-            SlingBindings.REQUEST);
-        final SlingHttpServletResponse slingResponse = (SlingHttpServletResponse) bindings.get(
-            SlingBindings.RESPONSE);
-
-        return new DefaultComponentServletRequest(slingRequest, slingResponse);
-    }
-
-    public static ComponentServletRequest fromPageContext(final PageContext pageContext) {
-        final SlingHttpServletRequest slingRequest = (SlingHttpServletRequest) pageContext
-            .getAttribute(DEFAULT_REQUEST_NAME);
-        final SlingHttpServletResponse slingResponse = (SlingHttpServletResponse) pageContext
-            .getAttribute(DEFAULT_RESPONSE_NAME);
-
-        return new DefaultComponentServletRequest(slingRequest, slingResponse);
-    }
 
     private static final Function<RequestParameter, String> REQUEST_PARAMETER_TO_STRING = new Function<RequestParameter, String>() {
         @Override

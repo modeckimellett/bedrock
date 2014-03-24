@@ -17,6 +17,6 @@ public final class ComponentBindingValuesProvider implements BindingsValuesProvi
 
     @Override
     public void addBindings(final Bindings bindings) {
-        bindings.putAll(ComponentBindings.fromBindings(bindings));
+        bindings.putAll(ComponentBindingsFactory.fromBindings(bindings));
     }
 }

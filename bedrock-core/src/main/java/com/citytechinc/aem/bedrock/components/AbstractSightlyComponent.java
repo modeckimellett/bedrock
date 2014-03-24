@@ -463,7 +463,7 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
         try {
             instance = type.newInstance();
 
-            final Method method = type.getMethod("init", ComponentRequest.class);
+            final Method method = type.getMethod("init", Bindings.class);
 
             method.invoke(instance, componentBindings);
         } catch (InstantiationException e) {

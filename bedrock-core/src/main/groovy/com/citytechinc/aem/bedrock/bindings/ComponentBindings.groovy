@@ -6,11 +6,9 @@
 package com.citytechinc.aem.bedrock.bindings
 
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
-import com.citytechinc.aem.bedrock.content.request.impl.DefaultComponentRequest
 import com.day.cq.wcm.api.WCMMode
 
 import javax.script.Bindings
-import javax.servlet.jsp.PageContext
 
 final class ComponentBindings implements Bindings {
 
@@ -36,27 +34,11 @@ final class ComponentBindings implements Bindings {
 
     static final String PARAMETER_DEBUG = "debug"
 
-    static ComponentBindings fromRequest(ComponentRequest componentRequest) {
-        new ComponentBindings(componentRequest)
-    }
-
-    static ComponentBindings fromBindings(Bindings bindings) {
-        def componentRequest = new DefaultComponentRequest(bindings)
-
-        new ComponentBindings(componentRequest)
-    }
-
-    static ComponentBindings fromPageContext(PageContext pageContext) {
-        def componentRequest = new DefaultComponentRequest(pageContext)
-
-        new ComponentBindings(componentRequest)
-    }
-
     private @Delegate Map<String, Object> map = [:]
 
     private final def componentRequest
 
-    private ComponentBindings(ComponentRequest componentRequest) {
+    public ComponentBindings(ComponentRequest componentRequest) {
         this.componentRequest = componentRequest
 
         def mode = componentRequest.getWCMMode()
