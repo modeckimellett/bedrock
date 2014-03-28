@@ -49,8 +49,7 @@ public final class FavIconTag extends AbstractMetaTag {
                 html.append(TAG_START);
                 html.append('"');
                 html.append(iterator.next());
-                html.append('"');
-                html.append(" type=\"image/vnd.microsoft.icon\" href=\"");
+                html.append("\" type=\"image/vnd.microsoft.icon\" href=\"");
                 html.append(getXssApi().getValidHref(favIcon));
                 html.append(getTagEnd());
 

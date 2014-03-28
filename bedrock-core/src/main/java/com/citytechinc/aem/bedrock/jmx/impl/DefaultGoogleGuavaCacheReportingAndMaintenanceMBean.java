@@ -51,7 +51,7 @@ public final class DefaultGoogleGuavaCacheReportingAndMaintenanceMBean extends A
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC,
         referenceInterface = CacheService.class, bind = "bindCacheService", unbind = "unbindCacheService")
-    private List<CacheService> cacheServices = Lists.newCopyOnWriteArrayList();
+    private final List<CacheService> cacheServices = Lists.newCopyOnWriteArrayList();
 
     public DefaultGoogleGuavaCacheReportingAndMaintenanceMBean() throws NotCompliantMBeanException {
         super(GoogleGuavaCacheReportingAndMaintenanceMBean.class);

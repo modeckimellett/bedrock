@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspTagException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import static com.citytechinc.aem.bedrock.constants.ComponentConstants.PROPERTY_CLASS_NAME;
@@ -53,7 +54,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
             final String scriptResourcePath = sling.getScript().getScriptResource().getPath();
 
             LOG.debug("doEndTag() instantiated component request for resource path = {} with type = {} and script = {}",
-                new Object[]{ resource.getPath(), resource.getResourceType(), scriptResourcePath });
+                resource.getPath(), resource.getResourceType(), scriptResourcePath);
         }
 
         pageContext.setAttribute(DEFAULT_PAGE_MANAGER_NAME, componentRequest.getPageManager());
@@ -82,11 +83,13 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
                 LOG.error("error instantiating component class", e);
             }
         } else {
-            LOG.debug("instantiateComponentClass() component is null, not instantiating component class");
+            LOG.debug("component is null, not instantiating component class");
         }
     }
 
-    private void setInstance(final Component component) throws Exception {
+    private void setInstance(final Component component)
+        throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException,
+        IllegalAccessException {
         final String className = component.getProperties().get(PROPERTY_CLASS_NAME, String.class);
 
         if (className != null) {
@@ -96,17 +99,16 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
                 final String instanceName = getInstanceName(clazz);
                 final Object instance = getInstance(clazz);
 
-                LOG.debug("setInstance() class name = {}, instance name = {}, setting component in page context",
-                    className, instanceName);
+                LOG.debug("class name = {}, instance name = {}, setting component in page context", className,
+                    instanceName);
 
                 pageContext.setAttribute(instanceName, instance);
                 pageContext.setAttribute(ATTR_COMPONENT_INSTANCE_NAME, instanceName);
             } else {
-                LOG.debug("setInstance() annotation not present for class name = {}, not instantiating component class",
-                    className);
+                LOG.debug("annotation not present for class name = {}, not instantiating component class", className);
             }
         } else {
-            LOG.debug("setInstance() no class name property for component = {}, not instantiating component class",
+            LOG.debug("no class name property for component = {}, not instantiating component class",
                 component.getResourceType());
         }
     }

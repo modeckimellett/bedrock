@@ -20,6 +20,11 @@ public abstract class AbstractScopedTag extends TagSupport {
 
     private static final Map<String, Integer> SCOPES;
 
+    /**
+     * Scope of instance in page context.  Defaults to "page".
+     */
+    private String scope;
+
     static {
         SCOPES = new HashMap<String, Integer>();
         SCOPES.put("page", PageContext.PAGE_SCOPE);
@@ -27,11 +32,6 @@ public abstract class AbstractScopedTag extends TagSupport {
         SCOPES.put("session", PageContext.SESSION_SCOPE);
         SCOPES.put("application", PageContext.APPLICATION_SCOPE);
     }
-
-    /**
-     * Scope of instance in page context.  Defaults to "page".
-     */
-    private String scope;
 
     public final String getScope() {
         return scope;

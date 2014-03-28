@@ -21,6 +21,7 @@
         <exclude name="UseConcurrentHashMap" />
     </rule>
     <rule ref="rulesets/java/coupling.xml">
+        <exclude name="ExcessiveImports" />
         <exclude name="LoosePackageCoupling" />
         <exclude name="LawOfDemeter" />
     </rule>

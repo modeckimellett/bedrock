@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -27,6 +30,8 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final long serialVersionUID = 1L;
+
+    private static final String EXCEPTION_MESSAGE_INSTANCE = "error getting instance for class name = ";
 
     /**
      * Component class to instantiate and serialize.
@@ -68,8 +73,28 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
             }
 
             pageContext.getOut().write(MAPPER.writeValueAsString(object));
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.error("error serializing JSON", e);
+
+            throw new JspTagException(e);
+        } catch (IllegalAccessException e) {
+            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
+
+            throw new JspTagException(e);
+        } catch (InvocationTargetException e) {
+            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
+
+            throw new JspTagException(e);
+        } catch (ClassNotFoundException e) {
+            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
+
+            throw new JspTagException(e);
+        } catch (NoSuchMethodException e) {
+            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
+
+            throw new JspTagException(e);
+        } catch (InstantiationException e) {
+            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
 
             throw new JspTagException(e);
         }
