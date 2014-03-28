@@ -21,9 +21,7 @@ public final class PropertyNamePredicate implements Predicate<Property> {
     private final String propertyName;
 
     public PropertyNamePredicate(final String propertyName) {
-        checkNotNull(propertyName);
-
-        this.propertyName = propertyName;
+        this.propertyName = checkNotNull(propertyName);
     }
 
     @Override

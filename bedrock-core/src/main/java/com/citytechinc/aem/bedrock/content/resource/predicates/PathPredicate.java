@@ -18,15 +18,11 @@ public final class PathPredicate implements Predicate<Resource> {
     private final String path;
 
     public PathPredicate(final String path) {
-        checkNotNull(path);
-
-        this.path = path;
+        this.path = checkNotNull(path);
     }
 
     @Override
     public boolean apply(final Resource resource) {
-        checkNotNull(resource);
-
-        return path.equals(resource.getPath());
+        return resource != null && path.equals(resource.getPath());
     }
 }

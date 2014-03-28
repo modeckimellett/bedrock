@@ -22,28 +22,25 @@ public final class ComponentNodePropertyValuePredicate<T> implements Predicate<C
     private final T propertyValue;
 
     public ComponentNodePropertyValuePredicate(final String propertyName, final T propertyValue) {
-        this.propertyName = propertyName;
+        this.propertyName = checkNotNull(propertyName);
         this.propertyValue = checkNotNull(propertyValue);
     }
 
     @Override
     public boolean apply(final ComponentNode componentNode) {
-        checkNotNull(componentNode);
+        boolean result = false;
 
-        final boolean result;
+        if (componentNode != null) {
+            final ValueMap properties = componentNode.asMap();
 
-        final ValueMap properties = componentNode.asMap();
+            if (properties.containsKey(propertyName)) {
+                result = properties.get(propertyName, propertyValue.getClass()).equals(propertyValue);
 
-        if (properties.containsKey(propertyName)) {
-            result = properties.get(propertyName, propertyValue.getClass()).equals(propertyValue);
-
-            LOG.debug("apply() property name = {}, value = {}, result = {} for component node = {}",
-                new Object[]{ propertyName, propertyValue, result, componentNode });
-        } else {
-            LOG.debug("apply() property name = {}, does not exist for component node = {}", propertyName,
-                componentNode);
-
-            result = false;
+                LOG.debug("property name = {}, value = {}, result = {} for component node = {}", propertyName,
+                    propertyValue, result, componentNode);
+            } else {
+                LOG.debug("property name = {}, does not exist for component node = {}", propertyName, componentNode);
+            }
         }
 
         return result;

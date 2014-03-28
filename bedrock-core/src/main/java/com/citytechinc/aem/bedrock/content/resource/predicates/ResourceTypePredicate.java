@@ -18,15 +18,11 @@ public final class ResourceTypePredicate implements Predicate<Resource> {
     private final String resourceType;
 
     public ResourceTypePredicate(final String resourceType) {
-        checkNotNull(resourceType);
-
-        this.resourceType = resourceType;
+        this.resourceType = checkNotNull(resourceType);
     }
 
     @Override
     public boolean apply(final Resource resource) {
-        checkNotNull(resource);
-
-        return resourceType.equals(resource.getResourceType());
+        return resource != null && resourceType.equals(resource.getResourceType());
     }
 }

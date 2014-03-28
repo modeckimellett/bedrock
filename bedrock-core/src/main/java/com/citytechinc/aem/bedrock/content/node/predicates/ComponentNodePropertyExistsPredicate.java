@@ -28,22 +28,18 @@ public final class ComponentNodePropertyExistsPredicate implements Predicate<Com
 
     @Override
     public boolean apply(final ComponentNode componentNode) {
-        checkNotNull(componentNode);
-
-        final Optional<Node> nodeOptional = componentNode.getNode();
-
         boolean result = false;
 
-        if (nodeOptional.isPresent()) {
-            try {
-                result = nodeOptional.get().hasProperty(propertyName);
+        if (componentNode != null) {
+            final Optional<Node> nodeOptional = componentNode.getNode();
 
-                LOG.debug("apply() component node = {}, has property = {}", componentNode, result);
-            } catch (RepositoryException e) {
-                LOG.error("error checking property existence for component node", e);
+            if (nodeOptional.isPresent()) {
+                try {
+                    result = nodeOptional.get().hasProperty(propertyName);
+                } catch (RepositoryException e) {
+                    LOG.error("error checking property existence for component node", e);
+                }
             }
-        } else {
-            LOG.debug("apply() node does not exist for component node = {}", componentNode);
         }
 
         return result;

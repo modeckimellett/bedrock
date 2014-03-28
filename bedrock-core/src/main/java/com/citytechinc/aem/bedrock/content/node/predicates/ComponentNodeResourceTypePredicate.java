@@ -7,7 +7,6 @@ package com.citytechinc.aem.bedrock.content.node.predicates;
 
 import com.citytechinc.aem.bedrock.content.node.ComponentNode;
 import com.google.common.base.Predicate;
-import org.apache.sling.api.resource.Resource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,10 +23,12 @@ public final class ComponentNodeResourceTypePredicate implements Predicate<Compo
 
     @Override
     public boolean apply(final ComponentNode componentNode) {
-        checkNotNull(componentNode);
+        boolean result = false;
 
-        final Resource resource = componentNode.getResource();
+        if (componentNode != null) {
+            result = resourceType.equals(componentNode.getResource().getResourceType());
+        }
 
-        return resourceType.equals(resource.getResourceType());
+        return result;
     }
 }

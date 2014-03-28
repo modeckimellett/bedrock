@@ -39,7 +39,7 @@ public final class ImageSourceTag extends AbstractComponentTag {
         checkArgument(DIGIT.matchesAllOf(width), "width attribute must be numeric");
 
         final String name = isNullOrEmpty(this.name) ? DEFAULT_IMAGE_NAME : this.name;
-        final int width = Integer.valueOf(this.width);
+        final int width = Integer.parseInt(this.width);
 
         final String imageSource;
 
