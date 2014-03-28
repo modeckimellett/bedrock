@@ -107,6 +107,17 @@
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <rulesets>
+                        <ruleset>/rulesets/java/basic.xml</ruleset>
+                        <ruleset>/rulesets/java/braces.xml</ruleset>
+                        <ruleset>/rulesets/java/codesize.xml</ruleset>
+                        <ruleset>/rulesets/java/naming.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <configuration>
@@ -156,9 +167,9 @@
                             <excludePackageNames>
                                 *.impl,
                                 *.predicates,
-                                com.citytechinc.aem.bedrock.components.multicompositefield,
-                                com.citytechinc.aem.bedrock.adapter,
-                                com.citytechinc.aem.bedrock.filters
+                                com.citytechinc.aem.bedrock.adapter.*,
+                                com.citytechinc.aem.bedrock.bindings.*,
+                                com.citytechinc.aem.bedrock.components.multicompositefield.*
                             </excludePackageNames>
                         </configuration>
                     </execution>

@@ -9,6 +9,7 @@
     <rule ref="rulesets/java/braces.xml" />
     <rule ref="rulesets/java/clone.xml" />
     <rule ref="rulesets/java/codesize.xml">
+        <exclude name="ExcessivePublicCount" />
         <exclude name="TooManyMethods" />
     </rule>
     <rule ref="rulesets/java/controversial.xml">
@@ -16,7 +17,6 @@
         <exclude name="AtLeastOneConstructor" />
         <exclude name="DataflowAnomalyAnalysis" />
         <exclude name="AvoidFinalLocalVariable" />
-        <exclude name="NullAssignment" />
         <exclude name="UseObjectForClearerAPI" />
         <exclude name="UseConcurrentHashMap" />
     </rule>
@@ -41,7 +41,9 @@
     <rule ref="rulesets/java/naming.xml">
         <exclude name="LongVariable" />
     </rule>
-    <rule ref="rulesets/java/optimizations.xml" />
+    <rule ref="rulesets/java/optimizations.xml">
+        <exclude name="AvoidInstantiatingObjectsInLoops" />
+    </rule>
     <rule ref="rulesets/java/strictexception.xml" />
     <rule ref="rulesets/java/strings.xml" />
     <rule ref="rulesets/java/sunsecure.xml" />
