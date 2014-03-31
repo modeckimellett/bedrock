@@ -9,10 +9,30 @@ import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.content.page.enums.TitleType
 import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
 import com.day.cq.wcm.api.NameConstants
+import com.day.cq.wcm.api.Page
+import org.apache.sling.api.resource.Resource
+import org.apache.sling.api.resource.ResourceResolver
+import org.apache.sling.api.resource.ValueMap
 import spock.lang.Unroll
 
 @Unroll
 class LinkBuilderSpec extends BedrockSpec {
+
+    class MappingResourceResolver implements ResourceResolver {
+
+        static final def MAP = ["/content/us": "/content/us/home"]
+
+        @Delegate ResourceResolver resourceResolver
+
+        MappingResourceResolver(resourceResolver) {
+            this.resourceResolver = resourceResolver
+        }
+
+        @Override
+        String map(String path) {
+            MAP[path] ?: path
+        }
+    }
 
     def setupSpec() {
         pageBuilder.content {
@@ -97,6 +117,40 @@ class LinkBuilderSpec extends BedrockSpec {
         link.href == "/content/us.html"
         link.extension == "html"
         link.title == "US"
+    }
+
+    def "build link for mapped page"() {
+        setup:
+        def resource = Mock(Resource)
+
+        resource.resourceResolver >> new MappingResourceResolver(resourceResolver)
+
+        def page = [
+            adaptTo: { resource },
+            getProperties: { ValueMap.EMPTY },
+            getTitle: { "" },
+            getPath: { path }
+        ] as Page
+
+        def link = LinkBuilder.forPage(page, mapped).build()
+
+        expect:
+        link.path == mappedPath
+
+        where:
+        path              | mappedPath         | mapped
+        "/content/us"     | "/content/us/home" | true
+        "/content/us"     | "/content/us"      | false
+        "/content/global" | "/content/global"  | true
+        "/content/global" | "/content/global"  | false
+    }
+
+    def "build link for resource"() {
+        setup:
+        def resource = getResource("/content/global/jcr:content")
+
+        expect:
+        LinkBuilder.forResource(resource).build().path == "/content/global/jcr:content"
     }
 
     def "build link for path"() {
