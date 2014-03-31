@@ -43,10 +43,6 @@
             <url>http://nexus.citytech.ctmsp.com/content/groups/public</url>
         </repository>
         <repository>
-            <id>jsdoctk</id>
-            <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
-        </repository>
-        <repository>
             <id>localhost</id>
             <url>http://localhost:4502/maven/repository</url>
         </repository>
@@ -56,10 +52,6 @@
         <pluginRepository>
             <id>citytech-public</id>
             <url>http://nexus.citytech.ctmsp.com/content/groups/public</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>jsdoctk</id>
-            <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -183,11 +175,6 @@
                     <version>2.6</version>
                 </plugin>
                 <plugin>
-                    <groupId>nl.windgazer</groupId>
-                    <artifactId>jsdoctk-plugin</artifactId>
-                    <version>2.3.2</version>
-                </plugin>
-                <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.6</version>
                 </plugin>
@@ -289,6 +276,20 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.3</version>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>1.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.phasebash</groupId>
+                    <artifactId>jsdoc3-maven-plugin</artifactId>
+                    <version>1.0.7</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -312,7 +313,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>1.3.1</version>
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
@@ -348,7 +348,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.7</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -363,7 +362,13 @@
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
-                    <excludePackageNames>*.impl</excludePackageNames>
+                    <excludePackageNames>
+                        *.impl,
+                        *.predicates,
+                        com.citytechinc.aem.bedrock.adapter.*,
+                        com.citytechinc.aem.bedrock.bindings.*,
+                        com.citytechinc.aem.bedrock.components.multicompositefield.*
+                    </excludePackageNames>
                     <quiet>true</quiet>
                 </configuration>
             </plugin>
@@ -406,18 +411,14 @@
             </plugin>
             -->
             <plugin>
-                <groupId>nl.windgazer</groupId>
-                <artifactId>jsdoctk-plugin</artifactId>
+                <groupId>com.github.phasebash</groupId>
+                <artifactId>jsdoc3-maven-plugin</artifactId>
                 <configuration>
-                    <directory>${project.build.directory}/jsdoc</directory>
-                    <recurse>3</recurse>
-                    <ext>js</ext>
-                    <srcDir>${basedir}/bedrock-ui/src/main/content/jcr_root/etc/clientlibs/bedrock</srcDir>
-                    <exclude>
-                        <param>jquery*</param>
-                    </exclude>
-                    <allfunctions>true</allfunctions>
-                    <directory>${project.build.directory}/site/jsdoc</directory>
+                    <recursive>true</recursive>
+                    <directoryRoots>
+                        <directoryRoot>${basedir}/bedrock-ui/src/main/content/jcr_root/etc/clientlibs/bedrock/utilities</directoryRoot>
+                        <directoryRoot>${basedir}/bedrock-ui/src/main/content/jcr_root/etc/clientlibs/bedrock/widgets</directoryRoot>
+                    </directoryRoots>
                 </configuration>
             </plugin>
         </plugins>

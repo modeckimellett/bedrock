@@ -107,7 +107,7 @@ CQ.Ext.form.SuperBoxSelect = function(config) {
     });
 };
 /**
- * @private hide from doc gen
+ * @private
  */
 CQ.Ext.form.SuperBoxSelect = CQ.Ext.extend(CQ.Ext.form.SuperBoxSelect,CQ.Ext.form.ComboBox,{
     /**
@@ -1022,8 +1022,6 @@ CQ.Ext.form.SuperBoxSelect = CQ.Ext.extend(CQ.Ext.form.SuperBoxSelect,CQ.Ext.for
     },
     /**
      * @private
-     *
-     * Use clearValue instead
      */
     removeAllItems: function(){
         this.items.each(function(item){

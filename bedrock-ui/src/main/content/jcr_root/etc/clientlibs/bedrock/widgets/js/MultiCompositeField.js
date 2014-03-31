@@ -17,7 +17,6 @@
  * field names, eg. to support the often required "./" prefix for the Sling POST).
  *
  * @constructor
- * Creates a new MultiCompositeField.
  * @param {Object} config The config object
  */
 CQ.form.MultiCompositeField = CQ.Ext.extend(CQ.form.CompositeField, {

@@ -1,17 +1,17 @@
-Namespace.create('Bedrock.Utilities');
+/**
+ * @namespace
+ */
+var Bedrock = Bedrock || {};
 
 /**
  * A set of utilities for CQ.
  *
- * @class Bedrock.Utilities
+ * @namespace
  */
 Bedrock.Utilities = {
 
 	/**
      * Checks to see if the current wcm mode is not disabled.
-     *
-     * @methodOf Bedrock.Utilities
-     * @name isAuthor
      */
     isAuthor: function () {
         return Boolean(CQ.WCM);
@@ -19,9 +19,6 @@ Bedrock.Utilities = {
 
     /**
      * Checks to see if the current wcm mode is disabled.
-     *
-     * @methodOf Bedrock.Utilities
-     * @name isPublish
      */
     isPublish: function () {
         return !Bedrock.Utilities.isAuthor();
@@ -29,9 +26,6 @@ Bedrock.Utilities = {
 
     /**
      * Checks to see if the current wcm mode is edit.
-     *
-     * @methodOf Bedrock.Utilities
-     * @name isEditMode
      */
     isEditMode: function () {
         var mode = Bedrock.Utilities.getMode();
@@ -41,9 +35,6 @@ Bedrock.Utilities = {
 
     /**
      * Checks to see if the current wcm mode is design.
-     *
-     * @methodOf Bedrock.Utilities
-     * @name isDesignMode
      */
     isDesignMode: function () {
         return Bedrock.Utilities.isAuthor() && Bedrock.Utilities.getMode() == 'design';
@@ -51,9 +42,6 @@ Bedrock.Utilities = {
 
     /**
      * Checks to see if the current wcm mode is preview.
-     *
-     * @methodOf Bedrock.Utilities
-     * @name isPreviewMode
      */
     isPreviewMode: function () {
         return Bedrock.Utilities.isAuthor() && Bedrock.Utilities.getMode() == 'preview';
@@ -61,9 +49,6 @@ Bedrock.Utilities = {
 
     /**
      * Returns the current mode.
-     *
-     * @methodOf Bedrock.Utilities
-     * @name getMode
      */
     getMode: function () {
         return $.cookie('wcmmode');
@@ -72,8 +57,6 @@ Bedrock.Utilities = {
     /**
      * Hide editable elements on the current page.
      *
-     * @methodOf Bedrock.Utilities
-     * @name hideEditables
      * @param {Array} names The names of the editables that should be hidden
      * @param {String} comparePath The path of a page that the editables should not be hidden
      */

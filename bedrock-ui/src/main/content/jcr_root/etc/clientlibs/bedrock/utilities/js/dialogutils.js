@@ -1,17 +1,13 @@
-Namespace.create('Bedrock.Utilities.Dialog');
-
 /**
  * A set of utilities to create and dialogs.
  *
- * @class Bedrock.Utilities.Dialog
+ * @namespace
  */
 Bedrock.Utilities.Dialog = {
 
     /**
      * Create a new dialog.
      *
-     * @methodOf Bedrock.Utilities.Dialog
-     * @name createDialog
      * @param pathToDialog  path to the xml file defining the dialog layout.
      * @param {Function} success function to run on success response from dialog save
      * @param {Function} failure function to run on failure response from dialog save
@@ -47,8 +43,6 @@ Bedrock.Utilities.Dialog = {
     /**
      * Populate a dialog with properties and show it.
      *
-     * @methodOf CITYTECH.Utilities.Dialog
-     * @name populateAndShowDialog
      * @param dialog            dialog object to show.
      * @param pathToProperties  path to properties to use to populate dialog.
      */
@@ -60,8 +54,6 @@ Bedrock.Utilities.Dialog = {
     /**
      * Create and show a new dialog.
      *
-     * @methodOf Bedrock.Utilities.Dialog
-     * @name createDialog
      * @param {String} pathToDialog path to the xml file defining the dialog layout.
      * @param {String} pathToProperties  path to where dialog properties are stored.
      */
@@ -73,8 +65,6 @@ Bedrock.Utilities.Dialog = {
     /**
      * Create a new dialog accessible through the sidekick.
      *
-     * @methodOf Bedrock.Utilities.Dialog
-     * @name createSidekickDialog
      * @param {String} pathToDialog path to the xml file defining the dialog layout.
      * @param {String} relPathToProperties relative path (starting with '/') to where dialog properties are stored.
      * @param {String} sidekickButtonText text for sidekick button that opens this dialog.
@@ -114,7 +104,6 @@ Bedrock.Utilities.Dialog = {
      * Validate a dialog field.  This requires the component being validated to have a validation servlet configured as
      * outlined by the <a href="http://code.citytechinc.com/cq-library/servlets.html">User Guide</a>.
      *
-     * @methodOf Bedrock.Utilities.Dialog
      * @param field dialog field being validated (i.e. 'this' if calling function within a validator)
      * @param value field value
      * @param invalidMessage message to display if value is not valid

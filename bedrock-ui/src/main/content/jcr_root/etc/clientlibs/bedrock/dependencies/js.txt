@@ -2,4 +2,3 @@
 
 jquery.js
 jquery.cookie.js
-namespace.js
