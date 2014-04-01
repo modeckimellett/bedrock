@@ -21,11 +21,11 @@ class ComponentRequestBuilder {
 
     @Delegate ResponseBuilder responseBuilder = new ResponseBuilder()
 
-    def mode
+    private def mode
 
-    def services = [:]
+    private def services = [:]
 
-    def servicesWithFilters = [:]
+    private def servicesWithFilters = [:]
 
     ComponentRequestBuilder(ResourceResolver resourceResolver) {
         requestBuilder = new RequestBuilder(resourceResolver)
