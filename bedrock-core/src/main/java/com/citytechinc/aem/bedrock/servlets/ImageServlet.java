@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.Binary;
 import javax.jcr.Node;
+import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -132,7 +133,7 @@ public final class ImageServlet extends AbstractImageServlet {
             imageLayer.write(mimeType, mimeType.equals(MediaType.GIF.toString()) ? GIF_QUALITY : 1.0, response.getOutputStream());
         } else {
             // do not re-encode layer, just spool
-            final javax.jcr.Property data = image.getData();
+            final Property data = image.getData();
 
             final Binary binary = data.getBinary();
             final InputStream stream = binary.getStream();
@@ -228,9 +229,11 @@ public final class ImageServlet extends AbstractImageServlet {
             return image;
         }
 
-        public int getWidth() {
-            LOG.debug("getWidth() width = {}", width);
+        public String getName() {
+            return name;
+        }
 
+        public int getWidth() {
             return width;
         }
     }
