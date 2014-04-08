@@ -14,11 +14,13 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Validators extending this class need to add the following SCR annotation to register the servlet:
  * <p/>
  * <pre>
- * {@literal @}SlingServlet(resourceTypes = "citytechlib/components/content/example", selectors = "validator",
+ * {@literal @}SlingServlet(resourceTypes = "bedrock/components/content/example", selectors = "validator",
  * extensions = "json", methods = "GET")
  * </pre>
  * <p/>
@@ -29,7 +31,7 @@ import java.io.IOException;
  * {@code
  * <name jcr:primaryType="cq:Widget" fieldLabel="Name" name="./name" xtype="textfield"
  *     validator="function(value) {
- *         return CITYTECH.Utilities.Dialog.validateField(this, value, 'Name is invalid');
+ *         return Bedrock.Utilities.Dialog.validateField(this, value, 'Name is invalid');
  *     }" />
  * }
  * </pre>
@@ -43,12 +45,13 @@ public abstract class AbstractValidatorServlet extends AbstractJsonResponseServl
     @Override
     protected final void doGet(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
         throws ServletException, IOException {
-        final String value = request.getRequestParameter("value").getString();
+        final String value = checkNotNull(request.getRequestParameter("value"), "value parameter must be non-null")
+            .getString();
         final String path = request.getResource().getPath();
 
         final boolean valid = isValid(request, path, value);
 
-        LOG.debug("doGet() path = {}, is valid = {}", path, valid);
+        LOG.debug("path = {}, is valid = {}", path, valid);
 
         writeJsonResponse(response, ImmutableMap.of("valid", valid));
     }
