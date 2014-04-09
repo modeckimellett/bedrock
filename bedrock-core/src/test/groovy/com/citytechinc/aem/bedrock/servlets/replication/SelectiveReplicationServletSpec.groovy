@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.servlets.replication
 
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.day.cq.replication.Agent
 import com.day.cq.replication.AgentManager
 import com.day.cq.replication.ReplicationActionType

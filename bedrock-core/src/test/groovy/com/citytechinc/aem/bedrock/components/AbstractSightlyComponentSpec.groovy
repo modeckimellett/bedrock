@@ -6,9 +6,9 @@
 package com.citytechinc.aem.bedrock.components
 
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
-import com.citytechinc.aem.bedrock.testing.specs.SightlyComponentSpec
+import com.citytechinc.aem.bedrock.specs.ComponentSpec
 
-class AbstractSightlyComponentSpec extends SightlyComponentSpec {
+class AbstractSightlyComponentSpec extends ComponentSpec {
 
     class UselessSightlyComponent extends AbstractSightlyComponent {
 
@@ -28,8 +28,9 @@ class AbstractSightlyComponentSpec extends SightlyComponentSpec {
 
     def "get component from path"() {
         setup:
-        def request = componentRequestBuilder.build()
-        def component = getComponent(request, UselessSightlyComponent)
+        def component = init(UselessSightlyComponent) {
+
+        }
 
         expect:
         component.getComponent("/", AnotherUselessSightlyComponent)
@@ -37,8 +38,10 @@ class AbstractSightlyComponentSpec extends SightlyComponentSpec {
 
     def "get component from component node"() {
         setup:
-        def request = componentRequestBuilder.build()
-        def component = getComponent(request, UselessSightlyComponent)
+        def component = init(UselessSightlyComponent) {
+
+        }
+
         def componentNode = getComponentNode("/")
 
         expect:

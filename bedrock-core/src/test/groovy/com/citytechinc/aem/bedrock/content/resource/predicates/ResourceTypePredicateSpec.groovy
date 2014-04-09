@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.content.resource.predicates
 
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import spock.lang.Unroll
 
 @Unroll

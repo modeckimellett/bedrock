@@ -6,7 +6,6 @@
 package com.citytechinc.aem.bedrock.tags;
 
 import com.citytechinc.aem.bedrock.bindings.ComponentBindings;
-import com.citytechinc.aem.bedrock.bindings.ComponentBindingsFactory;
 import com.citytechinc.aem.bedrock.components.annotations.AutoInstantiate;
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest;
 import com.day.cq.wcm.api.components.Component;
@@ -16,14 +15,14 @@ import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.script.Bindings;
 import javax.servlet.jsp.JspTagException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import static com.citytechinc.aem.bedrock.constants.ComponentConstants.PROPERTY_CLASS_NAME;
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME;
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_PAGE_MANAGER_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_SLING_NAME;
+import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME;
 
 /**
  * Add to and/or override attributes set in pageContext for use in JSPs.
@@ -40,13 +39,14 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final ComponentBindings bindings = ComponentBindingsFactory.fromPageContext(pageContext);
+        final Bindings bindings = (Bindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME);
+        final ComponentBindings componentBindings = new ComponentBindings(bindings);
 
-        for (final Map.Entry<String, Object> entry : bindings.entrySet()) {
+        for (final Map.Entry<String, Object> entry : componentBindings.entrySet()) {
             pageContext.setAttribute(entry.getKey(), entry.getValue());
         }
 
-        final ComponentRequest componentRequest = bindings.getComponentRequest();
+        final ComponentRequest componentRequest = componentBindings.getComponentRequest();
 
         if (LOG.isDebugEnabled()) {
             final Resource resource = componentRequest.getResource();
@@ -56,9 +56,6 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
             LOG.debug("doEndTag() instantiated component request for resource path = {} with type = {} and script = {}",
                 resource.getPath(), resource.getResourceType(), scriptResourcePath);
         }
-
-        pageContext.setAttribute(DEFAULT_PAGE_MANAGER_NAME, componentRequest.getPageManager());
-        pageContext.setAttribute(DEFAULT_CURRENT_PAGE_NAME, componentRequest.getCurrentPage());
 
         instantiateComponentClass(componentRequest);
 

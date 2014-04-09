@@ -6,7 +6,7 @@
 package com.citytechinc.aem.bedrock.tags
 
 import com.adobe.granite.xss.XSSAPI
-import com.citytechinc.aem.bedrock.testing.specs.PageTagSpec
+import com.citytechinc.aem.bedrock.specs.PageTagSpec
 
 import javax.servlet.ServletRequest
 

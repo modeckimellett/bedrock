@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.servlets
 
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.day.cq.wcm.commons.AbstractImageServlet
 import com.day.image.Layer
 import spock.lang.Unroll

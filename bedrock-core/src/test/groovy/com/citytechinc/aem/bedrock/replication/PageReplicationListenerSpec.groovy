@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.replication
 
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.citytechinc.aem.bedrock.utils.PathUtils
 import com.day.cq.replication.ReplicationActionType
 import com.day.cq.replication.ReplicationStatus

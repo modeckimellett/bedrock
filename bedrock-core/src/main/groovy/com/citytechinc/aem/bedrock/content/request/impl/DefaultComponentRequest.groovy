@@ -13,9 +13,9 @@ import com.day.cq.wcm.api.components.EditContext
 import com.day.cq.wcm.api.designer.Design
 import com.day.cq.wcm.api.designer.Designer
 import com.day.cq.wcm.api.designer.Style
+import org.apache.sling.api.scripting.SlingScriptHelper
 
 import javax.script.Bindings
-import javax.servlet.jsp.PageContext
 
 import static com.adobe.cq.sightly.WCMBindings.COMPONENT
 import static com.adobe.cq.sightly.WCMBindings.COMPONENT_CONTEXT
@@ -23,12 +23,7 @@ import static com.adobe.cq.sightly.WCMBindings.CURRENT_DESIGN
 import static com.adobe.cq.sightly.WCMBindings.CURRENT_STYLE
 import static com.adobe.cq.sightly.WCMBindings.DESIGNER
 import static com.adobe.cq.sightly.WCMBindings.EDIT_CONTEXT
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_COMPONENT_CONTEXT_NAME
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_COMPONENT_NAME
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_DESIGN_NAME
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_STYLE_NAME
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_DESIGNER_NAME
-import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_EDIT_CONTEXT_NAME
+import static org.apache.sling.api.scripting.SlingBindings.SLING
 
 final class DefaultComponentRequest implements ComponentRequest {
 
@@ -47,25 +42,17 @@ final class DefaultComponentRequest implements ComponentRequest {
 
     final EditContext editContext
 
-    DefaultComponentRequest(ComponentServletRequest componentServletRequest, Bindings bindings) {
-        this.componentServletRequest = componentServletRequest
+    final SlingScriptHelper sling
 
-        component = (Component) bindings.get(COMPONENT)
-        componentContext = (ComponentContext) bindings.get(COMPONENT_CONTEXT)
-        editContext = (EditContext) bindings.get(EDIT_CONTEXT)
-        designer = (Designer) bindings.get(DESIGNER)
-        currentDesign = (Design) bindings.get(CURRENT_DESIGN)
-        currentStyle = (Style) bindings.get(CURRENT_STYLE)
-    }
+    DefaultComponentRequest(Bindings bindings) {
+        componentServletRequest = new DefaultComponentServletRequest(bindings)
 
-    DefaultComponentRequest(ComponentServletRequest componentServletRequest, PageContext pageContext) {
-        this.componentServletRequest = componentServletRequest
-
-        component = (Component) pageContext.getAttribute(DEFAULT_COMPONENT_NAME)
-        componentContext = (ComponentContext) pageContext.getAttribute(DEFAULT_COMPONENT_CONTEXT_NAME)
-        editContext = (EditContext) pageContext.getAttribute(DEFAULT_EDIT_CONTEXT_NAME)
-        designer = (Designer) pageContext.getAttribute(DEFAULT_DESIGNER_NAME)
-        currentDesign = (Design) pageContext.getAttribute(DEFAULT_CURRENT_DESIGN_NAME)
-        currentStyle = (Style) pageContext.getAttribute(DEFAULT_CURRENT_STYLE_NAME)
+        component = bindings.get(COMPONENT) as Component
+        componentContext = bindings.get(COMPONENT_CONTEXT) as ComponentContext
+        editContext = bindings.get(EDIT_CONTEXT) as EditContext
+        designer = bindings.get(DESIGNER) as Designer
+        currentDesign = bindings.get(CURRENT_DESIGN) as Design
+        currentStyle = bindings.get(CURRENT_STYLE) as Style
+        sling = bindings.get(SLING) as SlingScriptHelper
     }
 }

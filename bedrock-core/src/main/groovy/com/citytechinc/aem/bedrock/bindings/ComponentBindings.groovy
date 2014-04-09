@@ -6,9 +6,13 @@
 package com.citytechinc.aem.bedrock.bindings
 
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
+import com.citytechinc.aem.bedrock.content.request.impl.DefaultComponentRequest
 import com.day.cq.wcm.api.WCMMode
 
 import javax.script.Bindings
+
+import static com.adobe.cq.sightly.WCMBindings.CURRENT_PAGE
+import static com.adobe.cq.sightly.WCMBindings.PAGE_MANAGER
 
 final class ComponentBindings implements Bindings {
 
@@ -32,16 +36,25 @@ final class ComponentBindings implements Bindings {
 
     public static final String IS_DEBUG = "isDebug"
 
-    static final String PARAMETER_DEBUG = "debug"
+    private static final String PARAMETER_DEBUG = "debug"
 
-    private @Delegate Map<String, Object> map = [:]
+    @Delegate
+    private final Map<String, Object> map = [:]
 
-    private final def componentRequest
+    private final ComponentRequest componentRequest
 
-    public ComponentBindings(ComponentRequest componentRequest) {
-        this.componentRequest = componentRequest
+    ComponentBindings(Bindings bindings) {
+        componentRequest = new DefaultComponentRequest(bindings)
 
-        def mode = componentRequest.getWCMMode()
+        map.put(COMPONENT_REQUEST, componentRequest)
+        map.put(COMPONENT_NODE, componentRequest.componentNode)
+
+        // overrides
+        map.put(CURRENT_PAGE, componentRequest.currentPage)
+        map.put(PAGE_MANAGER, componentRequest.pageManager)
+
+        // modes
+        def mode = componentRequest.WCMMode
 
         map.put(IS_AUTHOR, mode != WCMMode.DISABLED)
         map.put(IS_PUBLISH, mode == WCMMode.DISABLED)
@@ -54,8 +67,6 @@ final class ComponentBindings implements Bindings {
         def debug = componentRequest.getRequestParameter(PARAMETER_DEBUG).or(Boolean.FALSE.toString())
 
         map.put(IS_DEBUG, Boolean.valueOf(debug))
-        map.put(COMPONENT_REQUEST, componentRequest)
-        map.put(COMPONENT_NODE, componentRequest.componentNode)
     }
 
     ComponentRequest getComponentRequest() {

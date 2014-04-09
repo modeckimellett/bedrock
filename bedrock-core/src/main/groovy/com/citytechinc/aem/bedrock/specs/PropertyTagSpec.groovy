@@ -3,7 +3,7 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.aem.bedrock.testing.specs
+package com.citytechinc.aem.bedrock.specs
 
 import com.citytechinc.aem.bedrock.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.bindings.ComponentBindings

@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.servlets
 
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import groovy.json.JsonBuilder
 import org.apache.sling.api.SlingHttpServletRequest
 

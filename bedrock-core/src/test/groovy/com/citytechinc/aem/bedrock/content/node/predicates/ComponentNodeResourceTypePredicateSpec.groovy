@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.content.node.predicates
 
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 
 class ComponentNodeResourceTypePredicateSpec extends BedrockSpec {
 

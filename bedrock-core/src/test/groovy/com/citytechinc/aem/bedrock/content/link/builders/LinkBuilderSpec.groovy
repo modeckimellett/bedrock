@@ -7,7 +7,7 @@ package com.citytechinc.aem.bedrock.content.link.builders
 
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.content.page.enums.TitleType
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.day.cq.wcm.api.NameConstants
 import com.day.cq.wcm.api.Page
 import org.apache.sling.api.resource.Resource

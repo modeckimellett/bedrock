@@ -3,12 +3,12 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.aem.bedrock.testing.specs
+package com.citytechinc.aem.bedrock.specs
 
 import com.citytechinc.aem.bedrock.components.AbstractSightlyComponent
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 
-class SightlyComponentSpecSpec extends SightlyComponentSpec {
+class ComponentSpecSpec extends ComponentSpec {
 
     class SightlyComponent extends AbstractSightlyComponent {
 
@@ -35,11 +35,9 @@ class SightlyComponentSpecSpec extends SightlyComponentSpec {
 
     def "testing sightly component"() {
         setup:
-        def request = componentRequestBuilder.build {
+        def component = init(SightlyComponent) {
             path = "/content/citytechinc/jcr:content/component"
         }
-
-        def component = getComponent(request, SightlyComponent)
 
         expect:
         component.title == "Testing Component"

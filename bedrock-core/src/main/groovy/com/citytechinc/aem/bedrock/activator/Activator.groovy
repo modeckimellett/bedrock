@@ -10,7 +10,7 @@ import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 
 @Slf4j("LOG")
-class Activator implements BundleActivator {
+final class Activator implements BundleActivator {
 
     static final String JSP_BUNDLE_SYMBOLIC_NAME = "org.apache.sling.scripting.jsp"
 

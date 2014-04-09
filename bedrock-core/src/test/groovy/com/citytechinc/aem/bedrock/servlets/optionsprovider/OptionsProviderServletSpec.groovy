@@ -6,7 +6,7 @@
 package com.citytechinc.aem.bedrock.servlets.optionsprovider
 
 import com.citytechinc.aem.bedrock.content.request.ComponentServletRequest
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.google.common.base.Optional
 import groovy.json.JsonBuilder
 

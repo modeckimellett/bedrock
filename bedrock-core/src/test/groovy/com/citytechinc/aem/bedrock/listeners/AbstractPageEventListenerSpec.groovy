@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.listeners
 
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.day.cq.wcm.api.NameConstants
 import spock.lang.Shared
 

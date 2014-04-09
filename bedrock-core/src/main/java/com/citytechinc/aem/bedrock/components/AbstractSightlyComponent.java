@@ -17,7 +17,6 @@ import com.google.common.base.Predicate;
 import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +24,13 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.script.Bindings;
-import javax.script.SimpleBindings;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import static com.citytechinc.aem.bedrock.bindings.ComponentBindings.COMPONENT_REQUEST;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
+import static org.apache.sling.api.scripting.SlingBindings.SLING;
 
 /**
  * Base class for AEM components implemented with Sightly.
@@ -53,23 +50,28 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
 
     private Bindings bindings;
 
-    /**
-     * Initialize this component.
-     *
-     * @param request component request
-     */
-    public abstract void init(final ComponentRequest request);
+    private SlingScriptHelper sling;
 
     @Override
     public void init(final Bindings bindings) {
         this.bindings = bindings;
 
         request = (ComponentRequest) bindings.get(COMPONENT_REQUEST);
+        sling = (SlingScriptHelper) bindings.get(SLING);
         componentNode = request.getComponentNode();
         currentPage = request.getCurrentPage();
 
         init(request);
+
+        // initialized = true;
     }
+
+    /**
+     * Initialize this component.
+     *
+     * @param request component request
+     */
+    public abstract void init(final ComponentRequest request);
 
     /**
      * Get a component instance for the given path.
@@ -81,7 +83,7 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
     public <T extends AbstractSightlyComponent> Optional<T> getComponent(final String path, final Class<T> type) {
         final Resource resource = getResource().getResourceResolver().getResource(path);
 
-        return getComponentForResource(resource, type);
+        return Optional.fromNullable(getComponentForResource(resource, type));
     }
 
     /**
@@ -93,7 +95,7 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
      */
     public <T extends AbstractSightlyComponent> Optional<T> getComponent(final ComponentNode componentNode,
         final Class<T> type) {
-        return getComponentForResource(componentNode.getResource(), type);
+        return Optional.fromNullable(getComponentForResource(componentNode.getResource(), type));
     }
 
     /**
@@ -104,7 +106,7 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
      * @return the service instance, or null if it is not available
      */
     public final <T> T getService(final Class<T> serviceType) {
-        return getSlingScriptHelper().getService(serviceType);
+        return sling.getService(serviceType);
     }
 
     /**
@@ -116,7 +118,7 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
      * @return one or more service instances, or null if none are found
      */
     public final <T> T[] getServices(final Class<T> serviceType, final String filter) {
-        return getSlingScriptHelper().getServices(serviceType, filter);
+        return sling.getServices(serviceType, filter);
     }
 
     // delegate methods
@@ -448,34 +450,23 @@ public abstract class AbstractSightlyComponent implements ComponentNode, Use {
         return checkNotNull(componentNode, PRECONDITIONS_ERROR_MESSAGE);
     }
 
-    private SlingScriptHelper getSlingScriptHelper() {
-        return (SlingScriptHelper) checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE).get(SlingBindings.SLING);
-    }
-
-    private <T extends AbstractSightlyComponent> Optional<T> getComponentForResource(final Resource resource,
+    private <T extends AbstractSightlyComponent> T getComponentForResource(final Resource resource,
         final Class<T> type) {
-        final Bindings componentBindings = new SimpleBindings(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE));
-
-        componentBindings.put(RESOURCE, resource);
-
         T instance = null;
 
-        try {
-            instance = type.newInstance();
+        if (resource != null) {
+            checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE).put(RESOURCE, resource);
 
-            final Method method = type.getMethod("init", Bindings.class);
-
-            method.invoke(instance, componentBindings);
-        } catch (InstantiationException e) {
-            LOG.error("error instantiating component for type = " + type, e);
-        } catch (IllegalAccessException e) {
-            LOG.error("error instantiating component for type = " + type, e);
-        } catch (NoSuchMethodException e) {
-            LOG.error("component type has no init() method = " + type, e);
-        } catch (InvocationTargetException e) {
-            LOG.error("error initializing component type = " + type, e);
+            try {
+                instance = type.newInstance();
+                instance.init(bindings);
+            } catch (InstantiationException e) {
+                LOG.error("error instantiating component for type = " + type, e);
+            } catch (IllegalAccessException e) {
+                LOG.error("error instantiating component for type = " + type, e);
+            }
         }
 
-        return Optional.fromNullable(instance);
+        return instance;
     }
 }

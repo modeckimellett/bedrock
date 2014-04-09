@@ -7,7 +7,7 @@ package com.citytechinc.aem.bedrock.content.node.impl
 
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.node.predicates.ComponentNodePropertyExistsPredicate
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.google.common.base.Predicate
 import spock.lang.Unroll
 

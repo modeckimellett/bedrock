@@ -6,7 +6,7 @@
 package com.citytechinc.aem.bedrock.content.node.impl
 
 import com.citytechinc.aem.bedrock.content.node.predicates.PropertyNamePredicate
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.day.cq.dam.api.Asset
 import com.day.cq.dam.api.Rendition
 import com.google.common.base.Predicates

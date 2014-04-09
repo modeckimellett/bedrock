@@ -5,7 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.tags
 
-import com.citytechinc.aem.bedrock.testing.specs.PropertyTagSpec
+import com.citytechinc.aem.bedrock.specs.PropertyTagSpec
 
 import javax.servlet.jsp.tagext.TagSupport
 

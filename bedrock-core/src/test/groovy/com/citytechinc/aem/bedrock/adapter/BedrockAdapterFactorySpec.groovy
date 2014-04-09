@@ -9,7 +9,7 @@ import com.citytechinc.aem.bedrock.content.node.BasicNode
 import com.citytechinc.aem.bedrock.content.node.ComponentNode
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import spock.lang.Shared
 import spock.lang.Unroll
 

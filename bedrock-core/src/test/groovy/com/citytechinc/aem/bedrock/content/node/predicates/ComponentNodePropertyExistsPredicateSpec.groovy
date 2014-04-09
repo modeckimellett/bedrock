@@ -6,7 +6,7 @@
 package com.citytechinc.aem.bedrock.content.node.predicates
 
 import com.citytechinc.aem.bedrock.content.node.impl.DefaultComponentNode
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import org.apache.sling.api.resource.NonExistingResource
 
 class ComponentNodePropertyExistsPredicateSpec extends BedrockSpec {

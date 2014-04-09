@@ -6,7 +6,7 @@
 package com.citytechinc.aem.bedrock.content.page.impl
 
 import com.citytechinc.aem.bedrock.content.page.PageDecorator
-import com.citytechinc.aem.bedrock.testing.specs.BedrockSpec
+import com.citytechinc.aem.bedrock.specs.BedrockSpec
 import com.day.cq.tagging.TagConstants
 import com.google.common.base.Predicate
 
