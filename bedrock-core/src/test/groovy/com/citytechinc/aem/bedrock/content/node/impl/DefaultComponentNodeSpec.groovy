@@ -117,6 +117,21 @@ class DefaultComponentNodeSpec extends BedrockSpec {
         }
     }
 
+    def "get id"() {
+        setup:
+        def node = getComponentNode(path)
+
+        expect:
+        node.id == id
+
+        where:
+        path                                          | id
+        "/content/citytechinc"                        | "content-citytechinc"
+        "/content/citytechinc/jcr:content"            | "content-citytechinc"
+        "/content/citytechinc/jcr:content/malort/one" | "malort-one"
+        "/"                                           | ""
+    }
+
     def "get parent"() {
         setup:
         def node = getComponentNode(path)

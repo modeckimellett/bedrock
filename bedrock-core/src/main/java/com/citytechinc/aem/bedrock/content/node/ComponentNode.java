@@ -213,6 +213,15 @@ public interface ComponentNode extends BasicNode {
     Optional<BasicNode> getDesignNode();
 
     /**
+     * Get the unique ID for this component based on the resource path.  If this node is the descendant of a page, the
+     * page path will be removed from the identifier, since the relative path of a component node is always unique for a
+     * page.
+     *
+     * @return unique ID
+     */
+    String getId();
+
+    /**
      * @return <code>Optional</code> inherited image reference
      */
     Optional<String> getImageReferenceInherited();

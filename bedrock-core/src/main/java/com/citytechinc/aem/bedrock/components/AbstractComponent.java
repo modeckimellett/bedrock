@@ -312,6 +312,11 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     }
 
     @Override
+    public final String getId() {
+        return getComponentNode().getId();
+    }
+
+    @Override
     public final Optional<String> getImageReference() {
         return getComponentNode().getImageReference();
     }
