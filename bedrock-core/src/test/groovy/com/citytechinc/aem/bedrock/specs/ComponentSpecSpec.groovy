@@ -5,12 +5,12 @@
  */
 package com.citytechinc.aem.bedrock.specs
 
-import com.citytechinc.aem.bedrock.components.AbstractSightlyComponent
+import com.citytechinc.aem.bedrock.components.AbstractComponent
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 
 class ComponentSpecSpec extends ComponentSpec {
 
-    class SightlyComponent extends AbstractSightlyComponent {
+    class TestComponent extends AbstractComponent {
 
         @Override
         void init(ComponentRequest request) {
@@ -35,7 +35,7 @@ class ComponentSpecSpec extends ComponentSpec {
 
     def "testing sightly component"() {
         setup:
-        def component = init(SightlyComponent) {
+        def component = init(TestComponent) {
             path = "/content/citytechinc/jcr:content/component"
         }
 

@@ -6,7 +6,7 @@
 package com.citytechinc.aem.bedrock.specs
 
 import com.citytechinc.aem.bedrock.bindings.ComponentBindings
-import com.citytechinc.aem.bedrock.components.AbstractSightlyComponent
+import com.citytechinc.aem.bedrock.components.AbstractComponent
 import com.citytechinc.aem.prosper.builders.BindingsBuilder
 
 /**
@@ -22,7 +22,7 @@ abstract class ComponentSpec extends BedrockSpec {
      * @param closure
      * @return initialized component instance
      */
-    public <T extends AbstractSightlyComponent> T init(Class<T> type,
+    public <T extends AbstractComponent> T init(Class<T> type,
         @DelegatesTo(value = BindingsBuilder, strategy = Closure.OWNER_FIRST) Closure closure) {
         def bindings = new BindingsBuilder(resourceResolver).build(closure)
         def componentBindings = new ComponentBindings(bindings)

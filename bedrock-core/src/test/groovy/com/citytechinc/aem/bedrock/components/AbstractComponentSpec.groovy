@@ -8,9 +8,9 @@ package com.citytechinc.aem.bedrock.components
 import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 import com.citytechinc.aem.bedrock.specs.ComponentSpec
 
-class AbstractSightlyComponentSpec extends ComponentSpec {
+class AbstractComponentSpec extends ComponentSpec {
 
-    class UselessSightlyComponent extends AbstractSightlyComponent {
+    class UselessComponent extends AbstractComponent {
 
         @Override
         void init(ComponentRequest request) {
@@ -18,7 +18,7 @@ class AbstractSightlyComponentSpec extends ComponentSpec {
         }
     }
 
-    class AnotherUselessSightlyComponent extends AbstractSightlyComponent {
+    class AnotherUselessComponent extends AbstractComponent {
 
         @Override
         void init(ComponentRequest request) {
@@ -28,23 +28,23 @@ class AbstractSightlyComponentSpec extends ComponentSpec {
 
     def "get component from path"() {
         setup:
-        def component = init(UselessSightlyComponent) {
+        def component = init(UselessComponent) {
 
         }
 
         expect:
-        component.getComponent("/", AnotherUselessSightlyComponent)
+        component.getComponent("/", AnotherUselessComponent)
     }
 
     def "get component from component node"() {
         setup:
-        def component = init(UselessSightlyComponent) {
+        def component = init(UselessComponent) {
 
         }
 
         def componentNode = getComponentNode("/")
 
         expect:
-        component.getComponent(componentNode, AnotherUselessSightlyComponent)
+        component.getComponent(componentNode, AnotherUselessComponent)
     }
 }
