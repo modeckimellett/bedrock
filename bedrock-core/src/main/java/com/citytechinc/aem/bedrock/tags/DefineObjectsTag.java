@@ -31,6 +31,8 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     // attribute names
 
+    public static final String ATTR_COMPONENT_BINDINGS = "componentBindings";
+
     public static final String ATTR_COMPONENT_INSTANCE_NAME = "componentInstanceName";
 
     private static final Logger LOG = LoggerFactory.getLogger(DefineObjectsTag.class);
@@ -41,6 +43,8 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
     public int doEndTag() throws JspTagException {
         final Bindings bindings = (Bindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME);
         final ComponentBindings componentBindings = new ComponentBindings(bindings);
+
+        pageContext.setAttribute(ATTR_COMPONENT_BINDINGS, componentBindings);
 
         for (final Map.Entry<String, Object> entry : componentBindings.entrySet()) {
             pageContext.setAttribute(entry.getKey(), entry.getValue());
@@ -53,7 +57,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
             final SlingScriptHelper sling = (SlingScriptHelper) pageContext.getAttribute(DEFAULT_SLING_NAME);
             final String scriptResourcePath = sling.getScript().getScriptResource().getPath();
 
-            LOG.debug("doEndTag() instantiated component request for resource path = {} with type = {} and script = {}",
+            LOG.debug("instantiated component request for resource path = {} with type = {} and script = {}",
                 resource.getPath(), resource.getResourceType(), scriptResourcePath);
         }
 

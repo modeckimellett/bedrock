@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
-
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -81,15 +79,7 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
             LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
 
             throw new JspTagException(e);
-        } catch (InvocationTargetException e) {
-            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
-
-            throw new JspTagException(e);
         } catch (ClassNotFoundException e) {
-            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
-
-            throw new JspTagException(e);
-        } catch (NoSuchMethodException e) {
             LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
 
             throw new JspTagException(e);

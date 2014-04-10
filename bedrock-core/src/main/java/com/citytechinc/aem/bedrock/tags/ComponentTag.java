@@ -31,7 +31,7 @@ public final class ComponentTag extends AbstractComponentInstanceTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        LOG.debug("doEndTag() class name = {}, attribute name = {}", className, name);
+        LOG.debug("class name = {}, attribute name = {}", className, name);
 
         checkScopeAttribute();
 
