@@ -78,7 +78,8 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @return component instance or null if an error occurs
      */
     public <T extends AbstractComponent> Optional<T> getComponent(final String path, final Class<T> type) {
-        return getComponentForResource(componentRequest.getResourceResolver().getResource(path), type);
+        return getComponentForResource(checkNotNull(componentRequest, PRECONDITIONS_ERROR_MESSAGE).getResourceResolver()
+            .getResource(path), type);
     }
 
     /**

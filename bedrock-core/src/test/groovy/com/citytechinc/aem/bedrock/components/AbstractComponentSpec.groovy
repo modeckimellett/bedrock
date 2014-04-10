@@ -26,6 +26,60 @@ class AbstractComponentSpec extends ComponentSpec {
         }
     }
 
+    def setupSpec() {
+        pageBuilder.content {
+            home()
+        }
+    }
+
+    def "exception thrown when component is not properly initialized"() {
+        setup:
+        def component = new UselessComponent()
+        def componentNode = getComponentNode("/content/home/jcr:content")
+
+        when:
+        component.getService(String)
+
+        then:
+        thrown(NullPointerException)
+
+        when:
+        component.getServices(String, null)
+
+        then:
+        thrown(NullPointerException)
+
+        when:
+        component.get("", String)
+
+        then:
+        thrown(NullPointerException)
+
+        when:
+        component.getComponent("", UselessComponent)
+
+        then:
+        thrown(NullPointerException)
+
+        when:
+        component.getComponent(componentNode, UselessComponent)
+
+        then:
+        thrown(NullPointerException)
+
+        when:
+        component.componentRequest
+
+        then:
+        thrown(NullPointerException)
+
+        when:
+        component.currentPage
+
+        then:
+        thrown(NullPointerException)
+    }
+
     def "get component from path"() {
         setup:
         def component = init(UselessComponent) {
