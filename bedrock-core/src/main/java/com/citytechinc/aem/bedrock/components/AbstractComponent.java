@@ -52,6 +52,16 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 
     private SlingScriptHelper sling;
 
+    /**
+     * Initialize this component.  This default implementation does nothing; subclasses should override this method to
+     * provide additional initialization behavior.
+     *
+     * @param request component request
+     */
+    public void init(final ComponentRequest request) {
+
+    }
+
     @Override
     public void init(final Bindings bindings) {
         this.bindings = bindings;
@@ -62,13 +72,6 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 
         init(componentRequest);
     }
-
-    /**
-     * Initialize this component.
-     *
-     * @param request component request
-     */
-    public abstract void init(final ComponentRequest request);
 
     /**
      * Get a component instance for the given path.

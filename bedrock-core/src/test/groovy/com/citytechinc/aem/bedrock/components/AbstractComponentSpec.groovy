@@ -5,25 +5,16 @@
  */
 package com.citytechinc.aem.bedrock.components
 
-import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 import com.citytechinc.aem.bedrock.specs.ComponentSpec
 
 class AbstractComponentSpec extends ComponentSpec {
 
     class UselessComponent extends AbstractComponent {
 
-        @Override
-        void init(ComponentRequest request) {
-
-        }
     }
 
     class AnotherUselessComponent extends AbstractComponent {
 
-        @Override
-        void init(ComponentRequest request) {
-
-        }
     }
 
     def setupSpec() {

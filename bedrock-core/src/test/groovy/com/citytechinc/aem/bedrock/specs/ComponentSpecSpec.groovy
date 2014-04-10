@@ -6,16 +6,10 @@
 package com.citytechinc.aem.bedrock.specs
 
 import com.citytechinc.aem.bedrock.components.AbstractComponent
-import com.citytechinc.aem.bedrock.content.request.ComponentRequest
 
 class ComponentSpecSpec extends ComponentSpec {
 
     class TestComponent extends AbstractComponent {
-
-        @Override
-        void init(ComponentRequest request) {
-
-        }
 
         def getTitle() {
             get("jcr:title", "")
