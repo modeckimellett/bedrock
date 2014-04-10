@@ -58,12 +58,13 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      *
      * @param request component request
      */
+    @SuppressWarnings("unused")
     public void init(final ComponentRequest request) {
 
     }
 
     @Override
-    public void init(final Bindings bindings) {
+    public final void init(final Bindings bindings) {
         this.bindings = bindings;
 
         componentRequest = (ComponentRequest) bindings.get(COMPONENT_REQUEST);
@@ -434,6 +435,11 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     @Override
     public final List<BasicNode> getNodesInherited(final String relativePath) {
         return getComponentNode().getNodesInherited(relativePath);
+    }
+
+    @Override
+    public final Optional<ComponentNode> getParent() {
+        return getComponentNode().getParent();
     }
 
     @Override

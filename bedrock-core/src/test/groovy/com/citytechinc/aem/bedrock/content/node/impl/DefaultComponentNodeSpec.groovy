@@ -117,6 +117,27 @@ class DefaultComponentNodeSpec extends BedrockSpec {
         }
     }
 
+    def "get parent"() {
+        setup:
+        def node = getComponentNode(path)
+
+        expect:
+        node.parent.get().path == parentPath
+
+        where:
+        path                               | parentPath
+        "/content/citytechinc/jcr:content" | "/content/citytechinc"
+        "/content/citytechinc"             | "/content"
+    }
+
+    def "get parent returns null for root node"() {
+        setup:
+        def node = getComponentNode("/")
+
+        expect:
+        !node.parent.present
+    }
+
     def "find ancestor with property"() {
         setup:
         def node = getComponentNode(path)

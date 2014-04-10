@@ -406,6 +406,11 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
     }
 
     @Override
+    public Optional<ComponentNode> getParent() {
+        return Optional.fromNullable(resource.getParent()).transform(RESOURCE_TO_COMPONENT_NODE);
+    }
+
+    @Override
     public String getPath() {
         return basicNode.getPath();
     }

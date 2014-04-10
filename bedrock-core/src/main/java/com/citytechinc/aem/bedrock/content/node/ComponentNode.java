@@ -288,4 +288,11 @@ public interface ComponentNode extends BasicNode {
      * @return list of nodes representing children of the addressed node or inherited from a parent page
      */
     List<BasicNode> getNodesInherited(String relativePath);
+
+    /**
+     * Get the parent of this node.
+     *
+     * @return parent component node or absent optional if resource has no parent
+     */
+    Optional<ComponentNode> getParent();
 }
