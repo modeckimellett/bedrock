@@ -15,14 +15,12 @@ import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.script.Bindings;
 import javax.servlet.jsp.JspTagException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import static com.citytechinc.aem.bedrock.constants.ComponentConstants.PROPERTY_CLASS_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_SLING_NAME;
-import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME;
 
 /**
  * Add to and/or override attributes set in pageContext for use in JSPs.
@@ -41,8 +39,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     @Override
     public int doEndTag() throws JspTagException {
-        final Bindings bindings = (Bindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME);
-        final ComponentBindings componentBindings = new ComponentBindings(bindings);
+        final ComponentBindings componentBindings = new ComponentBindings(pageContext);
 
         pageContext.setAttribute(ATTR_COMPONENT_BINDINGS, componentBindings);
 

@@ -10,9 +10,11 @@ import com.citytechinc.aem.bedrock.content.request.impl.DefaultComponentRequest
 import com.day.cq.wcm.api.WCMMode
 
 import javax.script.Bindings
+import javax.servlet.jsp.PageContext
 
 import static com.adobe.cq.sightly.WCMBindings.CURRENT_PAGE
 import static com.adobe.cq.sightly.WCMBindings.PAGE_MANAGER
+import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME
 
 final class ComponentBindings implements Bindings {
 
@@ -42,6 +44,10 @@ final class ComponentBindings implements Bindings {
     private final Map<String, Object> map = [:]
 
     private final ComponentRequest componentRequest
+
+    ComponentBindings(PageContext pageContext) {
+        this((Bindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME))
+    }
 
     ComponentBindings(Bindings bindings) {
         componentRequest = new DefaultComponentRequest(bindings)

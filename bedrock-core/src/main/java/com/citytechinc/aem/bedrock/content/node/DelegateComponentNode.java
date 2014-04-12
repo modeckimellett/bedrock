@@ -30,317 +30,317 @@ public abstract class DelegateComponentNode implements ComponentNode {
     }
 
     @Override
-    public Optional<ComponentNode> findAncestor(final Predicate<ComponentNode> predicate) {
+    public final Optional<ComponentNode> findAncestor(final Predicate<ComponentNode> predicate) {
         return componentNode.findAncestor(predicate);
     }
 
     @Override
-    public List<ComponentNode> findDescendants(final Predicate<ComponentNode> predicate) {
+    public final List<ComponentNode> findDescendants(final Predicate<ComponentNode> predicate) {
         return componentNode.findDescendants(predicate);
     }
 
     @Override
-    public Optional<ComponentNode> findAncestorWithProperty(final String propertyName) {
+    public final Optional<ComponentNode> findAncestorWithProperty(final String propertyName) {
         return componentNode.findAncestorWithProperty(propertyName);
     }
 
     @Override
-    public <T> Optional<ComponentNode> findAncestorWithPropertyValue(final String propertyName, final T propertyValue) {
+    public final <T> Optional<ComponentNode> findAncestorWithPropertyValue(final String propertyName, final T propertyValue) {
         return componentNode.findAncestorWithPropertyValue(propertyName, propertyValue);
     }
 
     @Override
-    public Optional<String> getAsHrefInherited(final String propertyName) {
+    public final Optional<String> getAsHrefInherited(final String propertyName) {
         return componentNode.getAsHrefInherited(propertyName);
     }
 
     @Override
-    public Optional<String> getAsHrefInherited(final String propertyName, final boolean strict) {
+    public final Optional<String> getAsHrefInherited(final String propertyName, final boolean strict) {
         return componentNode.getAsHrefInherited(propertyName, strict);
     }
 
     @Override
-    public Optional<String> getAsHrefInherited(final String propertyName, final boolean strict, final boolean mapped) {
+    public final Optional<String> getAsHrefInherited(final String propertyName, final boolean strict, final boolean mapped) {
         return componentNode.getAsHrefInherited(propertyName, strict, mapped);
     }
 
     @Override
-    public Optional<Link> getAsLinkInherited(final String propertyName) {
+    public final Optional<Link> getAsLinkInherited(final String propertyName) {
         return componentNode.getAsLinkInherited(propertyName);
     }
 
     @Override
-    public Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict) {
+    public final Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict) {
         return componentNode.getAsLinkInherited(propertyName, strict);
     }
 
     @Override
-    public Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict, final boolean mapped) {
+    public final Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict, final boolean mapped) {
         return componentNode.getAsLinkInherited(propertyName, strict, mapped);
     }
 
     @Override
-    public <T> List<T> getAsListInherited(final String propertyName, final Class<T> type) {
+    public final <T> List<T> getAsListInherited(final String propertyName, final Class<T> type) {
         return componentNode.getAsListInherited(propertyName, type);
     }
 
     @Override
-    public Optional<PageDecorator> getAsPageInherited(final String propertyName) {
+    public final Optional<PageDecorator> getAsPageInherited(final String propertyName) {
         return componentNode.getAsPageInherited(propertyName);
     }
 
     @Override
-    public Optional<ComponentNode> getComponentNode(final String relativePath) {
+    public final Optional<ComponentNode> getComponentNode(final String relativePath) {
         return componentNode.getComponentNode(relativePath);
     }
 
     @Override
-    public List<ComponentNode> getComponentNodes() {
+    public final List<ComponentNode> getComponentNodes() {
         return componentNode.getComponentNodes();
     }
 
     @Override
-    public List<ComponentNode> getComponentNodes(final Predicate<ComponentNode> predicate) {
+    public final List<ComponentNode> getComponentNodes(final Predicate<ComponentNode> predicate) {
         return componentNode.getComponentNodes(predicate);
     }
 
     @Override
-    public List<ComponentNode> getComponentNodes(final String relativePath) {
+    public final List<ComponentNode> getComponentNodes(final String relativePath) {
         return componentNode.getComponentNodes(relativePath);
     }
 
     @Override
-    public List<ComponentNode> getComponentNodes(final String relativePath, final String resourceType) {
+    public final List<ComponentNode> getComponentNodes(final String relativePath, final String resourceType) {
         return componentNode.getComponentNodes(relativePath, resourceType);
     }
 
     @Override
-    public List<ComponentNode> getComponentNodes(final String relativePath, final Predicate<ComponentNode> predicate) {
+    public final List<ComponentNode> getComponentNodes(final String relativePath, final Predicate<ComponentNode> predicate) {
         return componentNode.getComponentNodes(relativePath, predicate);
     }
 
     @Override
-    public Optional<BasicNode> getDesignNode() {
+    public final Optional<BasicNode> getDesignNode() {
         return componentNode.getDesignNode();
     }
 
     @Override
-    public String getId() {
+    public final String getId() {
         return componentNode.getId();
     }
 
     @Override
-    public Optional<String> getImageReferenceInherited() {
+    public final Optional<String> getImageReferenceInherited() {
         return componentNode.getImageReferenceInherited();
     }
 
     @Override
-    public Optional<String> getImageReferenceInherited(final String name) {
+    public final Optional<String> getImageReferenceInherited(final String name) {
         return componentNode.getImageReferenceInherited(name);
     }
 
     @Override
-    public Optional<String> getImageSourceInherited() {
+    public final Optional<String> getImageSourceInherited() {
         return componentNode.getImageSourceInherited();
     }
 
     @Override
-    public Optional<String> getImageSourceInherited(final int width) {
+    public final Optional<String> getImageSourceInherited(final int width) {
         return componentNode.getImageSourceInherited(width);
     }
 
     @Override
-    public Optional<String> getImageSourceInherited(final String name) {
+    public final Optional<String> getImageSourceInherited(final String name) {
         return componentNode.getImageSourceInherited(name);
     }
 
     @Override
-    public Optional<String> getImageSourceInherited(final String name, final int width) {
+    public final Optional<String> getImageSourceInherited(final String name, final int width) {
         return componentNode.getImageSourceInherited(name, width);
     }
 
     @Override
-    public <T> T getInherited(final String propertyName, final T defaultValue) {
+    public final <T> T getInherited(final String propertyName, final T defaultValue) {
         return componentNode.getInherited(propertyName, defaultValue);
     }
 
     @Override
-    public <T> Optional<T> getInherited(final String propertyName, final Class<T> type) {
+    public final <T> Optional<T> getInherited(final String propertyName, final Class<T> type) {
         return componentNode.getInherited(propertyName, type);
     }
 
     @Override
-    public List<BasicNode> getNodesInherited(final String relativePath) {
+    public final List<BasicNode> getNodesInherited(final String relativePath) {
         return componentNode.getNodesInherited(relativePath);
     }
 
     @Override
-    public Optional<ComponentNode> getParent() {
+    public final Optional<ComponentNode> getParent() {
         return componentNode.getParent();
     }
 
     @Override
-    public ValueMap asMap() {
+    public final ValueMap asMap() {
         return componentNode.asMap();
     }
 
     @Override
-    public <T> T get(final String propertyName, final T defaultValue) {
+    public final <T> T get(final String propertyName, final T defaultValue) {
         return componentNode.get(propertyName, defaultValue);
     }
 
     @Override
-    public <T> Optional<T> get(final String propertyName, final Class<T> type) {
+    public final <T> Optional<T> get(final String propertyName, final Class<T> type) {
         return componentNode.get(propertyName, type);
     }
 
     @Override
-    public Optional<String> getAsHref(final String propertyName) {
+    public final Optional<String> getAsHref(final String propertyName) {
         return componentNode.getAsHref(propertyName);
     }
 
     @Override
-    public Optional<String> getAsHref(final String propertyName, final boolean strict) {
+    public final Optional<String> getAsHref(final String propertyName, final boolean strict) {
         return componentNode.getAsHref(propertyName, strict);
     }
 
     @Override
-    public Optional<String> getAsHref(final String propertyName, final boolean strict, final boolean mapped) {
+    public final Optional<String> getAsHref(final String propertyName, final boolean strict, final boolean mapped) {
         return componentNode.getAsHref(propertyName, strict, mapped);
     }
 
     @Override
-    public Optional<Link> getAsLink(final String propertyName) {
+    public final Optional<Link> getAsLink(final String propertyName) {
         return componentNode.getAsLink(propertyName);
     }
 
     @Override
-    public Optional<Link> getAsLink(final String propertyName, final boolean strict) {
+    public final Optional<Link> getAsLink(final String propertyName, final boolean strict) {
         return componentNode.getAsLink(propertyName, strict);
     }
 
     @Override
-    public Optional<Link> getAsLink(final String propertyName, final boolean strict, final boolean mapped) {
+    public final Optional<Link> getAsLink(final String propertyName, final boolean strict, final boolean mapped) {
         return componentNode.getAsLink(propertyName, strict, mapped);
     }
 
     @Override
-    public <T> List<T> getAsList(final String propertyName, final Class<T> type) {
+    public final <T> List<T> getAsList(final String propertyName, final Class<T> type) {
         return componentNode.getAsList(propertyName, type);
     }
 
     @Override
-    public Optional<PageDecorator> getAsPage(final String propertyName) {
+    public final Optional<PageDecorator> getAsPage(final String propertyName) {
         return componentNode.getAsPage(propertyName);
     }
 
     @Override
-    public Optional<String> getImageReference() {
+    public final Optional<String> getImageReference() {
         return componentNode.getImageReference();
     }
 
     @Override
-    public Optional<String> getImageReference(final String name) {
+    public final Optional<String> getImageReference(final String name) {
         return componentNode.getImageReference(name);
     }
 
     @Override
-    public Optional<String> getImageRendition(final String renditionName) {
+    public final Optional<String> getImageRendition(final String renditionName) {
         return componentNode.getImageRendition(renditionName);
     }
 
     @Override
-    public Optional<String> getImageRendition(final String name, final String renditionName) {
+    public final Optional<String> getImageRendition(final String name, final String renditionName) {
         return componentNode.getImageRendition(name, renditionName);
     }
 
     @Override
-    public int getIndex() {
+    public final int getIndex() {
         return componentNode.getIndex();
     }
 
     @Override
-    public int getIndex(final String resourceType) {
+    public final int getIndex(final String resourceType) {
         return componentNode.getIndex(resourceType);
     }
 
     @Override
-    public Optional<Node> getNode() {
+    public final Optional<Node> getNode() {
         return componentNode.getNode();
     }
 
     @Override
-    public String getPath() {
+    public final String getPath() {
         return componentNode.getPath();
     }
 
     @Override
-    public List<Property> getProperties(final Predicate<Property> predicate) {
+    public final List<Property> getProperties(final Predicate<Property> predicate) {
         return componentNode.getProperties(predicate);
     }
 
     @Override
-    public Resource getResource() {
+    public final Resource getResource() {
         return componentNode.getResource();
     }
 
     @Override
-    public boolean isHasImage() {
+    public final boolean isHasImage() {
         return componentNode.isHasImage();
     }
 
     @Override
-    public boolean isHasImage(final String name) {
+    public final boolean isHasImage(final String name) {
         return componentNode.isHasImage(name);
     }
 
     @Override
-    public String getHref() {
+    public final String getHref() {
         return componentNode.getHref();
     }
 
     @Override
-    public String getHref(final boolean mapped) {
+    public final String getHref(final boolean mapped) {
         return componentNode.getHref(mapped);
     }
 
     @Override
-    public Link getLink() {
+    public final Link getLink() {
         return componentNode.getLink();
     }
 
     @Override
-    public Link getLink(final boolean mapped) {
+    public final Link getLink(final boolean mapped) {
         return componentNode.getLink(mapped);
     }
 
     @Override
-    public LinkBuilder getLinkBuilder() {
+    public final LinkBuilder getLinkBuilder() {
         return componentNode.getLinkBuilder();
     }
 
     @Override
-    public LinkBuilder getLinkBuilder(final boolean mapped) {
+    public final LinkBuilder getLinkBuilder(final boolean mapped) {
         return componentNode.getLinkBuilder(mapped);
     }
 
     @Override
-    public Optional<String> getImageSource() {
+    public final Optional<String> getImageSource() {
         return componentNode.getImageSource();
     }
 
     @Override
-    public Optional<String> getImageSource(final int width) {
+    public final Optional<String> getImageSource(final int width) {
         return componentNode.getImageSource(width);
     }
 
     @Override
-    public Optional<String> getImageSource(final String name) {
+    public final Optional<String> getImageSource(final String name) {
         return componentNode.getImageSource(name);
     }
 
     @Override
-    public Optional<String> getImageSource(final String name, final int width) {
+    public final Optional<String> getImageSource(final String name, final int width) {
         return componentNode.getImageSource(name, width);
     }
 }
