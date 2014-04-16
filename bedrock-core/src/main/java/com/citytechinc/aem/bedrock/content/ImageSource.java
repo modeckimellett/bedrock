@@ -3,7 +3,7 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.aem.bedrock.content.link;
+package com.citytechinc.aem.bedrock.content;
 
 import com.google.common.base.Optional;
 

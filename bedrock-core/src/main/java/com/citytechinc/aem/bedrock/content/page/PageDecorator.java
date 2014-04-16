@@ -5,9 +5,10 @@
  */
 package com.citytechinc.aem.bedrock.content.page;
 
+import com.citytechinc.aem.bedrock.content.Traversable;
 import com.citytechinc.aem.bedrock.content.link.ImageLink;
-import com.citytechinc.aem.bedrock.content.link.ImageSource;
-import com.citytechinc.aem.bedrock.content.link.Linkable;
+import com.citytechinc.aem.bedrock.content.ImageSource;
+import com.citytechinc.aem.bedrock.content.Linkable;
 import com.citytechinc.aem.bedrock.content.link.NavigationLink;
 import com.citytechinc.aem.bedrock.content.node.ComponentNode;
 import com.day.cq.wcm.api.Page;
@@ -20,23 +21,7 @@ import java.util.List;
  * Decorates the CQ <code>Page</code> interface with additional convenience methods for traversing the content hierarchy
  * and getters for Bedrock classes.
  */
-public interface PageDecorator extends Page, Linkable, ImageSource {
-
-    /**
-     * Find the first ancestor page that matches the given predicate condition.
-     *
-     * @param predicate predicate to match ancestor pages against
-     * @return <code>Optional</code> page that matches the predicate condition
-     */
-    Optional<PageDecorator> findAncestor(Predicate<PageDecorator> predicate);
-
-    /**
-     * Get a list of descendant pages that match the given predicate condition.
-     *
-     * @param predicate predicate to match descendant pages against
-     * @return list of pages that match the predicate condition or empty list if none exist
-     */
-    List<PageDecorator> findDescendants(Predicate<PageDecorator> predicate);
+public interface PageDecorator extends Page, Linkable, ImageSource, Traversable<PageDecorator> {
 
     /**
      * Returns the absolute parent page. If no page exists at that level, <code>null</code> is returned.

@@ -3,8 +3,9 @@
  * All rights reserved - Do Not Redistribute
  * Confidential and Proprietary
  */
-package com.citytechinc.aem.bedrock.content.link;
+package com.citytechinc.aem.bedrock.content;
 
+import com.citytechinc.aem.bedrock.content.link.Link;
 import com.citytechinc.aem.bedrock.content.link.builders.LinkBuilder;
 
 /**

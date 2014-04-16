@@ -5,6 +5,7 @@
  */
 package com.citytechinc.aem.bedrock.content.node;
 
+import com.citytechinc.aem.bedrock.content.Traversable;
 import com.citytechinc.aem.bedrock.content.link.Link;
 import com.citytechinc.aem.bedrock.content.page.PageDecorator;
 import com.google.common.base.Optional;
@@ -18,25 +19,7 @@ import java.util.List;
  * Many methods return an <a href="https://code.google.com/p/guava-libraries/wiki/UsingAndAvoidingNullExplained#Optional">Optional</a>
  * type where a null instance would otherwise be returned.
  */
-public interface ComponentNode extends BasicNode {
-
-    /**
-     * Find the first ancestor node that matches the given predicate condition.  This respects the same inheritance
-     * semantics as the <code>getInherit()</code> methods in that it maintains the same relative path as the current
-     * node when traversing through ancestor pages.
-     *
-     * @param predicate predicate to match ancestor nodes against
-     * @return <code>Optional</code> node that matches the predicate condition
-     */
-    Optional<ComponentNode> findAncestor(Predicate<ComponentNode> predicate);
-
-    /**
-     * Get a list of descendant nodes that match the given predicate condition.
-     *
-     * @param predicate predicate to match descendant nodes against
-     * @return list of nodes that match the predicate condition or empty list if none exist
-     */
-    List<ComponentNode> findDescendants(Predicate<ComponentNode> predicate);
+public interface ComponentNode extends BasicNode, Traversable<ComponentNode> {
 
     /**
      * Find the first ancestor node containing the given property name.

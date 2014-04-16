@@ -5,9 +5,9 @@
  */
 package com.citytechinc.aem.bedrock.content.node;
 
-import com.citytechinc.aem.bedrock.content.link.ImageSource;
+import com.citytechinc.aem.bedrock.content.ImageSource;
 import com.citytechinc.aem.bedrock.content.link.Link;
-import com.citytechinc.aem.bedrock.content.link.Linkable;
+import com.citytechinc.aem.bedrock.content.Linkable;
 import com.citytechinc.aem.bedrock.content.page.PageDecorator;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
