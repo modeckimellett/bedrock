@@ -40,32 +40,32 @@ final class DefaultComponentServletRequest implements ComponentServletRequest {
         }
     }
 
-    private final SlingHttpServletRequest request
+    final SlingHttpServletRequest slingRequest
 
-    private final SlingHttpServletResponse response
+    final SlingHttpServletResponse slingResponse
 
     @Delegate
     private final ComponentResourceRequest delegate
 
     DefaultComponentServletRequest(Bindings bindings) {
-        request = bindings.get(REQUEST) as SlingHttpServletRequest
-        response = bindings.get(RESPONSE) as SlingHttpServletResponse
+        slingRequest = bindings.get(REQUEST) as SlingHttpServletRequest
+        slingResponse = bindings.get(RESPONSE) as SlingHttpServletResponse
 
         delegate = new DefaultComponentResourceRequest(bindings.get(RESOURCE) as Resource)
     }
 
-    DefaultComponentServletRequest(SlingHttpServletRequest request, SlingHttpServletResponse response) {
-        this.request = request
-        this.response = response
+    DefaultComponentServletRequest(SlingHttpServletRequest slingRequest, SlingHttpServletResponse slingResponse) {
+        this.slingRequest = slingRequest
+        this.slingResponse = slingResponse
 
-        delegate = new DefaultComponentResourceRequest(request.resource)
+        delegate = new DefaultComponentResourceRequest(slingRequest.resource)
     }
 
     @Override
     Optional<String> getRequestParameter(String parameterName) {
         checkNotNull(parameterName)
 
-        Optional.fromNullable(request.getRequestParameter(parameterName)).transform(REQUEST_PARAMETER_TO_STRING)
+        Optional.fromNullable(slingRequest.getRequestParameter(parameterName)).transform(REQUEST_PARAMETER_TO_STRING)
     }
 
     @Override
@@ -73,7 +73,7 @@ final class DefaultComponentServletRequest implements ComponentServletRequest {
         checkNotNull(parameterName)
         checkNotNull(defaultValue)
 
-        def parameter = request.getRequestParameter(parameterName)
+        def parameter = slingRequest.getRequestParameter(parameterName)
 
         parameter ? parameter.string : defaultValue
     }
@@ -82,26 +82,16 @@ final class DefaultComponentServletRequest implements ComponentServletRequest {
     Optional<List<String>> getRequestParameters(String parameterName) {
         checkNotNull(parameterName)
 
-        Optional.fromNullable(request.getRequestParameters(parameterName)).transform(REQUEST_PARAMETERS_TO_LIST)
+        Optional.fromNullable(slingRequest.getRequestParameters(parameterName)).transform(REQUEST_PARAMETERS_TO_LIST)
     }
 
     @Override
     List<String> getSelectors() {
-        ImmutableList.of(request.requestPathInfo.selectors)
-    }
-
-    @Override
-    SlingHttpServletRequest getSlingRequest() {
-        request
-    }
-
-    @Override
-    SlingHttpServletResponse getSlingResponse() {
-        response
+        ImmutableList.copyOf(slingRequest.requestPathInfo.selectors)
     }
 
     @Override
     WCMMode getWCMMode() {
-        fromRequest(request)
+        fromRequest(slingRequest)
     }
 }
