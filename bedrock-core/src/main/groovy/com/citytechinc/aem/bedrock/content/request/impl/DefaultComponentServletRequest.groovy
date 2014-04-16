@@ -10,6 +10,7 @@ import com.citytechinc.aem.bedrock.content.request.ComponentServletRequest
 import com.day.cq.wcm.api.WCMMode
 import com.google.common.base.Function
 import com.google.common.base.Optional
+import com.google.common.collect.ImmutableList
 import org.apache.sling.api.SlingHttpServletRequest
 import org.apache.sling.api.SlingHttpServletResponse
 import org.apache.sling.api.request.RequestParameter
@@ -32,10 +33,10 @@ final class DefaultComponentServletRequest implements ComponentServletRequest {
         }
     }
 
-    private static final def REQUEST_PARAMETERS_TO_STRING_ARRAY = new Function<RequestParameter[], String[]>() {
+    private static final def REQUEST_PARAMETERS_TO_LIST = new Function<RequestParameter[], List<String>>() {
         @Override
-        String[] apply(RequestParameter[] parameters) {
-            parameters*.string as String[]
+        List<String> apply(RequestParameter[] parameters) {
+            ImmutableList.copyOf(parameters*.string)
         }
     }
 
@@ -78,16 +79,15 @@ final class DefaultComponentServletRequest implements ComponentServletRequest {
     }
 
     @Override
-    Optional<String[]> getRequestParameters(String parameterName) {
+    Optional<List<String>> getRequestParameters(String parameterName) {
         checkNotNull(parameterName)
 
-        Optional.fromNullable(request.getRequestParameters(parameterName)).transform(
-            REQUEST_PARAMETERS_TO_STRING_ARRAY)
+        Optional.fromNullable(request.getRequestParameters(parameterName)).transform(REQUEST_PARAMETERS_TO_LIST)
     }
 
     @Override
-    String[] getSelectors() {
-        request.requestPathInfo.selectors
+    List<String> getSelectors() {
+        ImmutableList.of(request.requestPathInfo.selectors)
     }
 
     @Override

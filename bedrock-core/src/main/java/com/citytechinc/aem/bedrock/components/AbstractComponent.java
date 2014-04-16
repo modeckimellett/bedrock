@@ -14,6 +14,7 @@ import com.citytechinc.aem.bedrock.content.request.ComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -135,8 +136,10 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @param <T> type
      * @return one or more service instances, or null if none are found
      */
-    public final <T> T[] getServices(final Class<T> serviceType, final String filter) {
-        return checkNotNull(sling, PRECONDITIONS_ERROR_MESSAGE).getServices(serviceType, filter);
+    @SuppressWarnings("unchecked")
+    public final <T> List<T> getServices(final Class<T> serviceType, final String filter) {
+        return (List<T>) ImmutableList.of(checkNotNull(sling, PRECONDITIONS_ERROR_MESSAGE).getServices(serviceType,
+            filter));
     }
 
     // delegate methods

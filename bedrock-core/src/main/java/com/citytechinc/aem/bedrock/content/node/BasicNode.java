@@ -37,7 +37,7 @@ public interface BasicNode extends Linkable, ImageSource {
     /**
      * Get a property value from the current node, returning the default value if the property does not exist.
      *
-     * @param <T> type
+     * @param <T> property type
      * @param propertyName property name
      * @param defaultValue default value
      * @return property value or default value if it does not exist
@@ -50,7 +50,7 @@ public interface BasicNode extends Linkable, ImageSource {
      *
      * @param propertyName property name
      * @param type property type
-     * @param <T> type
+     * @param <T> property type
      * @return <code>Optional</code> of the given type containing the property value or absent if the property does not
      *         exist
      */
@@ -136,7 +136,7 @@ public interface BasicNode extends Linkable, ImageSource {
      *
      * @param propertyName name of multi-valued property
      * @param type property type
-     * @param <T>
+     * @param <T> property type
      * @return list of property values or an empty list if the property does not exist
      */
     <T> List<T> getAsList(String propertyName, Class<T> type);

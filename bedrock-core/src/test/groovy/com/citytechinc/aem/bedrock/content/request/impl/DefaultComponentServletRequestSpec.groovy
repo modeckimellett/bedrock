@@ -10,7 +10,7 @@ import org.apache.sling.api.SlingHttpServletResponse
 import spock.lang.Unroll
 
 @Unroll
-class ComponentServletRequestSpec extends BedrockSpec {
+class DefaultComponentServletRequestSpec extends BedrockSpec {
 
     def "get request parameter optional"() {
         setup:
@@ -102,7 +102,7 @@ class ComponentServletRequestSpec extends BedrockSpec {
         def request = new DefaultComponentServletRequest(slingRequest, slingResponse)
 
         expect:
-        request.getRequestParameters(parameterName).get() as List == parameterValues
+        request.getRequestParameters(parameterName).get() == parameterValues
 
         where:
         parameterName | parameterValues

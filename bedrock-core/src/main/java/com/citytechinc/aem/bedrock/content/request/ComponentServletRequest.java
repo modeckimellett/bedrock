@@ -10,6 +10,8 @@ import com.google.common.base.Optional;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 
+import java.util.List;
+
 /**
  * Request facade for use in CQ servlets and component beans.
  */
@@ -29,7 +31,7 @@ public interface ComponentServletRequest extends ComponentResourceRequest {
      * @param parameterName request parameter name
      * @return Optional parameter values
      */
-    Optional<String[]> getRequestParameters(String parameterName);
+    Optional<List<String>> getRequestParameters(String parameterName);
 
     /**
      * Retrieve a parameter value from the request or return a default value if the parameter does not exist. If the
@@ -45,7 +47,7 @@ public interface ComponentServletRequest extends ComponentResourceRequest {
     /**
      * @return Sling request selectors or empty array if the request has no selectors
      */
-    String[] getSelectors();
+    List<String> getSelectors();
 
     /**
      * @return Sling servlet request

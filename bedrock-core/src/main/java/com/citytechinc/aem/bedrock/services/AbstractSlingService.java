@@ -26,10 +26,10 @@ import java.util.Map;
 public abstract class AbstractSlingService {
 
     @Reference
-    private SlingRepository repository;
+    protected SlingRepository repository;
 
     @Reference
-    private ResourceResolverFactory resourceResolverFactory;
+    protected ResourceResolverFactory resourceResolverFactory;
 
     protected ResourceResolver resourceResolver;
 
@@ -97,5 +97,15 @@ public abstract class AbstractSlingService {
         }
 
         return session;
+    }
+
+    /**
+     * Get the OSGi configuration map for the given properties.
+     *
+     * @param properties map of configuration names and values
+     * @return configuration wrapper
+     */
+    protected final OsgiConfiguration getConfiguration(final Map<String, Object> properties) {
+        return new OsgiConfiguration(properties);
     }
 }

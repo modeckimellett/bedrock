@@ -140,7 +140,7 @@ public interface ComponentNode extends BasicNode {
      *
      * @param propertyName name of multi-valued property
      * @param type property type
-     * @param <T>
+     * @param <T> property type
      * @return list of property values or an empty list if the property does not exist
      */
     <T> List<T> getAsListInherited(String propertyName, Class<T> type);
