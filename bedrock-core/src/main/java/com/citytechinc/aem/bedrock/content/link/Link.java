@@ -41,7 +41,7 @@ public interface Link extends Serializable {
     String getQueryString();
 
     /**
-     * @return list of selector values
+     * @return list of selector values or empty list if none exist
      */
     List<String> getSelectors();
 

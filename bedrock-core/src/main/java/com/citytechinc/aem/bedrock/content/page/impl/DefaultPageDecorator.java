@@ -56,12 +56,12 @@ public final class DefaultPageDecorator implements PageDecorator {
         }
     };
 
+    private final Page delegate;
+
     private final Optional<ComponentNode> componentNodeOptional;
 
-    private final Page page;
-
     public DefaultPageDecorator(final Page page) {
-        this.page = page;
+        this.delegate = page;
 
         componentNodeOptional = Optional.fromNullable(page.getContentResource()).transform(RESOURCE_TO_COMPONENT_NODE);
     }
@@ -72,11 +72,11 @@ public final class DefaultPageDecorator implements PageDecorator {
         final AdapterType result;
 
         if (type == BasicNode.class || type == ComponentNode.class) {
-            final Resource resource = page.getContentResource();
+            final Resource resource = delegate.getContentResource();
 
             result = resource == null ? null : (AdapterType) new DefaultComponentNode(resource);
         } else {
-            result = page.adaptTo(type);
+            result = delegate.adaptTo(type);
         }
 
         return result;
@@ -84,7 +84,7 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public boolean canUnlock() {
-        return page.canUnlock();
+        return delegate.canUnlock();
     }
 
     @Override
@@ -105,8 +105,27 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
+    public List<PageDecorator> findDescendants(final Predicate<PageDecorator> predicate) {
+        final List<PageDecorator> pages = Lists.newArrayList();
+
+        final Iterator<Page> iterator = delegate.listChildren(ALL_PAGES, true);
+
+        final PageManagerDecorator pageManager = getPageManagerDecorator();
+
+        while (iterator.hasNext()) {
+            final PageDecorator child = pageManager.getPage(iterator.next());
+
+            if (predicate.apply(child)) {
+                pages.add(child);
+            }
+        }
+
+        return pages;
+    }
+
+    @Override
     public PageDecorator getAbsoluteParent(final int level) {
-        final Page absoluteParent = page.getAbsoluteParent(level);
+        final Page absoluteParent = delegate.getAbsoluteParent(level);
 
         return absoluteParent == null ? null : new DefaultPageDecorator(absoluteParent);
     }
@@ -124,11 +143,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     @Override
     public List<PageDecorator> getChildren(final Predicate<PageDecorator> predicate) {
         return filterChildren(checkNotNull(predicate), false);
-    }
-
-    @Override
-    public List<PageDecorator> getChildren(final Predicate<PageDecorator> predicate, final boolean deep) {
-        return filterChildren(checkNotNull(predicate), deep);
     }
 
     @Override
@@ -151,22 +165,22 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public Resource getContentResource() {
-        return page.getContentResource();
+        return delegate.getContentResource();
     }
 
     @Override
     public Resource getContentResource(final String relPath) {
-        return page.getContentResource(relPath);
+        return delegate.getContentResource(relPath);
     }
 
     @Override
     public int getDepth() {
-        return page.getDepth();
+        return delegate.getDepth();
     }
 
     @Override
     public String getDescription() {
-        return page.getDescription();
+        return delegate.getDescription();
     }
 
     @Override
@@ -226,17 +240,17 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public Locale getLanguage(final boolean ignoreContent) {
-        return page.getLanguage(ignoreContent);
+        return delegate.getLanguage(ignoreContent);
     }
 
     @Override
     public Calendar getLastModified() {
-        return page.getLastModified();
+        return delegate.getLastModified();
     }
 
     @Override
     public String getLastModifiedBy() {
-        return page.getLastModifiedBy();
+        return delegate.getLastModifiedBy();
     }
 
     @Override
@@ -261,12 +275,12 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public String getLockOwner() {
-        return page.getLockOwner();
+        return delegate.getLockOwner();
     }
 
     @Override
     public String getName() {
-        return page.getName();
+        return delegate.getName();
     }
 
     @Override
@@ -281,22 +295,22 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public String getNavigationTitle() {
-        return page.getNavigationTitle();
+        return delegate.getNavigationTitle();
     }
 
     @Override
     public Optional<String> getNavigationTitleOptional() {
-        return Optional.fromNullable(page.getNavigationTitle());
+        return Optional.fromNullable(delegate.getNavigationTitle());
     }
 
     @Override
     public Calendar getOffTime() {
-        return page.getOffTime();
+        return delegate.getOffTime();
     }
 
     @Override
     public Calendar getOnTime() {
-        return page.getOnTime();
+        return delegate.getOnTime();
     }
 
     @Override
@@ -306,51 +320,51 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public String getPageTitle() {
-        return page.getPageTitle();
+        return delegate.getPageTitle();
     }
 
     @Override
     public Optional<String> getPageTitleOptional() {
-        return Optional.fromNullable(page.getPageTitle());
+        return Optional.fromNullable(delegate.getPageTitle());
     }
 
     @Override
     public PageDecorator getParent() {
-        final Page parent = page.getParent();
+        final Page parent = delegate.getParent();
 
         return parent == null ? null : new DefaultPageDecorator(parent);
     }
 
     @Override
     public PageDecorator getParent(final int level) {
-        final Page parent = page.getParent(level);
+        final Page parent = delegate.getParent(level);
 
         return parent == null ? null : new DefaultPageDecorator(parent);
     }
 
     @Override
     public String getPath() {
-        return page.getPath();
+        return delegate.getPath();
     }
 
     @Override
     public ValueMap getProperties() {
-        return page.getProperties();
+        return delegate.getProperties();
     }
 
     @Override
     public ValueMap getProperties(final String relativePath) {
-        return page.getProperties(relativePath);
+        return delegate.getProperties(relativePath);
     }
 
     @Override
     public Tag[] getTags() {
-        return page.getTags();
+        return delegate.getTags();
     }
 
     @Override
     public Template getTemplate() {
-        return page.getTemplate();
+        return delegate.getTemplate();
     }
 
     @Override
@@ -365,74 +379,73 @@ public final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     public String getVanityUrl() {
-        return page.getVanityUrl();
+        return delegate.getVanityUrl();
     }
 
     @Override
     public boolean hasChild(final String name) {
-        return page.hasChild(name);
+        return delegate.hasChild(name);
     }
 
     @Override
     public boolean hasContent() {
-        return page.hasContent();
+        return delegate.hasContent();
     }
 
     @Override
     public boolean isHideInNav() {
-        return page.isHideInNav();
+        return delegate.isHideInNav();
     }
 
     @Override
     public boolean isLocked() {
-        return page.isLocked();
+        return delegate.isLocked();
     }
 
     @Override
     public boolean isValid() {
-        return page.isValid();
+        return delegate.isValid();
     }
 
     @Override
     public Iterator<Page> listChildren() {
-        return page.listChildren();
+        return delegate.listChildren();
     }
 
     @Override
     public Iterator<Page> listChildren(final Filter<Page> filter) {
-        return page.listChildren(filter);
+        return delegate.listChildren(filter);
     }
 
     @Override
     public Iterator<Page> listChildren(final Filter<Page> filter, final boolean deep) {
-        return page.listChildren(filter, deep);
+        return delegate.listChildren(filter, deep);
     }
 
     @Override
     public void lock() throws WCMException {
-        page.lock();
+        delegate.lock();
     }
 
     @Override
     public long timeUntilValid() {
-        return page.timeUntilValid();
+        return delegate.timeUntilValid();
     }
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("path", getPath()).add("title", getTitle())
-            .toString();
+        return Objects.toStringHelper(this).add("path", getPath()).add("title", getTitle()).toString();
     }
 
     @Override
     public void unlock() throws WCMException {
-        page.unlock();
+        delegate.unlock();
     }
 
     private List<PageDecorator> filterChildren(final Predicate<PageDecorator> predicate, final boolean deep) {
         final List<PageDecorator> pages = Lists.newArrayList();
 
-        final Iterator<Page> children = page.listChildren(ALL_PAGES, deep);
+        final Iterator<Page> children = delegate.listChildren(ALL_PAGES, deep);
 
         final PageManagerDecorator pageManager = getPageManagerDecorator();
 
@@ -460,6 +473,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     private PageManagerDecorator getPageManagerDecorator() {
-        return page.adaptTo(Resource.class).getResourceResolver().adaptTo(PageManagerDecorator.class);
+        return delegate.adaptTo(Resource.class).getResourceResolver().adaptTo(PageManagerDecorator.class);
     }
 }

@@ -31,6 +31,14 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
     Optional<PageDecorator> findAncestor(Predicate<PageDecorator> predicate);
 
     /**
+     * Get a list of descendant pages that match the given predicate condition.
+     *
+     * @param predicate predicate to match descendant pages against
+     * @return list of pages that match the predicate condition or empty list if none exist
+     */
+    List<PageDecorator> findDescendants(Predicate<PageDecorator> predicate);
+
+    /**
      * Returns the absolute parent page. If no page exists at that level, <code>null</code> is returned.
      * <p/>
      * Example (this path == /content/geometrixx/en/products)
@@ -52,7 +60,7 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
     /**
      * Get the child pages of the current page.
      *
-     * @return all child pages of current page
+     * @return all child pages of current page or empty list if none exist
      */
     List<PageDecorator> getChildren();
 
@@ -60,7 +68,7 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
      * Get the child pages of the current page, excluding children that are not "displayable" (i.e. hidden in nav).
      *
      * @param displayableOnly if true, only pages that are not hidden in navigation will be returned
-     * @return child pages of current page
+     * @return child pages of current page or empty list if none exist
      */
     List<PageDecorator> getChildren(boolean displayableOnly);
 
@@ -68,18 +76,9 @@ public interface PageDecorator extends Page, Linkable, ImageSource {
      * Get the child pages of the current page filtered using the given predicate.
      *
      * @param predicate predicate to filter pages on
-     * @return filtered list of child pages
+     * @return filtered list of child pages or empty list if none exist
      */
     List<PageDecorator> getChildren(Predicate<PageDecorator> predicate);
-
-    /**
-     * Get the descendant pages of the current page filtered using the given predicate.
-     *
-     * @param predicate predicate to filter pages on
-     * @param deep false traverses only children; true traverses all descendants
-     * @return filtered list of descendant pages
-     */
-    List<PageDecorator> getChildren(Predicate<PageDecorator> predicate, boolean deep);
 
     /**
      * Get the component node for the "jcr:content" node for this page.  If the page does not have a content node, an

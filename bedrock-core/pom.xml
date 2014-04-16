@@ -96,6 +96,7 @@
                             <goal>scr</goal>
                         </goals>
                         <configuration>
+                            <scanClasses>true</scanClasses>
                             <properties>
                                 <service.vendor>CITYTECH, Inc.</service.vendor>
                             </properties>

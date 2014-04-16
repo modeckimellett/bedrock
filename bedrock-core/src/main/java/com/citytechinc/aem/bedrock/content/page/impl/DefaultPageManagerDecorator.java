@@ -59,17 +59,16 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public List<PageDecorator> findPages(final String path, final Collection<String> tagIds,
-        final boolean matchOne) {
+    public List<PageDecorator> findPages(final String path, final Collection<String> tagIds, final boolean matchOne) {
         checkNotNull(path);
         checkNotNull(tagIds);
 
-        LOG.debug("findPages() path = {}, tag IDs = {}", path, tagIds);
+        LOG.debug("path = {}, tag IDs = {}", path, tagIds);
 
         final Stopwatch stopwatch = Stopwatch.createStarted();
 
-        final RangeIterator<Resource> iterator = resourceResolver.adaptTo(TagManager.class).find(
-            path, tagIds.toArray(new String[tagIds.size()]), matchOne);
+        final RangeIterator<Resource> iterator = resourceResolver.adaptTo(TagManager.class).find(path, tagIds.toArray(
+            new String[tagIds.size()]), matchOne);
 
         final List<PageDecorator> pages = Lists.newArrayList();
 
@@ -89,8 +88,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
         stopwatch.stop();
 
-        LOG.debug("findPages() found {} result(s) in {}ms", pages.size(), stopwatch.elapsed(
-            MILLISECONDS));
+        LOG.debug("found {} result(s) in {}ms", pages.size(), stopwatch.elapsed(MILLISECONDS));
 
         return pages;
     }
@@ -104,7 +102,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     public List<PageDecorator> search(final Query query, final int limit) {
         checkNotNull(query);
 
-        LOG.debug("search() query statement = {}", query.getStatement());
+        LOG.debug("query statement = {}", query.getStatement());
 
         final Stopwatch stopwatch = Stopwatch.createStarted();
 
@@ -126,7 +124,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
                 final Row row = rows.nextRow();
                 final String path = row.getPath();
 
-                LOG.debug("search() result path = {}", path);
+                LOG.debug("result path = {}", path);
 
                 final String pagePath = PathUtils.getPagePath(path);
 
@@ -134,10 +132,10 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
                 if (!paths.contains(pagePath)) {
                     paths.add(pagePath);
 
-                    final PageDecorator page = createPage(path);
+                    final PageDecorator page = decoratePage(path);
 
                     if (page == null) {
-                        LOG.error("search() result is null for path = {}", path);
+                        LOG.error("result is null for path = {}", path);
                     } else {
                         pages.add(page);
 
@@ -148,8 +146,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
             stopwatch.stop();
 
-            LOG.debug("search() found {} result(s) in {}ms", pages.size(), stopwatch.elapsed(
-                MILLISECONDS));
+            LOG.debug("found {} result(s) in {}ms", pages.size(), stopwatch.elapsed(MILLISECONDS));
         } catch (RepositoryException re) {
             LOG.error("error finding pages for query = " + query.getStatement(), re);
         }
@@ -163,8 +160,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public List<PageDecorator> findPages(final String path,
-        final Predicate<PageDecorator> predicate) {
+    public List<PageDecorator> findPages(final String path, final Predicate<PageDecorator> predicate) {
         checkNotNull(path);
 
         final PageDecorator page = getPage(path);
@@ -176,64 +172,53 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
         if (page == null) {
             result = Collections.emptyList();
         } else {
-            result = page.getChildren(predicate, true);
+            result = page.findDescendants(predicate);
         }
 
         stopwatch.stop();
 
-        LOG.debug("findPages() found {} result(s) in {}ms", result.size(), stopwatch.elapsed(
-            MILLISECONDS));
+        LOG.debug("found {} result(s) in {}ms", result.size(), stopwatch.elapsed(MILLISECONDS));
 
         return result;
     }
 
     @Override
-    public PageDecorator copy(final Page page, final String destination, final String beforeName,
-        final boolean shallow, final boolean resolveConflict) throws WCMException {
-
-        return page == null ? null : new DefaultPageDecorator(pageManager.copy(page, destination,
-            beforeName, shallow, resolveConflict));
+    public PageDecorator copy(final Page page, final String destination, final String beforeName, final boolean shallow,
+        final boolean resolveConflict) throws WCMException {
+        return decoratePage(pageManager.copy(page, destination, beforeName, shallow, resolveConflict));
     }
 
     @Override
-    public PageDecorator copy(final Page page, final String destination, final String beforeName,
-        final boolean shallow, final boolean resolveConflict, final boolean autoSave)
-        throws WCMException {
-
-        return page == null ? null : new DefaultPageDecorator(pageManager.copy(page, destination,
-            beforeName, shallow, resolveConflict, autoSave));
+    public PageDecorator copy(final Page page, final String destination, final String beforeName, final boolean shallow,
+        final boolean resolveConflict, final boolean autoSave) throws WCMException {
+        return decoratePage(pageManager.copy(page, destination, beforeName, shallow, resolveConflict, autoSave));
     }
 
     @Override
-    public PageDecorator create(final String parentPath, final String pageName,
-        final String template, final String title) throws WCMException {
-        return new DefaultPageDecorator(pageManager.create(parentPath, pageName, template, title));
+    public PageDecorator create(final String parentPath, final String pageName, final String template,
+        final String title) throws WCMException {
+        return decoratePage(pageManager.create(parentPath, pageName, template, title));
     }
 
     @Override
-    public PageDecorator create(final String parentPath, final String pageName,
-        final String template, final String title, final boolean b) throws WCMException {
-        return new DefaultPageDecorator(pageManager.create(parentPath, pageName, template, title,
-            b));
+    public PageDecorator create(final String parentPath, final String pageName, final String template,
+        final String title, final boolean autoSave) throws WCMException {
+        return decoratePage(pageManager.create(parentPath, pageName, template, title, autoSave));
     }
 
     @Override
     public PageDecorator getContainingPage(final Resource resource) {
-        final Page page = pageManager.getContainingPage(resource);
-
-        return page == null ? null : new DefaultPageDecorator(page);
+        return decoratePage(pageManager.getContainingPage(resource));
     }
 
     @Override
     public PageDecorator getContainingPage(final String path) {
-        final Page page = pageManager.getContainingPage(path);
-
-        return page == null ? null : new DefaultPageDecorator(page);
+        return decoratePage(pageManager.getContainingPage(path));
     }
 
     @Override
     public PageDecorator getPage(final Page page) {
-        return page == null ? null : createPage(page.getPath());
+        return decoratePage(page);
     }
 
     @Override
@@ -245,37 +230,23 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
     @Override
     public PageDecorator getPage(final String path) {
-        checkNotNull(path);
-
-        return createPage(path);
+        return decoratePage(checkNotNull(path));
     }
 
     @Override
-    public PageDecorator move(final Page page, final String destination, final String beforeName,
-        final boolean shallow, final boolean resolveConflict, final String[] adjustRefs)
-        throws WCMException {
-        return page == null ? null : new DefaultPageDecorator(pageManager.move(page, destination,
-            beforeName, shallow, resolveConflict, adjustRefs));
-    }
-
-    private PageDecorator createPage(final String path) {
-        final Page page = pageManager.getPage(path);
-
-        return page == null ? null : new DefaultPageDecorator(page);
+    public PageDecorator move(final Page page, final String destination, final String beforeName, final boolean shallow,
+        final boolean resolveConflict, final String[] adjustRefs) throws WCMException {
+        return decoratePage(pageManager.move(page, destination, beforeName, shallow, resolveConflict, adjustRefs));
     }
 
     @Override
     public PageDecorator restore(final String path, final String revisionId) throws WCMException {
-        final Page restoredPage = pageManager.restore(path, revisionId);
-
-        return restoredPage == null ? null : new DefaultPageDecorator(restoredPage);
+        return decoratePage(pageManager.restore(path, revisionId));
     }
 
     @Override
     public PageDecorator restoreTree(final String path, final Calendar date) throws WCMException {
-        final Page restoredPage = pageManager.restoreTree(path, date);
-
-        return restoredPage == null ? null : new DefaultPageDecorator(restoredPage);
+        return decoratePage(pageManager.restoreTree(path, date));
     }
 
     @Override
@@ -286,10 +257,8 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
     @Override
     public Resource copy(final Resource resource, final String destination, final String beforeName,
-        final boolean shallow, final boolean resolveConflict, final boolean autoSave)
-        throws WCMException {
-        return pageManager.copy(resource, destination, beforeName, shallow, resolveConflict,
-            autoSave);
+        final boolean shallow, final boolean resolveConflict, final boolean autoSave) throws WCMException {
+        return pageManager.copy(resource, destination, beforeName, shallow, resolveConflict, autoSave);
     }
 
     @Override
@@ -298,8 +267,7 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public Revision createRevision(final Page page, final String label, final String comment)
-        throws WCMException {
+    public Revision createRevision(final Page page, final String label, final String comment) throws WCMException {
         return pageManager.createRevision(page, label, comment);
     }
 
@@ -309,8 +277,8 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public void delete(final Page page, final boolean b, final boolean b2) throws WCMException {
-        pageManager.delete(page, b, b2);
+    public void delete(final Page page, final boolean shallow, final boolean autoSave) throws WCMException {
+        pageManager.delete(page, shallow, autoSave);
     }
 
     @Override
@@ -319,9 +287,8 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public void delete(final Resource resource, final boolean b, final boolean b2)
-        throws WCMException {
-        pageManager.delete(resource, b, b2);
+    public void delete(final Resource resource, final boolean shallow, final boolean autoSave) throws WCMException {
+        pageManager.delete(resource, shallow, autoSave);
     }
 
     @Override
@@ -330,14 +297,12 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public Collection<Revision> getChildRevisions(final String parentPath, final Calendar arg1)
-        throws WCMException {
-        return pageManager.getChildRevisions(parentPath, arg1);
+    public Collection<Revision> getChildRevisions(final String parentPath, final Calendar cal) throws WCMException {
+        return pageManager.getChildRevisions(parentPath, cal);
     }
 
     @Override
-    public Collection<Revision> getRevisions(final String parentPath, final Calendar cal)
-        throws WCMException {
+    public Collection<Revision> getRevisions(final String parentPath, final Calendar cal) throws WCMException {
         return pageManager.getRevisions(parentPath, cal);
     }
 
@@ -353,10 +318,8 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
 
     @Override
     public Resource move(final Resource resource, final String destination, final String beforeName,
-        final boolean shallow, final boolean resolveConflict, final String[] adjustRefs)
-        throws WCMException {
-        return pageManager.move(resource, destination, beforeName, shallow, resolveConflict,
-            adjustRefs);
+        final boolean shallow, final boolean resolveConflict, final String[] adjustRefs) throws WCMException {
+        return pageManager.move(resource, destination, beforeName, shallow, resolveConflict, adjustRefs);
     }
 
     @Override
@@ -365,8 +328,8 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public void order(final Page page, final String s, final boolean b) throws WCMException {
-        pageManager.order(page, s, b);
+    public void order(final Page page, final String beforeName, final boolean autoSave) throws WCMException {
+        pageManager.order(page, beforeName, autoSave);
     }
 
     @Override
@@ -375,14 +338,13 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public void order(final Resource resource, final String s, final boolean b)
-        throws WCMException {
-        pageManager.order(resource, s, b);
+    public void order(final Resource resource, final String beforeName, final boolean autoSave) throws WCMException {
+        pageManager.order(resource, beforeName, autoSave);
     }
 
     @Override
-    public void touch(final Node page, final boolean shallow, final Calendar now,
-        final boolean clearRepl) throws WCMException {
+    public void touch(final Node page, final boolean shallow, final Calendar now, final boolean clearRepl)
+        throws WCMException {
         pageManager.touch(page, shallow, now, clearRepl);
     }
 
@@ -393,20 +355,30 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    public Collection<Revision> getChildRevisions(final String parentPath, final String treeRoot,
-        final Calendar cal) throws WCMException {
+    public Collection<Revision> getChildRevisions(final String parentPath, final String treeRoot, final Calendar cal)
+        throws WCMException {
         return pageManager.getChildRevisions(parentPath, treeRoot, cal);
     }
 
     @Override
-    public Collection<Revision> getRevisions(final String path, final Calendar cal,
-        final boolean includeNoLocal) throws WCMException {
+    public Collection<Revision> getRevisions(final String path, final Calendar cal, final boolean includeNoLocal)
+        throws WCMException {
         return pageManager.getRevisions(path, cal, includeNoLocal);
     }
 
     @Override
-    public PageDecorator restoreTree(final String path, final Calendar date,
-        final boolean preserveNV) throws WCMException {
-        return new DefaultPageDecorator(pageManager.restoreTree(path, date, preserveNV));
+    public PageDecorator restoreTree(final String path, final Calendar date, final boolean preserveNV)
+        throws WCMException {
+        return decoratePage(pageManager.restoreTree(path, date, preserveNV));
+    }
+
+    // internals
+
+    private PageDecorator decoratePage(final String path) {
+        return decoratePage(pageManager.getPage(path));
+    }
+
+    private PageDecorator decoratePage(final Page page) {
+        return page == null ? null : new DefaultPageDecorator(page);
     }
 }

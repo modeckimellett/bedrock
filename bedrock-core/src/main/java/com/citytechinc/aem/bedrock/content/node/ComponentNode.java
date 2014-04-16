@@ -34,7 +34,7 @@ public interface ComponentNode extends BasicNode {
      * Get a list of descendant nodes that match the given predicate condition.
      *
      * @param predicate predicate to match descendant nodes against
-     * @return list of nodes that match the predicate condition
+     * @return list of nodes that match the predicate condition or empty list if none exist
      */
     List<ComponentNode> findDescendants(Predicate<ComponentNode> predicate);
 
@@ -165,7 +165,7 @@ public interface ComponentNode extends BasicNode {
     /**
      * Get a list of child nodes for the current node.
      *
-     * @return list of component nodes
+     * @return list of component nodes or empty list if none exist
      */
     List<ComponentNode> getComponentNodes();
 
@@ -173,7 +173,7 @@ public interface ComponentNode extends BasicNode {
      * Get a predicate-filtered list of child nodes for the current node.
      *
      * @param predicate predicate used to filter nodes
-     * @return list of component nodes that meet the predicate criteria
+     * @return list of component nodes that meet the predicate criteria or empty list if none exist
      */
     List<ComponentNode> getComponentNodes(Predicate<ComponentNode> predicate);
 
@@ -181,7 +181,7 @@ public interface ComponentNode extends BasicNode {
      * Get a list of child nodes for the resource at the given path relative to this node.
      *
      * @param relativePath relative path to parent of desired nodes
-     * @return list of component nodes below the specified relative path
+     * @return list of component nodes below the specified relative path or empty list if none exist
      */
     List<ComponentNode> getComponentNodes(String relativePath);
 
@@ -191,7 +191,8 @@ public interface ComponentNode extends BasicNode {
      *
      * @param relativePath relative path to parent of desired nodes
      * @param resourceType sling:resourceType of nodes to get from parent node
-     * @return list of component nodes matching the given resource type below the specified relative path
+     * @return list of component nodes matching the given resource type below the specified relative path or empty list
+     * if none exist
      */
     List<ComponentNode> getComponentNodes(String relativePath, String resourceType);
 
@@ -201,7 +202,8 @@ public interface ComponentNode extends BasicNode {
      *
      * @param relativePath relative path to parent of desired nodes
      * @param predicate predicate used to filter nodes
-     * @return list of component nodes that meet the predicate criteria below the specified relative path
+     * @return list of component nodes that meet the predicate criteria below the specified relative path or empty list
+     * if none exist
      */
     List<ComponentNode> getComponentNodes(String relativePath, Predicate<ComponentNode> predicate);
 
@@ -294,7 +296,8 @@ public interface ComponentNode extends BasicNode {
      * from a parent page.
      *
      * @param relativePath path relative to current node
-     * @return list of nodes representing children of the addressed node or inherited from a parent page
+     * @return list of nodes representing children of the addressed node or inherited from a parent page (or empty list
+     * if none exist)
      */
     List<BasicNode> getNodesInherited(String relativePath);
 

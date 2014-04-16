@@ -226,13 +226,13 @@ class DefaultPageDecoratorSpec extends BedrockSpec {
         page.getChildren(predicate).size() == 1
     }
 
-    def "get descendants"() {
+    def "find descendants"() {
         setup:
         def page = getPage("/content/citytechinc")
         def predicate = Predicates.alwaysTrue()
 
         expect:
-        page.getChildren(predicate, true).size() == 4
+        page.findDescendants(predicate).size() == 4
     }
 
     def "get properties"() {

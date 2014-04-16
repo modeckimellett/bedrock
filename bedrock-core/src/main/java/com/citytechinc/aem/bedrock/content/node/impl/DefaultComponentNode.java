@@ -54,20 +54,20 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultComponentNode.class);
 
-    private final BasicNode basicNode;
+    private final BasicNode delegate;
 
     private final InheritanceValueMap properties;
 
     public DefaultComponentNode(final Resource resource) {
         super(resource);
 
-        basicNode = new DefaultBasicNode(resource);
+        delegate = new DefaultBasicNode(resource);
         properties = new HierarchyNodeInheritanceValueMap(resource);
     }
 
     @Override
     public ValueMap asMap() {
-        return basicNode.asMap();
+        return delegate.asMap();
     }
 
     @Override
@@ -102,27 +102,27 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public <T> T get(final String propertyName, final T defaultValue) {
-        return basicNode.get(propertyName, defaultValue);
+        return delegate.get(propertyName, defaultValue);
     }
 
     @Override
     public <T> Optional<T> get(final String propertyName, final Class<T> type) {
-        return basicNode.get(propertyName, type);
+        return delegate.get(propertyName, type);
     }
 
     @Override
     public Optional<String> getAsHref(final String propertyName) {
-        return basicNode.getAsHref(propertyName);
+        return delegate.getAsHref(propertyName);
     }
 
     @Override
     public Optional<String> getAsHref(final String propertyName, final boolean strict) {
-        return basicNode.getAsHref(propertyName, strict);
+        return delegate.getAsHref(propertyName, strict);
     }
 
     @Override
     public Optional<String> getAsHref(final String propertyName, final boolean strict, final boolean mapped) {
-        return basicNode.getAsHref(propertyName, strict, mapped);
+        return delegate.getAsHref(propertyName, strict, mapped);
     }
 
     @Override
@@ -142,22 +142,22 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public Optional<Link> getAsLink(final String propertyName) {
-        return basicNode.getAsLink(propertyName);
+        return delegate.getAsLink(propertyName);
     }
 
     @Override
     public Optional<Link> getAsLink(final String propertyName, final boolean strict) {
-        return basicNode.getAsLink(propertyName, strict);
+        return delegate.getAsLink(propertyName, strict);
     }
 
     @Override
     public Optional<Link> getAsLink(final String propertyName, final boolean strict, final boolean mapped) {
-        return basicNode.getAsLink(propertyName, strict, mapped);
+        return delegate.getAsLink(propertyName, strict, mapped);
     }
 
     @Override
     public <T> List<T> getAsList(final String propertyName, final Class<T> type) {
-        return basicNode.getAsList(propertyName, type);
+        return delegate.getAsList(propertyName, type);
     }
 
     @Override
@@ -185,7 +185,7 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public Optional<PageDecorator> getAsPage(final String propertyName) {
-        return basicNode.getAsPage(propertyName);
+        return delegate.getAsPage(propertyName);
     }
 
     @Override
@@ -279,22 +279,22 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public String getHref() {
-        return basicNode.getHref();
+        return delegate.getHref();
     }
 
     @Override
     public String getHref(final boolean mapped) {
-        return basicNode.getHref(mapped);
+        return delegate.getHref(mapped);
     }
 
     @Override
     public Optional<String> getImageReference() {
-        return basicNode.getImageReference();
+        return delegate.getImageReference();
     }
 
     @Override
     public Optional<String> getImageReference(final String name) {
-        return basicNode.getImageReference(name);
+        return delegate.getImageReference(name);
     }
 
     @Override
@@ -309,32 +309,32 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public Optional<String> getImageRendition(final String renditionName) {
-        return basicNode.getImageRendition(renditionName);
+        return delegate.getImageRendition(renditionName);
     }
 
     @Override
     public Optional<String> getImageRendition(final String name, final String renditionName) {
-        return basicNode.getImageRendition(name, renditionName);
+        return delegate.getImageRendition(name, renditionName);
     }
 
     @Override
     public Optional<String> getImageSource() {
-        return basicNode.getImageSource();
+        return delegate.getImageSource();
     }
 
     @Override
     public Optional<String> getImageSource(final int width) {
-        return basicNode.getImageSource(width);
+        return delegate.getImageSource(width);
     }
 
     @Override
     public Optional<String> getImageSource(final String name) {
-        return basicNode.getImageSource(name);
+        return delegate.getImageSource(name);
     }
 
     @Override
     public Optional<String> getImageSource(final String name, final int width) {
-        return basicNode.getImageSource(name, width);
+        return delegate.getImageSource(name, width);
     }
 
     @Override
@@ -371,12 +371,12 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public int getIndex() {
-        return basicNode.getIndex();
+        return delegate.getIndex();
     }
 
     @Override
     public int getIndex(final String resourceType) {
-        return basicNode.getIndex(resourceType);
+        return delegate.getIndex(resourceType);
     }
 
     @Override
@@ -391,27 +391,27 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public Link getLink() {
-        return basicNode.getLink();
+        return delegate.getLink();
     }
 
     @Override
     public Link getLink(final boolean mapped) {
-        return basicNode.getLink(mapped);
+        return delegate.getLink(mapped);
     }
 
     @Override
     public LinkBuilder getLinkBuilder() {
-        return basicNode.getLinkBuilder();
+        return delegate.getLinkBuilder();
     }
 
     @Override
     public LinkBuilder getLinkBuilder(final boolean mapped) {
-        return basicNode.getLinkBuilder(mapped);
+        return delegate.getLinkBuilder(mapped);
     }
 
     @Override
     public Optional<Node> getNode() {
-        return basicNode.getNode();
+        return delegate.getNode();
     }
 
     @Override
@@ -438,27 +438,27 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
 
     @Override
     public String getPath() {
-        return basicNode.getPath();
+        return delegate.getPath();
     }
 
     @Override
     public List<Property> getProperties(final Predicate<Property> predicate) {
-        return basicNode.getProperties(predicate);
+        return delegate.getProperties(predicate);
     }
 
     @Override
     public Resource getResource() {
-        return basicNode.getResource();
+        return delegate.getResource();
     }
 
     @Override
     public boolean isHasImage() {
-        return basicNode.isHasImage();
+        return delegate.isHasImage();
     }
 
     @Override
     public boolean isHasImage(final String name) {
-        return basicNode.isHasImage(name);
+        return delegate.isHasImage(name);
     }
 
     @Override
