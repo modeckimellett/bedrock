@@ -25,7 +25,7 @@ public final class OsgiConfiguration {
     /**
      * Returns the property as a map with string keys and string values.
      * <p/>
-     * The property is considered as a collection whose entries are of the form  key=value.
+     * The property is considered as a collection whose entries are of the form key=value.
      *
      * @param propertyName configuration property name
      * @return property map
@@ -43,8 +43,9 @@ public final class OsgiConfiguration {
      * @param defaultValue default value to convert to map return if property value is null
      * @return property map
      */
-    public Map<String, String> toMap(final String propertyName, final String[] defaultValue) {
-        return PropertiesUtil.toMap(properties.get(propertyName), defaultValue);
+    public Map<String, String> toMap(final String propertyName, final List<String> defaultValue) {
+        return PropertiesUtil.toMap(properties.get(propertyName), defaultValue.toArray(
+            new String[defaultValue.size()]));
     }
 
     /**
@@ -114,6 +115,20 @@ public final class OsgiConfiguration {
      * @param propertyName configuration property name
      */
     public List<String> getAsList(final String propertyName) {
-        return ImmutableList.copyOf(PropertiesUtil.toStringArray(propertyName, new String[0]));
+        return ImmutableList.copyOf(PropertiesUtil.toStringArray(properties.get(propertyName), new String[0]));
+    }
+
+    /**
+     * Returns the property as an array of Strings. If the property is a scalar value its string value is returned as a
+     * single element array. If the property is an array, the elements are converted to String objects and returned as
+     * an array. If the property is a collection, the collection elements are converted to String objects and returned
+     * as an array. Otherwise (if the property is <code>null</code>) the default value is returned.
+     *
+     * @param propertyName configuration property name
+     * @param defaultValue default value to return if property is null
+     */
+    public List<String> getAsList(final String propertyName, final List<String> defaultValue) {
+        return ImmutableList.copyOf(PropertiesUtil.toStringArray(properties.get(propertyName), defaultValue.toArray(
+            new String[defaultValue.size()])));
     }
 }
