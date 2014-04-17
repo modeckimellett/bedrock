@@ -26,17 +26,29 @@ public interface Traversable<T> {
     Optional<T> findAncestor(Predicate<T> predicate);
 
     /**
+     * Find the first ancestor resource containing the given property name.
+     *
+     * @param propertyName property name to find on ancestor resources
+     * @return <code>Optional</code> resource that contains the property
+     */
+    Optional<T> findAncestorWithProperty(String propertyName);
+
+    /**
+     * Find the first ancestor resource where the given property name has the specified value.
+     *
+     * @param propertyName property name to find on ancestor resources
+     * @param propertyValue value of named property to match
+     * @param <V> type of value
+     * @return <code>Optional</code> resource that contains the property value
+     */
+    <V> Optional<T> findAncestorWithPropertyValue(String propertyName, V propertyValue);
+
+
+    /**
      * Get a list of descendant resources that match the given predicate condition.
      *
      * @param predicate predicate to match descendant resources against
      * @return list of resources that match the predicate condition or empty list if none exist
      */
     List<T> findDescendants(Predicate<T> predicate);
-
-    /**
-     * Get the parent of this resource.
-     *
-     * @return parent resource or absent <code>Optional</code> if none exists
-     */
-    // Optional<T> getParent();
 }

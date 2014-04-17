@@ -44,6 +44,23 @@ class DefaultPageDecoratorSpec extends BedrockSpec {
             other {
 
             }
+            inheritance {
+                "jcr:content"("jcr:title": "Inheritance") {
+                    component("jcr:title": "Component", "number": 5, "boolean": false) {
+                        image(fileReference: "/content/dam/image")
+                        secondimage(fileReference: "/content/dam/image")
+                    }
+                }
+                child {
+                    "jcr:content" {
+                        component()
+                        other()
+                    }
+                    sub {
+
+                    }
+                }
+            }
         }
 
         nodeBuilder.content {
@@ -138,6 +155,50 @@ class DefaultPageDecoratorSpec extends BedrockSpec {
         "/content/citytechinc"        | true
         "/content/citytechinc/child1" | true
         "/content/other"              | false
+    }
+
+    def "find ancestor with property"() {
+        setup:
+        def page = getPage(path)
+        def ancestorPageOptional = page.findAncestorWithProperty("jcr:title")
+
+        expect:
+        ancestorPageOptional.get().path == ancestorPath
+
+        where:
+        path                             | ancestorPath
+        "/content/inheritance"           | "/content/inheritance"
+        "/content/inheritance/child"     | "/content/inheritance"
+        "/content/inheritance/child/sub" | "/content/inheritance"
+    }
+
+    def "find ancestor returns absent"() {
+        setup:
+        def page = getPage(path)
+        def ancestorPageOptional = page.findAncestorWithProperty("jcr:description")
+
+        expect:
+        !ancestorPageOptional.present
+
+        where:
+        path << ["/content/inheritance", "/content/inheritance/child", "/content/inheritance/child/sub"]
+    }
+
+    def "find ancestor with property value"() {
+        setup:
+        def page = getPage("/content/inheritance/child/sub")
+
+        expect:
+        page.findAncestorWithPropertyValue("jcr:title", "Inheritance").get().path == "/content/inheritance"
+    }
+
+    def "find ancestor with property value returns absent"() {
+        setup:
+        def page = getPage("/content/inheritance/child/sub")
+        def ancestorPageOptional = page.findAncestorWithPropertyValue("jcr:title", "Foo")
+
+        expect:
+        !ancestorPageOptional.present
     }
 
     def "get template path"() {

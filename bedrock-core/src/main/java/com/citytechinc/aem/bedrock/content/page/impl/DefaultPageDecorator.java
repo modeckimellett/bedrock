@@ -12,6 +12,8 @@ import com.citytechinc.aem.bedrock.content.link.builders.LinkBuilder;
 import com.citytechinc.aem.bedrock.content.node.BasicNode;
 import com.citytechinc.aem.bedrock.content.node.ComponentNode;
 import com.citytechinc.aem.bedrock.content.node.impl.DefaultComponentNode;
+import com.citytechinc.aem.bedrock.content.node.predicates.ComponentNodePropertyExistsPredicate;
+import com.citytechinc.aem.bedrock.content.node.predicates.ComponentNodePropertyValuePredicate;
 import com.citytechinc.aem.bedrock.content.page.PageDecorator;
 import com.citytechinc.aem.bedrock.content.page.PageManagerDecorator;
 import com.citytechinc.aem.bedrock.content.page.enums.TitleType;
@@ -102,6 +104,16 @@ public final class DefaultPageDecorator implements PageDecorator {
         }
 
         return Optional.fromNullable(ancestorPage);
+    }
+
+    @Override
+    public Optional<PageDecorator> findAncestorWithProperty(final String propertyName) {
+        return findAncestorForPredicate(new ComponentNodePropertyExistsPredicate(propertyName));
+    }
+
+    @Override
+    public <V> Optional<PageDecorator> findAncestorWithPropertyValue(final String propertyName, final V propertyValue) {
+        return findAncestorForPredicate(new ComponentNodePropertyValuePredicate<V>(propertyName, propertyValue));
     }
 
     @Override
@@ -440,6 +452,26 @@ public final class DefaultPageDecorator implements PageDecorator {
     @Override
     public void unlock() throws WCMException {
         delegate.unlock();
+    }
+
+    // internals
+
+    private Optional<PageDecorator> findAncestorForPredicate(final Predicate<ComponentNode> predicate) {
+        PageDecorator page = this;
+        PageDecorator ancestorPage = null;
+
+        while (page != null) {
+            final Optional<ComponentNode> optionalComponentNode = page.getComponentNode();
+
+            if (optionalComponentNode.isPresent() && predicate.apply(optionalComponentNode.get())) {
+                ancestorPage = page;
+                break;
+            } else {
+                page = page.getParent();
+            }
+        }
+
+        return Optional.fromNullable(ancestorPage);
     }
 
     private List<PageDecorator> filterChildren(final Predicate<PageDecorator> predicate, final boolean deep) {

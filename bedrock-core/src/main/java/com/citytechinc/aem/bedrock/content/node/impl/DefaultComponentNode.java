@@ -96,8 +96,8 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
     }
 
     @Override
-    public <T> Optional<ComponentNode> findAncestorWithPropertyValue(final String propertyName, final T propertyValue) {
-        return findAncestorForPredicate(new ComponentNodePropertyValuePredicate<T>(propertyName, propertyValue));
+    public <V> Optional<ComponentNode> findAncestorWithPropertyValue(final String propertyName, final V propertyValue) {
+        return findAncestorForPredicate(new ComponentNodePropertyValuePredicate<V>(propertyName, propertyValue));
     }
 
     @Override
@@ -476,7 +476,7 @@ public final class DefaultComponentNode extends AbstractNode implements Componen
         final String relativePath = resource.getName().equals(JcrConstants.JCR_CONTENT) ? "" : path.substring(
             containingPage.getContentResource().getPath().length() + 1);
 
-        LOG.debug("findAncestorForPredicate() relative path = {}", relativePath);
+        LOG.debug("relative path = {}", relativePath);
 
         final Function<PageDecorator, Optional<ComponentNode>> componentNodeFunction = new Function<PageDecorator, Optional<ComponentNode>>() {
             @Override
