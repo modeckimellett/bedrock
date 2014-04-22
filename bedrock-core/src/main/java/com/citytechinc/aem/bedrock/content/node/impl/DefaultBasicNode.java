@@ -15,6 +15,9 @@ import com.day.cq.commons.DownloadResource;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.dam.api.Asset;
 import com.day.cq.dam.api.Rendition;
+import com.day.cq.wcm.api.NameConstants;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.foundation.Image;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -43,6 +46,7 @@ import static com.citytechinc.aem.bedrock.constants.ComponentConstants.DEFAULT_I
 import static com.citytechinc.aem.bedrock.constants.PathConstants.EXTENSION_PNG;
 import static com.citytechinc.aem.bedrock.content.link.impl.LinkFunctions.LINK_TO_HREF;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
 public final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
@@ -136,6 +140,28 @@ public final class DefaultBasicNode extends AbstractNode implements BasicNode {
     @Override
     public String getHref(final boolean mapped) {
         return getLink(mapped).getHref();
+    }
+
+    @Override
+    public String getId() {
+        final String path;
+
+        if (resource.getName().equals(JcrConstants.JCR_CONTENT)) {
+            path = resource.getParent().getPath();
+        } else if (resource.getResourceType().equals(NameConstants.NT_PAGE)) {
+            path = resource.getPath();
+        } else {
+            final PageManager pageManager = resource.getResourceResolver().adaptTo(PageManager.class);
+            final Page currentPage = pageManager.getContainingPage(resource);
+
+            if (currentPage == null) {
+                path = resource.getPath();
+            } else {
+                path = removeStart(getPath(), currentPage.getContentResource().getPath());
+            }
+        }
+
+        return path.substring(1).replaceAll("/", "-");
     }
 
     @Override

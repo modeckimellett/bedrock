@@ -44,4 +44,19 @@ public interface ImageSource {
      * @return optional image source (absent if the referenced image has no content)
      */
     Optional<String> getImageSource(String name, int width);
+
+    /**
+     * Check if the current resource has a default image.
+     *
+     * @return true if image has content
+     */
+    boolean isHasImage();
+
+    /**
+     * Check if the current resource has a named image.
+     *
+     * @param name image name (name of image as defined in dialog)
+     * @return true if image has content
+     */
+    boolean isHasImage(String name);
 }

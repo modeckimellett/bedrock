@@ -33,6 +33,7 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -85,8 +86,353 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public boolean canUnlock() {
-        return delegate.canUnlock();
+    public ValueMap asMap() {
+        return componentNodeOptional.transform(new Function<ComponentNode, ValueMap>() {
+            @Override
+            public ValueMap apply(final ComponentNode componentNode) {
+                return componentNode.asMap();
+            }
+        }).or(ValueMap.EMPTY);
+    }
+
+    @Override
+    public <T> T get(final String propertyName, final T defaultValue) {
+        return componentNodeOptional.transform(new Function<ComponentNode, T>() {
+            @Override
+            public T apply(final ComponentNode componentNode) {
+                return componentNode.get(propertyName, defaultValue);
+            }
+        }).or(defaultValue);
+    }
+
+    @Override
+    public <T> Optional<T> get(final String propertyName, final Class<T> type) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<T>>() {
+            @Override
+            public Optional<T> apply(final ComponentNode componentNode) {
+                return componentNode.get(propertyName, type);
+            }
+        }).or(Optional.<T>absent());
+    }
+
+    @Override
+    public Optional<String> getAsHref(final String propertyName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getAsHref(propertyName);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getAsHref(final String propertyName, final boolean strict) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getAsHref(propertyName, strict);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getAsHref(final String propertyName, final boolean strict, final boolean mapped) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getAsHref(propertyName, strict, mapped);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<Link> getAsLink(final String propertyName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<Link>>() {
+            @Override
+            public Optional<Link> apply(final ComponentNode componentNode) {
+                return componentNode.getAsLink(propertyName);
+            }
+        }).or(Optional.<Link>absent());
+    }
+
+    @Override
+    public Optional<Link> getAsLink(final String propertyName, final boolean strict) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<Link>>() {
+            @Override
+            public Optional<Link> apply(final ComponentNode componentNode) {
+                return componentNode.getAsLink(propertyName, strict);
+            }
+        }).or(Optional.<Link>absent());
+    }
+
+    @Override
+    public Optional<Link> getAsLink(final String propertyName, final boolean strict, final boolean mapped) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<Link>>() {
+            @Override
+            public Optional<Link> apply(final ComponentNode componentNode) {
+                return componentNode.getAsLink(propertyName, strict, mapped);
+            }
+        }).or(Optional.<Link>absent());
+    }
+
+    @Override
+    public <T> List<T> getAsList(final String propertyName, final Class<T> type) {
+        return componentNodeOptional.transform(new Function<ComponentNode, List<T>>() {
+            @Override
+            public List<T> apply(final ComponentNode componentNode) {
+                return componentNode.getAsList(propertyName, type);
+            }
+        }).or(Collections.<T>emptyList());
+    }
+
+    @Override
+    public Optional<PageDecorator> getAsPage(final String propertyName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<PageDecorator>>() {
+            @Override
+            public Optional<PageDecorator> apply(final ComponentNode componentNode) {
+                return componentNode.getAsPage(propertyName);
+            }
+        }).or(Optional.<PageDecorator>absent());
+    }
+
+    @Override
+    public Optional<String> getImageReference() {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageReference();
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageReference(final String name) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageReference(name);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageRendition(final String renditionName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageRendition(renditionName);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageRendition(final String name, final String renditionName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageRendition(name, renditionName);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSource() {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource();
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSource(final int width) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource(width);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSource(final String name) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource(name);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSource(final String name, final int width) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSource(name, width);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public <T> T getInherited(final String propertyName, final T defaultValue) {
+        return componentNodeOptional.transform(new Function<ComponentNode, T>() {
+            @Override
+            public T apply(final ComponentNode componentNode) {
+                return componentNode.getInherited(propertyName, defaultValue);
+            }
+        }).or(defaultValue);
+    }
+
+    @Override
+    public <T> Optional<T> getInherited(final String propertyName, final Class<T> type) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<T>>() {
+            @Override
+            public Optional<T> apply(final ComponentNode componentNode) {
+                return componentNode.getInherited(propertyName, type);
+            }
+        }).or(Optional.<T>absent());
+    }
+
+    @Override
+    public Optional<String> getAsHrefInherited(final String propertyName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getAsHrefInherited(propertyName);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getAsHrefInherited(final String propertyName, final boolean strict) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getAsHrefInherited(propertyName, strict);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getAsHrefInherited(final String propertyName, final boolean strict, final boolean mapped) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getAsHrefInherited(propertyName, strict, mapped);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<Link> getAsLinkInherited(final String propertyName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<Link>>() {
+            @Override
+            public Optional<Link> apply(final ComponentNode componentNode) {
+                return componentNode.getAsLinkInherited(propertyName);
+            }
+        }).or(Optional.<Link>absent());
+    }
+
+    @Override
+    public Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<Link>>() {
+            @Override
+            public Optional<Link> apply(final ComponentNode componentNode) {
+                return componentNode.getAsLinkInherited(propertyName, strict);
+            }
+        }).or(Optional.<Link>absent());
+    }
+
+    @Override
+    public Optional<Link> getAsLinkInherited(final String propertyName, final boolean strict, final boolean mapped) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<Link>>() {
+            @Override
+            public Optional<Link> apply(final ComponentNode componentNode) {
+                return componentNode.getAsLinkInherited(propertyName, strict, mapped);
+            }
+        }).or(Optional.<Link>absent());
+    }
+
+    @Override
+    public <T> List<T> getAsListInherited(final String propertyName, final Class<T> type) {
+        return componentNodeOptional.transform(new Function<ComponentNode, List<T>>() {
+            @Override
+            public List<T> apply(final ComponentNode componentNode) {
+                return componentNode.getAsListInherited(propertyName, type);
+            }
+        }).or(Collections.<T>emptyList());
+    }
+
+    @Override
+    public Optional<PageDecorator> getAsPageInherited(final String propertyName) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<PageDecorator>>() {
+            @Override
+            public Optional<PageDecorator> apply(final ComponentNode componentNode) {
+                return componentNode.getAsPageInherited(propertyName);
+            }
+        }).or(Optional.<PageDecorator>absent());
+    }
+
+    @Override
+    public Optional<String> getImageReferenceInherited() {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageReferenceInherited();
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageReferenceInherited(final String name) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageReferenceInherited(name);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited() {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSourceInherited();
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited(final int width) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSourceInherited(width);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited(final String name) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSourceInherited(name);
+            }
+        }).or(Optional.<String>absent());
+    }
+
+    @Override
+    public Optional<String> getImageSourceInherited(final String name, final int width) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Optional<String>>() {
+            @Override
+            public Optional<String> apply(final ComponentNode componentNode) {
+                return componentNode.getImageSourceInherited(name, width);
+            }
+        }).or(Optional.<String>absent());
     }
 
     @Override
@@ -136,13 +482,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public PageDecorator getAbsoluteParent(final int level) {
-        final Page absoluteParent = delegate.getAbsoluteParent(level);
-
-        return absoluteParent == null ? null : new DefaultPageDecorator(absoluteParent);
-    }
-
-    @Override
     public List<PageDecorator> getChildren() {
         return filterChildren(ALL, false);
     }
@@ -176,26 +515,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public Resource getContentResource() {
-        return delegate.getContentResource();
-    }
-
-    @Override
-    public Resource getContentResource(final String relPath) {
-        return delegate.getContentResource(relPath);
-    }
-
-    @Override
-    public int getDepth() {
-        return delegate.getDepth();
-    }
-
-    @Override
-    public String getDescription() {
-        return delegate.getDescription();
-    }
-
-    @Override
     public String getHref() {
         return getHref(false);
     }
@@ -211,58 +530,23 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public Optional<String> getImageSource() {
-        return getImageSource(new Function<ComponentNode, Optional<String>>() {
+    public boolean isHasImage() {
+        return componentNodeOptional.transform(new Function<ComponentNode, Boolean>() {
             @Override
-            public Optional<String> apply(final ComponentNode componentNode) {
-                return componentNode.getImageSource();
+            public Boolean apply(final ComponentNode componentNode) {
+                return componentNode.isHasImage();
             }
-        });
+        }).or(false);
     }
 
     @Override
-    public Optional<String> getImageSource(final int width) {
-        return getImageSource(new Function<ComponentNode, Optional<String>>() {
+    public boolean isHasImage(final String name) {
+        return componentNodeOptional.transform(new Function<ComponentNode, Boolean>() {
             @Override
-            public Optional<String> apply(final ComponentNode componentNode) {
-                return componentNode.getImageSource(width);
+            public Boolean apply(final ComponentNode componentNode) {
+                return componentNode.isHasImage(name);
             }
-        });
-    }
-
-    @Override
-    public Optional<String> getImageSource(final String name) {
-        return getImageSource(new Function<ComponentNode, Optional<String>>() {
-            @Override
-            public Optional<String> apply(final ComponentNode componentNode) {
-                return componentNode.getImageSource(name);
-            }
-        });
-    }
-
-    @Override
-    public Optional<String> getImageSource(final String name, final int width) {
-        return getImageSource(new Function<ComponentNode, Optional<String>>() {
-            @Override
-            public Optional<String> apply(final ComponentNode componentNode) {
-                return componentNode.getImageSource(name, width);
-            }
-        });
-    }
-
-    @Override
-    public Locale getLanguage(final boolean ignoreContent) {
-        return delegate.getLanguage(ignoreContent);
-    }
-
-    @Override
-    public Calendar getLastModified() {
-        return delegate.getLastModified();
-    }
-
-    @Override
-    public String getLastModifiedBy() {
-        return delegate.getLastModifiedBy();
+        }).or(false);
     }
 
     @Override
@@ -286,16 +570,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public String getLockOwner() {
-        return delegate.getLockOwner();
-    }
-
-    @Override
-    public String getName() {
-        return delegate.getName();
-    }
-
-    @Override
     public NavigationLink getNavigationLink() {
         return LinkBuilder.forPage(this, false, TitleType.NAVIGATION_TITLE).buildNavigationLink();
     }
@@ -306,38 +580,27 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public String getNavigationTitle() {
-        return delegate.getNavigationTitle();
-    }
-
-    @Override
     public Optional<String> getNavigationTitleOptional() {
         return Optional.fromNullable(delegate.getNavigationTitle());
     }
 
     @Override
-    public Calendar getOffTime() {
-        return delegate.getOffTime();
+    public Optional<String> getPageTitleOptional() {
+        return Optional.fromNullable(delegate.getPageTitle());
     }
 
+    // overrides
+
     @Override
-    public Calendar getOnTime() {
-        return delegate.getOnTime();
+    public PageDecorator getAbsoluteParent(final int level) {
+        final Page absoluteParent = delegate.getAbsoluteParent(level);
+
+        return absoluteParent == null ? null : new DefaultPageDecorator(absoluteParent);
     }
 
     @Override
     public PageManagerDecorator getPageManager() {
         return getPageManagerDecorator();
-    }
-
-    @Override
-    public String getPageTitle() {
-        return delegate.getPageTitle();
-    }
-
-    @Override
-    public Optional<String> getPageTitleOptional() {
-        return Optional.fromNullable(delegate.getPageTitle());
     }
 
     @Override
@@ -352,6 +615,83 @@ public final class DefaultPageDecorator implements PageDecorator {
         final Page parent = delegate.getParent(level);
 
         return parent == null ? null : new DefaultPageDecorator(parent);
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("path", getPath()).add("title", getTitle()).toString();
+    }
+
+    // delegate methods
+
+    @Override
+    public boolean canUnlock() {
+        return delegate.canUnlock();
+    }
+
+    @Override
+    public Resource getContentResource() {
+        return delegate.getContentResource();
+    }
+
+    @Override
+    public Resource getContentResource(final String relPath) {
+        return delegate.getContentResource(relPath);
+    }
+
+    @Override
+    public int getDepth() {
+        return delegate.getDepth();
+    }
+
+    @Override
+    public String getDescription() {
+        return delegate.getDescription();
+    }
+
+    @Override
+    public Locale getLanguage(final boolean ignoreContent) {
+        return delegate.getLanguage(ignoreContent);
+    }
+
+    @Override
+    public Calendar getLastModified() {
+        return delegate.getLastModified();
+    }
+
+    @Override
+    public String getLastModifiedBy() {
+        return delegate.getLastModifiedBy();
+    }
+
+    @Override
+    public String getLockOwner() {
+        return delegate.getLockOwner();
+    }
+
+    @Override
+    public String getName() {
+        return delegate.getName();
+    }
+
+    @Override
+    public String getNavigationTitle() {
+        return delegate.getNavigationTitle();
+    }
+
+    @Override
+    public Calendar getOffTime() {
+        return delegate.getOffTime();
+    }
+
+    @Override
+    public Calendar getOnTime() {
+        return delegate.getOnTime();
+    }
+
+    @Override
+    public String getPageTitle() {
+        return delegate.getPageTitle();
     }
 
     @Override
@@ -445,16 +785,11 @@ public final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
-    public String toString() {
-        return Objects.toStringHelper(this).add("path", getPath()).add("title", getTitle()).toString();
-    }
-
-    @Override
     public void unlock() throws WCMException {
         delegate.unlock();
     }
 
-    // internals
+    // internal methods
 
     private Optional<PageDecorator> findAncestorForPredicate(final Predicate<ComponentNode> predicate) {
         PageDecorator page = this;
@@ -490,18 +825,6 @@ public final class DefaultPageDecorator implements PageDecorator {
         }
 
         return pages;
-    }
-
-    private Optional<String> getImageSource(final Function<ComponentNode, Optional<String>> function) {
-        final Optional<String> imageSourceOptional;
-
-        if (componentNodeOptional.isPresent()) {
-            imageSourceOptional = function.apply(componentNodeOptional.get());
-        } else {
-            imageSourceOptional = Optional.absent();
-        }
-
-        return imageSourceOptional;
     }
 
     private PageManagerDecorator getPageManagerDecorator() {

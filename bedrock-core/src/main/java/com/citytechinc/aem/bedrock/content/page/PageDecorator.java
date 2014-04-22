@@ -5,10 +5,12 @@
  */
 package com.citytechinc.aem.bedrock.content.page;
 
+import com.citytechinc.aem.bedrock.content.Accessible;
+import com.citytechinc.aem.bedrock.content.ImageSource;
+import com.citytechinc.aem.bedrock.content.Inheritable;
+import com.citytechinc.aem.bedrock.content.Linkable;
 import com.citytechinc.aem.bedrock.content.Traversable;
 import com.citytechinc.aem.bedrock.content.link.ImageLink;
-import com.citytechinc.aem.bedrock.content.ImageSource;
-import com.citytechinc.aem.bedrock.content.Linkable;
 import com.citytechinc.aem.bedrock.content.link.NavigationLink;
 import com.citytechinc.aem.bedrock.content.node.ComponentNode;
 import com.day.cq.wcm.api.Page;
@@ -21,26 +23,7 @@ import java.util.List;
  * Decorates the CQ <code>Page</code> interface with additional convenience methods for traversing the content hierarchy
  * and getters for Bedrock classes.
  */
-public interface PageDecorator extends Page, Linkable, ImageSource, Traversable<PageDecorator> {
-
-    /**
-     * Returns the absolute parent page. If no page exists at that level, <code>null</code> is returned.
-     * <p/>
-     * Example (this path == /content/geometrixx/en/products)
-     * <pre>
-     * | level | returned                        |
-     * |     0 | /content                        |
-     * |     1 | /content/geometrixx             |
-     * |     2 | /content/geometrixx/en          |
-     * |     3 | /content/geometrixx/en/products |
-     * |     4 | null                            |
-     * </pre>
-     *
-     * @param level hierarchy level of the parent page to retrieve
-     * @return the respective parent page or <code>null</code>
-     */
-    @Override
-    PageDecorator getAbsoluteParent(int level);
+public interface PageDecorator extends Page, Accessible, Inheritable, Linkable, ImageSource, Traversable<PageDecorator> {
 
     /**
      * Get the child pages of the current page.
@@ -114,14 +97,6 @@ public interface PageDecorator extends Page, Linkable, ImageSource, Traversable<
     Optional<String> getNavigationTitleOptional();
 
     /**
-     * Convenience method that returns the manager of this page.
-     *
-     * @return the page manager
-     */
-    @Override
-    PageManagerDecorator getPageManager();
-
-    /**
      * Get the page title for this page.  This secondary page title is absent unless it is set in page properties by an
      * author, as opposed to the title returned by <code>getTitle()</code>, which is the required title when the page is
      * created.
@@ -129,6 +104,43 @@ public interface PageDecorator extends Page, Linkable, ImageSource, Traversable<
      * @return optional page title
      */
     Optional<String> getPageTitleOptional();
+
+    /**
+     * Get the template path for this page.  This method is preferred over getTemplate().getPath(), which is dependent
+     * on access to /apps and will therefore fail in publish mode.
+     *
+     * @return value of cq:template property or empty string if none exists
+     */
+    String getTemplatePath();
+
+    // overrides for returning decorated types
+
+    /**
+     * Returns the absolute parent page. If no page exists at that level, <code>null</code> is returned.
+     * <p/>
+     * Example (this path == /content/geometrixx/en/products)
+     * <pre>
+     * | level | returned                        |
+     * |     0 | /content                        |
+     * |     1 | /content/geometrixx             |
+     * |     2 | /content/geometrixx/en          |
+     * |     3 | /content/geometrixx/en/products |
+     * |     4 | null                            |
+     * </pre>
+     *
+     * @param level hierarchy level of the parent page to retrieve
+     * @return the respective parent page or <code>null</code>
+     */
+    @Override
+    PageDecorator getAbsoluteParent(int level);
+
+    /**
+     * Convenience method that returns the manager of this page.
+     *
+     * @return the page manager
+     */
+    @Override
+    PageManagerDecorator getPageManager();
 
     /**
      * Returns the parent page if it's resource adapts to page.
@@ -156,12 +168,4 @@ public interface PageDecorator extends Page, Linkable, ImageSource, Traversable<
      */
     @Override
     PageDecorator getParent(int level);
-
-    /**
-     * Get the template path for this page.  This method is preferred over getTemplate().getPath(), which is dependent
-     * on access to /apps and will therefore fail in publish mode.
-     *
-     * @return value of cq:template property or empty string if none exists
-     */
-    String getTemplatePath();
 }
