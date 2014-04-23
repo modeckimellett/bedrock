@@ -1,8 +1,3 @@
-/**
- * Copyright 2014, CITYTECH, Inc.
- * All rights reserved - Do Not Redistribute
- * Confidential and Proprietary
- */
 package com.citytechinc.aem.bedrock.core.components.multicompositefield;
 
 import com.citytechinc.cq.component.dialog.widget.WidgetParameters;

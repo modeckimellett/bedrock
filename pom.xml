@@ -78,35 +78,6 @@
     </properties>
 
     <profiles>
-        <profile>
-            <id>local-author</id>
-            <activation>
-                <property>
-                    <name>local-author</name>
-                </property>
-            </activation>
-            <properties>
-                <aem.host>localhost</aem.host>
-                <aem.port>4502</aem.port>
-                <aem.username>admin</aem.username>
-                <aem.password>admin</aem.password>
-            </properties>
-        </profile>
-        <profile>
-            <id>local-publish</id>
-            <activation>
-                <property>
-                    <name>local-publish</name>
-                </property>
-            </activation>
-            <properties>
-                <aem.host>localhost</aem.host>
-                <aem.port>4503</aem.port>
-                <aem.username>admin</aem.username>
-                <aem.password>admin</aem.password>
-            </properties>
-        </profile>
-
         <!-- required for cobertura -->
         <profile>
             <id>standard-jdk</id>
@@ -165,16 +136,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>1.8</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>2.6</version>
-                </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.6</version>
@@ -294,23 +255,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>timestamp-property</goal>
-                        </goals>
-                        <configuration>
-                            <name>license.year</name>
-                            <pattern>yyyy</pattern>
-                            <unit>year</unit>
-                            <locale>en_US</locale>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>

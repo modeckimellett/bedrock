@@ -1,8 +1,3 @@
-/**
- * Copyright 2014, CITYTECH, Inc.
- * All rights reserved - Do Not Redistribute
- * Confidential and Proprietary
- */
 package com.citytechinc.aem.bedrock.core.tags;
 
 import com.day.cq.wcm.api.Page;

@@ -1,8 +1,3 @@
-/**
- * Copyright 2014, CITYTECH, Inc.
- * All rights reserved - Do Not Redistribute
- * Confidential and Proprietary
- */
 package com.citytechinc.aem.bedrock.core.jmx.impl;
 
 import com.adobe.granite.jmx.annotation.AnnotatedStandardMBean;

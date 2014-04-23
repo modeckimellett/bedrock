@@ -1,8 +1,3 @@
-/**
- * Copyright 2014, CITYTECH, Inc.
- * All rights reserved - Do Not Redistribute
- * Confidential and Proprietary
- */
 package com.citytechinc.aem.bedrock.core.link.builders.impl;
 
 import com.citytechinc.aem.bedrock.core.constants.PathConstants;
@@ -38,9 +33,6 @@ import static com.citytechinc.aem.bedrock.core.utils.PathUtils.isExternal;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
-/**
- * Builder for creating <code>Link</code>, <code>ImageLink</code>, and <code>NavigationLink</code> objects.
- */
 public final class DefaultLinkBuilder implements LinkBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultLinkBuilder.class);
@@ -234,13 +226,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return result;
     }
 
-    /**
-     * Add a child link.  This is only applicable when building navigation links, returned by calling
-     * <code>buildNavigationLink()</code>.
-     *
-     * @param child child navigation link instance
-     * @return builder
-     */
     @Override
     public LinkBuilder addChild(final NavigationLink child) {
         children.add(checkNotNull(child));
@@ -248,13 +233,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Add a query parameter.
-     *
-     * @param name parameter name
-     * @param value parameter value
-     * @return builder
-     */
     @Override
     public LinkBuilder addParameter(final String name, final String value) {
         checkNotNull(name);
@@ -265,12 +243,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Add query parameters.
-     *
-     * @param parameters map of parameter names to their values
-     * @return builder
-     */
     @Override
     public LinkBuilder addParameters(final Map<String, String> parameters) {
         this.parameters.putAll(Multimaps.forMap(checkNotNull(parameters)));
@@ -278,12 +250,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Add query parameters.
-     *
-     * @param parameters map of parameter names to their values
-     * @return builder
-     */
     @Override
     public LinkBuilder addParameters(final SetMultimap<String, String> parameters) {
         this.parameters.putAll(checkNotNull(parameters));
@@ -291,12 +257,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Add properties (arbitrary map of properties that are stored on the returned link instance).
-     *
-     * @param properties map of properties names to their values
-     * @return builder
-     */
     @Override
     public LinkBuilder addProperties(final Map<String, String> properties) {
         this.properties.putAll(checkNotNull(properties));
@@ -304,13 +264,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Add a property (arbitrary key-value pair stored on the returned link instance).
-     *
-     * @param name property name
-     * @param value property value
-     * @return builder
-     */
     @Override
     public LinkBuilder addProperty(final String name, final String value) {
         checkNotNull(name);
@@ -321,12 +274,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Add a selector.
-     *
-     * @param selector selector value
-     * @return builder
-     */
     @Override
     public LinkBuilder addSelector(final String selector) {
         selectors.add(checkNotNull(selector));
@@ -334,12 +281,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Add selectors.
-     *
-     * @param selectors list of selector values
-     * @return builder
-     */
     @Override
     public LinkBuilder addSelectors(final List<String> selectors) {
         this.selectors.addAll(checkNotNull(selectors));
@@ -347,11 +288,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Build a link using the properties of the current builder.
-     *
-     * @return link
-     */
     @Override
     public Link build() {
         final StringBuilder builder = new StringBuilder();
@@ -390,12 +326,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
             properties);
     }
 
-    /**
-     * Build an image link using the properties of the current builder.  If <code>setImage()</code> was called on the
-     * builder, this is the only method that will return a link containing the image source property.
-     *
-     * @return image link
-     */
     @Override
     public ImageLink buildImageLink() {
         final Link link = build();
@@ -403,13 +333,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return new DefaultImageLink(link, imageSource);
     }
 
-    /**
-     * Build a navigation link using the properties of the current builder.  If <code>setActive()</code> or
-     * <code>addChild()</code> was called on the builder, this is only method that will return a link containing an
-     * active state and child links.
-     *
-     * @return builder
-     */
     @Override
     public NavigationLink buildNavigationLink() {
         final Link link = build();
@@ -417,13 +340,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return new DefaultNavigationLink(link, active, children);
     }
 
-    /**
-     * Set the active state for the link.  This only applies to navigation links returned by calling
-     * <code>buildNavigationLink()</code>.
-     *
-     * @param active active state
-     * @return builder
-     */
     @Override
     public LinkBuilder setActive(final boolean active) {
         this.active = active;
@@ -431,12 +347,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set the extension, without '.'.  Defaults to "html" if none is provided.
-     *
-     * @param extension link extension
-     * @return builder
-     */
     @Override
     public LinkBuilder setExtension(final String extension) {
         this.extension = extension;
@@ -444,12 +354,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set the host.  If the host is set, the href of the built link will be absolute rather than relative.
-     *
-     * @param host host name
-     * @return builder
-     */
     @Override
     public LinkBuilder setHost(final String host) {
         this.host = host;
@@ -457,12 +361,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set an image source.  This only applies to image links returned by calling <code>buildImageLink()</code>.
-     *
-     * @param imageSource
-     * @return builder
-     */
     @Override
     public LinkBuilder setImageSource(final String imageSource) {
         this.imageSource = imageSource;
@@ -470,12 +368,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set the port.
-     *
-     * @param port port number
-     * @return builder
-     */
     @Override
     public LinkBuilder setPort(final int port) {
         this.port = port;
@@ -483,13 +375,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set secure.  If true, the returned link will be "https" instead of "http".  This only applies when a host name is
-     * set.
-     *
-     * @param secure secure
-     * @return builder
-     */
     @Override
     public LinkBuilder setSecure(final boolean secure) {
         this.secure = secure;
@@ -497,12 +382,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set the suffix.
-     *
-     * @param suffix suffix
-     * @return builder
-     */
     @Override
     public LinkBuilder setSuffix(final String suffix) {
         this.suffix = suffix;
@@ -510,12 +389,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set the link target.
-     *
-     * @param target link target
-     * @return builder
-     */
     @Override
     public LinkBuilder setTarget(final String target) {
         this.target = target;
@@ -523,12 +396,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         return this;
     }
 
-    /**
-     * Set the link title.
-     *
-     * @param title title
-     * @return builder
-     */
     @Override
     public LinkBuilder setTitle(final String title) {
         this.title = title;
