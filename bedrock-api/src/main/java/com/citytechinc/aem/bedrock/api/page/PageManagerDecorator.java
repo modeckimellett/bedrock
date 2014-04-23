@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Decorator the CQ <code>PageManager</code> interface with additional methods for finding pages using queries, tags,
+ * Decorates the CQ <code>PageManager</code> interface with additional methods for finding pages using queries, tags,
  * and template paths.
  */
 public interface PageManagerDecorator extends PageManager {
@@ -27,7 +27,7 @@ public interface PageManagerDecorator extends PageManager {
      * @param shallow if <code>true</code> a non-recursive copy is performed.
      * @param resolveConflict if <code>true</code> resolves name conflict if destination already exists.
      * @return the copied page
-     * @throws com.day.cq.wcm.api.WCMException if an error during this operation occurs.
+     * @throws WCMException if an error during this operation occurs.
      */
     @Override
     PageDecorator copy(Page page, String destination, String beforeName, boolean shallow, boolean resolveConflict)
@@ -43,7 +43,7 @@ public interface PageManagerDecorator extends PageManager {
      * @param resolveConflict if <code>true</code> resolves name conflict if destination already exists.
      * @param autoSave if <code>true</code> saves the modifications.
      * @return the copied page
-     * @throws com.day.cq.wcm.api.WCMException if an error during this operation occurs.
+     * @throws WCMException if an error during this operation occurs.
      */
     @Override
     PageDecorator copy(Page page, String destination, String beforeName, boolean shallow, boolean resolveConflict,
@@ -58,7 +58,7 @@ public interface PageManagerDecorator extends PageManager {
      * @param template the template for the new page
      * @param title the title of the new page
      * @return the page that was created
-     * @throws com.day.cq.wcm.api.WCMException if an error during this operation occurs.
+     * @throws WCMException if an error during this operation occurs.
      */
     @Override
     PageDecorator create(String parentPath, String pageName, String template, String title) throws WCMException;
@@ -71,9 +71,9 @@ public interface PageManagerDecorator extends PageManager {
      * @param pageName the name of the new page
      * @param template the template for the new page
      * @param title the title of the new page
-     * @param autoSave
+     * @param autoSave if <code>true</code> saves the modifications.
      * @return the page that was created
-     * @throws com.day.cq.wcm.api.WCMException if an error during this operation occurs.
+     * @throws WCMException if an error during this operation occurs.
      */
     @Override
     PageDecorator create(String parentPath, String pageName, String template, String title, boolean autoSave)
@@ -163,7 +163,7 @@ public interface PageManagerDecorator extends PageManager {
      * @param resolveConflict if <code>true</code> resolves name conflict if destination already exists.
      * @param adjustRefs list of paths to pages that refer to the moved one. those references will be adjusted.
      * @return the new page at the new location
-     * @throws com.day.cq.wcm.api.WCMException if an error during this operation occurs.
+     * @throws WCMException if an error during this operation occurs.
      */
     @Override
     PageDecorator move(Page page, String destination, String beforeName, boolean shallow, boolean resolveConflict,
@@ -175,7 +175,7 @@ public interface PageManagerDecorator extends PageManager {
      * @param path path to the page or to the parent page
      * @param revisionId revision id to restore
      * @return the page that was restored
-     * @throws com.day.cq.wcm.api.WCMException if an error during this operation occurs.
+     * @throws WCMException if an error during this operation occurs.
      */
     @Override
     PageDecorator restore(String path, String revisionId) throws WCMException;
@@ -186,7 +186,7 @@ public interface PageManagerDecorator extends PageManager {
      * @param path path to page
      * @param date calendar date to restore to
      * @return the page that was restored
-     * @throws com.day.cq.wcm.api.WCMException if an error during this operation occurs.
+     * @throws WCMException if an error during this operation occurs.
      */
     @Override
     PageDecorator restoreTree(String path, Calendar date) throws WCMException;

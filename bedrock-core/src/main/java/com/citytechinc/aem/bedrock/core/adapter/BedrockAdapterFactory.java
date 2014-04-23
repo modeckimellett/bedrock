@@ -22,7 +22,7 @@ import org.osgi.framework.Constants;
 @Component
 @Service
 @Properties({
-    @Property(name = Constants.SERVICE_DESCRIPTION, value = "Bedrock Content API Adapter Factory"),
+    @Property(name = Constants.SERVICE_DESCRIPTION, value = "Bedrock Core Adapter Factory"),
     @Property(name = SlingConstants.PROPERTY_ADAPTABLE_CLASSES, value = {
         "org.apache.sling.api.resource.Resource",
         "org.apache.sling.api.resource.ResourceResolver"

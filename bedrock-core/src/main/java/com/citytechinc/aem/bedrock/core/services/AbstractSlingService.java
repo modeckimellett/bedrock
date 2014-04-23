@@ -95,7 +95,7 @@ public abstract class AbstractSlingService {
     }
 
     /**
-     * Get the OSGi configuration map for the given properties.
+     * Get the OSGi configuration for the given properties.
      *
      * @param properties map of configuration names and values
      * @return configuration wrapper
