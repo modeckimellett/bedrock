@@ -575,16 +575,6 @@ public final class DefaultPageDecorator implements PageDecorator {
         return DefaultLinkBuilder.forPage(this, false, TitleType.NAVIGATION_TITLE).setActive(isActive).buildNavigationLink();
     }
 
-    @Override
-    public Optional<String> getNavigationTitleOptional() {
-        return Optional.fromNullable(delegate.getNavigationTitle());
-    }
-
-    @Override
-    public Optional<String> getPageTitleOptional() {
-        return Optional.fromNullable(delegate.getPageTitle());
-    }
-
     // overrides
 
     @Override
@@ -611,6 +601,16 @@ public final class DefaultPageDecorator implements PageDecorator {
         final Page parent = delegate.getParent(level);
 
         return parent == null ? null : new DefaultPageDecorator(parent);
+    }
+
+    @Override
+    public String getTemplatePath() {
+        return getProperties().get(NameConstants.NN_TEMPLATE, "");
+    }
+
+    @Override
+    public Optional<String> getTitle(final TitleType titleType) {
+        return get(titleType.getPropertyName(), String.class);
     }
 
     @Override
@@ -713,11 +713,6 @@ public final class DefaultPageDecorator implements PageDecorator {
     @Override
     public Template getTemplate() {
         return delegate.getTemplate();
-    }
-
-    @Override
-    public String getTemplatePath() {
-        return getProperties().get(NameConstants.NN_TEMPLATE, "");
     }
 
     @Override

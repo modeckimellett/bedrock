@@ -8,6 +8,7 @@ import com.citytechinc.aem.bedrock.api.Traversable;
 import com.citytechinc.aem.bedrock.api.link.ImageLink;
 import com.citytechinc.aem.bedrock.api.link.NavigationLink;
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
+import com.citytechinc.aem.bedrock.api.page.enums.TitleType;
 import com.day.cq.wcm.api.Page;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -85,28 +86,21 @@ public interface PageDecorator extends Page, Accessible, Inheritable, Linkable, 
     NavigationLink getNavigationLink(boolean isActive);
 
     /**
-     * Get the navigation title for this page.
-     *
-     * @return optional navigation title
-     */
-    Optional<String> getNavigationTitleOptional();
-
-    /**
-     * Get the page title for this page.  This secondary page title is absent unless it is set in page properties by an
-     * author, as opposed to the title returned by <code>getTitle()</code>, which is the required title when the page is
-     * created.
-     *
-     * @return optional page title
-     */
-    Optional<String> getPageTitleOptional();
-
-    /**
      * Get the template path for this page.  This method is preferred over getTemplate().getPath(), which is dependent
      * on access to /apps and will therefore fail in publish mode.
      *
      * @return value of cq:template property or empty string if none exists
      */
     String getTemplatePath();
+
+    /**
+     * Get the title with the given type for this page.  If the title value is empty or non-existent, an absent
+     * <code>Optional</code> is returned.
+     *
+     * @param titleType type of title to retrieve
+     * @return title value or absent <code>Optional</code>
+     */
+    Optional<String> getTitle(TitleType titleType);
 
     // overrides for returning decorated types
 

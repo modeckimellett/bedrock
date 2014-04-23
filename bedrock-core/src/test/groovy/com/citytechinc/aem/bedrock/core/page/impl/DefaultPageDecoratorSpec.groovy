@@ -3,6 +3,7 @@ package com.citytechinc.aem.bedrock.core.page.impl
 import com.citytechinc.aem.bedrock.api.node.BasicNode
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
+import com.citytechinc.aem.bedrock.api.page.enums.TitleType
 import com.citytechinc.aem.bedrock.core.page.predicates.TemplatePredicate
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import com.day.cq.wcm.api.NameConstants
@@ -425,36 +426,29 @@ class DefaultPageDecoratorSpec extends BedrockSpec {
         page.getProperties("component/three").isEmpty()
     }
 
-    def "get page title"() {
+    def "get title"() {
         setup:
         def page = getPage("/content/citytechinc")
 
         expect:
-        page.pageTitleOptional.get() == "Page Title"
+        page.getTitle(titleType).get() == title
+
+        where:
+        titleType                  | title
+        TitleType.TITLE            | "CITYTECH, Inc."
+        TitleType.NAVIGATION_TITLE | "Navigation Title"
+        TitleType.PAGE_TITLE       | "Page Title"
     }
 
-    def "get page title returns absent where appropriate"() {
+    def "get title returns absent where appropriate"() {
         setup:
         def page = getPage("/content/citytechinc/child1")
 
         expect:
-        !page.pageTitleOptional.present
-    }
+        !page.getTitle(titleType).present
 
-    def "get navigation title optional"() {
-        setup:
-        def page = getPage("/content/citytechinc")
-
-        expect:
-        page.navigationTitleOptional.get() == "Navigation Title"
-    }
-
-    def "get navigation title returns absent where appropriate"() {
-        setup:
-        def page = getPage("/content/citytechinc/child1")
-
-        expect:
-        !page.navigationTitleOptional.present
+        where:
+        titleType << [TitleType.NAVIGATION_TITLE, TitleType.PAGE_TITLE]
     }
 
     def "get image link"() {

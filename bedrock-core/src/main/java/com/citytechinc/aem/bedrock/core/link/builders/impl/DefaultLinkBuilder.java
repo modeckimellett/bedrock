@@ -421,12 +421,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     }
 
     private String buildPathWithSelectors() {
-        final StringBuilder builder = new StringBuilder();
-
-        builder.append(path);
-        builder.append(buildSelectors());
-
-        return builder.toString();
+        return path + buildSelectors();
     }
 
     private String buildQueryString() {
