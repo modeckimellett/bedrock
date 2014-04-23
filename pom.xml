@@ -297,8 +297,6 @@
                     <reportSet>
                         <reports>
                             <report>summary</report>
-                            <report>plugins</report>
-                            <report>plugin-management</report>
                             <report>license</report>
                         </reports>
                     </reportSet>
