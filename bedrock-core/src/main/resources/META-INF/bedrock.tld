@@ -10,15 +10,15 @@
 
     <tag>
         <name>defineObjects</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.DefineObjectsTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.DefineObjectsTag</tag-class>
     </tag>
     <tag>
         <name>disableAuthor</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.DisableAuthorTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.DisableAuthorTag</tag-class>
     </tag>
     <tag>
         <name>includeDeferredClientLib</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.IncludeDeferredClientLibTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.IncludeDeferredClientLibTag</tag-class>
         <attribute>
             <name>js</name>
             <required>true</required>
@@ -27,11 +27,11 @@
     </tag>
     <tag>
         <name>deferredClientLib</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.DeferredClientLibTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.DeferredClientLibTag</tag-class>
     </tag>
     <tag>
         <name>title</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.TitleTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.TitleTag</tag-class>
         <attribute>
             <name>propertyName</name>
             <required>false</required>
@@ -45,11 +45,11 @@
     </tag>
     <tag>
         <name>keywords</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.KeywordsTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.KeywordsTag</tag-class>
     </tag>
     <tag>
         <name>description</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.DescriptionTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.DescriptionTag</tag-class>
         <attribute>
             <name>propertyName</name>
             <required>false</required>
@@ -63,11 +63,11 @@
     </tag>
     <tag>
         <name>favicon</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.FavIconTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.FavIconTag</tag-class>
     </tag>
     <tag>
         <name>component</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.ComponentTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.ComponentTag</tag-class>
         <attribute>
             <name>className</name>
             <required>true</required>
@@ -86,7 +86,7 @@
     </tag>
     <tag>
         <name>serializeJson</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.SerializeJsonTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.SerializeJsonTag</tag-class>
         <attribute>
             <name>className</name>
             <required>false</required>
@@ -110,7 +110,7 @@
     </tag>
     <tag>
         <name>property</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.PropertyTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.PropertyTag</tag-class>
         <attribute>
             <name>propertyName</name>
             <required>true</required>
@@ -134,7 +134,7 @@
     </tag>
     <tag>
         <name>propertyBoolean</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.PropertyBooleanTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.PropertyBooleanTag</tag-class>
         <attribute>
             <name>propertyName</name>
             <required>true</required>
@@ -163,7 +163,7 @@
     </tag>
     <tag>
         <name>href</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.HrefTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.HrefTag</tag-class>
         <attribute>
             <name>propertyName</name>
             <required>true</required>
@@ -182,7 +182,7 @@
     </tag>
     <tag>
         <name>image</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.ImageTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.ImageTag</tag-class>
         <attribute>
             <name>name</name>
             <required>false</required>
@@ -201,7 +201,7 @@
     </tag>
     <tag>
         <name>imageSource</name>
-        <tag-class>com.citytechinc.aem.bedrock.tags.ImageSourceTag</tag-class>
+        <tag-class>com.citytechinc.aem.bedrock.core.tags.ImageSourceTag</tag-class>
         <attribute>
             <name>name</name>
             <required>false</required>

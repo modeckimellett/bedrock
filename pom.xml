@@ -27,6 +27,7 @@
     <url>http://code.citytechinc.com/bedrock</url>
 
     <modules>
+        <module>bedrock-api</module>
         <module>bedrock-core</module>
         <module>bedrock-ui</module>
     </modules>
@@ -365,9 +366,9 @@
                     <excludePackageNames>
                         *.impl,
                         *.predicates,
-                        com.citytechinc.aem.bedrock.adapter.*,
-                        com.citytechinc.aem.bedrock.bindings.*,
-                        com.citytechinc.aem.bedrock.components.multicompositefield.*
+                        com.citytechinc.aem.bedrock.core.adapter.*,
+                        com.citytechinc.aem.bedrock.core.bindings.*,
+                        com.citytechinc.aem.bedrock.core.components.multicompositefield.*
                     </excludePackageNames>
                     <quiet>true</quiet>
                 </configuration>

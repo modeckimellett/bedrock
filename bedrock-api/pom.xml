@@ -8,18 +8,11 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>bedrock-core</artifactId>
+    <artifactId>bedrock-api</artifactId>
     <packaging>bundle</packaging>
-    <name>Bedrock Core</name>
+    <name>Bedrock API</name>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources/META-INF</directory>
-                <targetPath>META-INF</targetPath>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>com.mycila</groupId>
@@ -48,22 +41,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <compilerId>groovy-eclipse-compiler</compilerId>
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-eclipse-compiler</artifactId>
-                        <version>2.8.0-01</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-eclipse-batch</artifactId>
-                        <version>2.1.8-01</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -74,73 +54,10 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.name}</Bundle-Name>
                         <Bundle-Vendor>${project.parent.organization.name}</Bundle-Vendor>
-                        <Export-Package>
-                            !*.impl,
-                            !com.citytechinc.aem.bedrock.core.components.multicompositefield,
-                            !com.citytechinc.aem.bedrock.core.specs.*,
-                            com.citytechinc.aem.bedrock.core.*
-                        </Export-Package>
-                        <Import-Package>!com.citytechinc.cq.component.*,!javassist</Import-Package>
+                        <Export-Package>com.citytechinc.aem.bedrock.api.*</Export-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-scr-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-scr-scrdescriptor</id>
-                        <goals>
-                            <goal>scr</goal>
-                        </goals>
-                        <configuration>
-                            <scanClasses>true</scanClasses>
-                            <properties>
-                                <service.vendor>CITYTECH, Inc.</service.vendor>
-                            </properties>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <configuration>
-                    <quiet>true</quiet>
-                    <outputDirectory>${project.parent.reporting.outputDirectory}/cobertura</outputDirectory>
-                    <instrumentation>
-                        <excludes>
-                            <exclude>com/citytechinc/aem/bedrock/core/bindings/*</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/core/components/annotations/*</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/core/components/multicompositefield/*</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/core/constants/*</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/core/filters/*</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/core/jmx/**/*</exclude>
-                        </excludes>
-                        <ignoreTrivial>true</ignoreTrivial>
-                    </instrumentation>
-                    <check>
-                        <branchRate>85</branchRate>
-                        <lineRate>85</lineRate>
-                        <haltOnFailure>false</haltOnFailure>
-                        <totalBranchRate>85</totalBranchRate>
-                        <totalLineRate>85</totalLineRate>
-                        <packageLineRate>85</packageLineRate>
-                        <packageBranchRate>85</packageBranchRate>
-                    </check>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>cobertura</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -150,15 +67,6 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                        <configuration>
-                            <excludePackageNames>
-                                *.impl,
-                                *.predicates,
-                                com.citytechinc.aem.bedrock.core.adapter.*,
-                                com.citytechinc.aem.bedrock.core.bindings.*,
-                                com.citytechinc.aem.bedrock.core.components.multicompositefield.*
-                            </excludePackageNames>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -193,56 +101,7 @@
         </plugins>
     </build>
 
-    <profiles>
-        <!-- activate this profile to enable logging of test executions -->
-        <profile>
-            <id>test-logging</id>
-            <activation>
-                <property>
-                    <name>test-logging</name>
-                </property>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                    <version>1.7.5</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.citytechinc.aem.groovy.extension</groupId>
-                    <artifactId>aem-groovy-extension-bundle</artifactId>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.slf4j</groupId>
-                            <artifactId>slf4j-nop</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-                <dependency>
-                    <groupId>com.citytechinc.aem.prosper</groupId>
-                    <artifactId>prosper</artifactId>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.slf4j</groupId>
-                            <artifactId>slf4j-nop</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-
     <dependencies>
-        <!-- compile -->
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.scr.annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.citytechinc.cq.cq-component-plugin</groupId>
-            <artifactId>cq-component-maven-plugin</artifactId>
-        </dependency>
-
         <!-- provided -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -387,21 +246,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.citytechinc.aem.groovy.extension</groupId>
-            <artifactId>aem-groovy-extension-bundle</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.citytechinc.aem.bedrock</groupId>
-            <artifactId>bedrock-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <!-- test -->
-        <dependency>
-            <groupId>com.citytechinc.aem.prosper</groupId>
-            <artifactId>prosper</artifactId>
         </dependency>
     </dependencies>
 </project>
