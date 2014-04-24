@@ -71,6 +71,34 @@ class DefaultPageDecoratorSpec extends BedrockSpec {
         }
     }
 
+    def "get absolute parent"() {
+        setup:
+        def page = getPage("/content/citytechinc/child1")
+
+        expect:
+        page.getAbsoluteParent(level).path == absoluteParentPath
+
+        where:
+        level | absoluteParentPath
+        0     | "/content"
+        1     | "/content/citytechinc"
+        2     | "/content/citytechinc/child1"
+    }
+
+    def "get parent"() {
+        setup:
+        def page = getPage("/content/citytechinc/child1")
+
+        expect:
+        page.getParent(level).path == parentPath
+
+        where:
+        level | parentPath
+        2     | "/content"
+        1     | "/content/citytechinc"
+        0     | "/content/citytechinc/child1"
+    }
+
     def "adapt to"() {
         setup:
         def page = getPage("/content/citytechinc")

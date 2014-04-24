@@ -326,6 +326,10 @@
             <artifactId>com.adobe.granite.xssprotection</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.adobe.cq.wcm</groupId>
+            <artifactId>cq-wcm-launches-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.adobe.cq.sightly</groupId>
             <artifactId>cq-wcm-sightly-extension</artifactId>
         </dependency>
