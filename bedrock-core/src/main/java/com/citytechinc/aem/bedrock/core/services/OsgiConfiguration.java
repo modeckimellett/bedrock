@@ -6,6 +6,8 @@ import org.apache.sling.commons.osgi.PropertiesUtil;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * OSGi configuration wrapper.
  */
@@ -14,7 +16,7 @@ public final class OsgiConfiguration {
     private final Map<String, Object> properties;
 
     public OsgiConfiguration(final Map<String, Object> properties) {
-        this.properties = properties;
+        this.properties = checkNotNull(properties, "properties map must be non-null");
     }
 
     /**
