@@ -71,6 +71,28 @@ class DefaultPageDecoratorSpec extends BedrockSpec {
         }
     }
 
+    def "adapt to"() {
+        setup:
+        def page = getPage("/content/citytechinc")
+
+        expect:
+        page.adaptTo(type).path == "/content/citytechinc/jcr:content"
+
+        where:
+        type << [BasicNode, ComponentNode]
+    }
+
+    def "adapt to returns null"() {
+        setup:
+        def page = getPage("/content/citytechinc/empty")
+
+        expect:
+        !page.adaptTo(type)
+
+        where:
+        type << [BasicNode, ComponentNode]
+    }
+
     def "as map"() {
         setup:
         def page = getPage(path)

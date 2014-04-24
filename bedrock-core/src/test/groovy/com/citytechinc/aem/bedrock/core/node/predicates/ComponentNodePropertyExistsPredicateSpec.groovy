@@ -1,8 +1,13 @@
 package com.citytechinc.aem.bedrock.core.node.predicates
 
+import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.core.node.impl.DefaultComponentNode
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
+import com.google.common.base.Optional
 import org.apache.sling.api.resource.NonExistingResource
+
+import javax.jcr.Node
+import javax.jcr.RepositoryException
 
 class ComponentNodePropertyExistsPredicateSpec extends BedrockSpec {
 
@@ -38,5 +43,23 @@ class ComponentNodePropertyExistsPredicateSpec extends BedrockSpec {
 
         expect:
         !predicate.apply(node)
+    }
+
+    def "node that throws exception is not included"() {
+        setup:
+        def node = Mock(Node) {
+            hasNode(_) >> {
+                throw new RepositoryException()
+            }
+        }
+
+        def componentNode = Mock(ComponentNode) {
+            getNode() >> Optional.of(node)
+        }
+
+        def predicate = new ComponentNodePropertyExistsPredicate("propertyName")
+
+        expect:
+        !predicate.apply(componentNode)
     }
 }

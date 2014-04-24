@@ -1,6 +1,5 @@
-package com.citytechinc.aem.bedrock.core.resource.predicates
+package com.citytechinc.aem.bedrock.core.node.predicates
 
-import com.citytechinc.aem.bedrock.core.node.predicates.ResourceTypePredicate
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import spock.lang.Unroll
 
@@ -26,4 +25,6 @@ class ResourceTypePredicateSpec extends BedrockSpec {
         "page"       | true
         "node"       | false
     }
+
+
 }

@@ -25,15 +25,13 @@ public final class ComponentNodePropertyExistsPredicate implements Predicate<Com
     public boolean apply(final ComponentNode componentNode) {
         boolean result = false;
 
-        if (componentNode != null) {
-            final Optional<Node> nodeOptional = componentNode.getNode();
+        final Optional<Node> nodeOptional = checkNotNull(componentNode).getNode();
 
-            if (nodeOptional.isPresent()) {
-                try {
-                    result = nodeOptional.get().hasProperty(propertyName);
-                } catch (RepositoryException e) {
-                    LOG.error("error checking property existence for component node", e);
-                }
+        if (nodeOptional.isPresent()) {
+            try {
+                result = nodeOptional.get().hasProperty(propertyName);
+            } catch (RepositoryException e) {
+                LOG.error("error checking property existence for component node", e);
             }
         }
 

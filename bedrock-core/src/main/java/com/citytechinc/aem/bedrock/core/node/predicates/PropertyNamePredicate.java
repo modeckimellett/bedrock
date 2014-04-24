@@ -21,6 +21,8 @@ public final class PropertyNamePredicate implements Predicate<Property> {
 
     @Override
     public boolean apply(final Property property) {
+        checkNotNull(property);
+
         boolean matches = false;
 
         try {

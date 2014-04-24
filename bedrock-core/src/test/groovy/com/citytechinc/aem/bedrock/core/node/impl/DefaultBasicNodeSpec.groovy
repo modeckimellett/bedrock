@@ -80,6 +80,14 @@ class DefaultBasicNodeSpec extends BedrockSpec {
         }]
     }
 
+    def "to string"() {
+        setup:
+        def node = getBasicNode("/content/lagers/jcr:content/dynamo")
+
+        expect:
+        node.toString() == "DefaultBasicNode{path=/content/lagers/jcr:content/dynamo, properties={sling:resourceType=us, jcr:primaryType=nt:unstructured}}"
+    }
+
     def "get id"() {
         setup:
         def node = getBasicNode(path)
