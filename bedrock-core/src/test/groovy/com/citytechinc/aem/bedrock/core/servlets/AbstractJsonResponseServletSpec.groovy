@@ -76,7 +76,7 @@ class AbstractJsonResponseServletSpec extends BedrockSpec {
 
         then:
         response.contentAsString == new JsonBuilder(
-            [one: "Hello.", date: formatDate("yyyy", Locale.CHINA)]).toString()
+            [one: "Hello.", two: formatDate("yyyy", Locale.CHINA)]).toString()
     }
 
     private static def formatDate(String dateFormat, Locale locale) {
