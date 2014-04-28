@@ -1,8 +1,8 @@
 package com.citytechinc.aem.bedrock.core.tags
 
-import com.citytechinc.aem.bedrock.core.specs.PropertyTagSpec
+import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
 
-class HrefTagSpec extends PropertyTagSpec<HrefTag> {
+class HrefTagSpec extends BedrockJspTagSpec<HrefTag> {
 
     def setupSpec() {
         pageBuilder.content {

@@ -1,11 +1,13 @@
 package com.citytechinc.aem.bedrock.core.tags
 
 import com.adobe.granite.xss.XSSAPI
-import com.citytechinc.aem.bedrock.core.specs.PageTagSpec
+import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
+
+import javax.servlet.jsp.tagext.TagSupport
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_XSSAPI_NAME
 
-abstract class AbstractMetaTagSpec<T> extends PageTagSpec {
+abstract class AbstractMetaTagSpec<T extends TagSupport> extends BedrockJspTagSpec<T> {
 
     @Override
     Map<String, Object> addPageContextAttributes() {
