@@ -2,10 +2,8 @@ package com.citytechinc.aem.bedrock.core.tags
 
 import spock.lang.Unroll
 
-import javax.servlet.jsp.tagext.TagSupport
-
 @Unroll
-class TitleTagSpec extends AbstractMetaTagSpec {
+class TitleTagSpec extends AbstractMetaTagSpec<TitleTag> {
 
     def setupSpec() {
         pageBuilder.content {
@@ -19,7 +17,7 @@ class TitleTagSpec extends AbstractMetaTagSpec {
     }
 
     @Override
-    TagSupport createTag() {
+    TitleTag createTag() {
         new TitleTag()
     }
 

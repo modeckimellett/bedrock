@@ -1,15 +1,8 @@
 package com.citytechinc.aem.bedrock.core.specs
 
-import com.citytechinc.aem.bedrock.core.components.AbstractComponent
+import com.citytechinc.aem.bedrock.core.components.TestComponent
 
 class ComponentSpecSpec extends ComponentSpec {
-
-    class TestComponent extends AbstractComponent {
-
-        def getTitle() {
-            get("jcr:title", "")
-        }
-    }
 
     def setupSpec() {
         pageBuilder.content {

@@ -33,7 +33,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public int doEndTag() throws JspTagException {
+    public int doEndTag(final int scope) throws JspTagException {
         final ComponentBindings componentBindings = new ComponentBindings(pageContext);
 
         pageContext.setAttribute(ATTR_COMPONENT_BINDINGS, componentBindings);

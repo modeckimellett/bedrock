@@ -5,12 +5,14 @@ import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.prosper.specs.JspTagSpec
 import org.apache.sling.api.adapter.AdapterFactory
 
+import javax.servlet.jsp.tagext.TagSupport
+
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
 
 /**
  * Spock specification for testing CQ page-based tag support classes.
  */
-abstract class PageTagSpec extends JspTagSpec {
+abstract class PageTagSpec<T extends TagSupport> extends JspTagSpec<T> {
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {
@@ -25,6 +27,6 @@ abstract class PageTagSpec extends JspTagSpec {
     void setupPage(String path) {
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
 
-        tag.pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME) >> page
+        tag.pageContext.setAttribute DEFAULT_CURRENT_PAGE_NAME, page
     }
 }

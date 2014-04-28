@@ -2,9 +2,7 @@ package com.citytechinc.aem.bedrock.core.tags
 
 import com.citytechinc.aem.bedrock.core.specs.PropertyTagSpec
 
-import javax.servlet.jsp.tagext.TagSupport
-
-class HrefTagSpec extends PropertyTagSpec {
+class HrefTagSpec extends PropertyTagSpec<HrefTag> {
 
     def setupSpec() {
         pageBuilder.content {
@@ -16,7 +14,7 @@ class HrefTagSpec extends PropertyTagSpec {
     }
 
     @Override
-    TagSupport createTag() {
+    HrefTag createTag() {
         new HrefTag()
     }
 

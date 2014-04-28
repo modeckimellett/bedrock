@@ -25,15 +25,13 @@ public final class ComponentTag extends AbstractComponentInstanceTag {
     private String name;
 
     @Override
-    public int doEndTag() throws JspTagException {
+    public int doEndTag(final int scope) throws JspTagException {
         LOG.debug("class name = {}, attribute name = {}", className, name);
-
-        checkScopeAttribute();
 
         try {
             final Object component = getInstance(className);
 
-            pageContext.setAttribute(name, component, getScopeValue());
+            pageContext.setAttribute(name, component, scope);
         } catch (Exception e) {
             LOG.error("error instantiating component for class name = " + className, e);
 

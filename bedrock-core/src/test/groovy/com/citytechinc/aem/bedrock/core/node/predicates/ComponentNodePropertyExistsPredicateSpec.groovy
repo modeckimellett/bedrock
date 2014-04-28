@@ -48,7 +48,7 @@ class ComponentNodePropertyExistsPredicateSpec extends BedrockSpec {
     def "node that throws exception is not included"() {
         setup:
         def node = Mock(Node) {
-            hasNode(_) >> {
+            hasProperty(_) >> {
                 throw new RepositoryException()
             }
         }

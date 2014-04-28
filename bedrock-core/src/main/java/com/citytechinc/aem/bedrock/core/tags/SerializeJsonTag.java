@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import java.io.IOException;
 
@@ -43,10 +42,9 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
     private String name;
 
     @Override
-    public int doEndTag() throws JspException {
+    public int doEndTag(final int scope) throws JspTagException {
         checkArgument(!isNullOrEmpty(className) || !isNullOrEmpty(instanceName),
             "className or instanceName is required");
-        checkScopeAttribute();
 
         try {
             final Object object;
@@ -54,14 +52,14 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
             if (isNullOrEmpty(className)) {
                 LOG.debug("doEndTag() serializing JSON for instance name = {}", instanceName);
 
-                object = pageContext.getAttribute(instanceName, getScopeValue());
+                object = pageContext.getAttribute(instanceName, scope);
             } else {
                 LOG.debug("doEndTag() serializing JSON for class name = {}", className);
 
                 object = getInstance(className);
 
                 if (!isNullOrEmpty(name)) {
-                    pageContext.setAttribute(name, object, getScopeValue());
+                    pageContext.setAttribute(name, object, scope);
                 }
             }
 

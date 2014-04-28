@@ -143,7 +143,7 @@ public final class DefaultBasicNode extends AbstractNode implements BasicNode {
         final String path;
 
         if (resource.getName().equals(JcrConstants.JCR_CONTENT)) {
-            path = resource.getParent().getPath();
+            path = resource.getParent().getPath(); // use page path for jcr:content nodes
         } else if (resource.getResourceType().equals(NameConstants.NT_PAGE)) {
             path = resource.getPath();
         } else {
@@ -151,8 +151,9 @@ public final class DefaultBasicNode extends AbstractNode implements BasicNode {
             final Page currentPage = pageManager.getContainingPage(resource);
 
             if (currentPage == null) {
-                path = resource.getPath();
+                path = resource.getPath(); // non-content path
             } else {
+                // remove page content path since resource path relative to jcr:content will always be unique
                 path = removeStart(getPath(), currentPage.getContentResource().getPath());
             }
         }
@@ -231,14 +232,17 @@ public final class DefaultBasicNode extends AbstractNode implements BasicNode {
         if (isHasImage(name)) {
             final StringBuilder builder = new StringBuilder();
 
+            // for pages and jcr:content nodes, use page path as start of image source
             if (JcrConstants.JCR_CONTENT.equals(resource.getName())) {
                 builder.append(resource.getParent().getPath());
             } else {
                 builder.append(resource.getPath());
             }
 
+            // this selector maps to the bedrock image servlet
             builder.append('.').append(IMAGE_SELECTOR);
 
+            //
             if (!name.equals(DEFAULT_IMAGE_NAME)) {
                 builder.append('.').append(name);
             }
