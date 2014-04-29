@@ -232,8 +232,8 @@ public final class DefaultBasicNode extends AbstractNode implements BasicNode {
         if (isHasImage(name)) {
             final StringBuilder builder = new StringBuilder();
 
-            // for pages and jcr:content nodes, use page path as start of image source
             if (JcrConstants.JCR_CONTENT.equals(resource.getName())) {
+                // for jcr:content nodes, use page path as start of image source
                 builder.append(resource.getParent().getPath());
             } else {
                 builder.append(resource.getPath());
@@ -242,7 +242,7 @@ public final class DefaultBasicNode extends AbstractNode implements BasicNode {
             // this selector maps to the bedrock image servlet
             builder.append('.').append(IMAGE_SELECTOR);
 
-            //
+            // only append name selector if not using the default name
             if (!name.equals(DEFAULT_IMAGE_NAME)) {
                 builder.append('.').append(name);
             }

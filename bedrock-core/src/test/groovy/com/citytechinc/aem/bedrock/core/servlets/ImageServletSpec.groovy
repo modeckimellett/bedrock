@@ -47,8 +47,8 @@ class ImageServletSpec extends BedrockSpec {
         "/content/home/jcr:content"           | ["img"]                | -1    | "image"
         "/content/home/jcr:content"           | ["img", "200"]         | 200   | "image"
         "/content/home/jcr:content"           | ["img", "meme", "200"] | 200   | "meme"
-        "/content/home/jcr:content/component" | ["img"]                | -1    | null
-        "/content/home/jcr:content/component" | ["img", "200"]         | 200   | null
+        "/content/home/jcr:content/component" | ["img"]                | -1    | "image"
+        "/content/home/jcr:content/component" | ["img", "200"]         | 200   | "image"
         "/content/home/jcr:content/component" | ["img", "meme", "200"] | 200   | "meme"
     }
 

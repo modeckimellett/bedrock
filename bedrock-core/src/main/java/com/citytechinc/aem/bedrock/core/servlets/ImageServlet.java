@@ -1,5 +1,6 @@
 package com.citytechinc.aem.bedrock.core.servlets;
 
+import com.citytechinc.aem.bedrock.core.constants.ComponentConstants;
 import com.day.cq.commons.ImageHelper;
 import com.day.cq.commons.jcr.JcrConstants;
 import com.day.cq.wcm.api.NameConstants;
@@ -35,34 +36,9 @@ public final class ImageServlet extends AbstractImageServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageServlet.class);
 
-    private static final String PAGE_IMAGE_NAME = "image";
-
     private static final double GIF_QUALITY = 255;
 
     private static final long serialVersionUID = 1L;
-
-    private static boolean isPage(final SlingHttpServletRequest request) {
-        final Resource resource = request.getResource();
-        final Node node = resource.adaptTo(Node.class);
-
-        boolean isPage = false;
-
-        try {
-            if (NameConstants.NT_PAGE.equals(node.getPrimaryNodeType().getName())) {
-                isPage = true;
-            }
-        } catch (RepositoryException re) {
-            LOG.error("error getting node type for resource = " + resource.getPath(), re);
-        }
-
-        return isPage;
-    }
-
-    private static boolean isPageContent(final SlingHttpServletRequest request) {
-        final Resource resource = request.getResource();
-
-        return JcrConstants.JCR_CONTENT.equals(resource.getName());
-    }
 
     @Override
     protected Layer createLayer(final ImageContext context) throws RepositoryException, IOException {
@@ -158,7 +134,7 @@ public final class ImageServlet extends AbstractImageServlet {
         if (width > -1 && ratioW != 0 && ratioH != 0) {
             final int height = (width * ratioH) / ratioW;
 
-            LOG.debug("resizeLayer() resizing to width = {}, height = {}", width, height);
+            LOG.debug("resizing to width = {}, height = {}", width, height);
 
             layer.resize(width, height);
 
@@ -172,56 +148,43 @@ public final class ImageServlet extends AbstractImageServlet {
 
         private final String name;
 
-        private final Resource resource;
-
         private final int width;
 
+        private final SlingHttpServletRequest request;
+
         public ImageWrapper(final SlingHttpServletRequest request) {
+            this.request = request;
+
             final String[] selectors = request.getRequestPathInfo().getSelectors();
-
-            final boolean isPage = isPage(request);
-
-            if (isPage) {
-                resource = request.getResource().getChild(JcrConstants.JCR_CONTENT);
-            } else {
-                resource = request.getResource();
-            }
 
             if (selectors.length > 1) {
                 final String selector = selectors[1];
 
                 if (isNumeric(selector)) {
-                    name = isPage || isPageContent(request) ? PAGE_IMAGE_NAME : null;
+                    name = ComponentConstants.DEFAULT_IMAGE_NAME;
                     width = Integer.valueOf(selector);
                 } else {
                     name = selector;
-
-                    if (selectors.length > 2) {
-                        width = Integer.valueOf(selectors[2]);
-                    } else {
-                        width = -1;
-                    }
+                    width = selectors.length > 2 ? Integer.valueOf(selectors[2]) : -1;
                 }
             } else {
-                name = isPage || isPageContent(request) ? PAGE_IMAGE_NAME : null;
+                name = ComponentConstants.DEFAULT_IMAGE_NAME;
                 width = -1;
             }
         }
 
         public Image getImage() {
-            final Image image;
+            final Resource resource;
 
-            if (name == null) {
-                LOG.debug("getImage() resource = {}", resource.getPath());
-
-                image = new Image(resource);
+            if (isPage(request)) {
+                resource = request.getResource().getChild(JcrConstants.JCR_CONTENT);
             } else {
-                LOG.debug("getImage() resource = {}, name = {}", resource.getPath(), name);
-
-                image = new Image(resource, name);
+                resource = request.getResource();
             }
 
-            return image;
+            LOG.debug("getImage() resource = {}, name = {}", resource.getPath(), name);
+
+            return new Image(resource, name);
         }
 
         public String getName() {
@@ -231,5 +194,22 @@ public final class ImageServlet extends AbstractImageServlet {
         public int getWidth() {
             return width;
         }
+    }
+
+    private static boolean isPage(final SlingHttpServletRequest request) {
+        final Resource resource = request.getResource();
+        final Node node = resource.adaptTo(Node.class);
+
+        boolean isPage = false;
+
+        try {
+            if (NameConstants.NT_PAGE.equals(node.getPrimaryNodeType().getName())) {
+                isPage = true;
+            }
+        } catch (RepositoryException re) {
+            LOG.error("error getting node type for resource = " + resource.getPath(), re);
+        }
+
+        return isPage;
     }
 }
