@@ -1,7 +1,7 @@
 package com.citytechinc.aem.bedrock.core.tags;
 
 import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
-import com.citytechinc.aem.bedrock.core.components.annotations.AutoInstantiate;
+import com.citytechinc.aem.bedrock.api.components.annotations.AutoInstantiate;
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
 import com.day.cq.wcm.api.components.Component;
 import org.apache.commons.lang3.StringUtils;
