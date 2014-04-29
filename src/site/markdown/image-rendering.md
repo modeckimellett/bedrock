@@ -2,7 +2,7 @@
 
 ### Overview
 
-CQ5 has default servlets for handling page and component level images.  However, the default image servlets only allow for a single image per page or component; the custom Bedrock Image Servlet adds the ability to provide additional selectors to specify named images and a width value for resizing the rendered image.
+AEM has default servlets for handling page and component level images.  However, the default image servlets only allow for a single image per page or component; the custom Bedrock Image Servlet adds the ability to provide additional selectors to specify named images and a width value for resizing the rendered image.
 
 ### Pages
 
@@ -29,6 +29,8 @@ URL                                      | Image Name        | Width | Method Na
 /content/home.img.100.png             | "image" (Default) | 100   | `getImageSource(100)`
 /content/home.img.secondimage.png     | "secondimage"     | Full  | `getImageSource("secondimage")`
 /content/home.img.secondimage.100.png | "secondimage"     | 100   | `getImageSource("secondimage", 100)`
+
+As illustrated in the table above, "image" is the default name for page images (in accordance with the foundation page dialog definition).
 
 ### Components
 
@@ -73,8 +75,10 @@ URL                                                                | Image Name 
 /content/home/jcr:content/par/component.img.secondimage.png     | "secondimage"     | Full  | `getImageSource("secondimage")`
 /content/home/jcr:content/par/component.img.secondimage.100.png | "secondimage"     | 100   | `getImageSource("secondimage", 100)`
 
+As with pages, we specify "image" as the default image name to align with the page-level convention.
+
 ### Tag Library
 
 As detailed on the [Tag Library](https://github.com/Citytechinc/bedrock/wiki/Tag-Library) wiki page, the Image Source tag can be used to render URLs directly in JSPs without calling the above methods in a component Java class.
 
-    <img src="<ct:imageSource name="secondimage" width="100"/>">
+    <img src="<bedrock:imageSource name="secondimage" width="100"/>">

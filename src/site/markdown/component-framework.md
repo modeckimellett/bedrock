@@ -10,14 +10,14 @@ The component JSP needs to include the Bedrock `global.jsp` to define the tag na
 
 Component Java classes can be instantiated in one of two ways:
 
-* Include the `<ct:component/>` tag in the JSP as shown below.
+* Include the `<bedrock:component/>` tag in the JSP as shown below.
 * Define a `className` attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.aem.bedrock.components.annotations.AutoInstantiate` annotation.
 
-In the latter case, the `global.jsp` will instantiate the component class via the `<ct:defineObjects/>` tag included therein.
+In the latter case, the `global.jsp` will instantiate the component class via the `<bedrock:defineObjects/>` tag included therein.
 
     <%@include file="/apps/bedrock/components/global.jsp"%>
 
-    <ct:component className="com.projectname.cq.components.content.Navigation" name="navigation"/>
+    <bedrock:component className="com.projectname.cq.components.content.Navigation" name="navigation"/>
 
     <h1>${navigation.title}</h1>
 
@@ -54,7 +54,7 @@ The backing Java class for the component should expose getters for the values th
 
 ### Abstract Component Java Class
 
-The `AbstractComponent` class should be extended by all component backing classes.  This base class enforces the creation of a single argument constructor that takes a `ComponentRequest` argument, which is required by the `<ct:component/>` JSP tag to instantiate the component class and provide the required page context attributes.  The additional `ComponentNode` constructor allows for component classes to instantiate other component classes directly.
+The `AbstractComponent` class should be extended by all component backing classes.  This base class enforces the creation of a single argument constructor that takes a `ComponentRequest` argument, which is required by the `<bedrock:component/>` JSP tag to instantiate the component class and provide the required page context attributes.  The additional `ComponentNode` constructor allows for component classes to instantiate other component classes directly.
 
     final PageDecorator homepage = request.getPageManager().getPage("/content/home");
 

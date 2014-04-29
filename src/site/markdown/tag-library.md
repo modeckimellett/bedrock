@@ -4,7 +4,7 @@
 
 Add to and/or override attributes set in page context for use in JSPs.
 
-    <ct:defineObjects/>
+    <bedrock:defineObjects/>
 
 This tag is already defined in the Bedrock `global.jsp`, so most projects should just include this file in component JSPs rather than using the tag directly.
 
@@ -29,9 +29,9 @@ currentPage | `PageDecorator` for current page, replaces default WCM `Page` obje
 
 Force "disabled" WCM mode in the tag body.  Useful for removing authoring capabilities in nested components.
 
-    <ct:disableAuthor>
+    <bedrock:disableAuthor>
         ...
-    </ct:disableAuthor>
+    </bedrock:disableAuthor>
 
 ### Title
 
@@ -43,7 +43,7 @@ propertyName | false | Name of property containing the title to display.  Defaul
 suffix | false | Value to append after the title property value.
 
     <head>
-        <ct:title propertyName="pageTitle" suffix=" | CITYTECH, Inc."/>
+        <bedrock:title propertyName="pageTitle" suffix=" | CITYTECH, Inc."/>
     </head>
 
 ### Keywords
@@ -51,7 +51,7 @@ suffix | false | Value to append after the title property value.
 Render the keywords for the current page.
 
     <head>
-        <ct:keywords/>
+        <bedrock:keywords/>
     </head>
 
 ### Description
@@ -64,7 +64,7 @@ propertyName | false | Name of property containing the description to display.  
 suffix | false | Value to append after the description property value.
 
     <head>
-        <ct:description/>
+        <bedrock:description/>
     </head>
 
 ### Component
@@ -77,7 +77,7 @@ className | true | Name of component class to instantiate.
 name | true | Name to use for page context attribute containing the instantiated component class.
 scope | false | JSP scope for component in page context.  Defaults to `page`.  Must be one of `page`, `request`, `session`, or `application`.
 
-    <ct:component className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
+    <bedrock:component className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
 
 ### Serialize JSON
 
@@ -90,11 +90,11 @@ instanceName | false | Name of existing component or object in page context.  `c
 name | false | Name to use for page context attribute containing the instantiated component class.  Only applies when `className` is set.
 scope | false | JSP scope for class in page context.  Defaults to `page`.  Must be one of `page`, `request`, `session`, or `application`.
 
-    <ct:serializeJson className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
+    <bedrock:serializeJson className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
 
 or
 
-    <ct:serializeJson instanceName="navigation"/>
+    <bedrock:serializeJson instanceName="navigation"/>
 
 ### Property
 
@@ -107,7 +107,7 @@ defaultValue | false | Value to display if the named property does not exist on 
 escapeXml | false | If `false`, XML property values will not be escaped.  This should be set to `false` if the property value may contain markup (e.g. rich text editor).  Defaults to `true`.
 inherit | false | If `true`, value will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
-    <ct:property propertyName="heading" defaultValue="Heading" escapeXml="false" inherit="true"/>
+    <bedrock:property propertyName="heading" defaultValue="Heading" escapeXml="false" inherit="true"/>
 
 ### Property Boolean
 
@@ -121,7 +121,7 @@ true | false | Value to display instead of `true` if the property value is `true
 false | false | Value to display instead of `false` if the property value is `false`, e.g. "No".
 inherit | false | If `true`, value will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
-    <ct:propertyBoolean propertyName="isSelected" defaultValue="true" true="Yes" false="No"/>
+    <bedrock:propertyBoolean propertyName="isSelected" defaultValue="true" true="Yes" false="No"/>
 
 ### Href
 
@@ -133,7 +133,7 @@ propertyName | true | Name of property containing a path or external URL value t
 defaultValue | false | Value to display if the named property does not exist on the current component.
 inherit | false | If `true`, value will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
-    <a href="<ct:href propertyName="path" defaultValue="/page.html" inherit="true"/>">Link</a>
+    <a href="<bedrock:href propertyName="path" defaultValue="/page.html" inherit="true"/>">Link</a>
 
 ### Image
 
@@ -145,7 +145,7 @@ name | false | Name of image for the current component.  Defaults to `image`.
 alt | false | Image alt text.
 title | false | Image title.
 
-    <ct:image name="thumbnail" alt="Thumbnail" title="Thumbnail"/>
+    <bedrock:image name="thumbnail" alt="Thumbnail" title="Thumbnail"/>
 
 ### Image Source
 
@@ -158,4 +158,4 @@ width | false | Width in pixels to render the image.  The width value will be us
 defaultValue | false | Image source to display if the named image does not exist on the current component.  Defaults to "".
 inherit | false | If `true`, image source will be inherited from ancestor components before returning the default value if not found.  Defaults to `false`.
 
-    <img src="<ct:imageSource name="thumbnailImage" width="500"/>">
+    <img src="<bedrock:imageSource name="thumbnailImage" width="500"/>">
