@@ -1,15 +1,14 @@
 package com.citytechinc.aem.bedrock.core.node.impl;
 
 import com.citytechinc.aem.bedrock.api.link.Link;
-import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator;
+import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
-import static com.citytechinc.aem.bedrock.core.link.impl.LinkFunctions.PATH_TO_LINK;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractNode {
@@ -24,36 +23,27 @@ public abstract class AbstractNode {
 
     protected Optional<Link> getLinkOptional(final Optional<String> pathOptional, final boolean strict,
         final boolean mapped) {
-        final ResourceResolver resourceResolver = resource.getResourceResolver();
 
-        final Function<String, Link> linkFunction = getLinkFunction(strict);
-        final Function<String, String> mapFunction = new Function<String, String>() {
+
+
+
+        return pathOptional.transform(new Function<String, Link>() {
             @Override
-            public String apply(final String path) {
-                return mapped ? resourceResolver.map(path) : path;
-            }
-        };
+            public Link apply(final String path) {
+                final ResourceResolver resourceResolver = resource.getResourceResolver();
+                final String mappedPath = mapped ? resourceResolver.map(path) : path;
 
-        return pathOptional.transform(mapFunction).transform(linkFunction);
-    }
+                final Link link;
 
-    private Function<String, Link> getLinkFunction(final boolean strict) {
-        final ResourceResolver resourceResolver = resource.getResourceResolver();
-
-        final Function<String, Link> toLink;
-
-        if (strict) {
-            toLink = new Function<String, Link>() {
-                @Override
-                public Link apply(final String path) {
-                    return DefaultLinkBuilder.forPath(resourceResolver, path).build();
+                if (strict) {
+                    link = DefaultLinkBuilder.forPath(resourceResolver, mappedPath).build();
+                } else {
+                    link = DefaultLinkBuilder.forPath(mappedPath).build();
                 }
-            };
-        } else {
-            toLink = PATH_TO_LINK;
-        }
 
-        return toLink;
+                return link;
+            }
+        });
     }
 
     protected Optional<PageDecorator> getPageOptional(final String path) {

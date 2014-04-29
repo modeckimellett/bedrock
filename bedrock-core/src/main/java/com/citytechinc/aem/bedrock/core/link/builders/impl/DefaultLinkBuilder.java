@@ -32,6 +32,7 @@ import java.util.Set;
 import static com.citytechinc.aem.bedrock.core.utils.PathUtils.isExternal;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.sling.api.resource.Resource.RESOURCE_TYPE_NON_EXISTING;
 
 public final class DefaultLinkBuilder implements LinkBuilder {
 
@@ -72,7 +73,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     private DefaultLinkBuilder(final ResourceResolver resourceResolver, final String path) {
         this.path = path;
 
-        external = resourceResolver.getResource(path) == null;
+        external = RESOURCE_TYPE_NON_EXISTING.equals(resourceResolver.resolve(path).getResourceType());
     }
 
     private DefaultLinkBuilder(final String path) {
