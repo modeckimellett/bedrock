@@ -10,6 +10,7 @@ import com.day.cq.wcm.foundation.Image;
 import com.day.image.Layer;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
+import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -87,8 +88,8 @@ public final class ImageServlet extends AbstractImageServlet {
         // will force revalidation using If-Modified-Since or If-None-Match every time,
         // avoiding aggressive browser caching
         if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
-            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            response.setHeader("Expires", "0");
+            response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
+            response.setHeader(HttpHeaders.EXPIRES, "0");
         }
 
         if (modified) {
