@@ -11,13 +11,13 @@ The component JSP needs to include the Bedrock `global.jsp` to define the tag na
 Component Java classes can be instantiated in one of two ways:
 
 * Include the `<bedrock:component/>` tag in the JSP as shown below.
-* Define a `className` attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.aem.bedrock.components.annotations.AutoInstantiate` annotation.
+* Define a `className` attribute in the `.content.xml` descriptor file for the component and annotate the Java class with the `com.citytechinc.aem.bedrock.api.components.annotations.AutoInstantiate` annotation.
 
 In the latter case, the `global.jsp` will instantiate the component class via the `<bedrock:defineObjects/>` tag included therein.
 
     <%@include file="/apps/bedrock/components/global.jsp"%>
 
-    <bedrock:component className="com.projectname.cq.components.content.Navigation" name="navigation"/>
+    <bedrock:component className="com.projectname.components.content.Navigation" name="navigation"/>
 
     <h1>${navigation.title}</h1>
 
@@ -29,11 +29,11 @@ In the latter case, the `global.jsp` will instantiate the component class via th
 
 The backing Java class for the component should expose getters for the values that required to render the component's view.
 
-    package com.projectname.aem.bedrock.components.content;
+    package com.projectname.components.content;
 
-    import com.citytechinc.aem.bedrock.components.AbstractComponent;
-    import com.citytechinc.aem.bedrock.content.page.PageDecorator;
-    import com.citytechinc.aem.bedrock.content.request.ComponentRequest;
+    import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
+    import com.citytechinc.aem.bedrock.api.content.page.PageDecorator;
+    import com.citytechinc.aem.bedrock.api.content.request.ComponentRequest;
 
     import java.util.List;
 
@@ -66,7 +66,7 @@ The `AbstractComponent` class should be extended by all component backing classe
         final LatestNews latestNews = new LatestNews(latestNewsComponentNode.get());
     }
 
-See the [Javadoc](http://code.citytechinc.com/bedrock/apidocs/com/citytechinc/aem/bedrock/components/AbstractComponent.html) for details of the available methods.
+See the [Javadoc](http://code.citytechinc.com/bedrock/apidocs/com/citytechinc/aem/bedrock/core/components/AbstractComponent.html) for details of the available methods.
 
 ### Development Guidelines
 

@@ -19,6 +19,8 @@ isPublish | Is publish environment?
 isEditMode | Is edit mode?
 isDesignMode | Is design mode?
 isPreviewMode | Is preview mode?
+isReadOnlyMode | Is Read-Only mode?
+isAnalyticsMode | Is Analytics mode?
 isDebug | Is request parameter debug=true?
 componentRequest | `ComponentRequest` object for current component
 componentNode | `ComponentNode` object for current component
@@ -69,7 +71,7 @@ suffix | false | Value to append after the description property value.
 
 ### Component
 
-Instantiates a Component class and sets it in JSP page context.
+Instantiates a component Java class and sets it in JSP page context.
 
 Attribute | Required | Description
 :---------|:---------|:-----------
@@ -77,7 +79,7 @@ className | true | Name of component class to instantiate.
 name | true | Name to use for page context attribute containing the instantiated component class.
 scope | false | JSP scope for component in page context.  Defaults to `page`.  Must be one of `page`, `request`, `session`, or `application`.
 
-    <bedrock:component className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
+    <bedrock:component className="com.projectname.components.content.Navigation" name="navigation" scope="request"/>
 
 ### Serialize JSON
 
@@ -90,7 +92,7 @@ instanceName | false | Name of existing component or object in page context.  `c
 name | false | Name to use for page context attribute containing the instantiated component class.  Only applies when `className` is set.
 scope | false | JSP scope for class in page context.  Defaults to `page`.  Must be one of `page`, `request`, `session`, or `application`.
 
-    <bedrock:serializeJson className="com.citytechinc.cq.components.Navigation" name="navigation" scope="request"/>
+    <bedrock:serializeJson className="com.projectname.components.content.Navigation" name="navigation" scope="request"/>
 
 or
 

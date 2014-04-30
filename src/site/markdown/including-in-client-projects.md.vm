@@ -2,7 +2,7 @@
 
 $symbol_pound$symbol_pound Including in Client Projects
 
-New projects should use the [CITYTECH CQ5 Maven Archetype](https://github.com/Citytechinc/cq5-archetype) rather than including the library manually as outlined below.  The details are provided here for reference.
+New projects should use the [CITYTECH CQ Maven Archetype](https://github.com/Citytechinc/cq-archetype) rather than including the library manually as outlined below.  The details are provided here for reference.
 
 Define Bedrock as the parent of a Maven project to inherit dependency and plugin management.
 
@@ -12,10 +12,15 @@ Define Bedrock as the parent of a Maven project to inherit dependency and plugin
         <version>${project.version}</version>
     </parent>
 
-The including project's Core module POM must also include the Bedrock Core module as a compile-scoped dependency.
+The including project's Core module POM must also include the Bedrock API and Core modules as a compile-scoped dependency.
 
     <dependencies>
         ...
+        <dependency>
+            <groupId>com.citytechinc.aem.bedrock</groupId>
+            <artifactId>bedrock-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.citytechinc.aem.bedrock</groupId>
             <artifactId>bedrock-core</artifactId>
@@ -59,4 +64,4 @@ The project's assembly descriptor (typically src/main/assembly/zip.xml in the UI
         </dependencySet>
     </dependencySets>
 
-Including Bedrock in this manner eliminates the need to build and install the Bedrock package separately and/or activate additional Maven profiles.
+Including Bedrock in this manner eliminates the need to build and install the project package separately and/or activate additional Maven profiles.

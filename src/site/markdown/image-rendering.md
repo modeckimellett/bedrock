@@ -79,6 +79,6 @@ As with pages, we specify "image" as the default image name to align with the pa
 
 ### Tag Library
 
-As detailed on the [Tag Library](https://github.com/Citytechinc/bedrock/wiki/Tag-Library) wiki page, the Image Source tag can be used to render URLs directly in JSPs without calling the above methods in a component Java class.
+As detailed on the [Tag Library](https://github.com/Citytechinc/bedrock/wiki/tag-library) wiki page, the Image Source tag can be used to render URLs directly in JSPs without calling the above methods in a component Java class.
 
     <img src="<bedrock:imageSource name="secondimage" width="100"/>">

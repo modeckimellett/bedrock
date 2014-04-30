@@ -23,10 +23,6 @@ public abstract class AbstractNode {
 
     protected Optional<Link> getLinkOptional(final Optional<String> pathOptional, final boolean strict,
         final boolean mapped) {
-
-
-
-
         return pathOptional.transform(new Function<String, Link>() {
             @Override
             public Link apply(final String path) {
