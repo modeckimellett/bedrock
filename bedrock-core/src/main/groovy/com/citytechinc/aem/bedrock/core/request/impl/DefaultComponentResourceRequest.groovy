@@ -12,6 +12,8 @@ import org.apache.sling.api.resource.ValueMap
 import javax.jcr.Node
 import javax.jcr.Session
 
+import static com.google.common.base.Preconditions.checkNotNull
+
 final class DefaultComponentResourceRequest implements ComponentResourceRequest {
 
     final ComponentNode componentNode
@@ -29,7 +31,7 @@ final class DefaultComponentResourceRequest implements ComponentResourceRequest 
     final ResourceResolver resourceResolver
 
     DefaultComponentResourceRequest(Resource resource) {
-        this.resource = resource
+        this.resource = checkNotNull(resource)
 
         resourceResolver = resource.resourceResolver
         properties = ResourceUtil.getValueMap(resource)
