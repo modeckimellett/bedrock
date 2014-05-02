@@ -15,10 +15,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractNode {
 
-    protected final Resource resource;
+    protected final Resource resourceInternal;
 
     protected AbstractNode(final Resource resource) {
-        this.resource = checkNotNull(resource);
+        this.resourceInternal = checkNotNull(resource);
     }
 
     protected Optional<Link> getLinkOptional(final Optional<String> pathOptional, final boolean strict,
@@ -26,7 +26,7 @@ public abstract class AbstractNode {
         return pathOptional.transform(new Function<String, Link>() {
             @Override
             public Link apply(final String path) {
-                final ResourceResolver resourceResolver = resource.getResourceResolver();
+                final ResourceResolver resourceResolver = resourceInternal.getResourceResolver();
                 final String mappedPath = mapped ? resourceResolver.map(path) : path;
 
                 final LinkBuilder builder = DefaultLinkBuilder.forPath(mappedPath);
@@ -46,7 +46,7 @@ public abstract class AbstractNode {
         if (path.isEmpty()) {
             pageOptional = Optional.absent();
         } else {
-            final PageDecorator page = resource.getResourceResolver().adaptTo(PageManagerDecorator.class).getPage(path);
+            final PageDecorator page = resourceInternal.getResourceResolver().adaptTo(PageManagerDecorator.class).getPage(path);
 
             pageOptional = Optional.fromNullable(page);
         }
