@@ -2,11 +2,13 @@ package com.citytechinc.aem.bedrock.core.utils;
 
 import com.citytechinc.aem.bedrock.core.constants.PathConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.ResourceResolver;
 
 import java.util.regex.Pattern;
 
 import static com.citytechinc.aem.bedrock.core.constants.PathConstants.PATH_JCR_CONTENT;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.sling.api.resource.Resource.RESOURCE_TYPE_NON_EXISTING;
 
 /**
  * JCR path utilities.
@@ -38,6 +40,18 @@ public final class PathUtils {
      */
     public static boolean isExternal(final String path) {
         return !checkNotNull(path).startsWith("/");
+    }
+
+    /**
+     * Determine if the given path is external by verifying that it corresponds to an existing Sling resource.
+     *
+     * @param path JCR path or external URL
+     * @param resourceResolver Sling resource resolver
+     * @return true if path resolves to a valid Sling resource
+     */
+    public static boolean isExternal(final String path, final ResourceResolver resourceResolver) {
+        return RESOURCE_TYPE_NON_EXISTING.equals(checkNotNull(resourceResolver).resolve(checkNotNull(path))
+            .getResourceType());
     }
 
     /**
