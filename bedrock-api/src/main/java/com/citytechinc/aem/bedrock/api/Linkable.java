@@ -18,7 +18,7 @@ public interface Linkable {
     /**
      * Get the mapped URL for this item.
      *
-     * @param mapped if true, the path will be routed through the Resource Resolver to determine the mapped path (e.g.
+     * @param mapped if true, the path will be routed through the resource resolver to determine the mapped path (e.g.
      * without leading "/content").
      * @return mapped href
      */
@@ -34,20 +34,24 @@ public interface Linkable {
     /**
      * Get a link for this item.
      *
-     * @param mapped if true, the <code>Link</code> path will be routed through the Resource Resolver to determine the
+     * @param mapped if true, the <code>Link</code> path will be routed through the resource resolver to determine the
      * mapped path (e.g. without leading "/content").
      * @return mapped link
      */
     Link getLink(boolean mapped);
 
     /**
+     * Get a link builder for the current resource path.
+     *
      * @return builder instance for this item
      */
     LinkBuilder getLinkBuilder();
 
     /**
-     * @param mapped if true, the <code>LinkBuilder</code> for this resource will be routed through the Resource
-     * Resolver to determine the mapped path (e.g. without leading "/content").
+     * Get a mapped link builder for the current resource path.
+     *
+     * @param mapped if true, the <code>LinkBuilder</code> for this resource will be routed through the resource
+     * resolver to determine the mapped path (e.g. without leading "/content").
      * @return builder instance for this item containing the mapped link
      */
     LinkBuilder getLinkBuilder(boolean mapped);
