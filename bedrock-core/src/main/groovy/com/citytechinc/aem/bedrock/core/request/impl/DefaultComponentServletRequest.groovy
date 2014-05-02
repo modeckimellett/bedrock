@@ -43,6 +43,8 @@ final class DefaultComponentServletRequest implements ComponentServletRequest {
     private final ComponentResourceRequest delegate
 
     DefaultComponentServletRequest(Bindings bindings) {
+        checkNotNull(bindings)
+
         slingRequest = bindings.get(REQUEST) as SlingHttpServletRequest
         slingResponse = bindings.get(RESPONSE) as SlingHttpServletResponse
 
@@ -50,8 +52,8 @@ final class DefaultComponentServletRequest implements ComponentServletRequest {
     }
 
     DefaultComponentServletRequest(SlingHttpServletRequest slingRequest, SlingHttpServletResponse slingResponse) {
-        this.slingRequest = slingRequest
-        this.slingResponse = slingResponse
+        this.slingRequest = checkNotNull(slingRequest)
+        this.slingResponse = checkNotNull(slingResponse)
 
         delegate = new DefaultComponentResourceRequest(slingRequest.resource)
     }
