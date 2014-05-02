@@ -13,7 +13,6 @@ import com.day.cq.wcm.api.Revision;
 import com.day.cq.wcm.api.Template;
 import com.day.cq.wcm.api.WCMException;
 import com.day.cq.wcm.api.msm.Blueprint;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -214,13 +213,6 @@ public final class DefaultPageManagerDecorator implements PageManagerDecorator {
     @Override
     public PageDecorator getPage(final Page page) {
         return decoratePage(page);
-    }
-
-    @Override
-    public Optional<PageDecorator> getPageOptional(final String path) {
-        checkNotNull(path);
-
-        return Optional.fromNullable(getPage(path));
     }
 
     @Override

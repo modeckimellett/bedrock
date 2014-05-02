@@ -17,7 +17,8 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
         static final def MAP = ["/content/us": "/content/us/home"]
 
-        @Delegate ResourceResolver resourceResolver
+        @Delegate
+        ResourceResolver resourceResolver
 
         MappingResourceResolver(resourceResolver) {
             this.resourceResolver = resourceResolver
@@ -121,10 +122,10 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
         resource.resourceResolver >> new MappingResourceResolver(resourceResolver)
 
         def page = [
-            adaptTo: { resource },
+            adaptTo      : { resource },
             getProperties: { ValueMap.EMPTY },
-            getTitle: { "" },
-            getPath: { path }
+            getTitle     : { "" },
+            getPath      : { path }
         ] as Page
 
         def link = DefaultLinkBuilder.forPage(page, mapped).build()
@@ -176,20 +177,21 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
         null      | ""        | "localhost" | 0    | true   | "https://localhost/content.html"
     }
 
-    def "build link for strict path"() {
+    def "build link and set external"() {
         setup:
-        def builder = DefaultLinkBuilder.forPath(resourceResolver, path)
+        def builder = DefaultLinkBuilder.forPath("/content")
+
+        builder.external = external
+
+        def link = builder.build()
 
         expect:
-        builder.build().href == href
+        link.href == href
 
         where:
-        path                          | href
-        "/content/global"             | "/content/global.html"
-        "/content/global/jcr:content" | "/content/global/jcr:content.html"
-        "/content/page"               | "/content/page"
-        "etc"                         | "etc"
-        "/webapp"                     | "/webapp"
+        external | href
+        true     | "/content"
+        false    | "/content.html"
     }
 
     def "build link for path with selectors"() {

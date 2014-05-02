@@ -1,16 +1,16 @@
 package com.citytechinc.aem.bedrock.core.link.builders.impl;
 
-import com.citytechinc.aem.bedrock.core.constants.PathConstants;
-import com.citytechinc.aem.bedrock.core.constants.PropertyConstants;
 import com.citytechinc.aem.bedrock.api.link.ImageLink;
 import com.citytechinc.aem.bedrock.api.link.Link;
 import com.citytechinc.aem.bedrock.api.link.NavigationLink;
 import com.citytechinc.aem.bedrock.api.link.builders.LinkBuilder;
 import com.citytechinc.aem.bedrock.api.link.enums.LinkTarget;
+import com.citytechinc.aem.bedrock.api.page.enums.TitleType;
+import com.citytechinc.aem.bedrock.core.constants.PathConstants;
 import com.citytechinc.aem.bedrock.core.link.impl.DefaultImageLink;
 import com.citytechinc.aem.bedrock.core.link.impl.DefaultLink;
 import com.citytechinc.aem.bedrock.core.link.impl.DefaultNavigationLink;
-import com.citytechinc.aem.bedrock.api.page.enums.TitleType;
+import com.citytechinc.aem.bedrock.core.utils.PathUtils;
 import com.day.cq.wcm.api.Page;
 import com.google.common.base.Charsets;
 import com.google.common.collect.LinkedHashMultimap;
@@ -19,7 +19,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,20 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.citytechinc.aem.bedrock.core.utils.PathUtils.isExternal;
+import static com.citytechinc.aem.bedrock.core.constants.PropertyConstants.REDIRECT_TARGET;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.apache.sling.api.resource.Resource.RESOURCE_TYPE_NON_EXISTING;
 
 public final class DefaultLinkBuilder implements LinkBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultLinkBuilder.class);
 
     private static final String UTF_8 = Charsets.UTF_8.name();
-
-    private final List<NavigationLink> children = Lists.newArrayList();
-
-    private final boolean external;
 
     private final SetMultimap<String, String> parameters = LinkedHashMultimap.create();
 
@@ -52,17 +46,23 @@ public final class DefaultLinkBuilder implements LinkBuilder {
 
     private final List<String> selectors = Lists.newArrayList();
 
-    private boolean active;
+    private final List<NavigationLink> children = Lists.newArrayList();
 
-    private String extension;
+    // initialized with default values
 
-    private String host;
+    private boolean isExternal = false;
+
+    private boolean isActive = false;
+
+    private String extension = null;
+
+    private String host = null;
 
     private String imageSource = "";
 
-    private int port;
+    private int port = 0;
 
-    private boolean secure;
+    private boolean secure = false;
 
     private String suffix = "";
 
@@ -70,16 +70,10 @@ public final class DefaultLinkBuilder implements LinkBuilder {
 
     private String title = "";
 
-    private DefaultLinkBuilder(final ResourceResolver resourceResolver, final String path) {
-        this.path = path;
-
-        external = RESOURCE_TYPE_NON_EXISTING.equals(resourceResolver.resolve(path).getResourceType());
-    }
-
     private DefaultLinkBuilder(final String path) {
         this.path = path;
 
-        external = isExternal(path);
+        isExternal = PathUtils.isExternal(path);
     }
 
     /**
@@ -92,8 +86,8 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     public static LinkBuilder forLink(final Link link) {
         checkNotNull(link);
 
-        return new DefaultLinkBuilder(link.getPath()).setExtension(link.getExtension()).setTitle(link.getTitle()).setTarget(
-            link.getTarget());
+        return new DefaultLinkBuilder(link.getPath()).setExtension(link.getExtension()).setTitle(link.getTitle())
+            .setTarget(link.getTarget());
     }
 
     /**
@@ -115,11 +109,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
      * @return builder containing the path and title of the given page
      */
     public static LinkBuilder forPage(final Page page, final TitleType titleType) {
-        checkNotNull(page);
-
-        final String title = page.getProperties().get(titleType.getPropertyName(), page.getTitle());
-
-        return new DefaultLinkBuilder(getPagePath(page, false)).setTitle(title);
+        return forPage(page, false, titleType);
     }
 
     /**
@@ -143,9 +133,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
      * @return builder containing the path and title of the given page
      */
     public static LinkBuilder forPage(final Page page, final boolean mapped, final TitleType titleType) {
-        checkNotNull(page);
-
-        final String title = page.getProperties().get(titleType.getPropertyName(), page.getTitle());
+        final String title = checkNotNull(page).getProperties().get(titleType.getPropertyName(), page.getTitle());
 
         return new DefaultLinkBuilder(getPagePath(page, mapped)).setTitle(title);
     }
@@ -157,24 +145,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
      * @return builder containing the given path
      */
     public static LinkBuilder forPath(final String path) {
-        checkNotNull(path);
-
-        return new DefaultLinkBuilder(path);
-    }
-
-    /**
-     * Get a builder instance for a path, using strict resource resolution to determine if the path is external.  Links
-     * will only be considered external if the given path does not resolve to a resource.
-     *
-     * @param resourceResolver resource resolver
-     * @param path content or external path
-     * @return builder containing the given path
-     */
-    public static LinkBuilder forPath(final ResourceResolver resourceResolver, final String path) {
-        checkNotNull(resourceResolver);
-        checkNotNull(path);
-
-        return new DefaultLinkBuilder(resourceResolver, path);
+        return new DefaultLinkBuilder(checkNotNull(path));
     }
 
     /**
@@ -197,29 +168,20 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     public static LinkBuilder forResource(final Resource resource, final boolean mapped) {
         checkNotNull(resource);
 
-        final String path;
+        final String path = resource.getPath();
+        final String mappedPath = mapped ? resource.getResourceResolver().map(path) : path;
 
-        if (mapped) {
-            final ResourceResolver resourceResolver = resource.getResourceResolver();
-
-            path = resourceResolver.map(resource.getPath());
-        } else {
-            path = resource.getPath();
-        }
-
-        return new DefaultLinkBuilder(path);
+        return new DefaultLinkBuilder(mappedPath);
     }
 
     private static String getPagePath(final Page page, final boolean mapped) {
-        final String redirect = page.getProperties().get(PropertyConstants.REDIRECT_TARGET, "");
+        final String redirect = page.getProperties().get(REDIRECT_TARGET, "");
         final String path = redirect.isEmpty() ? page.getPath() : redirect;
 
         final String result;
 
         if (mapped) {
-            final ResourceResolver resourceResolver = page.adaptTo(Resource.class).getResourceResolver();
-
-            result = resourceResolver.map(path);
+            result = page.adaptTo(Resource.class).getResourceResolver().map(path);
         } else {
             result = path;
         }
@@ -236,10 +198,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
 
     @Override
     public LinkBuilder addParameter(final String name, final String value) {
-        checkNotNull(name);
-        checkNotNull(value);
-
-        parameters.put(name, value);
+        parameters.put(checkNotNull(name), checkNotNull(value));
 
         return this;
     }
@@ -267,10 +226,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
 
     @Override
     public LinkBuilder addProperty(final String name, final String value) {
-        checkNotNull(name);
-        checkNotNull(value);
-
-        properties.put(name, value);
+        properties.put(checkNotNull(name), checkNotNull(value));
 
         return this;
     }
@@ -294,14 +250,15 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         final StringBuilder builder = new StringBuilder();
 
         builder.append(buildHost());
-        builder.append(buildPathWithSelectors());
+        builder.append(path);
+        builder.append(buildSelectors());
 
         final String extension;
 
         if (path.contains(PathConstants.SELECTOR)) {
             extension = path.substring(path.indexOf(PathConstants.SELECTOR) + 1);
         } else {
-            if (external) {
+            if (isExternal) {
                 extension = "";
             } else {
                 extension = this.extension == null ? PathConstants.EXTENSION_HTML : this.extension;
@@ -321,9 +278,9 @@ public final class DefaultLinkBuilder implements LinkBuilder {
 
         final String href = builder.toString();
 
-        LOG.debug("build() href = {}", href);
+        LOG.debug("building href = {}", href);
 
-        return new DefaultLink(path, extension, suffix, href, selectors, queryString, external, target, title,
+        return new DefaultLink(path, extension, suffix, href, selectors, queryString, isExternal, target, title,
             properties);
     }
 
@@ -338,12 +295,12 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     public NavigationLink buildNavigationLink() {
         final Link link = build();
 
-        return new DefaultNavigationLink(link, active, children);
+        return new DefaultNavigationLink(link, isActive, children);
     }
 
     @Override
-    public LinkBuilder setActive(final boolean active) {
-        this.active = active;
+    public LinkBuilder setActive(final boolean isActive) {
+        this.isActive = isActive;
 
         return this;
     }
@@ -351,6 +308,13 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     @Override
     public LinkBuilder setExtension(final String extension) {
         this.extension = extension;
+
+        return this;
+    }
+
+    @Override
+    public LinkBuilder setExternal(final boolean isExternal) {
+        this.isExternal = isExternal;
 
         return this;
     }
@@ -377,8 +341,8 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     }
 
     @Override
-    public LinkBuilder setSecure(final boolean secure) {
-        this.secure = secure;
+    public LinkBuilder setSecure(final boolean isSecure) {
+        this.secure = isSecure;
 
         return this;
     }
@@ -407,7 +371,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     private String buildHost() {
         final StringBuilder builder = new StringBuilder();
 
-        if (!external && isNotEmpty(host)) {
+        if (!isExternal && isNotEmpty(host)) {
             builder.append(secure ? "https" : "http");
             builder.append("://");
             builder.append(host);
@@ -419,10 +383,6 @@ public final class DefaultLinkBuilder implements LinkBuilder {
         }
 
         return builder.toString();
-    }
-
-    private String buildPathWithSelectors() {
-        return path + buildSelectors();
     }
 
     private String buildQueryString() {
@@ -456,7 +416,7 @@ public final class DefaultLinkBuilder implements LinkBuilder {
     private String buildSelectors() {
         final StringBuilder builder = new StringBuilder();
 
-        if (!external) {
+        if (!isExternal) {
             for (final String selector : selectors) {
                 builder.append('.');
                 builder.append(selector);

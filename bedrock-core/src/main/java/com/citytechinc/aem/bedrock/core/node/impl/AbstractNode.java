@@ -1,6 +1,7 @@
 package com.citytechinc.aem.bedrock.core.node.impl;
 
 import com.citytechinc.aem.bedrock.api.link.Link;
+import com.citytechinc.aem.bedrock.api.link.builders.LinkBuilder;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator;
 import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder;
@@ -9,6 +10,7 @@ import com.google.common.base.Optional;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
+import static com.citytechinc.aem.bedrock.core.utils.PathUtils.isExternal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractNode {
@@ -16,9 +18,7 @@ public abstract class AbstractNode {
     protected final Resource resource;
 
     protected AbstractNode(final Resource resource) {
-        checkNotNull(resource);
-
-        this.resource = resource;
+        this.resource = checkNotNull(resource);
     }
 
     protected Optional<Link> getLinkOptional(final Optional<String> pathOptional, final boolean strict,
@@ -29,15 +29,13 @@ public abstract class AbstractNode {
                 final ResourceResolver resourceResolver = resource.getResourceResolver();
                 final String mappedPath = mapped ? resourceResolver.map(path) : path;
 
-                final Link link;
+                final LinkBuilder builder = DefaultLinkBuilder.forPath(mappedPath);
 
                 if (strict) {
-                    link = DefaultLinkBuilder.forPath(resourceResolver, mappedPath).build();
-                } else {
-                    link = DefaultLinkBuilder.forPath(mappedPath).build();
+                    builder.setExternal(isExternal(mappedPath, resourceResolver));
                 }
 
-                return link;
+                return builder.build();
             }
         });
     }
@@ -48,7 +46,13 @@ public abstract class AbstractNode {
         if (path.isEmpty()) {
             pageOptional = Optional.absent();
         } else {
-            pageOptional = resource.getResourceResolver().adaptTo(PageManagerDecorator.class).getPageOptional(path);
+            final ResourceResolver resourceResolver = resource.getResourceResolver();
+            final Resource pageResource = resourceResolver.resolve(path);
+
+            final PageDecorator page = resourceResolver.adaptTo(PageManagerDecorator.class).getContainingPage(
+                pageResource);
+
+            pageOptional = Optional.fromNullable(page);
         }
 
         return pageOptional;

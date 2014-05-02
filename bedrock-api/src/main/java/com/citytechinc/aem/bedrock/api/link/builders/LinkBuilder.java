@@ -108,10 +108,10 @@ public interface LinkBuilder {
      * Set the active state for the link.  This only applies to navigation links returned by calling
      * <code>buildNavigationLink()</code>.
      *
-     * @param active active state
+     * @param isActive active state
      * @return builder
      */
-    LinkBuilder setActive(boolean active);
+    LinkBuilder setActive(boolean isActive);
 
     /**
      * Set the extension, without '.'.  Defaults to "html" if none is provided.
@@ -120,6 +120,14 @@ public interface LinkBuilder {
      * @return builder
      */
     LinkBuilder setExtension(String extension);
+
+    /**
+     * Set whether the link should be considered external, i.e. not a valid content path.
+     *
+     * @param isExternal if true, link is marked as external
+     * @return builder
+     */
+    LinkBuilder setExternal(boolean isExternal);
 
     /**
      * Set the host.  If the host is set, the href of the built link will be absolute rather than relative.
@@ -149,10 +157,10 @@ public interface LinkBuilder {
      * Set secure.  If true, the returned link will be "https" instead of "http".  This only applies when a host name is
      * set.
      *
-     * @param secure secure
+     * @param isSecure secure
      * @return builder
      */
-    LinkBuilder setSecure(boolean secure);
+    LinkBuilder setSecure(boolean isSecure);
 
     /**
      * Set the suffix.

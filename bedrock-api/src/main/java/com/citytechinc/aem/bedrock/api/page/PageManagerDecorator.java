@@ -3,7 +3,6 @@ package com.citytechinc.aem.bedrock.api.page;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 import com.day.cq.wcm.api.WCMException;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import org.apache.sling.api.resource.Resource;
 
@@ -144,14 +143,6 @@ public interface PageManagerDecorator extends PageManager {
      */
     @Override
     PageDecorator getPage(String path);
-
-    /**
-     * Get the page for the given path, returning an absent <code>Optional</code> if the page does not exist.
-     *
-     * @param path page path
-     * @return Optional page
-     */
-    Optional<PageDecorator> getPageOptional(String path);
 
     /**
      * Moves the given page to the new destination. If source and destination are equals the page is just ordered.

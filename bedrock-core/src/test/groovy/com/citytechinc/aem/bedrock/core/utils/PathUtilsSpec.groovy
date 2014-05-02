@@ -1,12 +1,12 @@
 package com.citytechinc.aem.bedrock.core.utils
 
+import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import org.apache.sling.api.SlingHttpServletRequest
 import org.apache.sling.api.resource.Resource
-import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
-class PathUtilsSpec extends Specification {
+class PathUtilsSpec extends BedrockSpec {
 
     def "is content"() {
         expect:
@@ -35,6 +35,23 @@ class PathUtilsSpec extends Specification {
         "/content/global"         | false
         "/content/global/en"      | false
         "/content/global/en/test" | false
+    }
+
+    def "is external strict"() {
+        setup:
+        nodeBuilder.etc {
+            designs()
+        }
+
+        expect:
+        PathUtils.isExternal(path, resourceResolver) == result
+
+        where:
+        path                    | result
+        "http://www.google.com" | true
+        "notcontent"            | true
+        "/etc/foo"              | true
+        "/etc/designs"          | false
     }
 
     def "get page path for string"() {
