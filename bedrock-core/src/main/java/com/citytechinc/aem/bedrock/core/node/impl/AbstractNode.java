@@ -46,11 +46,7 @@ public abstract class AbstractNode {
         if (path.isEmpty()) {
             pageOptional = Optional.absent();
         } else {
-            final ResourceResolver resourceResolver = resource.getResourceResolver();
-            final Resource pageResource = resourceResolver.resolve(path);
-
-            final PageDecorator page = resourceResolver.adaptTo(PageManagerDecorator.class).getContainingPage(
-                pageResource);
+            final PageDecorator page = resource.getResourceResolver().adaptTo(PageManagerDecorator.class).getPage(path);
 
             pageOptional = Optional.fromNullable(page);
         }

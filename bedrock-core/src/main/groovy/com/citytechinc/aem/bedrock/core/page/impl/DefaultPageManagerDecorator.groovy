@@ -1,0 +1,217 @@
+package com.citytechinc.aem.bedrock.core.page.impl
+
+import com.citytechinc.aem.bedrock.api.page.PageDecorator
+import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
+import com.citytechinc.aem.bedrock.core.page.predicates.TemplatePredicate
+import com.citytechinc.aem.bedrock.core.utils.PathUtils
+import com.day.cq.commons.jcr.JcrConstants
+import com.day.cq.tagging.TagManager
+import com.day.cq.wcm.api.Page
+import com.day.cq.wcm.api.PageManager
+import com.day.cq.wcm.api.WCMException
+import com.google.common.base.Predicate
+import com.google.common.base.Stopwatch
+import groovy.util.logging.Slf4j
+import org.apache.sling.api.resource.Resource
+import org.apache.sling.api.resource.ResourceResolver
+
+import javax.jcr.RepositoryException
+import javax.jcr.query.Query
+import javax.jcr.query.Row
+
+import static com.google.common.base.Preconditions.checkNotNull
+import static java.util.concurrent.TimeUnit.MILLISECONDS
+
+@Slf4j("LOG")
+class DefaultPageManagerDecorator implements PageManagerDecorator {
+
+    private ResourceResolver resourceResolver
+
+    @Delegate
+    private PageManager pageManager
+
+    DefaultPageManagerDecorator(ResourceResolver resourceResolver) {
+        this.resourceResolver = resourceResolver
+
+        pageManager = resourceResolver.adaptTo(PageManager)
+    }
+
+    @Override
+    List<PageDecorator> findPages(String path, Collection<String> tagIds, boolean matchOne) {
+        checkNotNull(path)
+        checkNotNull(tagIds)
+
+        LOG.debug "path = {}, tag IDs = {}", path, tagIds
+
+        def stopwatch = Stopwatch.createStarted()
+
+        def iterator = resourceResolver.adaptTo(TagManager).find(path, tagIds.toArray(new String[tagIds.size()]),
+            matchOne)
+
+        def pages = []
+
+        iterator*.each { resource ->
+            if (JcrConstants.JCR_CONTENT.equals(resource.name)) {
+                def page = getPage(resource.parent.path)
+
+                if (page) {
+                    pages.add(page)
+                }
+            }
+        }
+
+        stopwatch.stop()
+
+        LOG.debug "found {} result(s) in {}ms", pages.size(), stopwatch.elapsed(MILLISECONDS)
+
+        pages
+    }
+
+    @Override
+    List<PageDecorator> search(Query query) {
+        search(query, -1)
+    }
+
+    @Override
+    List<PageDecorator> search(Query query, int limit) {
+        checkNotNull(query)
+
+        LOG.debug "query statement = {}", query.statement
+
+        def stopwatch = Stopwatch.createStarted()
+
+        def pages = []
+
+        int count = 0
+
+        try {
+            def rows = query.execute().rows
+
+            def paths = [] as Set
+
+            rows.each { Row row ->
+                if (limit == -1 || count < limit) {
+                    def path = row.path
+
+                    LOG.debug "result path = {}", path
+
+                    def pagePath = PathUtils.getPagePath(path)
+
+                    // ensure no duplicate pages are added
+                    if (!paths.contains(pagePath)) {
+                        paths.add(pagePath)
+
+                        def page = decoratePage(path)
+
+                        if (page) {
+                            pages.add(page)
+
+                            count++
+                        } else {
+                            LOG.error "result is null for path = {}", path
+                        }
+                    }
+                }
+            }
+
+            stopwatch.stop()
+
+            LOG.debug "found {} result(s) in {}ms", pages.size(), stopwatch.elapsed(MILLISECONDS)
+        } catch (RepositoryException re) {
+            LOG.error "error finding pages for query = ${query.statement}", re
+        }
+
+        pages
+    }
+
+    @Override
+    List<PageDecorator> findPages(String path, String template) {
+        findPages(path, new TemplatePredicate(template))
+    }
+
+    @Override
+    List<PageDecorator> findPages(String path, Predicate<PageDecorator> predicate) {
+        def page = getPage(checkNotNull(path))
+
+        def stopwatch = Stopwatch.createStarted()
+
+        def result = page ? page.findDescendants(predicate) : Collections.emptyList()
+
+        stopwatch.stop()
+
+        LOG.debug "found {} result(s) in {}ms", result.size(), stopwatch.elapsed(MILLISECONDS)
+
+        result
+    }
+
+
+    @Override
+    PageDecorator copy(Page page, String destination, String beforeName, boolean shallow,
+        boolean resolveConflict) throws WCMException {
+        decoratePage(pageManager.copy(page, destination, beforeName, shallow, resolveConflict))
+    }
+
+    @Override
+    PageDecorator copy(Page page, String destination, String beforeName, boolean shallow,
+        boolean resolveConflict, boolean autoSave) throws WCMException {
+        decoratePage(pageManager.copy(page, destination, beforeName, shallow, resolveConflict, autoSave))
+    }
+
+    @Override
+    PageDecorator create(String parentPath, String pageName, String template,
+        String title) throws WCMException {
+        decoratePage(pageManager.create(parentPath, pageName, template, title))
+    }
+
+    @Override
+    PageDecorator create(String parentPath, String pageName, String template,
+        String title, boolean autoSave) throws WCMException {
+        decoratePage(pageManager.create(parentPath, pageName, template, title, autoSave))
+    }
+
+    @Override
+    PageDecorator getContainingPage(Resource resource) {
+        decoratePage(pageManager.getContainingPage(resource))
+    }
+
+    @Override
+    PageDecorator getContainingPage(String path) {
+        decoratePage(pageManager.getContainingPage(path))
+    }
+
+    @Override
+    PageDecorator getPage(Page page) {
+        decoratePage(page)
+    }
+
+    @Override
+    PageDecorator getPage(String path) {
+        decoratePage(checkNotNull(path))
+    }
+
+    @Override
+    PageDecorator move(Page page, String destination, String beforeName, boolean shallow,
+        boolean resolveConflict, String[] adjustRefs) throws WCMException {
+        decoratePage(pageManager.move(page, destination, beforeName, shallow, resolveConflict, adjustRefs))
+    }
+
+    @Override
+    PageDecorator restore(String path, String revisionId) throws WCMException {
+        decoratePage(pageManager.restore(path, revisionId))
+    }
+
+    @Override
+    PageDecorator restoreTree(String path, Calendar date) throws WCMException {
+        decoratePage(pageManager.restoreTree(path, date))
+    }
+
+    // internals
+
+    private PageDecorator decoratePage(String path) {
+        decoratePage(pageManager.getPage(path))
+    }
+
+    private PageDecorator decoratePage(Page page) {
+        page ? new DefaultPageDecorator(page) : null
+    }
+}

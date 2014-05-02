@@ -2,10 +2,10 @@ package com.citytechinc.aem.bedrock.core.adapter;
 
 import com.citytechinc.aem.bedrock.api.node.BasicNode;
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
-import com.citytechinc.aem.bedrock.core.node.impl.DefaultBasicNode;
-import com.citytechinc.aem.bedrock.core.node.impl.DefaultComponentNode;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator;
+import com.citytechinc.aem.bedrock.core.node.impl.DefaultBasicNode;
+import com.citytechinc.aem.bedrock.core.node.impl.DefaultComponentNode;
 import com.citytechinc.aem.bedrock.core.page.impl.DefaultPageDecorator;
 import com.citytechinc.aem.bedrock.core.page.impl.DefaultPageManagerDecorator;
 import com.day.cq.wcm.api.Page;
