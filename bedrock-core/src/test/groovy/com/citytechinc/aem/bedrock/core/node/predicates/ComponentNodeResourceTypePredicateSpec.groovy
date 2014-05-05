@@ -18,14 +18,6 @@ class ComponentNodeResourceTypePredicateSpec extends BedrockSpec {
         thrown(NullPointerException)
     }
 
-    def "predicate does not apply for null"() {
-        setup:
-        def predicate = new ComponentNodeResourceTypePredicate("black")
-
-        expect:
-        !predicate.apply(null)
-    }
-
     def "node with matching resource type is included"() {
         setup:
         def node = getComponentNode("/sabbath")

@@ -18,12 +18,6 @@ public final class ComponentNodeResourceTypePredicate implements Predicate<Compo
 
     @Override
     public boolean apply(final ComponentNode componentNode) {
-        boolean result = false;
-
-        if (componentNode != null) {
-            result = resourceType.equals(componentNode.getResource().getResourceType());
-        }
-
-        return result;
+        return resourceType.equals(checkNotNull(componentNode).getResource().getResourceType());
     }
 }

@@ -18,6 +18,6 @@ public final class ResourcePathPredicate implements Predicate<Resource> {
 
     @Override
     public boolean apply(final Resource resource) {
-        return resource != null && path.equals(resource.getPath());
+        return path.equals(checkNotNull(resource).getPath());
     }
 }
