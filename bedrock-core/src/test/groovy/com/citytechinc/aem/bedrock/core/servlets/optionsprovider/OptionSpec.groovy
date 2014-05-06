@@ -8,7 +8,9 @@ class OptionSpec extends Specification {
 
     def "sort options"() {
         setup:
-        def options = Option.fromMap(map).sort(comparator)
+        def options = Option.fromMap(map)
+
+        Collections.sort(options, comparator)
 
         expect:
         options*.value == ["one", "two"]

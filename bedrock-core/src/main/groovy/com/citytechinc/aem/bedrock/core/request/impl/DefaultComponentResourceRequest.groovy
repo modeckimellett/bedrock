@@ -6,7 +6,6 @@ import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.api.request.ComponentResourceRequest
 import org.apache.sling.api.resource.Resource
 import org.apache.sling.api.resource.ResourceResolver
-import org.apache.sling.api.resource.ResourceUtil
 import org.apache.sling.api.resource.ValueMap
 
 import javax.jcr.Node
@@ -34,7 +33,7 @@ final class DefaultComponentResourceRequest implements ComponentResourceRequest 
         this.resource = checkNotNull(resource)
 
         resourceResolver = resource.resourceResolver
-        properties = ResourceUtil.getValueMap(resource)
+        properties = resource.valueMap
         currentNode = resource.adaptTo(Node)
         componentNode = resource.adaptTo(ComponentNode)
         pageManager = resourceResolver.adaptTo(PageManagerDecorator)

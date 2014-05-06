@@ -131,7 +131,6 @@
                             <excludePackageNames>
                                 *.impl,
                                 *.predicates,
-                                com.citytechinc.aem.bedrock.core.adapter.*,
                                 com.citytechinc.aem.bedrock.core.bindings.*,
                                 com.citytechinc.aem.bedrock.core.components.multicompositefield.*
                             </excludePackageNames>

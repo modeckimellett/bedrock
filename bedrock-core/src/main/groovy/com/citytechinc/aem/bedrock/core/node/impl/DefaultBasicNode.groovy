@@ -23,7 +23,6 @@ import com.google.common.collect.Iterables
 import com.google.common.collect.Maps
 import groovy.util.logging.Slf4j
 import org.apache.sling.api.resource.Resource
-import org.apache.sling.api.resource.ResourceUtil
 import org.apache.sling.api.resource.ValueMap
 
 import javax.jcr.Node
@@ -56,7 +55,7 @@ class DefaultBasicNode extends AbstractNode implements BasicNode {
     DefaultBasicNode(Resource resource) {
         super(resource)
 
-        properties = ResourceUtil.getValueMap(resource)
+        properties = resource.valueMap
     }
 
     @Override
