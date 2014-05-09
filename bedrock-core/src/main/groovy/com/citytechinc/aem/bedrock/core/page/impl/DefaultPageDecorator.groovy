@@ -18,6 +18,7 @@ import com.day.cq.wcm.api.Page
 import com.google.common.base.Optional
 import com.google.common.base.Predicate
 import com.google.common.base.Predicates
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.apache.sling.api.resource.Resource
 import org.apache.sling.api.resource.ValueMap
@@ -26,6 +27,7 @@ import static com.citytechinc.aem.bedrock.core.node.impl.NodeFunctions.RESOURCE_
 import static com.google.common.base.Preconditions.checkNotNull
 
 @ToString(includes = ["path", "title"])
+@EqualsAndHashCode(includes = "path")
 final class DefaultPageDecorator implements PageDecorator {
 
     private static final Predicate<PageDecorator> ALL = Predicates.alwaysTrue()

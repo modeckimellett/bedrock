@@ -19,6 +19,7 @@ import com.google.common.base.Optional
 import com.google.common.base.Predicate
 import com.google.common.collect.FluentIterable
 import com.google.common.collect.Maps
+import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Slf4j
 import org.apache.sling.api.resource.Resource
 
@@ -31,6 +32,7 @@ import static com.citytechinc.aem.bedrock.core.node.impl.NodeFunctions.RESOURCE_
 import static com.google.common.base.Preconditions.checkNotNull
 
 @Slf4j("LOG")
+@EqualsAndHashCode(includes = "path")
 final class DefaultComponentNode extends AbstractNode implements ComponentNode {
 
     @Delegate

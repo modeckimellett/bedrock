@@ -74,7 +74,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss.SSSZ</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
         <aem.username>admin</aem.username>
-        <component.plugin.version>2.3.4</component.plugin.version>
+        <component.plugin.version>2.4.1</component.plugin.version>
     </properties>
 
     <profiles>

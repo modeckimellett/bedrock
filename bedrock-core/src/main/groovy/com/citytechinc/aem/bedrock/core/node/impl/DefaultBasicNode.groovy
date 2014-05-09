@@ -21,6 +21,7 @@ import com.google.common.base.Predicate
 import com.google.common.base.Predicates
 import com.google.common.collect.Iterables
 import com.google.common.collect.Maps
+import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Slf4j
 import org.apache.sling.api.resource.Resource
 import org.apache.sling.api.resource.ValueMap
@@ -37,7 +38,8 @@ import static com.google.common.base.Preconditions.checkNotNull
 import static org.apache.commons.lang3.StringUtils.removeStart
 
 @Slf4j("LOG")
-class DefaultBasicNode extends AbstractNode implements BasicNode {
+@EqualsAndHashCode(includes = "path")
+final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     private static final Predicate<Resource> ALL = Predicates.alwaysTrue()
 
