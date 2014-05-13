@@ -5,6 +5,7 @@ import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest
 import com.day.cq.wcm.api.WCMMode
 
 import javax.script.Bindings
+import javax.script.SimpleBindings
 import javax.servlet.jsp.PageContext
 
 import static com.adobe.cq.sightly.WCMBindings.CURRENT_PAGE
@@ -41,7 +42,7 @@ final class ComponentBindings implements Bindings {
     private final ComponentRequest componentRequest
 
     ComponentBindings(PageContext pageContext) {
-        this((Bindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME))
+        this((SimpleBindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME))
     }
 
     ComponentBindings(Bindings bindings) {
