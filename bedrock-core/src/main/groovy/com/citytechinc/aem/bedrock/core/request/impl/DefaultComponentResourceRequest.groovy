@@ -12,6 +12,7 @@ import javax.jcr.Node
 import javax.jcr.Session
 
 import static com.google.common.base.Preconditions.checkNotNull
+import static org.apache.sling.api.resource.ValueMap.EMPTY
 
 final class DefaultComponentResourceRequest implements ComponentResourceRequest {
 
@@ -22,6 +23,8 @@ final class DefaultComponentResourceRequest implements ComponentResourceRequest 
     final PageDecorator currentPage
 
     final PageManagerDecorator pageManager
+
+    final ValueMap pageProperties
 
     final ValueMap properties
 
@@ -38,6 +41,7 @@ final class DefaultComponentResourceRequest implements ComponentResourceRequest 
         componentNode = resource.adaptTo(ComponentNode)
         pageManager = resourceResolver.adaptTo(PageManagerDecorator)
         currentPage = pageManager.getContainingPage(resource)
+        pageProperties = currentPage ? currentPage.properties : EMPTY
     }
 
     @Override

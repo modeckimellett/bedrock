@@ -36,7 +36,12 @@ public interface ComponentResourceRequest {
     PageManagerDecorator getPageManager();
 
     /**
-     * @return property map
+     * @return property map for the current page
+     */
+    ValueMap getPageProperties();
+
+    /**
+     * @return property map for the current resource
      */
     ValueMap getProperties();
 

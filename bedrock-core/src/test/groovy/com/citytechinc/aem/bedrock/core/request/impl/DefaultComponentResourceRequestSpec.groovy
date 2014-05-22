@@ -28,5 +28,6 @@ class DefaultComponentResourceRequestSpec extends BedrockSpec {
         request.resource
         request.resourceResolver
         request.session
+        request.pageProperties
     }
 }
