@@ -1,4 +1,5 @@
 package com.citytechinc.aem.bedrock.core.page.impl
+
 import com.citytechinc.aem.bedrock.api.link.ImageLink
 import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.link.NavigationLink
@@ -32,14 +33,14 @@ final class DefaultPageDecorator implements PageDecorator {
 
     private static final Predicate<PageDecorator> ALL = Predicates.alwaysTrue()
 
-    private static final Filter<Page> ALL_PAGES = new Filter<Page>() {
+    private static final def ALL_PAGES = new Filter<Page>() {
         @Override
         boolean includes(Page page) {
             true
         }
     }
 
-    private static final Predicate<PageDecorator> DISPLAYABLE_ONLY = new Predicate<PageDecorator>() {
+    private static final def DISPLAYABLE_ONLY = new Predicate<PageDecorator>() {
         @Override
         boolean apply(PageDecorator page) {
             page.contentResource && !page.hideInNav
@@ -376,9 +377,7 @@ final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     PageDecorator getAbsoluteParent(int level) {
-        def absoluteParent = delegate.getAbsoluteParent(level)
-
-        absoluteParent ? new DefaultPageDecorator(absoluteParent) : null
+        getPageDecorator(delegate.getAbsoluteParent(level))
     }
 
     @Override
@@ -388,16 +387,12 @@ final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     PageDecorator getParent() {
-        def parent = delegate.parent
-
-        parent ? new DefaultPageDecorator(parent) : null
+        getPageDecorator(delegate.parent)
     }
 
     @Override
     PageDecorator getParent(int level) {
-        def parent = delegate.getParent(level)
-
-        parent ? new DefaultPageDecorator(parent) : null
+        getPageDecorator(delegate.getParent(level))
     }
 
     @Override
@@ -417,11 +412,15 @@ final class DefaultPageDecorator implements PageDecorator {
 
     // internals
 
+    private def getPageDecorator(Page page) {
+        page ? new DefaultPageDecorator(page) : null
+    }
+
     private def getInternal(Closure closure, defaultValue) {
         componentNodeOptional.present ? closure.call(componentNodeOptional.get()) : defaultValue
     }
 
-    private Optional<PageDecorator> findAncestorForPredicate(Predicate<ComponentNode> predicate) {
+    private def findAncestorForPredicate(Predicate<ComponentNode> predicate) {
         PageDecorator page = this
         PageDecorator ancestorPage = null
 
@@ -439,7 +438,7 @@ final class DefaultPageDecorator implements PageDecorator {
         Optional.fromNullable(ancestorPage)
     }
 
-    private List<PageDecorator> filterChildren(Predicate<PageDecorator> predicate, boolean deep) {
+    private def filterChildren(Predicate<PageDecorator> predicate, boolean deep) {
         def pages = []
 
         def pageManager = getPageManagerDecorator()
@@ -455,7 +454,7 @@ final class DefaultPageDecorator implements PageDecorator {
         pages
     }
 
-    private PageManagerDecorator getPageManagerDecorator() {
+    private def getPageManagerDecorator() {
         delegate.adaptTo(Resource).getResourceResolver().adaptTo(PageManagerDecorator)
     }
 }

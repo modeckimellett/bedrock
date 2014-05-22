@@ -25,10 +25,10 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS
 @Slf4j("LOG")
 class DefaultPageManagerDecorator implements PageManagerDecorator {
 
-    private ResourceResolver resourceResolver
+    private final ResourceResolver resourceResolver
 
     @Delegate
-    private PageManager pageManager
+    private final PageManager pageManager
 
     DefaultPageManagerDecorator(ResourceResolver resourceResolver) {
         this.resourceResolver = resourceResolver
@@ -45,8 +45,7 @@ class DefaultPageManagerDecorator implements PageManagerDecorator {
 
         def stopwatch = Stopwatch.createStarted()
 
-        def iterator = resourceResolver.adaptTo(TagManager).find(path, tagIds.toArray(new String[tagIds.size()]),
-            matchOne)
+        def iterator = resourceResolver.adaptTo(TagManager).find(path, tagIds as String[], matchOne)
 
         def pages = []
 
@@ -101,7 +100,7 @@ class DefaultPageManagerDecorator implements PageManagerDecorator {
                     if (!paths.contains(pagePath)) {
                         paths.add(pagePath)
 
-                        def page = decoratePage(path)
+                        def page = getPageDecorator(path)
 
                         if (page) {
                             pages.add(page)
@@ -148,70 +147,70 @@ class DefaultPageManagerDecorator implements PageManagerDecorator {
     @Override
     PageDecorator copy(Page page, String destination, String beforeName, boolean shallow,
         boolean resolveConflict) throws WCMException {
-        decoratePage(pageManager.copy(page, destination, beforeName, shallow, resolveConflict))
+        getPageDecorator(pageManager.copy(page, destination, beforeName, shallow, resolveConflict))
     }
 
     @Override
     PageDecorator copy(Page page, String destination, String beforeName, boolean shallow,
         boolean resolveConflict, boolean autoSave) throws WCMException {
-        decoratePage(pageManager.copy(page, destination, beforeName, shallow, resolveConflict, autoSave))
+        getPageDecorator(pageManager.copy(page, destination, beforeName, shallow, resolveConflict, autoSave))
     }
 
     @Override
     PageDecorator create(String parentPath, String pageName, String template,
         String title) throws WCMException {
-        decoratePage(pageManager.create(parentPath, pageName, template, title))
+        getPageDecorator(pageManager.create(parentPath, pageName, template, title))
     }
 
     @Override
     PageDecorator create(String parentPath, String pageName, String template,
         String title, boolean autoSave) throws WCMException {
-        decoratePage(pageManager.create(parentPath, pageName, template, title, autoSave))
+        getPageDecorator(pageManager.create(parentPath, pageName, template, title, autoSave))
     }
 
     @Override
     PageDecorator getContainingPage(Resource resource) {
-        decoratePage(pageManager.getContainingPage(resource))
+        getPageDecorator(pageManager.getContainingPage(resource))
     }
 
     @Override
     PageDecorator getContainingPage(String path) {
-        decoratePage(pageManager.getContainingPage(path))
+        getPageDecorator(pageManager.getContainingPage(path))
     }
 
     @Override
     PageDecorator getPage(Page page) {
-        decoratePage(page)
+        getPageDecorator(page)
     }
 
     @Override
     PageDecorator getPage(String path) {
-        decoratePage(checkNotNull(path))
+        getPageDecorator(checkNotNull(path))
     }
 
     @Override
     PageDecorator move(Page page, String destination, String beforeName, boolean shallow,
         boolean resolveConflict, String[] adjustRefs) throws WCMException {
-        decoratePage(pageManager.move(page, destination, beforeName, shallow, resolveConflict, adjustRefs))
+        getPageDecorator(pageManager.move(page, destination, beforeName, shallow, resolveConflict, adjustRefs))
     }
 
     @Override
     PageDecorator restore(String path, String revisionId) throws WCMException {
-        decoratePage(pageManager.restore(path, revisionId))
+        getPageDecorator(pageManager.restore(path, revisionId))
     }
 
     @Override
     PageDecorator restoreTree(String path, Calendar date) throws WCMException {
-        decoratePage(pageManager.restoreTree(path, date))
+        getPageDecorator(pageManager.restoreTree(path, date))
     }
 
     // internals
 
-    private PageDecorator decoratePage(String path) {
-        decoratePage(pageManager.getPage(path))
+    private PageDecorator getPageDecorator(String path) {
+        getPageDecorator(pageManager.getPage(path))
     }
 
-    private PageDecorator decoratePage(Page page) {
+    private PageDecorator getPageDecorator(Page page) {
         page ? new DefaultPageDecorator(page) : null
     }
 }
