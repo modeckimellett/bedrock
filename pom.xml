@@ -308,6 +308,13 @@
                         com.citytechinc.aem.bedrock.core.bindings.*,
                         com.citytechinc.aem.bedrock.core.components.multicompositefield.*
                     </excludePackageNames>
+                    <links>
+                        <link>http://docs.oracle.com/javaee/6/api/</link>
+                        <link>http://docs.guava-libraries.googlecode.com/git-history/v15.0/javadoc</link>
+                        <link>http://www.day.com/maven/jsr170/javadocs/jcr-2.0/</link>
+                        <link>http://sling.apache.org/apidocs/sling5</link>
+                        <link>http://dev.day.com/docs/en/cq/current/javadoc</link>
+                    </links>
                     <quiet>true</quiet>
                 </configuration>
             </plugin>
