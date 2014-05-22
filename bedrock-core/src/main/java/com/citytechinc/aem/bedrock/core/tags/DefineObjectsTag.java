@@ -1,8 +1,8 @@
 package com.citytechinc.aem.bedrock.core.tags;
 
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
 import com.citytechinc.aem.bedrock.api.components.annotations.AutoInstantiate;
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
+import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
 import com.day.cq.wcm.api.components.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.api.resource.Resource;
@@ -63,16 +63,16 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
         if (component != null) {
             try {
-                setInstance(component);
-
-                Component superComponent = component.getSuperComponent();
-
-                while (superComponent != null) {
-                    setInstance(superComponent);
-
-                    superComponent = superComponent.getSuperComponent();
-                }
-            } catch (Exception e) {
+                setComponentInstance(component);
+            } catch (ClassNotFoundException e) {
+                LOG.error("error instantiating component class", e);
+            } catch (NoSuchMethodException e) {
+                LOG.error("error instantiating component class", e);
+            } catch (InstantiationException e) {
+                LOG.error("error instantiating component class", e);
+            } catch (IllegalAccessException e) {
+                LOG.error("error instantiating component class", e);
+            } catch (InvocationTargetException e) {
                 LOG.error("error instantiating component class", e);
             }
         } else {
@@ -80,16 +80,19 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
         }
     }
 
-    private void setInstance(final Component component)
+    private void setComponentInstance(final Component component)
         throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException,
         IllegalAccessException {
         final String className = component.getProperties().get(PROPERTY_CLASS_NAME, String.class);
+        final Class<?> clazz = className == null ? null : Class.forName(className);
 
-        if (className != null) {
-            final Class<?> clazz = Class.forName(className);
-
+        if (clazz != null) {
             if (clazz.isAnnotationPresent(AutoInstantiate.class)) {
-                final String instanceName = getInstanceName(clazz);
+                final AutoInstantiate autoInstantiate = clazz.getAnnotation(AutoInstantiate.class);
+
+                final String instanceName = autoInstantiate.instanceName().isEmpty() ? StringUtils.uncapitalize(
+                    clazz.getSimpleName()) : autoInstantiate.instanceName();
+
                 final Object instance = getInstance(clazz);
 
                 LOG.debug("class name = {}, instance name = {}, setting component in page context", className,
@@ -104,12 +107,5 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
             LOG.debug("no class name property for component = {}, not instantiating component class",
                 component.getResourceType());
         }
-    }
-
-    private String getInstanceName(final Class<?> clazz) {
-        final AutoInstantiate autoInstantiate = clazz.getAnnotation(AutoInstantiate.class);
-        final String instanceName = autoInstantiate.instanceName();
-
-        return instanceName.isEmpty() ? StringUtils.uncapitalize(clazz.getSimpleName()) : instanceName;
     }
 }
