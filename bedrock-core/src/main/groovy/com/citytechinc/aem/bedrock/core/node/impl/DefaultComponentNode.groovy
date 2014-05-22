@@ -1,5 +1,4 @@
 package com.citytechinc.aem.bedrock.core.node.impl
-
 import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.node.BasicNode
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
@@ -118,6 +117,13 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
     }
 
     @Override
+    public <AdapterType> Optional<AdapterType> getAsTypeInherited(String propertyName, Class<AdapterType> type) {
+        def path = properties.getInherited(checkNotNull(propertyName), "")
+
+        getAsTypeOptional(path, type)
+    }
+
+    @Override
     Optional<ComponentNode> getComponentNode(String relativePath) {
         Optional.fromNullable(resource.getChild(checkNotNull(relativePath))).transform(RESOURCE_TO_COMPONENT_NODE)
     }
@@ -226,7 +232,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
 
         def nodes
 
-        if (childOptional.isPresent()) {
+        if (childOptional.present) {
             nodes = FluentIterable.from(childOptional.get().children).transform(RESOURCE_TO_BASIC_NODE).toList()
         } else {
             nodes = Collections.emptyList()
@@ -245,6 +251,8 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
         Objects.toStringHelper(this).add("path", getPath()).add("properties", Maps.newHashMap(asMap()))
             .toString()
     }
+
+    // internals
 
     private Optional<ComponentNode> findAncestorForPredicate(Predicate<ComponentNode> predicate) {
         def pageManager = resource.resourceResolver.adaptTo(PageManagerDecorator)

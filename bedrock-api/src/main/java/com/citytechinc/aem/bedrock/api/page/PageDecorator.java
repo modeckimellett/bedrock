@@ -6,6 +6,7 @@ import com.citytechinc.aem.bedrock.api.Inheritable;
 import com.citytechinc.aem.bedrock.api.Linkable;
 import com.citytechinc.aem.bedrock.api.Traversable;
 import com.citytechinc.aem.bedrock.api.link.ImageLink;
+import com.citytechinc.aem.bedrock.api.link.Link;
 import com.citytechinc.aem.bedrock.api.link.NavigationLink;
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.enums.TitleType;
@@ -67,6 +68,14 @@ public interface PageDecorator extends Page, Accessible, Inheritable, Linkable, 
      * @return image link with the provided image source
      */
     ImageLink getImageLink(String imageSource);
+
+    /**
+     * Get a link with a specified title type for this item.
+     *
+     * @param titleType type of title to set on link
+     * @return link
+     */
+    Link getLink(TitleType titleType);
 
     /**
      * Get a navigation link for this page.  The returned link will use the navigation title as the link title,

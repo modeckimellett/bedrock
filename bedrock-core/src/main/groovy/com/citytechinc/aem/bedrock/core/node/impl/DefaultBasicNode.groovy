@@ -76,6 +76,13 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
     }
 
     @Override
+    public <AdapterType> Optional<AdapterType> getAsType(String propertyName, Class<AdapterType> type) {
+        def path = properties.get(checkNotNull(propertyName), "")
+
+        getAsTypeOptional(path, type)
+    }
+
+    @Override
     Optional<String> getAsHref(String propertyName) {
         getAsHref(propertyName, false)
     }
@@ -175,12 +182,9 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
             def asset = resource.resourceResolver.getResource(imageReferenceOptional.get()).adaptTo(Asset)
 
             if (asset) {
-                imageRenditionOptional = Iterables.tryFind(asset.renditions, new Predicate<Rendition>() {
-                    @Override
-                    boolean apply(Rendition rendition) {
-                        renditionName.equals(rendition.name)
-                    }
-                }).transform(RENDITION_TO_PATH)
+                def rendition = asset.renditions.find { it.name == renditionName }
+
+                imageRenditionOptional = Optional.fromNullable(rendition?.path)
             } else {
                 imageRenditionOptional = Optional.absent()
             }

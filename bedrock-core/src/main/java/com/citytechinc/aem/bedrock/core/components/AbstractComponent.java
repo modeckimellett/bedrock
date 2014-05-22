@@ -253,8 +253,19 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     }
 
     @Override
+    public final <AdapterType> Optional<AdapterType> getAsType(final String propertyName, final Class<AdapterType> type) {
+        return getComponentNode().getAsType(propertyName, type);
+    }
+
+    @Override
     public final Optional<PageDecorator> getAsPageInherited(final String propertyName) {
         return getComponentNode().getAsPageInherited(propertyName);
+    }
+
+    @Override
+    public final <AdapterType> Optional<AdapterType> getAsTypeInherited(final String propertyName,
+        final Class<AdapterType> type) {
+        return getComponentNode().getAsTypeInherited(propertyName, type);
     }
 
     @Override

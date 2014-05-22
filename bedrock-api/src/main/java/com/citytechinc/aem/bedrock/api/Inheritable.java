@@ -111,6 +111,18 @@ public interface Inheritable {
     Optional<PageDecorator> getAsPageInherited(String propertyName);
 
     /**
+     * Get an <code>Optional</code> type instance for a property on this resource containing the path of another
+     * <code>Resource</code> in the repository, using inheritance if the value does not exist on this component..
+     *
+     * @param propertyName name of property containing a resource path
+     * @param type type to adapt from resource
+     * @param <AdapterType> adapter class that is adaptable from <code>Resource</code>
+     * @return <code>Optional</code> instance of the specified type, or absent if either the property does not exist or
+     * the resource does not adapt to the provided type
+     */
+    <AdapterType> Optional<AdapterType> getAsTypeInherited(String propertyName, Class<AdapterType> type);
+
+    /**
      * @return <code>Optional</code> inherited image reference
      */
     Optional<String> getImageReferenceInherited();

@@ -14,6 +14,7 @@ import com.citytechinc.aem.bedrock.core.node.impl.DefaultComponentNode
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyExistsPredicate
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyValuePredicate
 import com.day.cq.commons.Filter
+import com.day.cq.dam.api.Asset
 import com.day.cq.wcm.api.NameConstants
 import com.day.cq.wcm.api.Page
 import com.google.common.base.Optional
@@ -90,6 +91,16 @@ final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
+    Optional<Asset> getAsAsset(String propertyName) {
+        null
+    }
+
+    @Override
+    Optional<Asset> getAsAssetInherited(String propertyName) {
+        null
+    }
+
+    @Override
     Optional<String> getAsHref(String propertyName) {
         getInternal({ componentNode -> componentNode.getAsHref(propertyName) }, Optional.absent())
     }
@@ -127,6 +138,11 @@ final class DefaultPageDecorator implements PageDecorator {
     @Override
     Optional<PageDecorator> getAsPage(String propertyName) {
         getInternal({ componentNode -> componentNode.getAsPage(propertyName) }, Optional.absent())
+    }
+
+    @Override
+    public <AdapterType> Optional<AdapterType> getAsType(String propertyName, Class<AdapterType> type) {
+        getInternal({ componentNode -> componentNode.getAsType(propertyName, type) }, Optional.absent())
     }
 
     @Override
@@ -217,6 +233,11 @@ final class DefaultPageDecorator implements PageDecorator {
     @Override
     Optional<PageDecorator> getAsPageInherited(String propertyName) {
         getInternal({ componentNode -> componentNode.getAsPageInherited(propertyName) }, Optional.absent())
+    }
+
+    @Override
+    public <AdapterType> Optional<AdapterType> getAsTypeInherited(String propertyName, Class<AdapterType> type) {
+        getInternal({ componentNode -> componentNode.getAsTypeInherited(propertyName, type) }, Optional.absent())
     }
 
     @Override
@@ -346,6 +367,11 @@ final class DefaultPageDecorator implements PageDecorator {
     @Override
     Link getLink() {
         getLink(false)
+    }
+
+    @Override
+    Link getLink(TitleType titleType) {
+        null
     }
 
     @Override

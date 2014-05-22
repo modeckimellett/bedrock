@@ -134,6 +134,18 @@ public interface Accessible {
     Optional<PageDecorator> getAsPage(String propertyName);
 
     /**
+     * Get an <code>Optional</code> type instance for a property on this resource containing the path of another
+     * <code>Resource</code> in the repository.
+     *
+     * @param propertyName name of property containing a resource path
+     * @param type type to adapt from resource
+     * @param <AdapterType> adapter class that is adaptable from <code>Resource</code>
+     * @return <code>Optional</code> instance of the specified type, or absent if either the property does not exist or
+     * the resource does not adapt to the provided type
+     */
+    <AdapterType> Optional<AdapterType> getAsType(String propertyName, Class<AdapterType> type);
+
+    /**
      * Get the referenced DAM asset path for the default image (named "image") for this component.
      *
      * @return <code>Optional</code> image reference path
