@@ -9,7 +9,7 @@ class OptionsProviderServletSpec extends BedrockSpec {
 
     static final def MAP = ["one": "One", "two": "Two"]
 
-    static final def LIST = MAP.collect { key, value -> [text: value, value: key] }
+    static final def LIST = MAP.collect { value, text -> [value: value, text: text] }
 
     static final def OPTIONS = Option.fromMap(MAP)
 
