@@ -8,6 +8,7 @@ import com.citytechinc.aem.bedrock.api.Traversable;
 import com.citytechinc.aem.bedrock.api.link.ImageLink;
 import com.citytechinc.aem.bedrock.api.link.Link;
 import com.citytechinc.aem.bedrock.api.link.NavigationLink;
+import com.citytechinc.aem.bedrock.api.link.builders.LinkBuilder;
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.enums.TitleType;
 import com.day.cq.wcm.api.Page;
@@ -78,6 +79,34 @@ public interface PageDecorator extends Page, Accessible, Inheritable, Linkable, 
     Link getLink(TitleType titleType);
 
     /**
+     * Get a link with a specified title type for this item.
+     *
+     * @param titleType type of title to set on link
+     * @param mapped if true, the <code>Link</code> path will be routed through the resource resolver to determine the
+     * mapped path (e.g. without leading "/content").
+     * @return link
+     */
+    Link getLink(TitleType titleType, boolean mapped);
+
+    /**
+     * Get a link builder for the current resource path.
+     *
+     * @param titleType type of title to set on builder
+     * @return builder instance for this item
+     */
+    LinkBuilder getLinkBuilder(TitleType titleType);
+
+    /**
+     * Get a link builder for the current resource path.
+     *
+     * @param titleType type of title to set on builder
+     * @param mapped if true, the <code>Link</code> path will be routed through the resource resolver to determine the
+     * mapped path (e.g. without leading "/content").
+     * @return builder instance for this item
+     */
+    LinkBuilder getLinkBuilder(TitleType titleType, boolean mapped);
+
+    /**
      * Get a navigation link for this page.  The returned link will use the navigation title as the link title,
      * defaulting to the JCR title if it does not exist.
      *
@@ -93,6 +122,17 @@ public interface PageDecorator extends Page, Accessible, Inheritable, Linkable, 
      * @return navigation link
      */
     NavigationLink getNavigationLink(boolean isActive);
+
+    /**
+     * Get a navigation link for this page containing an active state.  The returned link will use the navigation title
+     * as the link title, defaulting to the JCR title if it does not exist.
+     *
+     * @param isActive active state to be set on returned link
+     * @param mapped if true, the <code>NavigationLink</code> path will be routed through the resource resolver to
+     * determine the mapped path (e.g. without leading "/content").
+     * @return navigation link
+     */
+    NavigationLink getNavigationLink(boolean isActive, boolean mapped);
 
     /**
      * Get the template path for this page.  This method is preferred over getTemplate().getPath(), which is dependent

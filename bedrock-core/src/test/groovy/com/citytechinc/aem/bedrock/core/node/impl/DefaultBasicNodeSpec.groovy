@@ -1,5 +1,6 @@
 package com.citytechinc.aem.bedrock.core.node.impl
 
+import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.core.node.predicates.PropertyNamePredicate
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import com.day.cq.dam.api.Asset
@@ -12,7 +13,7 @@ import spock.lang.Unroll
 @Unroll
 class DefaultBasicNodeSpec extends BedrockSpec {
 
-    def setupSpec() {
+     def setupSpec() {
         pageBuilder.content {
             citytechinc("CITYTECH, Inc.") {
                 "jcr:content"(otherPagePath: "/content/ales/esb", nonExistentPagePath: "/content/home",
@@ -44,7 +45,7 @@ class DefaultBasicNodeSpec extends BedrockSpec {
             }
             lagers {
                 "jcr:content"(otherPagePath: "/content/citytechinc") {
-                    dynamo("sling:resourceType": "us")
+                    dynamo("sling:resourceType": "us", related: "/content/lagers/jcr:content/spaten")
                     stiegl("sling:resourceType": "de")
                     spaten("sling:resourceType": "de")
                 }
@@ -82,10 +83,10 @@ class DefaultBasicNodeSpec extends BedrockSpec {
 
     def "to string"() {
         setup:
-        def node = getBasicNode("/content/lagers/jcr:content/dynamo")
+        def node = getBasicNode("/content/lagers/jcr:content/stiegl")
 
         expect:
-        node.toString() == "DefaultBasicNode{path=/content/lagers/jcr:content/dynamo, properties={sling:resourceType=us, jcr:primaryType=nt:unstructured}}"
+        node.toString() == "DefaultBasicNode{path=/content/lagers/jcr:content/stiegl, properties={sling:resourceType=de, jcr:primaryType=nt:unstructured}}"
     }
 
     def "get id"() {
@@ -274,6 +275,19 @@ class DefaultBasicNodeSpec extends BedrockSpec {
         expect:
         node.getAsPage("otherPagePath").get().path == "/content/ales/esb"
         !node.getAsPage("nonExistentProperty").present
+    }
+
+    def "get as type"() {
+        setup:
+        def node = getBasicNode("/content/lagers/jcr:content/dynamo")
+
+        expect:
+        node.getAsType("related", type).present == result
+
+        where:
+        type          | result
+        ComponentNode | true
+        Asset         | false
     }
 
     def "get href"() {

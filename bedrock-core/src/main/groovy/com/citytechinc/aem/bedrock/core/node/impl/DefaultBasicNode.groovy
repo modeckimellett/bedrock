@@ -10,11 +10,9 @@ import com.citytechinc.aem.bedrock.core.node.predicates.ResourceTypePredicate
 import com.day.cq.commons.DownloadResource
 import com.day.cq.commons.jcr.JcrConstants
 import com.day.cq.dam.api.Asset
-import com.day.cq.dam.api.Rendition
 import com.day.cq.wcm.api.NameConstants
 import com.day.cq.wcm.api.PageManager
 import com.day.cq.wcm.foundation.Image
-import com.google.common.base.Function
 import com.google.common.base.Objects
 import com.google.common.base.Optional
 import com.google.common.base.Predicate
@@ -23,6 +21,7 @@ import com.google.common.collect.Iterables
 import com.google.common.collect.Maps
 import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Slf4j
+import org.apache.commons.lang3.StringUtils
 import org.apache.sling.api.resource.Resource
 import org.apache.sling.api.resource.ValueMap
 
@@ -35,7 +34,6 @@ import static com.citytechinc.aem.bedrock.core.constants.ComponentConstants.DEFA
 import static com.citytechinc.aem.bedrock.core.constants.PathConstants.EXTENSION_PNG
 import static com.citytechinc.aem.bedrock.core.link.impl.LinkFunctions.LINK_TO_HREF
 import static com.google.common.base.Preconditions.checkNotNull
-import static org.apache.commons.lang3.StringUtils.removeStart
 
 @Slf4j("LOG")
 @EqualsAndHashCode(includes = "path")
@@ -44,13 +42,6 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
     private static final Predicate<Resource> ALL = Predicates.alwaysTrue()
 
     private static final String IMAGE_SELECTOR = "img"
-
-    private static final Function<Rendition, String> RENDITION_TO_PATH = new Function<Rendition, String>() {
-        @Override
-        String apply(Rendition rendition) {
-            rendition.path
-        }
-    }
 
     private final ValueMap properties
 
@@ -77,9 +68,7 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     @Override
     public <AdapterType> Optional<AdapterType> getAsType(String propertyName, Class<AdapterType> type) {
-        def path = properties.get(checkNotNull(propertyName), "")
-
-        getAsTypeOptional(path, type)
+        getAsTypeOptional(properties.get(checkNotNull(propertyName), ""), type)
     }
 
     @Override
@@ -141,12 +130,11 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
         } else if (resource.resourceType == NameConstants.NT_PAGE) {
             path = resource.path
         } else {
-            def pageManager = resource.resourceResolver.adaptTo(PageManager)
-            def currentPage = pageManager.getContainingPage(resource)
+            def currentPage = resource.resourceResolver.adaptTo(PageManager).getContainingPage(resource)
 
             if (currentPage) {
                 // remove page content path since resource path relative to jcr:content will always be unique
-                path = removeStart(getPath(), currentPage.contentResource.path)
+                path = StringUtils.removeStart(getPath(), currentPage.contentResource.path)
             } else {
                 path = resource.path // non-content path
             }
@@ -283,7 +271,7 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     @Override
     String getPath() {
-        resource.getPath()
+        resource.path
     }
 
     @Override
@@ -291,18 +279,14 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
         checkNotNull(predicate)
 
         def node = resource.adaptTo(Node)
-        def properties
+        def properties = []
 
         if (node) {
-            properties = []
-
             try {
                 properties.addAll(node.properties.findAll { Property property -> predicate.apply(property) })
             } catch (RepositoryException e) {
-                LOG.error "error getting properties for node = ${getPath()}", e
+                LOG.error "error getting properties for node = ${path}", e
             }
-        } else {
-            properties = Collections.emptyList()
         }
 
         properties
@@ -327,13 +311,12 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     @Override
     String toString() {
-        Objects.toStringHelper(this).add("path", getPath()).add("properties", Maps.newHashMap(asMap()))
-            .toString()
+        Objects.toStringHelper(this).add("path", path).add("properties", Maps.newHashMap(asMap())).toString()
     }
 
     private int getIndexForPredicate(Predicate<Resource> resourceTypePredicate) {
         def resources = Iterables.filter(resource.parent.children, resourceTypePredicate)
 
-        Iterables.indexOf(resources, new ResourcePathPredicate(getPath()))
+        Iterables.indexOf(resources, new ResourcePathPredicate(path))
     }
 }

@@ -14,7 +14,6 @@ import com.citytechinc.aem.bedrock.core.node.impl.DefaultComponentNode
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyExistsPredicate
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyValuePredicate
 import com.day.cq.commons.Filter
-import com.day.cq.dam.api.Asset
 import com.day.cq.wcm.api.NameConstants
 import com.day.cq.wcm.api.Page
 import com.google.common.base.Optional
@@ -88,16 +87,6 @@ final class DefaultPageDecorator implements PageDecorator {
     @Override
     public <T> Optional<T> get(String propertyName, Class<T> type) {
         getInternal({ componentNode -> componentNode.get(propertyName, type) }, Optional.absent())
-    }
-
-    @Override
-    Optional<Asset> getAsAsset(String propertyName) {
-        null
-    }
-
-    @Override
-    Optional<Asset> getAsAssetInherited(String propertyName) {
-        null
     }
 
     @Override
@@ -371,7 +360,7 @@ final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     Link getLink(TitleType titleType) {
-        null
+        getLinkBuilder(titleType, false).build()
     }
 
     @Override
@@ -380,23 +369,43 @@ final class DefaultPageDecorator implements PageDecorator {
     }
 
     @Override
+    Link getLink(TitleType titleType, boolean mapped) {
+        getLinkBuilder(titleType, mapped).build()
+    }
+
+    @Override
     LinkBuilder getLinkBuilder() {
         getLinkBuilder(false)
     }
 
     @Override
+    LinkBuilder getLinkBuilder(TitleType titleType) {
+        getLinkBuilder(titleType, false)
+    }
+
+    @Override
     LinkBuilder getLinkBuilder(boolean mapped) {
-        DefaultLinkBuilder.forPage(this, mapped)
+        DefaultLinkBuilder.forPage(this, mapped, TitleType.TITLE)
+    }
+
+    @Override
+    LinkBuilder getLinkBuilder(TitleType titleType, boolean mapped) {
+        DefaultLinkBuilder.forPage(this, mapped, titleType)
     }
 
     @Override
     NavigationLink getNavigationLink() {
-        DefaultLinkBuilder.forPage(this, false, TitleType.NAVIGATION_TITLE).buildNavigationLink()
+        getNavigationLink(false, false)
     }
 
     @Override
     NavigationLink getNavigationLink(boolean isActive) {
-        DefaultLinkBuilder.forPage(this, false, TitleType.NAVIGATION_TITLE).setActive(isActive).buildNavigationLink()
+        getNavigationLink(isActive, false)
+    }
+
+    @Override
+    NavigationLink getNavigationLink(boolean isActive, boolean mapped) {
+        DefaultLinkBuilder.forPage(this, mapped, TitleType.NAVIGATION_TITLE).setActive(isActive).buildNavigationLink()
     }
 
     // overrides

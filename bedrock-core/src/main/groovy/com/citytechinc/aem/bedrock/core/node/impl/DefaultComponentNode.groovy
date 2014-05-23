@@ -1,4 +1,5 @@
 package com.citytechinc.aem.bedrock.core.node.impl
+
 import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.node.BasicNode
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
@@ -55,12 +56,12 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
     List<ComponentNode> findDescendants(Predicate<ComponentNode> predicate) {
         def descendantNodes = []
 
-        for (ComponentNode node : getComponentNodes()) {
-            if (predicate.apply(node)) {
-                descendantNodes.add(node)
+        componentNodes.each { componentNode ->
+            if (predicate.apply(componentNode)) {
+                descendantNodes.add(componentNode)
             }
 
-            descendantNodes.addAll(node.findDescendants(predicate))
+            descendantNodes.addAll(componentNode.findDescendants(predicate))
         }
 
         descendantNodes
@@ -118,9 +119,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
 
     @Override
     public <AdapterType> Optional<AdapterType> getAsTypeInherited(String propertyName, Class<AdapterType> type) {
-        def path = properties.getInherited(checkNotNull(propertyName), "")
-
-        getAsTypeOptional(path, type)
+        getAsTypeOptional(properties.getInherited(checkNotNull(propertyName), ""), type)
     }
 
     @Override
@@ -143,6 +142,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
     @Override
     List<ComponentNode> getComponentNodes(String relativePath) {
         def child = resource.getChild(checkNotNull(relativePath))
+
         def nodes
 
         if (child) {
@@ -181,7 +181,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
 
     @Override
     Optional<String> getImageReferenceInherited(String name) {
-        Optional.fromNullable(properties.getInherited(name + "/" + DownloadResource.PN_REFERENCE, String))
+        Optional.fromNullable(properties.getInherited("$name/${DownloadResource.PN_REFERENCE}", String))
     }
 
     @Override
@@ -248,8 +248,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
 
     @Override
     String toString() {
-        Objects.toStringHelper(this).add("path", getPath()).add("properties", Maps.newHashMap(asMap()))
-            .toString()
+        Objects.toStringHelper(this).add("path", getPath()).add("properties", Maps.newHashMap(asMap())).toString()
     }
 
     // internals

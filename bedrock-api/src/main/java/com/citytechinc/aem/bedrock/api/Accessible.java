@@ -119,7 +119,7 @@ public interface Accessible {
      *
      * @param propertyName name of multi-valued property
      * @param type property type
-     * @param <T> property type
+     * @param <T> property type, must be supported by <code>ValueMap</code>
      * @return list of property values or an empty list if the property does not exist
      */
     <T> List<T> getAsList(String propertyName, Class<T> type);

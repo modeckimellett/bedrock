@@ -4,11 +4,11 @@ import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder
+import com.citytechinc.aem.bedrock.core.utils.PathUtils
 import com.google.common.base.Function
 import com.google.common.base.Optional
 import org.apache.sling.api.resource.Resource
 
-import static com.citytechinc.aem.bedrock.core.utils.PathUtils.isExternal
 import static com.google.common.base.Preconditions.checkNotNull
 
 abstract class AbstractNode {
@@ -35,7 +35,7 @@ abstract class AbstractNode {
                 def builder = DefaultLinkBuilder.forPath(mappedPath)
 
                 if (strict) {
-                    builder.external = isExternal(mappedPath, resourceResolver)
+                    builder.external = PathUtils.isExternal(mappedPath, resourceResolver)
                 }
 
                 builder.build()
@@ -46,12 +46,12 @@ abstract class AbstractNode {
     protected Optional<PageDecorator> getPageOptional(String path) {
         def pageOptional
 
-        if (path.isEmpty()) {
-            pageOptional = Optional.absent()
-        } else {
+        if (path) {
             def page = resourceInternal.resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
 
             pageOptional = Optional.fromNullable(page)
+        } else {
+            pageOptional = Optional.absent()
         }
 
         pageOptional
