@@ -20,7 +20,7 @@ import org.apache.sling.api.resource.ResourceResolver
 import org.osgi.framework.Constants
 
 @Component
-@Service
+@Service(BedrockAdapterFactory)
 @Properties([
     @Property(name = Constants.SERVICE_DESCRIPTION, value = "Bedrock Core Adapter Factory"),
     @Property(name = SlingConstants.PROPERTY_ADAPTABLE_CLASSES, value = [
