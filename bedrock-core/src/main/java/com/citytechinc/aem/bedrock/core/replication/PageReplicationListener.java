@@ -19,6 +19,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.jcr.api.SlingRepository;
 import org.osgi.service.event.EventConstants;
+import org.osgi.service.event.EventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ import javax.jcr.Session;
  * Replication listener that ensures ancestor pages are activated when any page receives an activation request.
  */
 @Component(immediate = true)
-@Service
+@Service(EventHandler.class)
 @Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC)
 public final class PageReplicationListener extends AbstractReplicationListener {
 

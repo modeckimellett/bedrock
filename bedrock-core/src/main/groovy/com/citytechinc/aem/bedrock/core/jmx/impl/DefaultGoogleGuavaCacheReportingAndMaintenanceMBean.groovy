@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 
 @Component(immediate = true)
 @Property(name = "jmx.objectname", value = "com.citytechinc.aem.bedrock:type=Google Guava Cache Reporting and Maintenance")
-@Service
+@Service(GoogleGuavaCacheReportingAndMaintenanceMBean)
 @Slf4j("LOG")
 class DefaultGoogleGuavaCacheReportingAndMaintenanceMBean extends AnnotatedStandardMBean implements
     GoogleGuavaCacheReportingAndMaintenanceMBean {

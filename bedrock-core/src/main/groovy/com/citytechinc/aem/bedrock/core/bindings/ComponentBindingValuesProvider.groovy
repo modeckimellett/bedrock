@@ -7,7 +7,7 @@ import org.apache.sling.scripting.api.BindingsValuesProvider
 import javax.script.Bindings
 
 @Component(immediate = true)
-@Service
+@Service(BindingsValuesProvider)
 final class ComponentBindingValuesProvider implements BindingsValuesProvider {
 
     @Override
