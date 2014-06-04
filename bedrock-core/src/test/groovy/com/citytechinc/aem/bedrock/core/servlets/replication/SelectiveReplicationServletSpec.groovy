@@ -1,6 +1,5 @@
-package com.citytechinc.aem.bedrock.core.replication
+package com.citytechinc.aem.bedrock.core.servlets.replication
 
-import com.citytechinc.aem.bedrock.core.servlets.replication.SelectiveReplicationServlet
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import com.day.cq.replication.Agent
 import com.day.cq.replication.AgentManager
