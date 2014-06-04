@@ -29,10 +29,10 @@ class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
     private static final String PARAMETER_PATHS = "paths"
 
     @Reference
-    protected AgentManager agentManager
+    AgentManager agentManager
 
     @Reference
-    protected Replicator replicator
+    Replicator replicator
 
     @Override
     protected void doPost(SlingHttpServletRequest request, SlingHttpServletResponse response) throws

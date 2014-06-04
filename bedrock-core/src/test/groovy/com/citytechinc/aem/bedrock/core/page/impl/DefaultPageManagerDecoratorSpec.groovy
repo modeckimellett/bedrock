@@ -59,7 +59,7 @@ class DefaultPageManagerDecoratorSpec extends BedrockSpec {
         def predicate = new Predicate<PageDecorator>() {
             @Override
             boolean apply(PageDecorator pageDecorator) {
-                return pageDecorator.name.startsWith("child")
+                pageDecorator.name.startsWith("child")
             }
         }
 

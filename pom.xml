@@ -10,7 +10,7 @@
     <groupId>com.citytechinc.aem.bedrock</groupId>
     <artifactId>bedrock</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>Bedrock</name>
     <description>Bedrock provides a sturdy foundation for bootstrapping and simplifying AEM (Adobe CQ) projects.</description>
 
@@ -252,10 +252,16 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m1</version>
                 <configuration>
-                    <generateBackupPoms>false</generateBackupPoms>
+                    <flowInitContext>
+                        <featureBranchPrefix>feature-</featureBranchPrefix>
+                        <releaseBranchPrefix>release-</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+                    </flowInitContext>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
             <plugin>
@@ -309,11 +315,12 @@
                         com.citytechinc.aem.bedrock.core.components.multicompositefield.*
                     </excludePackageNames>
                     <links>
-                        <link>http://docs.oracle.com/javaee/6/api/</link>
+                        <link>http://docs.oracle.com/javaee/6/api</link>
                         <link>http://docs.guava-libraries.googlecode.com/git-history/v15.0/javadoc</link>
-                        <link>http://www.day.com/maven/jsr170/javadocs/jcr-2.0/</link>
+                        <link>http://www.day.com/maven/jsr170/javadocs/jcr-2.0</link>
                         <link>http://sling.apache.org/apidocs/sling5</link>
                         <link>http://dev.day.com/docs/en/cq/current/javadoc</link>
+                        <link>http://fasterxml.github.io/jackson-databind/javadoc/2.3.0</link>
                     </links>
                     <quiet>true</quiet>
                 </configuration>

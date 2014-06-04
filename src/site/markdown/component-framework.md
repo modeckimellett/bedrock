@@ -33,28 +33,23 @@ The backing Java class for the component should expose getters for the values th
 
     import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
     import com.citytechinc.aem.bedrock.api.content.page.PageDecorator;
-    import com.citytechinc.aem.bedrock.api.content.request.ComponentRequest;
 
     import java.util.List;
 
     public final class Navigation extends AbstractComponent {
-
-        public Navigation(final ComponentRequest request) {
-            super(request);
-        }
 
         public String getTitle() {
             return get("title", "");
         }
 
         public List<PageDecorator> getPages() {
-            return currentPage.getChildren(true);
+            return getCurrentPage().getChildren(true);
         }
     }
 
 ### Abstract Component Java Class
 
-The `AbstractComponent` class should be extended by all component backing classes.  This base class enforces the creation of a single argument constructor that takes a `ComponentRequest` argument, which is required by the `<bedrock:component/>` JSP tag to instantiate the component class and provide the required page context attributes.  The additional `ComponentNode` constructor allows for component classes to instantiate other component classes directly.
+The `AbstractComponent` class should be extended by all component backing classes.  This class contains an `init` method with a `ComponentRequest` argument which can be overridden to provide component-specific initialization functionality.  In addition to the numerous getters for retrieving and transforming properties on the current component node, the base class also exposes `getComponent` methods to acquire instances of other components from either an absolute path or a `ComponentNode`.
 
     final PageDecorator homepage = request.getPageManager().getPage("/content/home");
 
@@ -63,7 +58,7 @@ The `AbstractComponent` class should be extended by all component backing classe
 
     if (latestNewsComponentNode.isPresent()) {
         // get an instance of the Latest News component for the given component node
-        final LatestNews latestNews = new LatestNews(latestNewsComponentNode.get());
+        final LatestNews latestNews = getComponent(latestNewsComponentNode.get(), LatestNews.class).get();
     }
 
 See the [Javadoc](http://code.citytechinc.com/bedrock/apidocs/com/citytechinc/aem/bedrock/core/components/AbstractComponent.html) for details of the available methods.

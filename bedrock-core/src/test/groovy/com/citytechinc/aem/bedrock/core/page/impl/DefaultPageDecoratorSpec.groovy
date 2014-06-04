@@ -219,10 +219,6 @@ class DefaultPageDecoratorSpec extends BedrockSpec {
         "/content/citytechinc/empty" | "otherPagePath"       | false
     }
 
-
-
-
-
     def "get image source optional"() {
         setup:
         def page = getPage(path)
