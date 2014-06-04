@@ -1,5 +1,4 @@
 package com.citytechinc.aem.bedrock.core.bindings
-
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest
 import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest
 import com.day.cq.wcm.api.WCMMode
@@ -42,7 +41,7 @@ final class ComponentBindings implements Bindings {
     private final ComponentRequest componentRequest
 
     ComponentBindings(PageContext pageContext) {
-        this((SimpleBindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME))
+        this(pageContext.getAttribute(DEFAULT_BINDINGS_NAME) as SimpleBindings)
     }
 
     ComponentBindings(Bindings bindings) {
