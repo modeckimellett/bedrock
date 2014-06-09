@@ -1,4 +1,5 @@
 package com.citytechinc.aem.bedrock.core.node.predicates
+
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.core.node.impl.DefaultComponentNode
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
