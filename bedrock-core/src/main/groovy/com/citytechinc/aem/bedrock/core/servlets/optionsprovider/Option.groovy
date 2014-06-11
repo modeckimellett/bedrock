@@ -9,14 +9,14 @@ import groovy.transform.Immutable
 @Immutable
 class Option {
 
-    static def ALPHA = new Comparator<Option>() {
+    public static final Comparator<Option> ALPHA = new Comparator<Option>() {
         @Override
         int compare(Option option1, Option option2) {
             option1.text.compareTo(option2.text)
         }
     }
 
-    static def ALPHA_IGNORE_CASE = new Comparator<Option>() {
+    public static final Comparator<Option> ALPHA_IGNORE_CASE = new Comparator<Option>() {
         @Override
         int compare(Option option1, Option option2) {
             option1.text.compareToIgnoreCase(option2.text)

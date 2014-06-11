@@ -1,5 +1,4 @@
 package com.citytechinc.aem.bedrock.core.page.impl
-
 import com.citytechinc.aem.bedrock.api.link.ImageLink
 import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.link.NavigationLink
@@ -10,7 +9,6 @@ import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.api.page.enums.TitleType
 import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder
-import com.citytechinc.aem.bedrock.core.node.impl.DefaultComponentNode
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyExistsPredicate
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyValuePredicate
 import com.day.cq.commons.Filter
@@ -66,7 +64,7 @@ final class DefaultPageDecorator implements PageDecorator {
         if (type == BasicNode || type == ComponentNode) {
             def resource = delegate.contentResource
 
-            result = !resource ? null : (AdapterType) new DefaultComponentNode(resource)
+            result = (AdapterType) resource?.adaptTo(ComponentNode)
         } else {
             result = delegate.adaptTo(type)
         }
