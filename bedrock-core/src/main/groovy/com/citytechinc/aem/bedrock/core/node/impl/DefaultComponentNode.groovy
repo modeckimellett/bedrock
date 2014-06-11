@@ -250,7 +250,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
     String toString() {
         Objects.toStringHelper(this).add("path", getPath()).add("properties", Maps.newHashMap(asMap())).toString()
     }
-w
+
     // internals
 
     private Optional<ComponentNode> findAncestorForPredicate(Predicate<ComponentNode> predicate) {
