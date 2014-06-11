@@ -169,7 +169,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
         def resourceResolver = resource.resourceResolver
 
         def style = resourceResolver.adaptTo(Designer).getStyle(resource)
-        def styleResource = resourceResolver.getResource(style.path)
+        def styleResource = resourceResolver.getResource(style.getPath())
 
         Optional.fromNullable(styleResource).transform(RESOURCE_TO_BASIC_NODE)
     }
@@ -250,7 +250,7 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
     String toString() {
         Objects.toStringHelper(this).add("path", getPath()).add("properties", Maps.newHashMap(asMap())).toString()
     }
-w
+
     // internals
 
     private Optional<ComponentNode> findAncestorForPredicate(Predicate<ComponentNode> predicate) {
