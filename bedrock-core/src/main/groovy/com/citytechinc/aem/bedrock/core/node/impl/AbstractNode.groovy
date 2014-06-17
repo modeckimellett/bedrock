@@ -3,7 +3,7 @@ package com.citytechinc.aem.bedrock.core.node.impl
 import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
-import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder
+import com.citytechinc.aem.bedrock.core.link.builders.factory.LinkBuilderFactory
 import com.citytechinc.aem.bedrock.core.utils.PathUtils
 import com.google.common.base.Function
 import com.google.common.base.Optional
@@ -32,7 +32,7 @@ abstract class AbstractNode {
                 def resourceResolver = resourceInternal.resourceResolver
                 def mappedPath = mapped ? resourceResolver.map(path) : path
 
-                def builder = DefaultLinkBuilder.forPath(mappedPath)
+                def builder = LinkBuilderFactory.forPath(mappedPath)
 
                 if (strict) {
                     builder.external = PathUtils.isExternal(mappedPath, resourceResolver)
