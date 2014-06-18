@@ -4,7 +4,7 @@ import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.link.builders.LinkBuilder
 import com.citytechinc.aem.bedrock.api.node.BasicNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
-import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder
+import com.citytechinc.aem.bedrock.core.link.builders.factory.LinkBuilderFactory
 import com.citytechinc.aem.bedrock.core.node.predicates.ResourcePathPredicate
 import com.citytechinc.aem.bedrock.core.node.predicates.ResourceTypePredicate
 import com.day.cq.commons.DownloadResource
@@ -261,7 +261,7 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     @Override
     LinkBuilder getLinkBuilder(boolean mapped) {
-        DefaultLinkBuilder.forResource(resource, mapped)
+        LinkBuilderFactory.forResource(resource, mapped)
     }
 
     @Override

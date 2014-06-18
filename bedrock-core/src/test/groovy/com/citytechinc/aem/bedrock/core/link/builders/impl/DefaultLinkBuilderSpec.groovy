@@ -2,6 +2,7 @@ package com.citytechinc.aem.bedrock.core.link.builders.impl
 
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.api.page.enums.TitleType
+import com.citytechinc.aem.bedrock.core.link.builders.factory.LinkBuilderFactory
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import com.day.cq.wcm.api.NameConstants
 import com.day.cq.wcm.api.Page
@@ -49,16 +50,16 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build link for existing link"() {
         setup:
-        def link = DefaultLinkBuilder.forPath("/content/global").build()
+        def link = LinkBuilderFactory.forPath("/content/global").build()
 
         expect:
-        DefaultLinkBuilder.forLink(link).build() == link
+        LinkBuilderFactory.forLink(link).build() == link
     }
 
     def "build link for page"() {
         setup:
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage("/content/global")
-        def link = DefaultLinkBuilder.forPage(page).build()
+        def link = LinkBuilderFactory.forPage(page).build()
 
         expect:
         link.path == "/content/global"
@@ -70,7 +71,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
     def "build link for page with no jcr:content node"() {
         setup:
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage("/content/se")
-        def link = DefaultLinkBuilder.forPage(page).build()
+        def link = LinkBuilderFactory.forPage(page).build()
 
         expect:
         link.path == "/content/se"
@@ -82,7 +83,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
     def "build link for page with redirect"() {
         setup:
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage("/content/de")
-        def link = DefaultLinkBuilder.forPage(page).build()
+        def link = LinkBuilderFactory.forPage(page).build()
 
         expect:
         link.path == "/content/global"
@@ -94,7 +95,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
     def "build link for page with navigation title"() {
         setup:
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage("/content/global")
-        def link = DefaultLinkBuilder.forPage(page, TitleType.NAVIGATION_TITLE).build()
+        def link = LinkBuilderFactory.forPage(page, TitleType.NAVIGATION_TITLE).build()
 
         expect:
         link.path == "/content/global"
@@ -106,7 +107,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
     def "build link for page without navigation title"() {
         setup:
         def page = resourceResolver.adaptTo(PageManagerDecorator).getPage("/content/us")
-        def link = DefaultLinkBuilder.forPage(page, TitleType.NAVIGATION_TITLE).build()
+        def link = LinkBuilderFactory.forPage(page, TitleType.NAVIGATION_TITLE).build()
 
         expect:
         link.path == "/content/us"
@@ -128,7 +129,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
             getPath      : { path }
         ] as Page
 
-        def link = DefaultLinkBuilder.forPage(page, mapped).build()
+        def link = LinkBuilderFactory.forPage(page, mapped).build()
 
         expect:
         link.path == mappedPath
@@ -146,12 +147,12 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
         def resource = getResource("/content/global/jcr:content")
 
         expect:
-        DefaultLinkBuilder.forResource(resource).build().path == "/content/global/jcr:content"
+        LinkBuilderFactory.forResource(resource).build().path == "/content/global/jcr:content"
     }
 
     def "build link for path"() {
         setup:
-        def builder = DefaultLinkBuilder.forPath("/content")
+        def builder = LinkBuilderFactory.forPath("/content")
 
         builder.extension = extension
         builder.suffix = suffix
@@ -179,7 +180,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build link and set external"() {
         setup:
-        def builder = DefaultLinkBuilder.forPath("/content")
+        def builder = LinkBuilderFactory.forPath("/content")
 
         builder.external = external
 
@@ -196,7 +197,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build link for path with selectors"() {
         setup:
-        def link = DefaultLinkBuilder.forPath(path).addSelectors(selectors).build()
+        def link = LinkBuilderFactory.forPath(path).addSelectors(selectors).build()
 
         expect:
         link.href == href
@@ -211,7 +212,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build link for path with parameters"() {
         setup:
-        def link = DefaultLinkBuilder.forPath("/content").addParameters(parameters).build()
+        def link = LinkBuilderFactory.forPath("/content").addParameters(parameters).build()
 
         expect:
         link.href == href
@@ -226,7 +227,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build link for path with same-name parameters"() {
         setup:
-        def builder = DefaultLinkBuilder.forPath("/content")
+        def builder = LinkBuilderFactory.forPath("/content")
 
         when:
         builder.addParameter("a", "1")
@@ -242,7 +243,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build image link"() {
         setup:
-        def imageLink = DefaultLinkBuilder.forPath("/content/global").setImageSource(imageSource).buildImageLink()
+        def imageLink = LinkBuilderFactory.forPath("/content/global").setImageSource(imageSource).buildImageLink()
 
         expect:
         imageLink.imageSource == imageSource
@@ -253,7 +254,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build navigation link without children"() {
         setup:
-        def navigationLink = DefaultLinkBuilder.forPath("/content/global").buildNavigationLink()
+        def navigationLink = LinkBuilderFactory.forPath("/content/global").buildNavigationLink()
 
         expect:
         !navigationLink.children
@@ -261,7 +262,7 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build navigation link without children with active state"() {
         setup:
-        def navigationLink = DefaultLinkBuilder.forPath("/content/global").setActive(active).buildNavigationLink()
+        def navigationLink = LinkBuilderFactory.forPath("/content/global").setActive(active).buildNavigationLink()
 
         expect:
         navigationLink.active == active
@@ -272,11 +273,11 @@ class DefaultLinkBuilderSpec extends BedrockSpec {
 
     def "build navigation link with children"() {
         setup:
-        def builder = DefaultLinkBuilder.forPath("/content/global")
+        def builder = LinkBuilderFactory.forPath("/content/global")
 
-        builder.addChild(DefaultLinkBuilder.forPath("/content/1").buildNavigationLink())
-        builder.addChild(DefaultLinkBuilder.forPath("/content/2").buildNavigationLink())
-        builder.addChild(DefaultLinkBuilder.forPath("/content/3").buildNavigationLink())
+        builder.addChild(LinkBuilderFactory.forPath("/content/1").buildNavigationLink())
+        builder.addChild(LinkBuilderFactory.forPath("/content/2").buildNavigationLink())
+        builder.addChild(LinkBuilderFactory.forPath("/content/3").buildNavigationLink())
 
         def navigationLink = builder.buildNavigationLink()
 

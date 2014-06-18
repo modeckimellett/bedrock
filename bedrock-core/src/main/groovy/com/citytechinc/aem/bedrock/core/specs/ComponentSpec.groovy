@@ -20,11 +20,12 @@ abstract class ComponentSpec extends BedrockSpec {
     public <T extends AbstractComponent> T init(Class<T> type,
         @DelegatesTo(value = BindingsBuilder, strategy = Closure.OWNER_FIRST) Closure closure) {
         def bindings = new BindingsBuilder(resourceResolver).build(closure)
-        def componentBindings = new ComponentBindings(bindings)
+
+        bindings.putAll(new ComponentBindings(bindings))
 
         def instance = type.newInstance()
 
-        instance.init(componentBindings)
+        instance.init(bindings)
 
         instance
     }

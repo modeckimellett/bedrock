@@ -1,4 +1,5 @@
 package com.citytechinc.aem.bedrock.core.page.impl
+
 import com.citytechinc.aem.bedrock.api.link.ImageLink
 import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.link.NavigationLink
@@ -8,7 +9,7 @@ import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.api.page.enums.TitleType
-import com.citytechinc.aem.bedrock.core.link.builders.impl.DefaultLinkBuilder
+import com.citytechinc.aem.bedrock.core.link.builders.factory.LinkBuilderFactory
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyExistsPredicate
 import com.citytechinc.aem.bedrock.core.node.predicates.ComponentNodePropertyValuePredicate
 import com.day.cq.commons.Filter
@@ -338,7 +339,7 @@ final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     ImageLink getImageLink(String imageSource) {
-        DefaultLinkBuilder.forPage(this).setImageSource(checkNotNull(imageSource)).buildImageLink()
+        LinkBuilderFactory.forPage(this).setImageSource(checkNotNull(imageSource)).buildImageLink()
     }
 
     @Override
@@ -383,12 +384,12 @@ final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     LinkBuilder getLinkBuilder(boolean mapped) {
-        DefaultLinkBuilder.forPage(this, mapped, TitleType.TITLE)
+        LinkBuilderFactory.forPage(this, mapped, TitleType.TITLE)
     }
 
     @Override
     LinkBuilder getLinkBuilder(TitleType titleType, boolean mapped) {
-        DefaultLinkBuilder.forPage(this, mapped, titleType)
+        LinkBuilderFactory.forPage(this, mapped, titleType)
     }
 
     @Override
@@ -403,7 +404,7 @@ final class DefaultPageDecorator implements PageDecorator {
 
     @Override
     NavigationLink getNavigationLink(boolean isActive, boolean mapped) {
-        DefaultLinkBuilder.forPage(this, mapped, TitleType.NAVIGATION_TITLE).setActive(isActive).buildNavigationLink()
+        LinkBuilderFactory.forPage(this, mapped, TitleType.NAVIGATION_TITLE).setActive(isActive).buildNavigationLink()
     }
 
     // overrides
