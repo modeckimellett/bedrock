@@ -2,8 +2,10 @@ package com.citytechinc.aem.bedrock.core.tags
 
 import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings
 import com.citytechinc.aem.bedrock.core.components.TestComponent
+import com.citytechinc.aem.bedrock.core.components.TestModelComponent
 import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
 import com.citytechinc.aem.prosper.builders.BindingsBuilder
+import org.apache.sling.api.resource.Resource
 import spock.lang.Unroll
 
 import javax.servlet.jsp.PageContext
@@ -12,6 +14,15 @@ import static com.citytechinc.aem.bedrock.core.tags.DefineObjectsTag.ATTR_COMPON
 
 @Unroll
 class ComponentTagSpec extends BedrockJspTagSpec<ComponentTag> {
+
+    @Override
+    Map<Class, Closure> addResourceAdapters() {
+        def adapters = [:]
+
+        adapters[TestModelComponent] = { Resource resource -> new TestModelComponent(true) }
+
+        return adapters
+    }
 
     def setupSpec() {
         pageBuilder.content {
@@ -70,5 +81,24 @@ class ComponentTagSpec extends BedrockJspTagSpec<ComponentTag> {
         "request"     | PageContext.REQUEST_SCOPE
         "session"     | PageContext.SESSION_SCOPE
         "application" | PageContext.APPLICATION_SCOPE
+    }
+
+    def "get component instance for modeled component"() {
+        setup:
+        tag.className = TestModelComponent.class.name
+        tag.name = "testModelComponent"
+
+        def bindings = new BindingsBuilder(resourceResolver).build {
+            path = "/content/home/jcr:content/component"
+        }
+
+        tag.pageContext.setAttribute ATTR_COMPONENT_BINDINGS, new ComponentBindings(bindings)
+
+        when:
+        tag.doEndTag()
+
+        then:
+        tag.pageContext.getAttribute("testModelComponent") instanceof TestModelComponent
+        ((TestModelComponent) tag.pageContext.getAttribute("testModelComponent")).adaptedTo
     }
 }
