@@ -2,6 +2,12 @@ package com.citytechinc.aem.bedrock.core.tags;
 
 import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
 import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
+import com.google.common.collect.Sets;
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.annotations.Model;
+
+import java.util.Set;
 
 import static com.citytechinc.aem.bedrock.core.tags.DefineObjectsTag.ATTR_COMPONENT_BINDINGS;
 
@@ -11,7 +17,7 @@ import static com.citytechinc.aem.bedrock.core.tags.DefineObjectsTag.ATTR_COMPON
 public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
     protected final Object getInstance(final Class<?> clazz) throws IllegalAccessException, InstantiationException {
-        final Object instance = clazz.newInstance();
+        final Object instance = instantiateInstance(clazz);
 
         if (instance instanceof AbstractComponent) {
             final ComponentBindings componentBindings = (ComponentBindings) pageContext.getAttribute(
@@ -28,5 +34,28 @@ public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
         final Class<?> clazz = Class.forName(className);
 
         return getInstance(clazz);
+    }
+
+    private Object instantiateInstance(final Class<?> clazz) throws IllegalAccessException, InstantiationException {
+
+        Model slingModelAnnotation = clazz.getAnnotation(Model.class);
+
+        if (slingModelAnnotation != null) {
+
+            final ComponentBindings componentBindings = (ComponentBindings) pageContext.getAttribute(ATTR_COMPONENT_BINDINGS);
+
+            Set<Class<?>> adaptablesSet = Sets.newHashSet(slingModelAnnotation.adaptables());
+
+            if (adaptablesSet.contains(Resource.class)) {
+                return componentBindings.getComponentRequest().getResource().adaptTo(clazz);
+            }
+            else if (adaptablesSet.contains(SlingHttpServletRequest.class)) {
+                return componentBindings.getComponentRequest().getSlingRequest().adaptTo(clazz);
+            }
+
+        }
+
+        return clazz.newInstance();
+
     }
 }
