@@ -26,8 +26,23 @@ public abstract class AbstractReplicationListener implements EventHandler {
     @Override
     public final void handleEvent(final Event event) {
         final String type = (String) event.getProperty(ReplicationAction.PROPERTY_TYPE);
-        final String path = (String) event.getProperty(ReplicationAction.PROPERTY_PATH);
 
+        final String[] paths = (String[]) event.getProperty(ReplicationAction.PROPERTY_PATHS);
+
+        if (paths != null) {
+            for (final String path : paths) {
+                handleEvent(type, path);
+            }
+        } else {
+            final String path = (String) event.getProperty(ReplicationAction.PROPERTY_PATH);
+
+            if (path != null) {
+                handleEvent(type, path);
+            }
+        }
+    }
+
+    private void handleEvent(final String type, final String path) {
         if (TYPE_ACTIVATE.equals(type)) {
             LOG.info("handleEvent() handling activate event for path = {}", path);
 
