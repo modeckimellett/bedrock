@@ -4,11 +4,13 @@ import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings
 import com.citytechinc.aem.bedrock.core.components.TestComponent
 import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
 import com.citytechinc.aem.prosper.builders.BindingsBuilder
+import org.apache.sling.api.scripting.SlingBindings
 import spock.lang.Unroll
 
 import javax.servlet.jsp.PageContext
 
 import static com.citytechinc.aem.bedrock.core.tags.DefineObjectsTag.ATTR_COMPONENT_BINDINGS
+import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME
 
 @Unroll
 class ComponentTagSpec extends BedrockJspTagSpec<ComponentTag> {
@@ -26,6 +28,11 @@ class ComponentTagSpec extends BedrockJspTagSpec<ComponentTag> {
     @Override
     ComponentTag createTag() {
         new ComponentTag()
+    }
+
+    @Override
+    Map<String, Object> addPageContextAttributes() {
+        [(DEFAULT_BINDINGS_NAME): new SlingBindings()]
     }
 
     def "get component instance"() {
