@@ -17,8 +17,7 @@ abstract class ComponentSpec extends BedrockSpec {
      * @param closure
      * @return initialized component instance
      */
-    public <T extends AbstractComponent> T init(Class<T> type,
-        @DelegatesTo(value = BindingsBuilder, strategy = Closure.OWNER_FIRST) Closure closure) {
+    public <T extends AbstractComponent> T init(Class<T> type, @DelegatesTo(value = BindingsBuilder) Closure closure) {
         def bindings = new BindingsBuilder(resourceResolver).build(closure)
 
         bindings.putAll(new ComponentBindings(bindings))
