@@ -1,4 +1,5 @@
 package com.citytechinc.aem.bedrock.core.bindings
+
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest
 import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest
 import com.day.cq.wcm.api.WCMMode

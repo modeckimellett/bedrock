@@ -6,6 +6,7 @@ import com.citytechinc.aem.bedrock.api.node.BasicNode;
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
+import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.script.Bindings;
+import javax.script.SimpleBindings;
 import java.util.List;
 
 import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_NODE;
@@ -492,12 +494,16 @@ public abstract class AbstractComponent implements ComponentNode, Use {
         T instance = null;
 
         if (resource != null) {
-            checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE).put(RESOURCE, resource);
+            final Bindings bindings = new SimpleBindings(checkNotNull(this.bindings, PRECONDITIONS_ERROR_MESSAGE));
+
+            bindings.put(RESOURCE, resource);
+
+            final ComponentBindings componentBindings = new ComponentBindings(bindings);
 
             try {
                 instance = type.newInstance();
 
-                instance.init(bindings);
+                instance.init(componentBindings);
             } catch (InstantiationException e) {
                 LOG.error("error instantiating component for type = " + type, e);
             } catch (IllegalAccessException e) {
