@@ -19,6 +19,7 @@ import static com.adobe.cq.sightly.WCMBindings.CURRENT_STYLE
 import static com.adobe.cq.sightly.WCMBindings.DESIGNER
 import static com.adobe.cq.sightly.WCMBindings.EDIT_CONTEXT
 import static org.apache.sling.api.scripting.SlingBindings.SLING
+import static com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentServletRequest.NAME_COMPONENT_SERVLET_REQUEST
 
 final class DefaultComponentRequest implements ComponentRequest {
 
@@ -39,8 +40,8 @@ final class DefaultComponentRequest implements ComponentRequest {
 
     final SlingScriptHelper sling
 
-    DefaultComponentRequest(Bindings bindings) {
-        componentServletRequest = new DefaultComponentServletRequest(bindings)
+    DefaultComponentRequest(ComponentServletRequest componentServletRequest, Bindings bindings) {
+        this.componentServletRequest = componentServletRequest
 
         component = bindings.get(COMPONENT) as Component
         componentContext = bindings.get(COMPONENT_CONTEXT) as ComponentContext
@@ -49,5 +50,11 @@ final class DefaultComponentRequest implements ComponentRequest {
         currentDesign = bindings.get(CURRENT_DESIGN) as Design
         currentStyle = bindings.get(CURRENT_STYLE) as Style
         sling = bindings.get(SLING) as SlingScriptHelper
+    }
+
+    DefaultComponentRequest(Bindings bindings) {
+
+        this(new DefaultComponentServletRequest(bindings), bindings);
+
     }
 }

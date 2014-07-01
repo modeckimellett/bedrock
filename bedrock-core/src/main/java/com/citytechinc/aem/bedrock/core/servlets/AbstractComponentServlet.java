@@ -1,12 +1,47 @@
 package com.citytechinc.aem.bedrock.core.servlets;
 
+import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
 import com.citytechinc.aem.bedrock.api.request.ComponentServletRequest;
+import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
+import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentServletRequest;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.components.Component;
+import com.day.cq.wcm.api.components.ComponentContext;
+import com.day.cq.wcm.api.components.EditContext;
+import com.day.cq.wcm.api.designer.Design;
+import com.day.cq.wcm.api.designer.Designer;
+import com.day.cq.wcm.api.designer.Style;
+import com.day.cq.wcm.commons.WCMUtils;
+import com.google.common.base.Optional;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.ResourceUtil;
+import org.apache.sling.api.resource.ValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.script.Bindings;
+import javax.script.SimpleBindings;
 import javax.servlet.ServletException;
 import java.io.IOException;
+
+import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_NODE;
+import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_REQUEST;
+
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_COMPONENT_CONTEXT;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_COMPONENT;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_CURRENT_DESIGN;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_DESIGNER;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_CURRENT_STYLE;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_CURRENT_PAGE;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_EDIT_CONTEXT;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_PROPERTIES;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_PAGE_MANAGER;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_RESOURCE_PAGE;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_PAGE_PROPERTIES;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_RESOURCE_DESIGN;
+import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_XSSAPI;
 
 /**
  * Proxy servlet that wraps the Sling request in a "component" request for access to convenience accessor methods.
@@ -14,6 +49,8 @@ import java.io.IOException;
 public abstract class AbstractComponentServlet extends AbstractJsonResponseServlet {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractComponentServlet.class);
 
     @Override
     protected final void doDelete(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
@@ -85,5 +122,59 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
      */
     protected void processPut(final ComponentServletRequest request) throws ServletException, IOException {
         handleMethodNotImplemented(request.getSlingRequest(), request.getSlingResponse());
+    }
+
+    /**
+     * Produces a Bindings using logic similar to that found in com.day.cq.wcm.core.impl.WCMBindingsValuesProvider then
+     * uses these bindings to initialize an instance of the specified component class.
+     *
+     * @param request component request
+     * @param type the type of component to instantiate and initialize
+     * @param <T> the type of component to instantiate and initialize
+     * @return an optional of the initialized component, absent if initialization fails
+     */
+    protected <T extends AbstractComponent> Optional<T> getComponent(ComponentServletRequest request, final Class<T> type) {
+
+
+        Bindings componentBindings = new SimpleBindings();
+
+        componentBindings.put(COMPONENT_NODE, request.getComponentNode());
+
+        ComponentContext componentContext = WCMUtils.getComponentContext(request.getSlingRequest());
+        Component component = componentContext == null ? null : componentContext.getComponent();
+        EditContext editContext = componentContext == null ? null : componentContext.getEditContext();
+
+        Designer designer = request.getResourceResolver().adaptTo(Designer.class);
+        Page currentPage = componentContext == null ? null : componentContext.getPage();
+        Design currentDesign = designer.getDesign(currentPage);
+        Style currentStyle = componentContext == null || currentDesign == null ? null : currentDesign.getStyle(componentContext.getCell());
+
+        ValueMap properties = request.getResource().adaptTo(ValueMap.class);
+
+        componentBindings.put(NAME_PROPERTIES, properties);
+        componentBindings.put(NAME_COMPONENT_CONTEXT, componentContext);
+        componentBindings.put(NAME_EDIT_CONTEXT, editContext);
+        componentBindings.put(NAME_COMPONENT, component);
+        componentBindings.put(NAME_DESIGNER, designer);
+        componentBindings.put(NAME_CURRENT_DESIGN, currentDesign);
+        componentBindings.put(NAME_CURRENT_STYLE, currentStyle);
+
+        ComponentRequest componentRequest = new DefaultComponentRequest(request, componentBindings);
+
+        componentBindings.put(COMPONENT_REQUEST, componentRequest);
+
+        T instance = null;
+        try {
+            instance = type.newInstance();
+
+            instance.init(componentBindings);
+        } catch (InstantiationException e) {
+            LOG.error("error instantiating component for type = " + type, e);
+        } catch (IllegalAccessException e) {
+            LOG.error("error instantiating component for type = " + type, e);
+        }
+
+        return Optional.fromNullable(instance);
+
     }
 }

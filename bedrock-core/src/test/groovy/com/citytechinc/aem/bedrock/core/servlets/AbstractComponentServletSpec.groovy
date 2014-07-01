@@ -22,7 +22,7 @@ class AbstractComponentServletSpec extends BedrockSpec {
         setup:
         def request = requestBuilder.build()
         def response = responseBuilder.build()
-
+                                         instantiate and initialize
         when:
         new ComponentServlet().doGet(request, response)
 

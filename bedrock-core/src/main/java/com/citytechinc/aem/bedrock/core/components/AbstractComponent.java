@@ -41,6 +41,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractComponent.class);
 
     private static final String PRECONDITIONS_ERROR_MESSAGE = "component has not been initialized";
+    private static final String SLING_HELPER_PRECONDITIONS_ERROR_MESSAGE = "component has not been initialized or component was initialized from a servlet";
 
     private ComponentRequest componentRequest;
 
@@ -122,7 +123,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @return the service instance, or null if it is not available
      */
     public final <T> T getService(final Class<T> serviceType) {
-        return checkNotNull(sling, PRECONDITIONS_ERROR_MESSAGE).getService(serviceType);
+        return checkNotNull(sling, SLING_HELPER_PRECONDITIONS_ERROR_MESSAGE).getService(serviceType);
     }
 
     /**
@@ -135,7 +136,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      */
     @SuppressWarnings("unchecked")
     public final <T> List<T> getServices(final Class<T> serviceType, final String filter) {
-        return (List<T>) ImmutableList.of(checkNotNull(sling, PRECONDITIONS_ERROR_MESSAGE).getServices(serviceType,
+        return (List<T>) ImmutableList.of(checkNotNull(sling, SLING_HELPER_PRECONDITIONS_ERROR_MESSAGE).getServices(serviceType,
             filter));
     }
 
