@@ -146,10 +146,10 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
 
         Designer designer = request.getResourceResolver().adaptTo(Designer.class);
         Page currentPage = componentContext == null ? null : componentContext.getPage();
-        Design currentDesign = designer.getDesign(currentPage);
+        Design currentDesign = designer == null ? null : designer.getDesign(currentPage);
         Style currentStyle = componentContext == null || currentDesign == null ? null : currentDesign.getStyle(componentContext.getCell());
 
-        ValueMap properties = request.getResource().adaptTo(ValueMap.class);
+        ValueMap properties = request.getResource() == null ? null : request.getResource().adaptTo(ValueMap.class);
 
         componentBindings.put(NAME_PROPERTIES, properties);
         componentBindings.put(NAME_COMPONENT_CONTEXT, componentContext);
