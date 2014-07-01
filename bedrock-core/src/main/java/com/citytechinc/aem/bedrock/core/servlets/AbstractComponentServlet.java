@@ -18,6 +18,8 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.api.scripting.SlingScriptHelper;
+import org.apache.sling.scripting.core.ScriptHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +44,7 @@ import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_RESOURCE_P
 import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_PAGE_PROPERTIES;
 import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_RESOURCE_DESIGN;
 import static com.day.cq.wcm.core.impl.WCMBindingsValuesProvider.NAME_XSSAPI;
+import static org.apache.sling.api.scripting.SlingBindings.SLING;
 
 /**
  * Proxy servlet that wraps the Sling request in a "component" request for access to convenience accessor methods.
@@ -51,6 +54,25 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractComponentServlet.class);
+
+    private SlingScriptHelper slingScriptHelper;
+
+    protected final void activate(org.osgi.service.component.ComponentContext context) {
+        slingScriptHelper = new ScriptHelper(context.getBundleContext(), null);
+
+        processActivate(context);
+    }
+
+    /**
+     * To be implemented by extending Servlets in cases where Servlets need to provide some manner of
+     * activation logic.  Extending servlets should add activation logic via this method and should <strong>never</strong>
+     * annotate a separate method as the activator.
+     *
+     * @param context OSGI Component Context
+     */
+    protected void processActivate(org.osgi.service.component.ComponentContext context) {
+
+    }
 
     @Override
     protected final void doDelete(final SlingHttpServletRequest request, final SlingHttpServletResponse response)
@@ -158,6 +180,7 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
         componentBindings.put(NAME_DESIGNER, designer);
         componentBindings.put(NAME_CURRENT_DESIGN, currentDesign);
         componentBindings.put(NAME_CURRENT_STYLE, currentStyle);
+        componentBindings.put(SLING, slingScriptHelper);
 
         ComponentRequest componentRequest = new DefaultComponentRequest(request, componentBindings);
 
