@@ -32,7 +32,7 @@ import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
 import static org.apache.sling.api.scripting.SlingBindings.SLING;
 
 /**
- * Base class for CQ component classes instantiated by the {@link com.citytechinc.aem.bedrock.core.tags.ComponentTag} or
+ * Base class for AEM component classes instantiated by the {@link com.citytechinc.aem.bedrock.core.tags.ComponentTag} or
  * implemented with Sightly.
  */
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
