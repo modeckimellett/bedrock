@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspTagException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import static com.citytechinc.aem.bedrock.core.constants.ComponentConstants.PROPERTY_CLASS_NAME;
@@ -58,33 +57,27 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
         return EVAL_PAGE;
     }
 
-    private void instantiateComponentClass(final ComponentRequest request) {
+    private void instantiateComponentClass(final ComponentRequest request) throws JspTagException {
         final Component component = request.getComponent();
 
         if (component != null) {
-            try {
-                setComponentInstance(component);
-            } catch (ClassNotFoundException e) {
-                LOG.error("error instantiating component class", e);
-            } catch (NoSuchMethodException e) {
-                LOG.error("error instantiating component class", e);
-            } catch (InstantiationException e) {
-                LOG.error("error instantiating component class", e);
-            } catch (IllegalAccessException e) {
-                LOG.error("error instantiating component class", e);
-            } catch (InvocationTargetException e) {
-                LOG.error("error instantiating component class", e);
-            }
+            setComponentInstance(component);
         } else {
             LOG.debug("component is null, not instantiating component class");
         }
     }
 
-    private void setComponentInstance(final Component component)
-        throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException,
-        IllegalAccessException {
+    private void setComponentInstance(final Component component) throws JspTagException {
         final String className = component.getProperties().get(PROPERTY_CLASS_NAME, String.class);
-        final Class<?> clazz = className == null ? null : Class.forName(className);
+        final Class<?> clazz;
+
+        try {
+            clazz = className == null ? null : Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            LOG.error("class not found for name = " + className, e);
+
+            throw new JspTagException(e);
+        }
 
         if (clazz != null) {
             if (clazz.isAnnotationPresent(AutoInstantiate.class)) {

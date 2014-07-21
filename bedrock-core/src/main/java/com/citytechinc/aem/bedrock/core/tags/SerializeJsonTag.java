@@ -23,8 +23,6 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String EXCEPTION_MESSAGE_INSTANCE = "error getting instance for class name = ";
-
     /**
      * Component class to instantiate and serialize.
      */
@@ -50,11 +48,11 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
             final Object object;
 
             if (isNullOrEmpty(className)) {
-                LOG.debug("doEndTag() serializing JSON for instance name = {}", instanceName);
+                LOG.debug("serializing JSON for instance name = {}", instanceName);
 
                 object = pageContext.getAttribute(instanceName, scope);
             } else {
-                LOG.debug("doEndTag() serializing JSON for class name = {}", className);
+                LOG.debug("serializing JSON for class name = {}", className);
 
                 object = getInstance(className);
 
@@ -66,18 +64,6 @@ public final class SerializeJsonTag extends AbstractComponentInstanceTag {
             pageContext.getOut().write(MAPPER.writeValueAsString(object));
         } catch (IOException e) {
             LOG.error("error serializing JSON", e);
-
-            throw new JspTagException(e);
-        } catch (IllegalAccessException e) {
-            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
-
-            throw new JspTagException(e);
-        } catch (ClassNotFoundException e) {
-            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
-
-            throw new JspTagException(e);
-        } catch (InstantiationException e) {
-            LOG.error(EXCEPTION_MESSAGE_INSTANCE + className, e);
 
             throw new JspTagException(e);
         }

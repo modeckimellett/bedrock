@@ -3,8 +3,10 @@ package com.citytechinc.aem.bedrock.core.tags;
 import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
 import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
 import org.apache.sling.api.scripting.SlingBindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.script.Bindings;
+import javax.servlet.jsp.JspTagException;
 import java.util.Map;
 
 import static com.citytechinc.aem.bedrock.core.tags.DefineObjectsTag.ATTR_COMPONENT_BINDINGS;
@@ -15,33 +17,55 @@ import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BIN
  */
 public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
-    protected final Object getInstance(final Class<?> clazz) throws IllegalAccessException, InstantiationException {
-        final Object instance = clazz.newInstance();
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractComponentInstanceTag.class);
 
-        if (instance instanceof AbstractComponent) {
-            final ComponentBindings componentBindings = (ComponentBindings) pageContext.getAttribute(
-                ATTR_COMPONENT_BINDINGS);
+    protected final Object getInstance(final Class<?> clazz) throws JspTagException {
+        final Object instance;
 
-            // add sling bindings
-            final SlingBindings bindings = (SlingBindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME);
+        try {
+            instance = clazz.newInstance();
 
-            for (final Map.Entry<String, Object> entry : bindings.entrySet()) {
-                final String key = entry.getKey();
+            if (instance instanceof AbstractComponent) {
+                final ComponentBindings componentBindings = (ComponentBindings) pageContext.getAttribute(
+                    ATTR_COMPONENT_BINDINGS);
 
-                if (!componentBindings.containsKey(key)) {
-                    componentBindings.put(key, entry.getValue());
+                // add sling bindings
+                final SlingBindings bindings = (SlingBindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME);
+
+                for (final Map.Entry<String, Object> entry : bindings.entrySet()) {
+                    final String key = entry.getKey();
+
+                    if (!componentBindings.containsKey(key)) {
+                        componentBindings.put(key, entry.getValue());
+                    }
                 }
-            }
 
-            ((AbstractComponent) instance).init(componentBindings);
+                ((AbstractComponent) instance).init(componentBindings);
+            }
+        } catch (InstantiationException e) {
+            LOG.error("error instantiating component class", e);
+
+            throw new JspTagException(e);
+        } catch (IllegalAccessException e) {
+            LOG.error("error instantiating component class", e);
+
+            throw new JspTagException(e);
         }
 
         return instance;
     }
 
     protected final Object getInstance(final String className)
-        throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        final Class<?> clazz = Class.forName(className);
+        throws JspTagException {
+        final Class<?> clazz;
+
+        try {
+            clazz = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            LOG.error("class not found = " + className, e);
+
+            throw new JspTagException(e);
+        }
 
         return getInstance(clazz);
     }

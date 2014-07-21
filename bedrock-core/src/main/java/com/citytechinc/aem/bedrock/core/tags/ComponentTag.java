@@ -32,10 +32,10 @@ public final class ComponentTag extends AbstractComponentInstanceTag {
             final Object component = getInstance(className);
 
             pageContext.setAttribute(name, component, scope);
-        } catch (Exception e) {
+        } catch (JspTagException e) {
             LOG.error("error instantiating component for class name = " + className, e);
 
-            throw new JspTagException(e);
+            throw e;
         }
 
         return EVAL_PAGE;
