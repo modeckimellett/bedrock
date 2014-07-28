@@ -7,14 +7,15 @@ import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
 import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
+import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
+import com.citytechinc.aem.bedrock.api.services.ServiceProvider;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
 import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.scripting.SlingScriptHelper;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,14 +27,13 @@ import java.util.List;
 
 import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_NODE;
 import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_REQUEST;
+import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.SERVICE_PROVIDER;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
-import static org.apache.sling.api.scripting.SlingBindings.SLING;
 
 /**
- * Base class for AEM component classes instantiated by the {@link com.citytechinc.aem.bedrock.core.tags.ComponentTag} or
- * implemented with Sightly.
+ * Base class for AEM component classes instantiated by the {@link com.citytechinc.aem.bedrock.core.tags.ComponentTag}
+ * or implemented with Sightly.
  */
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
 public abstract class AbstractComponent implements ComponentNode, Use {
@@ -42,13 +42,25 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 
     private static final String PRECONDITIONS_ERROR_MESSAGE = "component has not been initialized";
 
-    private ComponentRequest componentRequest;
-
-    private ComponentNode componentNode;
-
+    /**
+     * Component bindings.
+     */
     private Bindings bindings;
 
-    private SlingScriptHelper sling;
+    /**
+     * The current request.  May be null if component was instantiated from a servlet.
+     */
+    private ComponentRequest componentRequest;
+
+    /**
+     * The current node/resource delegate.
+     */
+    private ComponentNode componentNode;
+
+    /**
+     * Provides accessors for OSGi services.
+     */
+    private ServiceProvider serviceProvider;
 
     /**
      * Initialize this component.  This default implementation does nothing; subclasses should override this method to
@@ -67,7 +79,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 
         componentRequest = (ComponentRequest) bindings.get(COMPONENT_REQUEST);
         componentNode = (ComponentNode) bindings.get(COMPONENT_NODE);
-        sling = (SlingScriptHelper) bindings.get(SLING);
+        serviceProvider = (ServiceProvider) bindings.get(SERVICE_PROVIDER);
 
         init(componentRequest);
     }
@@ -80,8 +92,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @return component instance or null if an error occurs
      */
     public <T extends AbstractComponent> Optional<T> getComponent(final String path, final Class<T> type) {
-        return getComponentForResource(checkNotNull(componentRequest, PRECONDITIONS_ERROR_MESSAGE).getResourceResolver()
-            .getResource(path), type);
+        return getComponentForResource(getComponentNode().getResource().getResourceResolver().getResource(path), type);
     }
 
     /**
@@ -122,7 +133,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @return the service instance, or null if it is not available
      */
     public final <T> T getService(final Class<T> serviceType) {
-        return checkNotNull(sling, PRECONDITIONS_ERROR_MESSAGE).getService(serviceType);
+        return checkNotNull(serviceProvider, PRECONDITIONS_ERROR_MESSAGE).getService(serviceType);
     }
 
     /**
@@ -133,10 +144,8 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @param <T> type
      * @return one or more service instances, or null if none are found
      */
-    @SuppressWarnings("unchecked")
     public final <T> List<T> getServices(final Class<T> serviceType, final String filter) {
-        return (List<T>) ImmutableList.of(checkNotNull(sling, PRECONDITIONS_ERROR_MESSAGE).getServices(serviceType,
-            filter));
+        return checkNotNull(serviceProvider, PRECONDITIONS_ERROR_MESSAGE).getServices(serviceType, filter);
     }
 
     // delegate methods
@@ -255,7 +264,8 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     }
 
     @Override
-    public final <AdapterType> Optional<AdapterType> getAsType(final String propertyName, final Class<AdapterType> type) {
+    public final <AdapterType> Optional<AdapterType> getAsType(final String propertyName,
+        final Class<AdapterType> type) {
         return getComponentNode().getAsType(propertyName, type);
     }
 
@@ -494,16 +504,18 @@ public abstract class AbstractComponent implements ComponentNode, Use {
         T instance = null;
 
         if (resource != null) {
-            final Bindings bindings = new SimpleBindings(checkNotNull(this.bindings, PRECONDITIONS_ERROR_MESSAGE));
+            final Bindings resourceBindings = new SimpleBindings(bindings);
 
-            bindings.put(RESOURCE, resource);
+            resourceBindings.put(SlingBindings.RESOURCE, resource);
 
-            final ComponentBindings componentBindings = new ComponentBindings(bindings);
+            final ComponentRequest request = new DefaultComponentRequest(resourceBindings);
+
+            final Bindings bindings = new ComponentBindings(request);
 
             try {
                 instance = type.newInstance();
 
-                instance.init(componentBindings);
+                instance.init(bindings);
             } catch (InstantiationException e) {
                 LOG.error("error instantiating component for type = " + type, e);
             } catch (IllegalAccessException e) {

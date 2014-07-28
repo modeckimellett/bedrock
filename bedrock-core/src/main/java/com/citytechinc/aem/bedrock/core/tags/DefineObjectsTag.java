@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.jsp.JspTagException;
 import java.util.Map;
 
+import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_REQUEST;
 import static com.citytechinc.aem.bedrock.core.constants.ComponentConstants.PROPERTY_CLASS_NAME;
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_SLING_NAME;
 
@@ -41,7 +42,7 @@ public final class DefineObjectsTag extends AbstractComponentInstanceTag {
             pageContext.setAttribute(entry.getKey(), entry.getValue());
         }
 
-        final ComponentRequest componentRequest = componentBindings.getComponentRequest();
+        final ComponentRequest componentRequest = (ComponentRequest) componentBindings.get(COMPONENT_REQUEST);
 
         if (LOG.isDebugEnabled()) {
             final Resource resource = componentRequest.getResource();

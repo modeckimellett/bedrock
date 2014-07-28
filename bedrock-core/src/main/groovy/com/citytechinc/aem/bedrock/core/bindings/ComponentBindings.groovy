@@ -18,6 +18,8 @@ final class ComponentBindings implements Bindings {
 
     public static final String COMPONENT_NODE = "componentNode"
 
+    public static final String SERVICE_PROVIDER = "serviceProvider"
+
     public static final String IS_ANALYTICS_MODE = "isAnalyticsMode"
 
     public static final String IS_AUTHOR = "isAuthor"
@@ -39,17 +41,18 @@ final class ComponentBindings implements Bindings {
     @Delegate
     private final Map<String, Object> map = [:]
 
-    private final ComponentRequest componentRequest
-
     ComponentBindings(PageContext pageContext) {
         this(pageContext.getAttribute(DEFAULT_BINDINGS_NAME) as SimpleBindings)
     }
 
     ComponentBindings(Bindings bindings) {
-        componentRequest = new DefaultComponentRequest(bindings)
+        this(new DefaultComponentRequest(bindings))
+    }
 
+    ComponentBindings(ComponentRequest componentRequest) {
         map.put(COMPONENT_REQUEST, componentRequest)
         map.put(COMPONENT_NODE, componentRequest.componentNode)
+        map.put(SERVICE_PROVIDER, componentRequest.serviceProvider)
 
         // overrides
         map.put(CURRENT_PAGE, componentRequest.currentPage)
@@ -69,10 +72,6 @@ final class ComponentBindings implements Bindings {
         def debug = componentRequest.getRequestParameter(PARAMETER_DEBUG).or(Boolean.FALSE.toString())
 
         map.put(IS_DEBUG, Boolean.valueOf(debug))
-    }
-
-    ComponentRequest getComponentRequest() {
-        componentRequest
     }
 
     @Override

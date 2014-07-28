@@ -1,4 +1,4 @@
-package com.citytechinc.aem.bedrock.core.services;
+package com.citytechinc.aem.bedrock.api.services;
 
 import java.util.List;
 

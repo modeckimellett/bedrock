@@ -1,6 +1,6 @@
 package com.citytechinc.aem.bedrock.core.services.impl
 
-import com.citytechinc.aem.bedrock.core.services.ServiceProvider
+import com.citytechinc.aem.bedrock.api.services.ServiceProvider
 import com.google.common.collect.ImmutableList
 import org.apache.sling.api.scripting.SlingScriptHelper
 import org.apache.sling.scripting.core.ScriptHelper
