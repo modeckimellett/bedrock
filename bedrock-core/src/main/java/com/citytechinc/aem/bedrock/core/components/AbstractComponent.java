@@ -6,16 +6,14 @@ import com.citytechinc.aem.bedrock.api.node.BasicNode;
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
-import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.citytechinc.aem.bedrock.api.services.ServiceProvider;
+import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.scripting.SlingBindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +28,7 @@ import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPON
 import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.SERVICE_PROVIDER;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
 
 /**
  * Base class for AEM component classes instantiated by the {@link com.citytechinc.aem.bedrock.core.tags.ComponentTag}
@@ -504,13 +503,11 @@ public abstract class AbstractComponent implements ComponentNode, Use {
         T instance = null;
 
         if (resource != null) {
-            final Bindings resourceBindings = new SimpleBindings(bindings);
+            final Bindings resourceBindings = new SimpleBindings(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE));
 
-            resourceBindings.put(SlingBindings.RESOURCE, resource);
+            resourceBindings.put(RESOURCE, resource);
 
-            final ComponentRequest request = new DefaultComponentRequest(resourceBindings);
-
-            final Bindings bindings = new ComponentBindings(request);
+            final Bindings bindings = new ComponentBindings(resourceBindings);
 
             try {
                 instance = type.newInstance();
