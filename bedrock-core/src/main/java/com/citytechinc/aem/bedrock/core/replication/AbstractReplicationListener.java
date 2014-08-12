@@ -1,6 +1,7 @@
 package com.citytechinc.aem.bedrock.core.replication;
 
 import com.day.cq.replication.ReplicationAction;
+import com.day.cq.replication.ReplicationActionType;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.slf4j.Logger;
@@ -17,42 +18,36 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractReplicationListener implements EventHandler {
 
-    private static final String TYPE_ACTIVATE = "ACTIVATE";
-
-    private static final String TYPE_DEACTIVATE = "DEACTIVATE";
-
     private static final Logger LOG = LoggerFactory.getLogger(AbstractReplicationListener.class);
 
     @Override
     public final void handleEvent(final Event event) {
-        final String type = (String) event.getProperty(ReplicationAction.PROPERTY_TYPE);
+        final ReplicationAction replicationAction = ReplicationAction.fromEvent(event);
 
-        final String[] paths = (String[]) event.getProperty(ReplicationAction.PROPERTY_PATHS);
+        LOG.info("handling replication action = {}", replicationAction);
 
-        if (paths != null) {
-            for (final String path : paths) {
-                handleEvent(type, path);
-            }
-        } else {
-            final String path = (String) event.getProperty(ReplicationAction.PROPERTY_PATH);
+        final ReplicationActionType type = replicationAction.getType();
 
-            if (path != null) {
-                handleEvent(type, path);
-            }
+        for (final String path : replicationAction.getPaths()) {
+            handleEvent(type, path);
         }
     }
 
-    private void handleEvent(final String type, final String path) {
-        if (TYPE_ACTIVATE.equals(type)) {
-            LOG.info("handleEvent() handling activate event for path = {}", path);
+    private void handleEvent(final ReplicationActionType type, final String path) {
+        if (type.equals(ReplicationActionType.ACTIVATE)) {
+            LOG.info("handling activate event for path = {}", path);
 
             handleActivate(path);
-        } else if (TYPE_DEACTIVATE.equals(type)) {
-            LOG.info("handleEvent() handling deactivate event for path = {}", path);
+        } else if (type.equals(ReplicationActionType.DEACTIVATE)) {
+            LOG.info("handling deactivate event for path = {}", path);
 
             handleDeactivate(path);
+        } else if (type.equals(ReplicationActionType.DELETE)) {
+            LOG.info("handling delete event for path = {}", path);
+
+            handleDelete(path);
         } else {
-            LOG.info("handleEvent() type = {} not handled for path = {}", type, path);
+            LOG.debug("replication action type = {} not handled for path = {}", type, path);
         }
     }
 
@@ -69,4 +64,11 @@ public abstract class AbstractReplicationListener implements EventHandler {
      * @param path payload path
      */
     protected abstract void handleDeactivate(final String path);
+
+    /**
+     * Handle delete event.
+     *
+     * @param path payload path
+     */
+    protected abstract void handleDelete(final String path);
 }

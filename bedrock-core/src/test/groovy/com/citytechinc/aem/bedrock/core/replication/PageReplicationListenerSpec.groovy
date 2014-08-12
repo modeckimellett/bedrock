@@ -6,6 +6,7 @@ import com.day.cq.replication.ReplicationActionType
 import com.day.cq.replication.ReplicationStatus
 import com.day.cq.replication.Replicator
 import org.apache.sling.api.resource.Resource
+import org.apache.sling.api.resource.ResourceResolverFactory
 import spock.lang.Shared
 
 class PageReplicationListenerSpec extends BedrockSpec {
@@ -48,9 +49,13 @@ class PageReplicationListenerSpec extends BedrockSpec {
     def setup() {
         listener = new PageReplicationListener()
 
-        listener.session = session
-        listener.pageManager = pageManager
-        listener.replicator = Mock(Replicator)
+        listener.with {
+            resourceResolverFactory = [getAdministrativeResourceResolver: {
+                this.resourceResolver
+            }] as ResourceResolverFactory
+            replicator = Mock(Replicator)
+            activate([(ENABLED): true])
+        }
     }
 
     def "handle activate for invalid path does nothing"() {
