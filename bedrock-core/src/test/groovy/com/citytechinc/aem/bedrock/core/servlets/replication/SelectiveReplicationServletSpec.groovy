@@ -58,9 +58,10 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
     def "valid parameters"() {
         setup:
         def servlet = new SelectiveReplicationServlet()
+        def paths = ["/content", "/etc"]
 
         def request = requestBuilder.build {
-            parameters = [paths: ["/content", "/etc"], agentIds: ["publish"], action: ReplicationActionType.ACTIVATE.name()]
+            parameters = [paths: paths, agentIds: ["publish"], action: ReplicationActionType.ACTIVATE.name()]
         }
 
         def response = responseBuilder.build()
@@ -72,7 +73,7 @@ class SelectiveReplicationServletSpec extends BedrockSpec {
         servlet.agentManager = agentManager
         servlet.replicator = replicator
 
-        def json = new JsonBuilder(["/content": true, "/etc": true]).toString()
+        def json = new JsonBuilder(paths).toString()
 
         when:
         servlet.doPost(request, response)

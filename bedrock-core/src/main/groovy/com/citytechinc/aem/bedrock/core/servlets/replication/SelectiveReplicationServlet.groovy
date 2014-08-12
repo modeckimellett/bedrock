@@ -52,25 +52,21 @@ class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
 
         def session = request.resourceResolver.adaptTo(Session)
 
-        def result = [:]
+        def uniquePaths = paths as LinkedHashSet
 
-        (paths as LinkedHashSet).each { path ->
-            boolean success = false
-
-            LOG.info "doPost() executing replication action = $actionType for path = $path to agent IDs = $agentIds"
+        uniquePaths.each { path ->
+            LOG.info "executing replication action = $actionType for path = $path to agent IDs = $agentIds"
 
             try {
                 replicator.replicate(session, actionType, path, options)
-
-                success = true
             } catch (ReplicationException e) {
                 LOG.error "error executing replication action = $actionType for path = $path", e
-            }
 
-            result[path] = success
+                throw new ServletException(e)
+            }
         }
 
-        writeJsonResponse(response, result)
+        writeJsonResponse(response, uniquePaths)
     }
 
     private def getReplicationOptions(agentIds) {
@@ -81,7 +77,7 @@ class SelectiveReplicationServlet extends AbstractJsonResponseServlet {
 
         def replicationOptions = new ReplicationOptions()
 
-        replicationOptions.setFilter(new AgentIdFilter(uniqueAgentIds.toArray() as String[]))
+        replicationOptions.filter = new AgentIdFilter(uniqueAgentIds.toArray() as String[])
 
         replicationOptions
     }
