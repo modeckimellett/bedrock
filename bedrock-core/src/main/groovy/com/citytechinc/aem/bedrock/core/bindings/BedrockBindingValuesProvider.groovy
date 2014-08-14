@@ -9,7 +9,7 @@ import javax.script.Bindings
 
 @Component(immediate = true)
 @Service(BindingsValuesProvider)
-final class ComponentBindingValuesProvider implements BindingsValuesProvider {
+final class BedrockBindingValuesProvider implements BindingsValuesProvider {
 
     @Reference(target = "(service.pid=com.day.cq.wcm.core.impl.WCMBindingsValuesProvider)")
     protected BindingsValuesProvider wcmBindingValuesProvider
