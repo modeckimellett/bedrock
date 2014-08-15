@@ -1,10 +1,12 @@
 package com.citytechinc.aem.bedrock.core.tags;
 
 import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
+import org.apache.sling.api.scripting.SlingBindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.script.Bindings;
+import javax.script.SimpleBindings;
 import javax.servlet.jsp.JspTagException;
 
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME;
@@ -23,7 +25,8 @@ public abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
             instance = clazz.newInstance();
 
             if (instance instanceof AbstractComponent) {
-                final Bindings bindings = (Bindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME);
+                final SlingBindings slingBindings = (SlingBindings) pageContext.getAttribute(DEFAULT_BINDINGS_NAME);
+                final Bindings bindings = new SimpleBindings(slingBindings);
 
                 ((AbstractComponent) instance).init(bindings);
             }

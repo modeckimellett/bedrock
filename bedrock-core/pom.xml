@@ -57,14 +57,8 @@
                             !com.citytechinc.aem.bedrock.core.specs.*,
                             com.citytechinc.aem.bedrock.core.*
                         </Export-Package>
-                        <Import-Package>
-                            !javassist,
-                            !com.citytechinc.cq.component.*,
-                            !com.citytechinc.aem.prosper.*,
-                            !org.spockframework.*,
-                            !spock.lang.*,
-                            *
-                        </Import-Package>
+                        <Import-Package>!javassist,!com.citytechinc.cq.component.*</Import-Package>
+                        <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
                 </configuration>
             </plugin>
