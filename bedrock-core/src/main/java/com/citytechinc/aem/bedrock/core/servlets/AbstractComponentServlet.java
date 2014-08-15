@@ -1,10 +1,8 @@
 package com.citytechinc.aem.bedrock.core.servlets;
 
-import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
 import com.citytechinc.aem.bedrock.api.request.ComponentServletRequest;
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
+import com.citytechinc.aem.bedrock.core.bindings.ComponentServletBindings;
 import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
-import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentServletRequest;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
@@ -107,8 +105,7 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
      */
     protected <T extends AbstractComponent> T getComponent(final ComponentServletRequest request, final Class<T> type)
         throws ServletException {
-        final ComponentRequest componentRequest = new DefaultComponentRequest(request);
-        final Bindings bindings = new ComponentBindings(componentRequest);
+        final Bindings bindings = new ComponentServletBindings(request);
 
         final T instance;
 

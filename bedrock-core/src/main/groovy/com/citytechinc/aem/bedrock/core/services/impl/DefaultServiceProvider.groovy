@@ -8,23 +8,23 @@ import org.osgi.framework.BundleContext
 
 final class DefaultServiceProvider implements ServiceProvider {
 
-    private final SlingScriptHelper sling
+    private final SlingScriptHelper slingScriptHelper
 
-    DefaultServiceProvider(SlingScriptHelper sling) {
-        this.sling = sling
+    DefaultServiceProvider(SlingScriptHelper slingScriptHelper) {
+        this.slingScriptHelper = slingScriptHelper
     }
 
     DefaultServiceProvider(BundleContext bundleContext) {
-        sling = new ScriptHelper(bundleContext, null)
+        slingScriptHelper = new ScriptHelper(bundleContext, null)
     }
 
     @Override
     public <T> T getService(Class<T> serviceType) {
-        sling.getService(serviceType)
+        slingScriptHelper.getService(serviceType)
     }
 
     @Override
     public <T> List<T> getServices(Class<T> serviceType, String filter) {
-        ImmutableList.of(sling.getServices(serviceType, filter))
+        ImmutableList.of(slingScriptHelper.getServices(serviceType, filter))
     }
 }

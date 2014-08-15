@@ -10,7 +10,6 @@ import com.day.cq.wcm.api.components.EditContext
 import com.day.cq.wcm.api.designer.Design
 import com.day.cq.wcm.api.designer.Designer
 import com.day.cq.wcm.api.designer.Style
-import com.day.cq.wcm.commons.WCMUtils
 import org.apache.sling.api.scripting.SlingScriptHelper
 import org.osgi.framework.FrameworkUtil
 
@@ -44,42 +43,28 @@ final class DefaultComponentRequest implements ComponentRequest {
     final ServiceProvider serviceProvider
 
     /**
-     * Create a <code>ComponentRequest</code> for the given script bindings
+     * Create a <code>ComponentRequest</code> for the given script bindings.
      *
      * @param bindings script bindings
      */
     DefaultComponentRequest(Bindings bindings) {
         request = new DefaultComponentServletRequest(bindings)
 
-        component = bindings.get(COMPONENT) as Component
-        componentContext = bindings.get(COMPONENT_CONTEXT) as ComponentContext
-        editContext = bindings.get(EDIT_CONTEXT) as EditContext
-        designer = bindings.get(DESIGNER) as Designer
-        currentDesign = bindings.get(CURRENT_DESIGN) as Design
-        currentStyle = bindings.get(CURRENT_STYLE) as Style
+        component = bindings[COMPONENT] as Component
+        componentContext = bindings[COMPONENT_CONTEXT] as ComponentContext
+        editContext = bindings[EDIT_CONTEXT] as EditContext
+        designer = bindings[DESIGNER] as Designer
+        currentDesign = bindings[CURRENT_DESIGN] as Design
+        currentStyle = bindings[CURRENT_STYLE] as Style
 
-        def sling = bindings.get(SLING) as SlingScriptHelper
+        def slingScriptHelper = bindings[SLING] as SlingScriptHelper
 
-        serviceProvider = new DefaultServiceProvider(sling)
-    }
+        if (slingScriptHelper) {
+            serviceProvider = new DefaultServiceProvider(slingScriptHelper)
+        } else {
+            def bundleContext = FrameworkUtil.getBundle(DefaultComponentRequest)?.bundleContext
 
-    /**
-     * Adapting constructor for creating a <code>ComponentRequest</code> from a servlet context.
-     *
-     * @param request existing servlet request
-     */
-    DefaultComponentRequest(ComponentServletRequest request) {
-        this.request = request
-
-        componentContext = WCMUtils.getComponentContext(request.slingRequest)
-        component = componentContext?.component
-        editContext = componentContext?.editContext
-        designer = request.resourceResolver.adaptTo(Designer)
-        currentDesign = designer?.getDesign(request.currentPage)
-        currentStyle = !componentContext || !currentDesign ? null : currentDesign.getStyle(componentContext.cell)
-
-        def bundleContext = FrameworkUtil.getBundle(DefaultComponentRequest).bundleContext
-
-        serviceProvider = new DefaultServiceProvider(bundleContext)
+            serviceProvider = !bundleContext ? null : new DefaultServiceProvider(bundleContext)
+        }
     }
 }

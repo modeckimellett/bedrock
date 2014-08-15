@@ -6,10 +6,9 @@ class ComponentSpecSpec extends ComponentSpec {
 
     def setupSpec() {
         pageBuilder.content {
-            citytechinc("CITYTECH, Inc.") {
+            citytechinc {
                 "jcr:content" {
-                    component("jcr:title": "Testing Component", pagePath: "/content/citytechinc",
-                        externalPath: "http://www.reddit.com")
+                    component("jcr:title": "Testing Component")
                 }
             }
         }

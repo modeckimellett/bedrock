@@ -1,6 +1,7 @@
 package com.citytechinc.aem.bedrock.core.components
 
 import com.citytechinc.aem.bedrock.core.specs.ComponentSpec
+import com.day.cq.wcm.api.designer.Designer
 
 class AbstractComponentSpec extends ComponentSpec {
 
@@ -10,6 +11,13 @@ class AbstractComponentSpec extends ComponentSpec {
 
     class AnotherUselessComponent extends AbstractComponent {
 
+    }
+
+    @Override
+    Map<Class, Closure> addResourceResolverAdapters() {
+        [(Designer): {
+            [getDesign: { null }] as Designer
+        }]
     }
 
     def setupSpec() {

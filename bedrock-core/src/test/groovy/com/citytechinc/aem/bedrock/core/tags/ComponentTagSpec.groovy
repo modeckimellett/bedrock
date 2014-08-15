@@ -1,6 +1,5 @@
 package com.citytechinc.aem.bedrock.core.tags
 
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings
 import com.citytechinc.aem.bedrock.core.components.TestComponent
 import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
 import com.citytechinc.aem.prosper.builders.BindingsBuilder
@@ -9,7 +8,6 @@ import spock.lang.Unroll
 
 import javax.servlet.jsp.PageContext
 
-import static com.citytechinc.aem.bedrock.core.tags.DefineObjectsTag.ATTR_COMPONENT_BINDINGS
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME
 
 @Unroll
@@ -44,7 +42,7 @@ class ComponentTagSpec extends BedrockJspTagSpec<ComponentTag> {
             path = "/content/home/jcr:content/component"
         }
 
-        tag.pageContext.setAttribute ATTR_COMPONENT_BINDINGS, new ComponentBindings(bindings)
+        tag.pageContext.setAttribute DEFAULT_BINDINGS_NAME, bindings
 
         when:
         tag.doEndTag()
@@ -63,7 +61,7 @@ class ComponentTagSpec extends BedrockJspTagSpec<ComponentTag> {
             path = "/content/home/jcr:content/component"
         }
 
-        tag.pageContext.setAttribute ATTR_COMPONENT_BINDINGS, new ComponentBindings(bindings)
+        tag.pageContext.setAttribute DEFAULT_BINDINGS_NAME, bindings
 
         when:
         tag.doEndTag()

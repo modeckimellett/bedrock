@@ -20,7 +20,7 @@ class HrefTagSpec extends BedrockJspTagSpec<HrefTag> {
 
     def "href for existing property"() {
         setup:
-        setupComponentNode("/content/citytechinc/jcr:content")
+        setupResource("/content/citytechinc/jcr:content")
 
         when:
         tag.propertyName = "path"
@@ -34,7 +34,7 @@ class HrefTagSpec extends BedrockJspTagSpec<HrefTag> {
 
     def "href for non-existent property"() {
         setup:
-        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
+        setupResource("/content/citytechinc/ctmsp/jcr:content")
 
         when:
         tag.propertyName = "path"
@@ -48,7 +48,7 @@ class HrefTagSpec extends BedrockJspTagSpec<HrefTag> {
 
     def "href for inherited property"() {
         setup:
-        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
+        setupResource("/content/citytechinc/ctmsp/jcr:content")
 
         when:
         tag.propertyName = "path"
@@ -63,7 +63,7 @@ class HrefTagSpec extends BedrockJspTagSpec<HrefTag> {
 
     def "href for non-existent inherited property"() {
         setup:
-        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
+        setupResource("/content/citytechinc/ctmsp/jcr:content")
 
         when:
         tag.propertyName = "nonExistentPath"

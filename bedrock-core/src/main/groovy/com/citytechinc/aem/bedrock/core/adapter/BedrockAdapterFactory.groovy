@@ -38,7 +38,7 @@ final class BedrockAdapterFactory implements AdapterFactory {
 
     @Override
     public <AdapterType> AdapterType getAdapter(Object adaptable, Class<AdapterType> type) {
-        final AdapterType result
+        def result
 
         if (adaptable instanceof ResourceResolver) {
             result = getResourceResolverAdapter((ResourceResolver) adaptable, type)
@@ -57,7 +57,7 @@ final class BedrockAdapterFactory implements AdapterFactory {
         def result
 
         if (type == PageManagerDecorator) {
-            result = (AdapterType) new DefaultPageManagerDecorator(resourceResolver)
+            result = new DefaultPageManagerDecorator(resourceResolver) as AdapterType
         } else {
             result = null
         }
@@ -72,11 +72,11 @@ final class BedrockAdapterFactory implements AdapterFactory {
         if (type == PageDecorator) {
             def page = resource.adaptTo(Page)
 
-            result = page == null ? null : (AdapterType) new DefaultPageDecorator(page)
+            result = page == null ? null : new DefaultPageDecorator(page) as AdapterType
         } else if (type == ComponentNode) {
-            result = (AdapterType) new DefaultComponentNode(resource)
+            result = new DefaultComponentNode(resource) as AdapterType
         } else if (type == BasicNode) {
-            result = (AdapterType) new DefaultBasicNode(resource)
+            result = new DefaultBasicNode(resource) as AdapterType
         } else {
             result = null
         }

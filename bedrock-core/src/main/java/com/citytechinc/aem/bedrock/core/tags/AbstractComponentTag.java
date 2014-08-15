@@ -1,11 +1,12 @@
 package com.citytechinc.aem.bedrock.core.tags;
 
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
+import org.apache.sling.api.resource.Resource;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
-import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_NODE;
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME;
 
 /**
  * Base class for tag handlers that access a <code>ComponentNode</code> from the current context.
@@ -24,7 +25,9 @@ public abstract class AbstractComponentTag extends TagSupport {
     }
 
     protected final ComponentNode getComponentNode() {
-        return (ComponentNode) pageContext.getAttribute(COMPONENT_NODE);
+        final Resource resource = (Resource) pageContext.getAttribute(DEFAULT_RESOURCE_NAME);
+
+        return resource.adaptTo(ComponentNode.class);
     }
 
     protected final boolean isInherit() {

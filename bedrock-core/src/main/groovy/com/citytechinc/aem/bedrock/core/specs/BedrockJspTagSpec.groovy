@@ -1,15 +1,14 @@
 package com.citytechinc.aem.bedrock.core.specs
 
-import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings
 import com.citytechinc.aem.prosper.specs.JspTagSpec
 import org.apache.sling.api.adapter.AdapterFactory
 
 import javax.servlet.jsp.tagext.TagSupport
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
+import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME
 
 abstract class BedrockJspTagSpec<T extends TagSupport> extends JspTagSpec<T> {
 
@@ -30,13 +29,11 @@ abstract class BedrockJspTagSpec<T extends TagSupport> extends JspTagSpec<T> {
     }
 
     /**
-     * Set a <code>ComponentNode</code> for the given path in the <code>PageContext</code> for the tag under test.
+     * Set a <code>Resource</code> for the given path in the <code>PageContext</code> for the tag under test.
      *
-     * @param path node path
+     * @param path resource path
      */
-    void setupComponentNode(String path) {
-        def componentNode = resourceResolver.getResource(path).adaptTo(ComponentNode)
-
-        tag.pageContext.setAttribute ComponentBindings.COMPONENT_NODE, componentNode
+    void setupResource(String path) {
+        tag.pageContext.setAttribute DEFAULT_RESOURCE_NAME, resourceResolver.getResource(path)
     }
 }

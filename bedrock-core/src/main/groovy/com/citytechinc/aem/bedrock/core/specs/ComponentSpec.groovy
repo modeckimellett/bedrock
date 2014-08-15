@@ -1,6 +1,5 @@
 package com.citytechinc.aem.bedrock.core.specs
 
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings
 import com.citytechinc.aem.bedrock.core.components.AbstractComponent
 import com.citytechinc.aem.prosper.builders.BindingsBuilder
 
@@ -19,8 +18,6 @@ abstract class ComponentSpec extends BedrockSpec {
      */
     public <T extends AbstractComponent> T init(Class<T> type, @DelegatesTo(value = BindingsBuilder) Closure closure) {
         def bindings = new BindingsBuilder(resourceResolver).build(closure)
-
-        bindings.putAll(new ComponentBindings(bindings))
 
         def instance = type.newInstance()
 

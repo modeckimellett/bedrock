@@ -7,7 +7,7 @@ import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
 import com.citytechinc.aem.bedrock.api.services.ServiceProvider;
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings;
+import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -23,9 +23,6 @@ import javax.script.Bindings;
 import javax.script.SimpleBindings;
 import java.util.List;
 
-import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_NODE;
-import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.COMPONENT_REQUEST;
-import static com.citytechinc.aem.bedrock.core.bindings.ComponentBindings.SERVICE_PROVIDER;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
@@ -52,16 +49,6 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     private ComponentRequest componentRequest;
 
     /**
-     * The current node/resource delegate.
-     */
-    private ComponentNode componentNode;
-
-    /**
-     * Provides accessors for OSGi services.
-     */
-    private ServiceProvider serviceProvider;
-
-    /**
      * Initialize this component.  This default implementation does nothing; subclasses should override this method to
      * provide additional initialization behavior.
      *
@@ -76,9 +63,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     public final void init(final Bindings bindings) {
         this.bindings = bindings;
 
-        componentRequest = (ComponentRequest) bindings.get(COMPONENT_REQUEST);
-        componentNode = (ComponentNode) bindings.get(COMPONENT_NODE);
-        serviceProvider = (ServiceProvider) bindings.get(SERVICE_PROVIDER);
+        componentRequest = new DefaultComponentRequest(bindings);
 
         init(componentRequest);
     }
@@ -121,7 +106,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @return current page
      */
     public PageDecorator getCurrentPage() {
-        return checkNotNull(componentRequest, PRECONDITIONS_ERROR_MESSAGE).getCurrentPage();
+        return getComponentRequest().getCurrentPage();
     }
 
     /**
@@ -132,7 +117,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @return the service instance, or null if it is not available
      */
     public final <T> T getService(final Class<T> serviceType) {
-        return checkNotNull(serviceProvider, PRECONDITIONS_ERROR_MESSAGE).getService(serviceType);
+        return getServiceProvider().getService(serviceType);
     }
 
     /**
@@ -144,7 +129,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @return one or more service instances, or null if none are found
      */
     public final <T> List<T> getServices(final Class<T> serviceType, final String filter) {
-        return checkNotNull(serviceProvider, PRECONDITIONS_ERROR_MESSAGE).getServices(serviceType, filter);
+        return getServiceProvider().getServices(serviceType, filter);
     }
 
     // delegate methods
@@ -495,7 +480,11 @@ public abstract class AbstractComponent implements ComponentNode, Use {
     // internals
 
     private ComponentNode getComponentNode() {
-        return checkNotNull(componentNode, PRECONDITIONS_ERROR_MESSAGE);
+        return getComponentRequest().getComponentNode();
+    }
+
+    private ServiceProvider getServiceProvider() {
+        return getComponentRequest().getServiceProvider();
     }
 
     private <T extends AbstractComponent> Optional<T> getComponentForResource(final Resource resource,
@@ -503,16 +492,15 @@ public abstract class AbstractComponent implements ComponentNode, Use {
         T instance = null;
 
         if (resource != null) {
-            final Bindings resourceBindings = new SimpleBindings(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE));
+            final Bindings bindingsForResource = new SimpleBindings(checkNotNull(bindings,
+                PRECONDITIONS_ERROR_MESSAGE));
 
-            resourceBindings.put(RESOURCE, resource);
-
-            final Bindings bindings = new ComponentBindings(resourceBindings);
+            bindingsForResource.put(RESOURCE, resource);
 
             try {
                 instance = type.newInstance();
 
-                instance.init(bindings);
+                instance.init(bindingsForResource);
             } catch (InstantiationException e) {
                 LOG.error("error instantiating component for type = " + type, e);
             } catch (IllegalAccessException e) {
