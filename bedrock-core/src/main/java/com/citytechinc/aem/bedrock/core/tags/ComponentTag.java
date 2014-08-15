@@ -28,15 +28,7 @@ public final class ComponentTag extends AbstractComponentInstanceTag {
     public int doEndTag(final int scope) throws JspTagException {
         LOG.debug("class name = {}, attribute name = {}", className, name);
 
-        try {
-            final Object component = getInstance(className);
-
-            pageContext.setAttribute(name, component, scope);
-        } catch (JspTagException e) {
-            LOG.error("error instantiating component for class name = " + className, e);
-
-            throw e;
-        }
+        pageContext.setAttribute(name, getInstance(className), scope);
 
         return EVAL_PAGE;
     }
