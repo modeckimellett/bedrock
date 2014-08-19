@@ -73,7 +73,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      *
      * @param path absolute JCR path to the resource of the component
      * @param type component class type
-     * @return component instance or null if an error occurs
+     * @return component instance or absent <code>Optional</code> if path does not resolve to a resource
      */
     public <T extends AbstractComponent> Optional<T> getComponent(final String path, final Class<T> type) {
         return getComponentForResource(getComponentNode().getResource().getResourceResolver().getResource(path), type);
@@ -86,9 +86,8 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @param type component class type
      * @return component instance or null if an error occurs
      */
-    public <T extends AbstractComponent> Optional<T> getComponent(final ComponentNode componentNode,
-        final Class<T> type) {
-        return getComponentForResource(componentNode.getResource(), type);
+    public <T extends AbstractComponent> T getComponent(final ComponentNode componentNode, final Class<T> type) {
+        return getComponentForResource(componentNode.getResource(), type).get();
     }
 
     /**
@@ -503,8 +502,12 @@ public abstract class AbstractComponent implements ComponentNode, Use {
                 instance.init(bindingsForResource);
             } catch (InstantiationException e) {
                 LOG.error("error instantiating component for type = " + type, e);
+
+                throw new RuntimeException(e);
             } catch (IllegalAccessException e) {
                 LOG.error("error instantiating component for type = " + type, e);
+
+                throw new RuntimeException(e);
             }
         }
 

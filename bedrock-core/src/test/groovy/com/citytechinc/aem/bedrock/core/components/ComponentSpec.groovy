@@ -2,14 +2,16 @@ package com.citytechinc.aem.bedrock.core.components
 
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import com.day.cq.wcm.api.designer.Designer
+import spock.lang.Unroll
 
+@Unroll
 class ComponentSpec extends BedrockSpec {
 
-    class UselessComponent extends AbstractComponent {
+    static class UselessComponent extends AbstractComponent {
 
     }
 
-    class AnotherUselessComponent extends AbstractComponent {
+    static class AnotherUselessComponent extends AbstractComponent {
 
     }
 
@@ -81,20 +83,25 @@ class ComponentSpec extends BedrockSpec {
     def "get component from path"() {
         setup:
         def component = init(UselessComponent) {
-
+            path = "/content/citytechinc/jcr:content/component"
         }
 
         expect:
-        component.getComponent("/", AnotherUselessComponent)
+        component.getComponent(componentPath, AnotherUselessComponent).present == isPresent
+
+        where:
+        componentPath                      | isPresent
+        "/content/citytechinc/jcr:content" | true
+        "/content/home"                    | false
     }
 
     def "get component from component node"() {
         setup:
         def component = init(UselessComponent) {
-
+            path = "/content/citytechinc/jcr:content/component"
         }
 
-        def componentNode = getComponentNode("/")
+        def componentNode = getComponentNode("/content/citytechinc/jcr:content")
 
         expect:
         component.getComponent(componentNode, AnotherUselessComponent)
