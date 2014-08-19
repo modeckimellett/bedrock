@@ -12,7 +12,11 @@ abstract class AbstractComponentTag extends TagSupport {
     /**
      * Should property value be inherited? Defaults to false.
      */
-    String inherit
+    private String inherit
+
+    final void setInherit(String inherit) {
+        this.inherit = inherit
+    }
 
     protected final ComponentNode getComponentNode() {
         def resource = pageContext.getAttribute(DEFAULT_RESOURCE_NAME) as Resource

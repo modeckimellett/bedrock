@@ -3,7 +3,7 @@ package com.citytechinc.aem.bedrock.core.tags
 import spock.lang.Unroll
 
 @Unroll
-class TitleTagSpec extends AbstractMetaTagSpec<TitleTag> {
+class TitleTagSpec extends AbstractMetaTagSpec {
 
     def setupSpec() {
         pageBuilder.content {
@@ -16,24 +16,20 @@ class TitleTagSpec extends AbstractMetaTagSpec<TitleTag> {
         }
     }
 
-    @Override
-    TitleTag createTag() {
-        new TitleTag()
-    }
-
     def "title variations"() {
         setup:
-        setupPage("/content/citytechinc")
+        def tag = new TitleTag()
 
-        when:
         tag.propertyName = propertyName
         tag.suffix = suffix
 
-        and:
+        def jspTag = init(tag, "/content/citytechinc")
+
+        when:
         tag.doEndTag()
 
         then:
-        result == html
+        jspTag.output == html
 
         where:
         propertyName | suffix           | html
@@ -47,12 +43,13 @@ class TitleTagSpec extends AbstractMetaTagSpec<TitleTag> {
 
     def "empty title defaults to page name"() {
         setup:
-        setupPage("/content/ctmsp")
+        def tag = new TitleTag()
+        def jspTag = init(tag, "/content/ctmsp")
 
         when:
         tag.doEndTag()
 
         then:
-        result == "<title>ctmsp</title>"
+        jspTag.output == "<title>ctmsp</title>"
     }
 }

@@ -7,7 +7,7 @@ import javax.servlet.jsp.JspTagException
 import javax.servlet.jsp.PageContext
 
 @Unroll
-class AbstractScopedTagSpec extends BedrockJspTagSpec<ScopedTag> {
+class ScopedTagSpec extends BedrockJspTagSpec {
 
     static final def ATTRIBUTE_NAME = "scopedAttribute"
 
@@ -23,20 +23,19 @@ class AbstractScopedTagSpec extends BedrockJspTagSpec<ScopedTag> {
         }
     }
 
-    @Override
-    ScopedTag createTag() {
-        new ScopedTag()
-    }
-
     def "set attribute in scope"() {
         setup:
+        def tag = new ScopedTag()
+
         tag.scope = scope
+
+        def jspTag = init(tag)
 
         when:
         tag.doEndTag()
 
         then:
-        tag.pageContext.getAttribute(ATTRIBUTE_NAME, scopeValue) == ATTRIBUTE_VALUE
+        jspTag.pageContext.getAttribute(ATTRIBUTE_NAME, scopeValue) == ATTRIBUTE_VALUE
 
         where:
         scope         | scopeValue
@@ -48,6 +47,8 @@ class AbstractScopedTagSpec extends BedrockJspTagSpec<ScopedTag> {
 
     def "invalid scope throws exception"() {
         setup:
+        def tag = new ScopedTag()
+
         tag.scope = "invalid"
 
         when:
