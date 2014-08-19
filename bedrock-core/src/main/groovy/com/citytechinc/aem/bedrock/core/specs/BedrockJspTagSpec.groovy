@@ -1,7 +1,7 @@
 package com.citytechinc.aem.bedrock.core.specs
 
 import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
-import com.citytechinc.aem.prosper.specs.JspTag
+import com.citytechinc.aem.prosper.specs.JspTagProxy
 import com.citytechinc.aem.prosper.specs.JspTagSpec
 import com.day.cq.wcm.api.PageManager
 import org.apache.sling.api.adapter.AdapterFactory
@@ -25,7 +25,7 @@ abstract class BedrockJspTagSpec extends JspTagSpec {
      * @param path resource path
      * @return JSP tag instance containing page context and writer
      */
-    JspTag init(TagSupport tag, String path) {
+    JspTagProxy init(TagSupport tag, String path) {
         init(tag, path, [:])
     }
 
@@ -37,7 +37,7 @@ abstract class BedrockJspTagSpec extends JspTagSpec {
      * @param additionalPageContextAttributes additional attributes to add to page context
      * @return JSP tag instance containing page context and writer
      */
-    JspTag init(TagSupport tag, String path, Map<String, Object> additionalPageContextAttributes) {
+    JspTagProxy init(TagSupport tag, String path, Map<String, Object> additionalPageContextAttributes) {
         def resource = resourceResolver.getResource(path)
         def currentPage = resourceResolver.adaptTo(PageManager).getContainingPage(resource)
 

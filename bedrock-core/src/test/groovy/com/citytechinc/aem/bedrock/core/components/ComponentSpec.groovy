@@ -1,9 +1,9 @@
 package com.citytechinc.aem.bedrock.core.components
 
-import com.citytechinc.aem.bedrock.core.specs.ComponentSpec
+import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import com.day.cq.wcm.api.designer.Designer
 
-class AbstractComponentSpec extends ComponentSpec {
+class ComponentSpec extends BedrockSpec {
 
     class UselessComponent extends AbstractComponent {
 
@@ -22,14 +22,18 @@ class AbstractComponentSpec extends ComponentSpec {
 
     def setupSpec() {
         pageBuilder.content {
-            home()
+            citytechinc {
+                "jcr:content" {
+                    component("jcr:title": "Testing Component")
+                }
+            }
         }
     }
 
     def "exception thrown when component is not properly initialized"() {
         setup:
         def component = new UselessComponent()
-        def componentNode = getComponentNode("/content/home/jcr:content")
+        def componentNode = getComponentNode("/content/citytechinc/jcr:content")
 
         when:
         component.getService(String)
@@ -94,5 +98,15 @@ class AbstractComponentSpec extends ComponentSpec {
 
         expect:
         component.getComponent(componentNode, AnotherUselessComponent)
+    }
+
+    def "get title from component"() {
+        setup:
+        def component = init(TestComponent) {
+            path = "/content/citytechinc/jcr:content/component"
+        }
+
+        expect:
+        component.title == "Testing Component"
     }
 }
