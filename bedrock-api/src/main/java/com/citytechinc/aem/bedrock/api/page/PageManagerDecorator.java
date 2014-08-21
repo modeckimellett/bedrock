@@ -81,30 +81,30 @@ public interface PageManagerDecorator extends PageManager {
     /**
      * Find all descendant pages of the given path containing the specified tags.
      *
-     * @param path start path
+     * @param rootPath root path
      * @param tagIds set of tag IDs
      * @param matchOne if true, 'OR' the specified tag IDs, 'AND' otherwise
      * @return pages containing specified tags
      */
-    List<PageDecorator> findPages(String path, Collection<String> tagIds, boolean matchOne);
+    List<PageDecorator> findPages(String rootPath, Collection<String> tagIds, boolean matchOne);
 
     /**
      * Find all descendant pages of the given path matching the template path.
      *
-     * @param path start path
+     * @param rootPath root path
      * @param templatePath template path
      * @return pages matching specified template
      */
-    List<PageDecorator> findPages(String path, String templatePath);
+    List<PageDecorator> findPages(String rootPath, String templatePath);
 
     /**
      * Find all descendant pages of the given path that match the predicate.
      *
-     * @param path start path
+     * @param rootPath root path
      * @param predicate predicate to determine if a page should be included in the result list
      * @return pages matching filter criteria
      */
-    List<PageDecorator> findPages(String path, Predicate<PageDecorator> predicate);
+    List<PageDecorator> findPages(String rootPath, Predicate<PageDecorator> predicate);
 
     /**
      * Returns the page that contains this resource. If the resource is a page the resource is returned. Otherwise it
