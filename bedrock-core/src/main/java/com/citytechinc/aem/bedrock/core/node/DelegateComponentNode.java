@@ -5,6 +5,7 @@ import com.citytechinc.aem.bedrock.api.link.builders.LinkBuilder;
 import com.citytechinc.aem.bedrock.api.node.BasicNode;
 import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import org.apache.sling.api.resource.Resource;
@@ -14,10 +15,13 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 /**
  * Extendable class that delegates to a <code>ComponentNode</code> instance.  Use when instantiating component node
  * instances directly (i.e. not in the context of a JSP or Sightly request).
  */
+@JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
 public abstract class DelegateComponentNode implements ComponentNode {
 
     private final ComponentNode componentNode;
