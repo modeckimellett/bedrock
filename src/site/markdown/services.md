@@ -16,6 +16,6 @@ The `com.citytechinc.aem.bedrock.services.AbstractSlingService` class can be use
 
 `com.citytechinc.aem.bedrock.core.services.replication.SelectiveReplicationService`
 
-Service providing "selective" replication to activate/deactivate content to a subset of replication agents (rather than all agents, which is the CQ5 default behavior).
+Service providing "selective" replication to activate/deactivate content to a subset of replication agents (rather than all agents, which is the AEM default behavior).
 
 This service can be called directly but is also exposed by the corresponding Selective Replication Servlet as described on the [Servlets](https://github.com/Citytechinc/bedrock/wiki/servlets) page.

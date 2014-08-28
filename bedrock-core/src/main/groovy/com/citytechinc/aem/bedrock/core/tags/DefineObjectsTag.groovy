@@ -1,6 +1,7 @@
 package com.citytechinc.aem.bedrock.core.tags
 
 import com.citytechinc.aem.bedrock.api.components.annotations.AutoInstantiate
+import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.core.bindings.BedrockBindings
 import com.day.cq.wcm.api.components.Component
 import groovy.util.logging.Slf4j
@@ -12,6 +13,8 @@ import javax.servlet.jsp.JspTagException
 
 import static com.citytechinc.aem.bedrock.core.constants.ComponentConstants.PROPERTY_CLASS_NAME
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_COMPONENT_NAME
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
+import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_PAGE_MANAGER_NAME
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_SLING_NAME
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_REQUEST_NAME
 
@@ -28,6 +31,7 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
         def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
         setBindings(slingRequest)
+        setOverrides(slingRequest)
 
         if (LOG.debugEnabled) {
             def resource = slingRequest.resource
@@ -42,6 +46,11 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
         EVAL_PAGE
     }
 
+    /**
+     * Set Bedrock bindings (WCMMode flags, etc.) in the current page context.
+     *
+     * @param slingRequest current Sling request
+     */
     private void setBindings(SlingHttpServletRequest slingRequest) {
         // add bedrock attributes to page context
         def bindings = new BedrockBindings(slingRequest)
@@ -51,6 +60,24 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
         }
     }
 
+    /**
+     * Override page manager and current page with decorated instances.
+     *
+     * @param slingRequest current Sling request
+     */
+    private void setOverrides(SlingHttpServletRequest slingRequest) {
+        def pageManager = slingRequest.resourceResolver.adaptTo(PageManagerDecorator)
+        def currentPage = pageManager.getContainingPage(slingRequest.resource)
+
+        pageContext.setAttribute(DEFAULT_PAGE_MANAGER_NAME, pageManager)
+        pageContext.setAttribute(DEFAULT_CURRENT_PAGE_NAME, currentPage)
+    }
+
+    /**
+     * Instantiate the component class associated with the current component request, if necessary.
+     *
+     * @throws JspTagException if error occurs while instantiating component
+     */
     private void instantiateComponentClass() throws JspTagException {
         def component = pageContext.getAttribute(DEFAULT_COMPONENT_NAME) as Component
 

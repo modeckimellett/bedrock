@@ -51,7 +51,6 @@ final class BedrockAdapterFactory implements AdapterFactory {
         result
     }
 
-    @SuppressWarnings("unchecked")
     private <AdapterType> AdapterType getResourceResolverAdapter(ResourceResolver resourceResolver,
         Class<AdapterType> type) {
         def result
@@ -65,7 +64,6 @@ final class BedrockAdapterFactory implements AdapterFactory {
         result
     }
 
-    @SuppressWarnings("unchecked")
     private <AdapterType> AdapterType getResourceAdapter(Resource resource, Class<AdapterType> type) {
         def result
 

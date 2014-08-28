@@ -2,7 +2,7 @@
 
 ### Overview
 
-Component JSPs should contain only the HTML markup and JSTL tags necessary to render the component and it's view permutations, rather than Java "scriptlet" blocks containing business logic.  To facilitate the separation of controller logic from presentation, Bedrock provides a custom JSP tag to associate a Java class (or "backing bean") to a component JSP.  The library also provides an abstract template class containing accessors and convenience methods for objects that are typically available in the JSP page context (e.g. current page, current node, Sling resource resolver, etc.).  Decorator instances for the current page and component node implement common use cases to reduce boilerplate code and encourage the use of established conventions.  This allows the developer to focus on project-specific concerns rather than reimplementing functionality that is frequently required for a typical CQ implementation but may not be provided by the CQ APIs.
+Component JSPs should contain only the HTML markup and JSTL tags necessary to render the component and it's view permutations, rather than Java "scriptlet" blocks containing business logic.  To facilitate the separation of controller logic from presentation, Bedrock provides a custom JSP tag to associate a Java class (or "backing bean") to a component JSP.  The library also provides an abstract component class containing accessors and convenience methods for objects that are typically available in the JSP page context (e.g. current page, current node, Sling resource resolver, etc.).  Decorated instances for the current page and component node implement common use cases to reduce boilerplate code and encourage the use of established conventions.  This allows the developer to focus on project-specific concerns rather than reimplementing functionality that is frequently required for a typical AEM implementation but may not be provided by the AEM APIs.
 
 ### Usage
 
@@ -63,11 +63,18 @@ The `AbstractComponent` class should be extended by all component backing classe
 
 See the [Javadoc](http://code.citytechinc.com/bedrock/apidocs/com/citytechinc/aem/bedrock/core/components/AbstractComponent.html) for details of the available methods.
 
+### Sightly Support
+
+Components extending the `AbstractComponent` class can be used interchangeably with both Sightly templates and JSPs.
+
+    <div data-sly-use.navigation="com.projectname.components.content.Navigation">
+        <h1>${navigation.title}</h1>
+    </div>
+
 ### Development Guidelines
 
 * Component beans should be **read-only**; since components are generally accessed by an anonymous user in publish mode.  Repository write operations should be performed only in author mode (and replicated only when a page is activated by a content author).  Since component classes are executed in both author and publish modes, ideally one should consider alternative approaches to performing write operations in a component bean:
     * Delegate write operations to an OSGi service that is bound to an administrative session.
     * Refactor the component to perform dialog-based content modifications by attaching a listener to the appropriate [dialog event](http://dev.day.com/content/docs/en/cq/current/widgets-api/index.html?class=CQ.Dialog), e.g. 'beforesubmit'.
     * Register a [JCR event listener](http://www.day.com/maven/jsr170/javadocs/jcr-2.0/javax/jcr/observation/ObservationManager.html) to trigger event-based repository updates.
-* Classes should be designed for [immutability](http://www.javapractices.com/topic/TopicAction.do?Id=29) and remain stateless.  Since the lifecycle of a component is bound to a request, state should be maintained client-side using cookies, HTML5 web storage, or DOM data attributes.
-    * In brief, the class itself and fields should be marked `final` and should contain no setters.
+* Classes should remain stateless and contain no setters.  Since the lifecycle of a component is bound to a request, state should be maintained client-side using cookies, HTML5 web storage, or DOM data attributes.
