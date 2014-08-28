@@ -41,10 +41,10 @@ final class PropertyTag extends AbstractPropertyTag {
             } else {
                 pageContext.out.write(value)
             }
-        } catch (IOException ioe) {
-            LOG.error "error writing property value = $propertyName for name = ", ioe
+        } catch (IOException e) {
+            LOG.error "error writing property value = $propertyName for name = ", e
 
-            throw new JspTagException(ioe)
+            throw new JspTagException(e)
         }
 
         EVAL_PAGE

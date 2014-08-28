@@ -17,7 +17,7 @@ final class FavIconTag extends AbstractMetaTag {
     private static final def RELS = ["icon", "shortcut icon"]
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def currentDesign = pageContext.getAttribute(DEFAULT_CURRENT_DESIGN_NAME) as Design
         def resourceResolver = pageContext.getAttribute(DEFAULT_RESOURCE_RESOLVER_NAME) as ResourceResolver
 

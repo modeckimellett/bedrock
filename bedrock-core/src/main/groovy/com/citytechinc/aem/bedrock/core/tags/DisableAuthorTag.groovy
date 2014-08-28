@@ -4,8 +4,6 @@ import com.day.cq.wcm.api.WCMMode
 import groovy.util.logging.Slf4j
 import org.apache.sling.api.SlingHttpServletRequest
 
-import javax.servlet.jsp.JspException
-import javax.servlet.jsp.JspTagException
 import javax.servlet.jsp.tagext.TagSupport
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_REQUEST_NAME
@@ -19,7 +17,7 @@ final class DisableAuthorTag extends TagSupport {
     private static final def ATTR_PREVIOUS_WCMMODE = "previous-wcm-mode-"
 
     @Override
-    int doStartTag() throws JspException {
+    int doStartTag() {
         def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
         def path = slingRequest.resource.path
@@ -34,7 +32,7 @@ final class DisableAuthorTag extends TagSupport {
     }
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
         def path = slingRequest.resource.path

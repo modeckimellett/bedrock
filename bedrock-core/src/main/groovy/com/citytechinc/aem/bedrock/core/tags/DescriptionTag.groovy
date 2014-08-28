@@ -22,7 +22,7 @@ final class DescriptionTag extends AbstractMetaTag {
     String suffix
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def currentPage = pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME) as Page
         def properties = currentPage.properties
 

@@ -18,7 +18,7 @@ final class ImageTag extends AbstractComponentTag {
     String title
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def resource = componentNode.resource
 
         def image
@@ -42,10 +42,10 @@ final class ImageTag extends AbstractComponentTag {
         if (image.hasContent()) {
             try {
                 image.draw(pageContext.out)
-            } catch (IOException ioe) {
-                LOG.error "error writing image tag for name = $name", ioe
+            } catch (IOException e) {
+                LOG.error "error writing image tag for name = $name", e
 
-                throw new JspTagException(ioe)
+                throw new JspTagException(e)
             }
         }
 

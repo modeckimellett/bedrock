@@ -20,7 +20,7 @@ final class TitleTag extends AbstractMetaTag {
     String suffix
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def currentPage = pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME) as Page
         def pageTitle = currentPage.title ?: currentPage.name
 
@@ -44,10 +44,10 @@ final class TitleTag extends AbstractMetaTag {
 
         try {
             pageContext.out.write(builder.toString())
-        } catch (IOException ioe) {
-            LOG.error "error writing title tag", ioe
+        } catch (IOException e) {
+            LOG.error "error writing title tag", e
 
-            throw new JspTagException(ioe)
+            throw new JspTagException(e)
         }
 
         EVAL_PAGE

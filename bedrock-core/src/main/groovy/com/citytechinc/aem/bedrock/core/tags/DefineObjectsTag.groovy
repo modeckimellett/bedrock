@@ -27,7 +27,7 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
     private static final def ATTR_COMPONENT_INSTANCE_NAME = "componentInstanceName"
 
     @Override
-    int doEndTag(int scope) throws JspTagException {
+    int doEndTag(int scope) {
         def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
         setBindings(slingRequest)
@@ -75,15 +75,12 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
 
     /**
      * Instantiate the component class associated with the current component request, if necessary.
-     *
-     * @throws JspTagException if error occurs while instantiating component
      */
-    private void instantiateComponentClass() throws JspTagException {
+    private void instantiateComponentClass() {
         def component = pageContext.getAttribute(DEFAULT_COMPONENT_NAME) as Component
 
         if (component) {
-            def className = component.properties.get(PROPERTY_CLASS_NAME) as String
-
+            def className = component.properties.get(PROPERTY_CLASS_NAME, "")
             def clazz
 
             try {
@@ -105,13 +102,10 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
         }
     }
 
-    private void setComponentInstance(Class<?> clazz, String className) throws JspTagException {
+    private void setComponentInstance(Class<?> clazz, String className) {
         if (clazz.isAnnotationPresent(AutoInstantiate)) {
             def autoInstantiate = clazz.getAnnotation(AutoInstantiate)
-
-            def instanceName = !autoInstantiate.instanceName() ? StringUtils.uncapitalize(
-                clazz.simpleName) : autoInstantiate.instanceName()
-
+            def instanceName = autoInstantiate.instanceName() ?: StringUtils.uncapitalize(clazz.simpleName)
             def instance = getInstance(clazz)
 
             LOG.debug "class name = {}, instance name = {}, setting component in page context", className,

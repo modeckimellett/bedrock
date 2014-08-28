@@ -8,7 +8,7 @@ import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_XSSAPI_NAME
 abstract class AbstractMetaTag extends AbstractPropertyTag {
 
     @SuppressWarnings("deprecation")
-    protected String getTagEnd() {
+    protected final String getTagEnd() {
         def builder = new StringBuilder()
 
         builder.append('"')

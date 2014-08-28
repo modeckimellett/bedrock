@@ -21,7 +21,7 @@ final class ImageSourceTag extends AbstractComponentTag {
     String width
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         checkArgument(DIGIT.matchesAllOf(width), "invalid width attribute = %s, must be numeric", width)
 
         def name = this.name ?: DEFAULT_IMAGE_NAME

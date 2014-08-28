@@ -17,7 +17,7 @@ final class KeywordsTag extends AbstractMetaTag {
     private static final def TAG_START = "<meta name=\"keywords\" content=\""
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def currentPage = pageContext.getAttribute(DEFAULT_CURRENT_PAGE_NAME) as Page
 
         def builder = new StringBuilder()
@@ -28,10 +28,10 @@ final class KeywordsTag extends AbstractMetaTag {
 
         try {
             pageContext.out.write(builder.toString())
-        } catch (IOException ioe) {
-            LOG.error "error writing keywords tag for page = ${currentPage.path}", ioe
+        } catch (IOException e) {
+            LOG.error "error writing keywords tag for page = ${currentPage.path}", e
 
-            throw new JspTagException(ioe)
+            throw new JspTagException(e)
         }
 
         EVAL_PAGE

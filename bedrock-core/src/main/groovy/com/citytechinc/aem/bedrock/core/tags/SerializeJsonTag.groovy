@@ -34,7 +34,7 @@ final class SerializeJsonTag extends AbstractComponentInstanceTag {
     String name
 
     @Override
-    int doEndTag(final int scope) throws JspTagException {
+    int doEndTag(int scope) {
         checkArgument(className || instanceName, "className or instanceName is required")
 
         try {

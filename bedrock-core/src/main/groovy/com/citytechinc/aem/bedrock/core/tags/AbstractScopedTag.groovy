@@ -1,7 +1,5 @@
 package com.citytechinc.aem.bedrock.core.tags
 
-import javax.servlet.jsp.JspException
-import javax.servlet.jsp.JspTagException
 import javax.servlet.jsp.PageContext
 import javax.servlet.jsp.tagext.TagSupport
 
@@ -27,12 +25,11 @@ abstract class AbstractScopedTag extends TagSupport {
     /**
      * @param scope scope value
      * @return tag result
-     * @throws javax.servlet.jsp.JspTagException if error occurs in tag operation
      */
-    abstract int doEndTag(int scope) throws JspTagException
+    abstract int doEndTag(int scope)
 
     @Override
-    final int doEndTag() throws JspException {
+    final int doEndTag() {
         checkArgument(!scope || SCOPES[scope], "scope attribute is invalid = %s, must be one of %s", scope,
             SCOPES.keySet())
 

@@ -16,7 +16,7 @@ final class HrefTag extends AbstractPropertyTag {
     String defaultValue = ""
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def optionalHref
 
         if (inherit) {

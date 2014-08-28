@@ -8,7 +8,7 @@ import javax.servlet.jsp.JspTagException
  * Render a boolean property value, optionally setting arbitrary string values to use instead of "true" and "false".
  */
 @Slf4j("LOG")
-class PropertyBooleanTag extends AbstractPropertyTag {
+final class PropertyBooleanTag extends AbstractPropertyTag {
 
     /**
      * Default value if property does not exist.
@@ -20,7 +20,7 @@ class PropertyBooleanTag extends AbstractPropertyTag {
     String t
 
     @Override
-    int doEndTag() throws JspTagException {
+    int doEndTag() {
         def defaultValue = this.defaultValue ? Boolean.valueOf(this.defaultValue) : false
         def value
 
@@ -35,10 +35,10 @@ class PropertyBooleanTag extends AbstractPropertyTag {
 
         try {
             pageContext.out.write(result)
-        } catch (IOException ioe) {
-            LOG.error "error writing property value = $value", ioe
+        } catch (IOException e) {
+            LOG.error "error writing property value = $value", e
 
-            throw new JspTagException(ioe)
+            throw new JspTagException(e)
         }
 
         EVAL_PAGE

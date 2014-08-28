@@ -12,7 +12,7 @@ import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BIN
 @Slf4j("LOG")
 abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
-    protected final Object getInstance(Class<?> clazz) throws JspTagException {
+    protected final Object getInstance(Class<?> clazz) {
         def instance
 
         try {
@@ -37,7 +37,7 @@ abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
         instance
     }
 
-    protected final Object getInstance(String className) throws JspTagException {
+    protected final Object getInstance(String className) {
         def clazz
 
         try {
