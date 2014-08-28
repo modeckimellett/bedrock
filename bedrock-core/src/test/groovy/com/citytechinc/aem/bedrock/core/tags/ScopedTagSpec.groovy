@@ -3,7 +3,6 @@ package com.citytechinc.aem.bedrock.core.tags
 import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
 import spock.lang.Unroll
 
-import javax.servlet.jsp.JspTagException
 import javax.servlet.jsp.PageContext
 
 @Unroll
@@ -16,7 +15,7 @@ class ScopedTagSpec extends BedrockJspTagSpec {
     class ScopedTag extends AbstractScopedTag {
 
         @Override
-        int doEndTag(int scope) throws JspTagException {
+        int doEndTag(int scope) {
             pageContext.setAttribute ATTRIBUTE_NAME, ATTRIBUTE_VALUE, scope
 
             EVAL_PAGE
