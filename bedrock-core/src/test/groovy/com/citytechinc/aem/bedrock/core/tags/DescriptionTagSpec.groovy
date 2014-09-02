@@ -1,8 +1,9 @@
 package com.citytechinc.aem.bedrock.core.tags
+
 import spock.lang.Unroll
 
 @Unroll
-class DescriptionTagSpec extends AbstractMetaTagSpec<DescriptionTag> {
+class DescriptionTagSpec extends AbstractMetaTagSpec {
 
     def setupSpec() {
         pageBuilder.content {
@@ -15,24 +16,20 @@ class DescriptionTagSpec extends AbstractMetaTagSpec<DescriptionTag> {
         }
     }
 
-    @Override
-    DescriptionTag createTag() {
-        new DescriptionTag()
-    }
-
     def "description variations"() {
         setup:
-        setupPage("/content/citytechinc")
+        def tag = new DescriptionTag()
 
-        when:
         tag.propertyName = propertyName
         tag.suffix = suffix
 
-        and:
+        def jspTag = init(tag, "/content/citytechinc")
+
+        when:
         tag.doEndTag()
 
         then:
-        result == html
+        jspTag.output == html
 
         where:
         propertyName  | suffix           | html
@@ -44,12 +41,13 @@ class DescriptionTagSpec extends AbstractMetaTagSpec<DescriptionTag> {
 
     def "empty description"() {
         setup:
-        setupPage("/content/ctmsp")
+        def tag = new DescriptionTag()
+        def jspTag = init(tag, "/content/ctmsp")
 
         when:
         tag.doEndTag()
 
         then:
-        result == '<meta name="description" content="">'
+        jspTag.output == '<meta name="description" content="">'
     }
 }

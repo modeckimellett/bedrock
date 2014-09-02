@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.citytechinc.aem.bedrock</groupId>
         <artifactId>bedrock</artifactId>
-        <version>1.1.1</version>
+        <version>2.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -57,7 +57,7 @@
                             !com.citytechinc.aem.bedrock.core.specs.*,
                             com.citytechinc.aem.bedrock.core.*
                         </Export-Package>
-                        <Import-Package>!com.citytechinc.cq.component.*,!javassist</Import-Package>
+                        <Import-Package>!javassist,!com.citytechinc.cq.component.*</Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
                 </configuration>
@@ -74,7 +74,7 @@
                         <configuration>
                             <scanClasses>true</scanClasses>
                             <properties>
-                                <service.vendor>CITYTECH, Inc.</service.vendor>
+                                <service.vendor>${project.parent.organization.name}</service.vendor>
                             </properties>
                         </configuration>
                     </execution>

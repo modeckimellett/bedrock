@@ -1,17 +1,17 @@
 package com.citytechinc.aem.bedrock.core.specs
 
-import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
-import com.citytechinc.aem.prosper.specs.ProsperSpec
+import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
+import com.citytechinc.aem.prosper.specs.SightlySpec
 import org.apache.sling.api.adapter.AdapterFactory
 import spock.lang.Shared
 
 /**
- * Spock specification for AEM testing.
+ * Spock specification for testing Bedrock-based components and services.
  */
-abstract class BedrockSpec extends ProsperSpec {
+abstract class BedrockSpec extends SightlySpec {
 
     @Shared pageManagerDecorator
 
@@ -28,6 +28,7 @@ abstract class BedrockSpec extends ProsperSpec {
         resourceResolver.getResource(path).adaptTo(ComponentNode)
     }
 
+    @Override
     PageDecorator getPage(String path) {
         pageManagerDecorator.getPage(path)
     }

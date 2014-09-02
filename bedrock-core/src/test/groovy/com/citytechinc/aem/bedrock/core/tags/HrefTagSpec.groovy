@@ -1,8 +1,10 @@
 package com.citytechinc.aem.bedrock.core.tags
 
 import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
+import spock.lang.Unroll
 
-class HrefTagSpec extends BedrockJspTagSpec<HrefTag> {
+@Unroll
+class HrefTagSpec extends BedrockJspTagSpec {
 
     def setupSpec() {
         pageBuilder.content {
@@ -13,66 +15,41 @@ class HrefTagSpec extends BedrockJspTagSpec<HrefTag> {
         }
     }
 
-    @Override
-    HrefTag createTag() {
-        new HrefTag()
-    }
-
-    def "href for existing property"() {
+    def "href for property"() {
         setup:
-        setupComponentNode("/content/citytechinc/jcr:content")
+        def tag = new HrefTag()
 
-        when:
         tag.propertyName = "path"
 
-        and:
+        def jspTag = init(tag, "/content/citytechinc/jcr:content")
+
+        when:
         tag.doEndTag()
 
         then:
-        result == "/content/global.html"
-    }
-
-    def "href for non-existent property"() {
-        setup:
-        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
-
-        when:
-        tag.propertyName = "path"
-
-        and:
-        tag.doEndTag()
-
-        then:
-        !result
+        jspTag.output == "/content/global.html"
     }
 
     def "href for inherited property"() {
         setup:
-        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
+        def tag = new HrefTag()
+
+        tag.propertyName = propertyName
+        tag.inherit = String.valueOf(inherit)
+
+        def jspTag = init(tag, "/content/citytechinc/ctmsp/jcr:content")
 
         when:
-        tag.propertyName = "path"
-        tag.inherit = String.valueOf(true)
-
-        and:
         tag.doEndTag()
 
         then:
-        result == "/content/global.html"
-    }
+        jspTag.output == output
 
-    def "href for non-existent inherited property"() {
-        setup:
-        setupComponentNode("/content/citytechinc/ctmsp/jcr:content")
-
-        when:
-        tag.propertyName = "nonExistentPath"
-        tag.inherit = String.valueOf(true)
-
-        and:
-        tag.doEndTag()
-
-        then:
-        !result
+        where:
+        propertyName      | inherit | output
+        "path"            | false   | ""
+        "path"            | true    | "/content/global.html"
+        "nonExistentPath" | false   | ""
+        "nonExistentPath" | true    | ""
     }
 }

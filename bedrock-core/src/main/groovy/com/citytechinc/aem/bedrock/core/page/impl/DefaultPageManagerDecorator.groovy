@@ -37,15 +37,15 @@ class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    List<PageDecorator> findPages(String path, Collection<String> tagIds, boolean matchOne) {
-        checkNotNull(path)
+    List<PageDecorator> findPages(String rootPath, Collection<String> tagIds, boolean matchOne) {
+        checkNotNull(rootPath)
         checkNotNull(tagIds)
 
-        LOG.debug "path = {}, tag IDs = {}", path, tagIds
+        LOG.debug "path = {}, tag IDs = {}", rootPath, tagIds
 
         def stopwatch = Stopwatch.createStarted()
 
-        def iterator = resourceResolver.adaptTo(TagManager).find(path, tagIds as String[], matchOne)
+        def iterator = resourceResolver.adaptTo(TagManager).find(rootPath, tagIds as String[], matchOne)
 
         def pages = []
 
@@ -124,13 +124,13 @@ class DefaultPageManagerDecorator implements PageManagerDecorator {
     }
 
     @Override
-    List<PageDecorator> findPages(String path, String template) {
-        findPages(path, new TemplatePredicate(template))
+    List<PageDecorator> findPages(String rootPath, String template) {
+        findPages(rootPath, new TemplatePredicate(template))
     }
 
     @Override
-    List<PageDecorator> findPages(String path, Predicate<PageDecorator> predicate) {
-        def page = getPage(checkNotNull(path))
+    List<PageDecorator> findPages(String rootPath, Predicate<PageDecorator> predicate) {
+        def page = getPage(checkNotNull(rootPath))
 
         def stopwatch = Stopwatch.createStarted()
 

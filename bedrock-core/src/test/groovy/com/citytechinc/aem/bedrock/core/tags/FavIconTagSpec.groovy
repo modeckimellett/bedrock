@@ -4,7 +4,7 @@ import com.day.cq.wcm.api.designer.Design
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_DESIGN_NAME
 
-class FavIconTagSpec extends AbstractMetaTagSpec<FavIconTag> {
+class FavIconTagSpec extends AbstractMetaTagSpec {
 
     static final def FAVICON = { favIcon ->
         """<link rel="icon" type="image/vnd.microsoft.icon" href="$favIcon">
@@ -21,38 +21,33 @@ class FavIconTagSpec extends AbstractMetaTagSpec<FavIconTag> {
         }
     }
 
-    @Override
-    FavIconTag createTag() {
-        new FavIconTag()
-    }
-
     def "no favicon, no output"() {
         setup:
-        def design = Mock(Design) {
-            getPath() >> ""
-        }
+        def tag = new FavIconTag()
 
-        tag.pageContext.setAttribute DEFAULT_CURRENT_DESIGN_NAME, design
+        def jspTag = init(tag, "/", [(DEFAULT_CURRENT_DESIGN_NAME): Mock(Design) {
+            getPath() >> ""
+        }])
 
         when:
         tag.doEndTag()
 
         then:
-        !result
+        !jspTag.output
     }
 
     def "valid favicon, HTML output"() {
         setup:
-        def design = Mock(Design) {
-            getPath() >> "/etc/designs/citytechinc"
-        }
+        def tag = new FavIconTag()
 
-        tag.pageContext.setAttribute DEFAULT_CURRENT_DESIGN_NAME, design
+        def jspTag = init(tag, "/", [(DEFAULT_CURRENT_DESIGN_NAME): Mock(Design) {
+            getPath() >> "/etc/designs/citytechinc"
+        }])
 
         when:
         tag.doEndTag()
 
         then:
-        result == FAVICON("/etc/designs/citytechinc/favicon.ico")
+        jspTag.output == FAVICON("/etc/designs/citytechinc/favicon.ico")
     }
 }

@@ -1,5 +1,6 @@
 package com.citytechinc.aem.bedrock.api.request;
 
+import com.citytechinc.aem.bedrock.api.services.ServiceProvider;
 import com.day.cq.wcm.api.components.Component;
 import com.day.cq.wcm.api.components.ComponentContext;
 import com.day.cq.wcm.api.components.EditContext;
@@ -42,4 +43,9 @@ public interface ComponentRequest extends ComponentServletRequest {
      * @return edit context for this request
      */
     EditContext getEditContext();
+
+    /**
+     * @return OSGi service provider
+     */
+    ServiceProvider getServiceProvider();
 }

@@ -10,7 +10,7 @@ This tag is already defined in the Bedrock `global.jsp`, so most projects should
 
     <%@include file="/apps/bedrock/components/global.jsp"%>
 
-In addition to the attributes provided by the CQ5 `global.jsp`, the following attributes are also set in page context.
+In addition to the attributes provided by the AEM `global.jsp`, the following attributes are also set in page context.
 
 Name | Description
 :----|:-----------
@@ -19,13 +19,9 @@ isPublish | Is publish environment?
 isEditMode | Is edit mode?
 isDesignMode | Is design mode?
 isPreviewMode | Is preview mode?
-isReadOnlyMode | Is Read-Only mode?
-isAnalyticsMode | Is Analytics mode?
-isDebug | Is request parameter debug=true?
-componentRequest | `ComponentRequest` object for current component
-componentNode | `ComponentNode` object for current component
-pageManager | `PageManagerDecorator`, replaces default `PageManager` object
-currentPage | `PageDecorator` for current page, replaces default WCM `Page` object
+isReadOnlyMode | Is read-only mode?
+isAnalyticsMode | Is analytics mode?
+isDebug | If true, the resource path/type and script details will be included in a JSP comment for each request.
 
 ### Disable Author
 

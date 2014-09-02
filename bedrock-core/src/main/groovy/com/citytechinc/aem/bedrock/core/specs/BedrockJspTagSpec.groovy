@@ -1,17 +1,17 @@
 package com.citytechinc.aem.bedrock.core.specs
 
-import com.citytechinc.aem.bedrock.api.node.ComponentNode
-import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
-import com.citytechinc.aem.bedrock.core.bindings.ComponentBindings
+import com.citytechinc.aem.prosper.specs.JspTagProxy
 import com.citytechinc.aem.prosper.specs.JspTagSpec
+import com.day.cq.wcm.api.PageManager
 import org.apache.sling.api.adapter.AdapterFactory
 
 import javax.servlet.jsp.tagext.TagSupport
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
+import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME
 
-abstract class BedrockJspTagSpec<T extends TagSupport> extends JspTagSpec<T> {
+abstract class BedrockJspTagSpec extends JspTagSpec {
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {
@@ -19,24 +19,31 @@ abstract class BedrockJspTagSpec<T extends TagSupport> extends JspTagSpec<T> {
     }
 
     /**
-     * Set a <code>PageDecorator</code> for the given path in the <code>PageContext</code> for the tag under test.
+     * Initialize a tag with the resource and page for the given path.
      *
-     * @param path page path
+     * @param tag tag under test
+     * @param path resource path
+     * @return JSP tag instance containing page context and writer
      */
-    void setupPage(String path) {
-        def page = resourceResolver.adaptTo(PageManagerDecorator).getPage(path)
-
-        tag.pageContext.setAttribute DEFAULT_CURRENT_PAGE_NAME, page
+    JspTagProxy init(TagSupport tag, String path) {
+        init(tag, path, [:])
     }
 
     /**
-     * Set a <code>ComponentNode</code> for the given path in the <code>PageContext</code> for the tag under test.
+     * Initialize a tag with the resource and page for the given path.
      *
-     * @param path node path
+     * @param tag tag under test
+     * @param path resource path
+     * @param additionalPageContextAttributes additional attributes to add to page context
+     * @return JSP tag instance containing page context and writer
      */
-    void setupComponentNode(String path) {
-        def componentNode = resourceResolver.getResource(path).adaptTo(ComponentNode)
+    JspTagProxy init(TagSupport tag, String path, Map<String, Object> additionalPageContextAttributes) {
+        def resource = resourceResolver.getResource(path)
+        def currentPage = resourceResolver.adaptTo(PageManager).getContainingPage(resource)
 
-        tag.pageContext.setAttribute ComponentBindings.COMPONENT_NODE, componentNode
+        additionalPageContextAttributes[DEFAULT_RESOURCE_NAME] = resource
+        additionalPageContextAttributes[DEFAULT_CURRENT_PAGE_NAME] = currentPage
+
+        super.init(tag, additionalPageContextAttributes)
     }
 }
