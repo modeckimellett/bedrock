@@ -28,7 +28,7 @@ import javax.jcr.Session
  */
 @Component(immediate = true, metatype = true, label = "Bedrock Page Replication Listener")
 @Service(EventHandler)
-@Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC)
+@Property(name = EventConstants.EVENT_TOPIC, value = ReplicationAction.EVENT_TOPIC, propertyPrivate = true)
 @Slf4j("LOG")
 class PageReplicationListener extends AbstractReplicationListener {
 
