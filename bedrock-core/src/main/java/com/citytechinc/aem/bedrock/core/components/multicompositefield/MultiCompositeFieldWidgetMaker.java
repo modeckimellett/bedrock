@@ -1,88 +1,113 @@
 package com.citytechinc.aem.bedrock.core.components.multicompositefield;
 
 import com.citytechinc.cq.component.annotations.DialogField;
+import com.citytechinc.cq.component.annotations.IgnoreDialogField;
+import com.citytechinc.cq.component.annotations.widgets.DialogFieldSet;
+import com.citytechinc.cq.component.dialog.AbstractWidget;
 import com.citytechinc.cq.component.dialog.DialogElement;
+import com.citytechinc.cq.component.dialog.DialogElementComparator;
+import com.citytechinc.cq.component.dialog.DialogFieldConfig;
+import com.citytechinc.cq.component.dialog.exception.InvalidComponentClassException;
 import com.citytechinc.cq.component.dialog.exception.InvalidComponentFieldException;
 import com.citytechinc.cq.component.dialog.factory.WidgetFactory;
 import com.citytechinc.cq.component.dialog.maker.AbstractWidgetMaker;
 import com.citytechinc.cq.component.dialog.maker.WidgetMakerParameters;
+import com.citytechinc.cq.component.dialog.util.DialogUtil;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollection;
 import com.citytechinc.cq.component.dialog.widgetcollection.WidgetCollectionParameters;
 import com.citytechinc.cq.component.maven.util.ComponentMojoUtil;
+
 import javassist.CannotCompileException;
 import javassist.CtMember;
+import javassist.CtMethod;
 import javassist.NotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
 
-    private static final String FIELD_CONFIGS = "fieldConfigs";
+	private static final String FIELD_CONFIGS = "fieldConfigs";
 
-    public MultiCompositeFieldWidgetMaker(final WidgetMakerParameters parameters) {
-        super(parameters);
-    }
+	public MultiCompositeFieldWidgetMaker(final WidgetMakerParameters parameters) {
+		super(parameters);
+	}
 
-    @Override
-    public DialogElement make()
-        throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException, CannotCompileException,
-        NoSuchFieldException, InstantiationException, IllegalAccessException, InvocationTargetException,
-        NoSuchMethodException {
-        final MultiCompositeField multiCompositeFieldAnnotation = getAnnotation(MultiCompositeField.class);
+	@Override
+	public DialogElement make() throws ClassNotFoundException, InvalidComponentFieldException, NotFoundException,
+		CannotCompileException, NoSuchFieldException, InstantiationException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException {
+		final MultiCompositeField multiCompositeFieldAnnotation = getAnnotation(MultiCompositeField.class);
 
-        final MultiCompositeFieldWidgetParameters widgetParameters = new MultiCompositeFieldWidgetParameters();
+		final MultiCompositeFieldWidgetParameters widgetParameters = new MultiCompositeFieldWidgetParameters();
 
-        widgetParameters.setMatchBaseName(multiCompositeFieldAnnotation.matchBaseName());
-        widgetParameters.setPrefix(multiCompositeFieldAnnotation.prefix());
-        widgetParameters.setFieldName(getFieldNameForField());
-        widgetParameters.setFieldLabel(getFieldLabelForField());
-        widgetParameters.setFieldDescription(getFieldDescriptionForField());
-        widgetParameters.setAdditionalProperties(getAdditionalPropertiesForField());
-        widgetParameters.setHideLabel(getHideLabelForField());
-        widgetParameters.setName(getNameForField());
-        widgetParameters.setAllowBlank(!getIsRequiredForField());
-        widgetParameters.setDefaultValue(getDefaultValueForField());
-        widgetParameters.setListeners(getListeners());
-        widgetParameters.setContainedElements(buildWidgetCollection());
+		widgetParameters.setMatchBaseName(multiCompositeFieldAnnotation.matchBaseName());
+		widgetParameters.setPrefix(multiCompositeFieldAnnotation.prefix());
+		widgetParameters.setFieldName(getFieldNameForField());
+		widgetParameters.setFieldLabel(getFieldLabelForField());
+		widgetParameters.setFieldDescription(getFieldDescriptionForField());
+		widgetParameters.setAdditionalProperties(getAdditionalPropertiesForField());
+		widgetParameters.setHideLabel(getHideLabelForField());
+		widgetParameters.setName(getNameForField());
+		widgetParameters.setAllowBlank(!getIsRequiredForField());
+		widgetParameters.setDefaultValue(getDefaultValueForField());
+		widgetParameters.setListeners(getListeners());
+		widgetParameters.setContainedElements(buildWidgetCollection());
 
-        return new MultiCompositeFieldWidget(widgetParameters);
-    }
+		return new MultiCompositeFieldWidget(widgetParameters);
+	}
 
-    private List<DialogElement> buildWidgetCollection()
-        throws InvalidComponentFieldException, NotFoundException, ClassNotFoundException, CannotCompileException,
-        NoSuchFieldException, InstantiationException, IllegalAccessException, InvocationTargetException,
-        NoSuchMethodException {
-        final List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
+	private List<DialogElement> buildWidgetCollection() throws InvalidComponentFieldException, NotFoundException,
+		ClassNotFoundException, CannotCompileException, NoSuchFieldException, InstantiationException,
+		IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		final List<CtMember> fieldsAndMethods = new ArrayList<CtMember>();
 
-        fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(getCtType()));
-        fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(getCtType()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectFields(getCtType()));
+		fieldsAndMethods.addAll(ComponentMojoUtil.collectMethods(getCtType()));
 
-        final List<DialogElement> elements = new ArrayList<DialogElement>();
+		List<DialogElement> elements = new ArrayList<DialogElement>();
 
-        for (final CtMember curField : fieldsAndMethods) {
-            if (curField.hasAnnotation(DialogField.class)) {
-                final Class<?> fieldClass = parameters.getClassLoader().loadClass(
-                    curField.getDeclaringClass().getName());
+		for (CtMember member : fieldsAndMethods) {
+			if (!member.hasAnnotation(IgnoreDialogField.class)) {
+				DialogFieldConfig dialogFieldConfig = null;
+				if (member instanceof CtMethod) {
+					try {
+						dialogFieldConfig = DialogUtil.getDialogFieldFromSuperClasses((CtMethod) member);
+					} catch (InvalidComponentClassException e) {
+						throw new InvalidComponentFieldException(e.getMessage(), e);
+					}
+				} else {
+					if (member.hasAnnotation(DialogField.class)) {
+						dialogFieldConfig = new DialogFieldConfig(
+							(DialogField) member.getAnnotation(DialogField.class), member);
+					}
+				}
 
-                final WidgetMakerParameters curFieldMember = new WidgetMakerParameters(
-                    (DialogField) curField.getAnnotation(DialogField.class), curField, fieldClass,
-                    parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
-                    false);
+				if (dialogFieldConfig != null) {
+					Class<?> fieldClass = parameters.getClassLoader().loadClass(member.getDeclaringClass().getName());
 
-                final DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
+					double ranking = dialogFieldConfig.getRanking();
+					
+					final WidgetMakerParameters curFieldMember = new WidgetMakerParameters(dialogFieldConfig, fieldClass,
+						parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
+						false);
 
-                elements.add(builtFieldWidget);
-            }
-        }
+					final DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
 
-        final WidgetCollectionParameters wcp = new WidgetCollectionParameters();
+					builtFieldWidget.setRanking(ranking);
+					elements.add(builtFieldWidget);
+				}
+			}
+		}
+		Collections.sort(elements, new DialogElementComparator());
+		final WidgetCollectionParameters wcp = new WidgetCollectionParameters();
 
-        wcp.setContainedElements(elements);
-        wcp.setFieldName(FIELD_CONFIGS);
+		wcp.setContainedElements(elements);
+		wcp.setFieldName(FIELD_CONFIGS);
 
-        return Arrays.asList(new DialogElement[]{ new WidgetCollection(wcp) });
-    }
+		return Arrays.asList(new DialogElement[] { new WidgetCollection(wcp) });
+	}
 }
