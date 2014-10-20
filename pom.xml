@@ -70,7 +70,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss.SSSZ</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
         <aem.username>admin</aem.username>
-        <component.plugin.version>2.6.1</component.plugin.version>
+        <component.plugin.version>3.0.0</component.plugin.version>
     </properties>
 
     <profiles>
@@ -420,7 +420,7 @@
             <dependency>
                 <groupId>com.citytechinc.aem.prosper</groupId>
                 <artifactId>prosper</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.cobertura</groupId>
