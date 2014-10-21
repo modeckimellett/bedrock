@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>com.citytechinc.aem.bedrock</groupId>
@@ -52,7 +53,6 @@
                         <Bundle-Vendor>${project.parent.organization.name}</Bundle-Vendor>
                         <Export-Package>
                             !*.impl,
-                            !com.citytechinc.aem.bedrock.core.components.multicompositefield,
                             !com.citytechinc.aem.bedrock.core.specs.*,
                             com.citytechinc.aem.bedrock.core.*
                         </Export-Package>
@@ -92,7 +92,6 @@
                         <excludes>
                             <exclude>com/citytechinc/aem/bedrock/core/bindings/*</exclude>
                             <exclude>com/citytechinc/aem/bedrock/core/components/annotations/*</exclude>
-                            <exclude>com/citytechinc/aem/bedrock/core/components/multicompositefield/*</exclude>
                             <exclude>com/citytechinc/aem/bedrock/core/constants/*</exclude>
                             <exclude>com/citytechinc/aem/bedrock/core/filters/*</exclude>
                             <exclude>com/citytechinc/aem/bedrock/core/jmx/**/*</exclude>
@@ -131,8 +130,7 @@
                                 *.impl,
                                 *.predicates,
                                 com.citytechinc.aem.bedrock.core.adapter.*,
-                                com.citytechinc.aem.bedrock.core.bindings.*,
-                                com.citytechinc.aem.bedrock.core.components.multicompositefield.*
+                                com.citytechinc.aem.bedrock.core.bindings.*
                             </excludePackageNames>
                             <links>
                                 <link>http://docs.oracle.com/javaee/6/api/</link>
