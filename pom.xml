@@ -10,7 +10,7 @@
     <groupId>com.citytechinc.aem.bedrock</groupId>
     <artifactId>bedrock</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
     <name>Bedrock</name>
     <description>Bedrock provides a sturdy foundation for bootstrapping and simplifying AEM (Adobe CQ) projects.</description>
 
@@ -53,16 +53,11 @@
     </pluginRepositories>
 
     <distributionManagement>
-        <repository>
-            <id>citytech-public-releases</id>
-            <url>http://nexus.citytech.ctmsp.com/content/repositories/public-releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>citytech-public-snapshots</id>
-            <url>http://nexus.citytech.ctmsp.com/content/repositories/public-snapshots</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -70,7 +65,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss.SSSZ</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
         <aem.username>admin</aem.username>
-        <component.plugin.version>2.6.1</component.plugin.version>
+        <component.plugin.version>3.0.0</component.plugin.version>
     </properties>
 
     <profiles>
@@ -109,7 +104,7 @@
                     <plugin>
                         <groupId>com.github.github</groupId>
                         <artifactId>site-maven-plugin</artifactId>
-                        <version>0.9</version>
+                        <version>0.10</version>
                         <configuration>
                             <message>site for ${project.version}</message>
                             <server>github</server>
@@ -288,6 +283,52 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
 
@@ -420,7 +461,7 @@
             <dependency>
                 <groupId>com.citytechinc.aem.prosper</groupId>
                 <artifactId>prosper</artifactId>
-                <version>0.13.0</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.cobertura</groupId>

@@ -11,6 +11,7 @@ import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
 import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
@@ -491,8 +492,8 @@ public abstract class AbstractComponent implements ComponentNode, Use {
         T instance = null;
 
         if (resource != null) {
-            final Bindings bindingsForResource = new SimpleBindings(checkNotNull(bindings,
-                PRECONDITIONS_ERROR_MESSAGE));
+            final Bindings bindingsForResource = new SimpleBindings(Maps.newHashMap(checkNotNull(bindings,
+                    PRECONDITIONS_ERROR_MESSAGE)));
 
             bindingsForResource.put(RESOURCE, resource);
 
