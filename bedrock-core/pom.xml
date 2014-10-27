@@ -58,6 +58,7 @@
 						</Export-Package>
 						<Import-Package>!javassist,!com.citytechinc.cq.component.*</Import-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
+						<Require-Bundle>org.apache.sling.models.api</Require-Bundle>
 					</instructions>
 				</configuration>
 			</plugin>

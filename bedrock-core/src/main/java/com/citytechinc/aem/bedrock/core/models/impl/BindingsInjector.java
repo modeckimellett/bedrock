@@ -35,7 +35,7 @@ import com.day.cq.wcm.commons.WCMUtils;
 
 @Component
 @Service
-@Property(name = Constants.SERVICE_RANKING, intValue = 1000)
+@Property(name = Constants.SERVICE_RANKING, intValue = 999)
 public class BindingsInjector implements Injector {
 
 	@Override
@@ -48,7 +48,7 @@ public class BindingsInjector implements Injector {
 		DisposalCallbackRegistry callbackRegistry) {
 
 		if (!(adaptable instanceof Resource || adaptable instanceof SlingHttpServletRequest)
-			|| declaredType.equals(Bindings.class)) {
+			|| !declaredType.equals(Bindings.class)) {
 			return null;
 		}
 
@@ -58,7 +58,7 @@ public class BindingsInjector implements Injector {
 			SlingHttpServletRequest request = (SlingHttpServletRequest) adaptable;
 			SlingBindings bindings = (SlingBindings) request.getAttribute(SlingBindings.class.getName());
 			if (bindings != null) {
-				return bindings;
+				return new SimpleBindings(bindings);
 			}
 			ComponentContext componentContext = WCMUtils.getComponentContext(request);
 			simpleBindings.put(REQUEST, request);
@@ -81,8 +81,9 @@ public class BindingsInjector implements Injector {
 		simpleBindings.put(COMPONENT, WCMUtils.getComponent(resource));
 		simpleBindings.put(DESIGNER, designer);
 		simpleBindings.put(CURRENT_DESIGN, currentDesign);
-		simpleBindings.put(CURRENT_STYLE, currentDesign.getStyle(resource));
-
+		if (currentDesign != null) {
+			simpleBindings.put(CURRENT_STYLE, currentDesign.getStyle(resource));
+		}
 		return simpleBindings;
 	}
 }

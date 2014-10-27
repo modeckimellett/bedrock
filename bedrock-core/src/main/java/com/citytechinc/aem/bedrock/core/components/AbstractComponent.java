@@ -26,6 +26,7 @@ import com.citytechinc.aem.bedrock.api.node.ComponentNode;
 import com.citytechinc.aem.bedrock.api.page.PageDecorator;
 import com.citytechinc.aem.bedrock.api.request.ComponentRequest;
 import com.citytechinc.aem.bedrock.api.services.ServiceProvider;
+import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
