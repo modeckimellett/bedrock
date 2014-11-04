@@ -1,8 +1,6 @@
 #set($symbol_pound = '#')
 
-$symbol_pound$symbol_pound Including in Client Projects
-
-New projects should use the [CITYTECH CQ Maven Archetype](https://github.com/Citytechinc/cq-archetype) rather than including the library manually as outlined below.  The details are provided here for reference.
+$symbol_pound$symbol_pound Including in AEM Projects
 
 Define Bedrock as the parent of a Maven project to inherit dependency and plugin management.
 
