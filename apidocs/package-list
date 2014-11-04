@@ -10,7 +10,6 @@ com.citytechinc.aem.bedrock.api.page.enums
 com.citytechinc.aem.bedrock.api.request
 com.citytechinc.aem.bedrock.api.services
 com.citytechinc.aem.bedrock.core.components
-com.citytechinc.aem.bedrock.core.components.multicompositefield
 com.citytechinc.aem.bedrock.core.constants
 com.citytechinc.aem.bedrock.core.jmx
 com.citytechinc.aem.bedrock.core.link.builders.factory
