@@ -493,7 +493,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 
         if (resource != null) {
             final Bindings bindingsForResource = new SimpleBindings(Maps.newHashMap(checkNotNull(bindings,
-                    PRECONDITIONS_ERROR_MESSAGE)));
+                PRECONDITIONS_ERROR_MESSAGE)));
 
             bindingsForResource.put(RESOURCE, resource);
 
