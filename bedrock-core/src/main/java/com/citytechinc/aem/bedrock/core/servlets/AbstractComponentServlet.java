@@ -4,14 +4,19 @@ import com.citytechinc.aem.bedrock.api.request.ComponentServletRequest;
 import com.citytechinc.aem.bedrock.core.bindings.ComponentServletBindings;
 import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
 import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentServletRequest;
+import com.google.common.collect.Lists;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.models.annotations.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.script.Bindings;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Proxy servlet that wraps the Sling request in a "component" request for access to convenience accessor methods.
@@ -105,6 +110,19 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
      */
     protected <T extends AbstractComponent> T getComponent(final ComponentServletRequest request, final Class<T> type)
         throws ServletException {
+
+        //If the type requested is a Sling Model and is adaptable to from a SlingHttpServletRequest or a Resource, use adaptation for instantiation
+        if (type.isAnnotationPresent(Model.class)) {
+            List<Class<?>> adaptables = Lists.newArrayList(type.getAnnotation(Model.class).adaptables());
+
+            if (adaptables.contains(SlingHttpServletRequest.class)) {
+                return request.getSlingRequest().adaptTo(type);
+            }
+            if (adaptables.contains(Resource.class)) {
+                return request.getResource().adaptTo(type);
+            }
+        }
+
         final Bindings bindings = new ComponentServletBindings(request);
 
         final T instance;
