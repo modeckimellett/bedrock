@@ -4,7 +4,8 @@ import com.citytechinc.aem.bedrock.core.components.AbstractComponent
 
 import groovy.util.logging.Slf4j
 
-import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletRequest
+import org.apache.sling.api.resource.Resource
 import org.apache.sling.api.scripting.SlingBindings
 import org.apache.sling.models.annotations.Model
 
@@ -20,9 +21,20 @@ abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 		def instance
 
 		try {
+			boolean useModels;
 			if(clazz.isAnnotationPresent(Model.class)){
-				instance = ((SlingHttpServletRequest)pageContext.getRequest()).adaptTo(clazz)
-			}else{
+				Class<Object>[] adaptables=clazz.getAnnotation(Model.class).adaptables();
+				
+				if (adaptables.contains(SlingHttpServletRequest.class)) {
+					useModels=true;
+					instance = ((SlingHttpServletRequest)pageContext.getRequest()).adaptTo(clazz)
+				}
+				else if (adaptables.contains(Resource.class)) {
+					useModels=true;
+					instance = ((SlingHttpServletRequest)pageContext.getRequest()).getResource().adaptTo(clazz);
+				}
+			}
+			if(!useModels){
 				instance = clazz.newInstance()
 
 				if (instance instanceof AbstractComponent) {
