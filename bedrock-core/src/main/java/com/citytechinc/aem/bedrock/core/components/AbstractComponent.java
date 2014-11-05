@@ -3,6 +3,8 @@ package com.citytechinc.aem.bedrock.core.components;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
+
+import com.google.common.collect.Lists;
 import io.sightly.java.api.Use;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import javax.script.SimpleBindings;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -510,24 +513,32 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 		T instance = null;
 
 		if (resource != null) {
-			final Bindings bindingsForResource =
-				new SimpleBindings(Maps.newHashMap(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE)));
 
-			bindingsForResource.put(RESOURCE, resource);
+            //If the type we are requesting is a Model and can be adapted to from Resource, use adaptation
+            if (type.isAnnotationPresent(Model.class) && Lists.newArrayList(type.getAnnotation(Model.class).adaptables()).contains(Resource.class)) {
+                instance = resource.adaptTo(type);
+            }
+            //Otherwise fineness the existing bindings to be appropriate to the requested component resource
+            else {
+                final Bindings bindingsForResource =
+                        new SimpleBindings(Maps.newHashMap(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE)));
 
-			try {
-				instance = type.newInstance();
+                bindingsForResource.put(RESOURCE, resource);
 
-				instance.init(bindingsForResource);
-			} catch (InstantiationException e) {
-				LOG.error("error instantiating component for type = " + type, e);
+                try {
+                    instance = type.newInstance();
 
-				throw new RuntimeException(e);
-			} catch (IllegalAccessException e) {
-				LOG.error("error instantiating component for type = " + type, e);
+                    instance.init(bindingsForResource);
+                } catch (InstantiationException e) {
+                    LOG.error("error instantiating component for type = " + type, e);
 
-				throw new RuntimeException(e);
-			}
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    LOG.error("error instantiating component for type = " + type, e);
+
+                    throw new RuntimeException(e);
+                }
+            }
 		}
 
 		return Optional.fromNullable(instance);
