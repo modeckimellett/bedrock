@@ -1,22 +1,14 @@
 package com.citytechinc.aem.bedrock.core.specs
 
-import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.prosper.specs.JspTagProxy
-import com.citytechinc.aem.prosper.specs.JspTagSpec
 import com.day.cq.wcm.api.PageManager
-import org.apache.sling.api.adapter.AdapterFactory
 
 import javax.servlet.jsp.tagext.TagSupport
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME
 
-abstract class BedrockJspTagSpec extends JspTagSpec {
-
-    @Override
-    Collection<AdapterFactory> addAdapterFactories() {
-        [new BedrockAdapterFactory()]
-    }
+abstract class BedrockJspTagSpec extends BedrockSpec {
 
     /**
      * Initialize a tag with the resource and page for the given path.
