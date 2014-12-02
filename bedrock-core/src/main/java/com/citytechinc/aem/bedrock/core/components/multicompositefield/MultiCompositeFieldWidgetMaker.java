@@ -67,15 +67,16 @@ public final class MultiCompositeFieldWidgetMaker extends AbstractWidgetMaker {
                 final Class<?> fieldClass = parameters.getClassLoader().loadClass(
                     curField.getDeclaringClass().getName());
 
-                DialogField df =  (DialogField)curField.getAnnotation(DialogField.class);
+                final DialogField df = (DialogField) curField.getAnnotation(DialogField.class);
 
-                final WidgetMakerParameters curFieldMember = new WidgetMakerParameters(
-                    df, curField, fieldClass,
+                final WidgetMakerParameters curFieldMember = new WidgetMakerParameters(df, curField, fieldClass,
                     parameters.getClassLoader(), parameters.getClassPool(), parameters.getWidgetRegistry(), null,
                     false);
 
                 final DialogElement builtFieldWidget = WidgetFactory.make(curFieldMember, -1);
-		builtFieldWidget.setRanking(df.ranking());
+
+                builtFieldWidget.setRanking(df.ranking());
+
                 elements.add(builtFieldWidget);
             }
         }
