@@ -18,36 +18,35 @@ class DescriptionTagSpec extends AbstractMetaTagSpec {
 
     def "description variations"() {
         setup:
-        def tag = new DescriptionTag()
+        def proxy = init(DescriptionTag, "/content/citytechinc")
 
-        tag.propertyName = propertyName
-        tag.suffix = suffix
-
-        def jspTag = init(tag, "/content/citytechinc")
+        proxy.tag.with {
+            propertyName = testPropertyName
+            suffix = testSuffix
+        }
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.output == html
+        proxy.output == html
 
         where:
-        propertyName  | suffix           | html
-        ""            | ""               | '<meta name="description" content="JCR Description">'
-        ""            | " | Chicago, IL" | '<meta name="description" content="JCR Description | Chicago, IL">'
-        "description" | ""               | '<meta name="description" content="Description">'
-        "description" | " | Chicago, IL" | '<meta name="description" content="Description | Chicago, IL">'
+        testPropertyName | testSuffix       | html
+        ""               | ""               | '<meta name="description" content="JCR Description">'
+        ""               | " | Chicago, IL" | '<meta name="description" content="JCR Description | Chicago, IL">'
+        "description"    | ""               | '<meta name="description" content="Description">'
+        "description"    | " | Chicago, IL" | '<meta name="description" content="Description | Chicago, IL">'
     }
 
     def "empty description"() {
         setup:
-        def tag = new DescriptionTag()
-        def jspTag = init(tag, "/content/ctmsp")
+        def proxy = init(DescriptionTag, "/content/ctmsp")
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.output == '<meta name="description" content="">'
+        proxy.output == '<meta name="description" content="">'
     }
 }

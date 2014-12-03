@@ -1,10 +1,10 @@
 package com.citytechinc.aem.bedrock.core.tags
 
-import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
+import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import spock.lang.Unroll
 
 @Unroll
-class HrefTagSpec extends BedrockJspTagSpec {
+class HrefTagSpec extends BedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {
@@ -17,39 +17,37 @@ class HrefTagSpec extends BedrockJspTagSpec {
 
     def "href for property"() {
         setup:
-        def tag = new HrefTag()
+        def proxy = init(HrefTag, "/content/citytechinc/jcr:content")
 
-        tag.propertyName = "path"
-
-        def jspTag = init(tag, "/content/citytechinc/jcr:content")
+        proxy.tag.propertyName = "path"
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.output == "/content/global.html"
+        proxy.output == "/content/global.html"
     }
 
     def "href for inherited property"() {
         setup:
-        def tag = new HrefTag()
+        def proxy = init(HrefTag, "/content/citytechinc/ctmsp/jcr:content")
 
-        tag.propertyName = propertyName
-        tag.inherit = String.valueOf(inherit)
-
-        def jspTag = init(tag, "/content/citytechinc/ctmsp/jcr:content")
+        proxy.tag.with {
+            propertyName = testPropertyName
+            inherit = String.valueOf(testInherit)
+        }
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.output == output
+        proxy.output == output
 
         where:
-        propertyName      | inherit | output
-        "path"            | false   | ""
-        "path"            | true    | "/content/global.html"
-        "nonExistentPath" | false   | ""
-        "nonExistentPath" | true    | ""
+        testPropertyName  | testInherit | output
+        "path"            | false       | ""
+        "path"            | true        | "/content/global.html"
+        "nonExistentPath" | false       | ""
+        "nonExistentPath" | true        | ""
     }
 }

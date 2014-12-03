@@ -1,16 +1,13 @@
 package com.citytechinc.aem.bedrock.core.tags
 
 import com.citytechinc.aem.bedrock.core.components.TestComponent
-import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
-import com.citytechinc.aem.prosper.builders.BindingsBuilder
+import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import spock.lang.Unroll
 
 import javax.servlet.jsp.PageContext
 
-import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME
-
 @Unroll
-class ComponentTagSpec extends BedrockJspTagSpec {
+class ComponentTagSpec extends BedrockSpec {
 
     def setupSpec() {
         pageBuilder.content {
@@ -24,46 +21,38 @@ class ComponentTagSpec extends BedrockJspTagSpec {
 
     def "get component instance"() {
         setup:
-        def tag = new ComponentTag()
+        def proxy = init(ComponentTag, "/content/home/jcr:content/component")
 
-        tag.className = TestComponent.class.name
-        tag.name = "testComponent"
-
-        def bindings = new BindingsBuilder(resourceResolver).build {
-            path = "/content/home/jcr:content/component"
+        proxy.tag.with {
+            className = TestComponent.class.name
+            name = "testComponent"
         }
 
-        def jspTag = init(tag, [(DEFAULT_BINDINGS_NAME): bindings])
-
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.pageContext.getAttribute("testComponent") instanceof TestComponent
+        proxy.pageContext.getAttribute("testComponent") instanceof TestComponent
     }
 
     def "get component instance with scope"() {
         setup:
-        def tag = new ComponentTag()
+        def proxy = init(ComponentTag, "/content/home/jcr:content/component")
 
-        tag.className = TestComponent.class.name
-        tag.name = "testComponent"
-        tag.scope = scope
-
-        def bindings = new BindingsBuilder(resourceResolver).build {
-            path = "/content/home/jcr:content/component"
+        proxy.tag.with {
+            className = TestComponent.class.name
+            name = "testComponent"
+            scope = testScope
         }
 
-        def jspTag = init(tag, [(DEFAULT_BINDINGS_NAME): bindings])
-
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.pageContext.getAttribute("testComponent", scopeValue) instanceof TestComponent
+        proxy.pageContext.getAttribute("testComponent", scopeValue) instanceof TestComponent
 
         where:
-        scope         | scopeValue
+        testScope     | scopeValue
         "page"        | PageContext.PAGE_SCOPE
         "request"     | PageContext.REQUEST_SCOPE
         "session"     | PageContext.SESSION_SCOPE
