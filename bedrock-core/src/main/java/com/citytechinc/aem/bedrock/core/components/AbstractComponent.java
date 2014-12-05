@@ -3,8 +3,6 @@ package com.citytechinc.aem.bedrock.core.components;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
-
-import com.google.common.collect.Lists;
 import io.sightly.java.api.Use;
 
 import java.util.List;
@@ -33,6 +31,7 @@ import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -464,6 +463,11 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 	}
 
 	@Override
+	public final BasicNode getNodeInherited(final String relativePath) {
+		return getComponentNode().getNodeInherited(relativePath);
+	}
+
+	@Override
 	public final List<BasicNode> getNodesInherited(final String relativePath) {
 		return getComponentNode().getNodesInherited(relativePath);
 	}
@@ -514,31 +518,34 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 
 		if (resource != null) {
 
-            //If the type we are requesting is a Model and can be adapted to from Resource, use adaptation
-            if (type.isAnnotationPresent(Model.class) && Lists.newArrayList(type.getAnnotation(Model.class).adaptables()).contains(Resource.class)) {
-                instance = resource.adaptTo(type);
-            }
-            //Otherwise fineness the existing bindings to be appropriate to the requested component resource
-            else {
-                final Bindings bindingsForResource =
-                        new SimpleBindings(Maps.newHashMap(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE)));
+			// If the type we are requesting is a Model and can be adapted to
+			// from Resource, use adaptation
+			if (type.isAnnotationPresent(Model.class)
+				&& Lists.newArrayList(type.getAnnotation(Model.class).adaptables()).contains(Resource.class)) {
+				instance = resource.adaptTo(type);
+			}
+			// Otherwise fineness the existing bindings to be appropriate to the
+			// requested component resource
+			else {
+				final Bindings bindingsForResource =
+					new SimpleBindings(Maps.newHashMap(checkNotNull(bindings, PRECONDITIONS_ERROR_MESSAGE)));
 
-                bindingsForResource.put(RESOURCE, resource);
+				bindingsForResource.put(RESOURCE, resource);
 
-                try {
-                    instance = type.newInstance();
+				try {
+					instance = type.newInstance();
 
-                    instance.init(bindingsForResource);
-                } catch (InstantiationException e) {
-                    LOG.error("error instantiating component for type = " + type, e);
+					instance.init(bindingsForResource);
+				} catch (InstantiationException e) {
+					LOG.error("error instantiating component for type = " + type, e);
 
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
-                    LOG.error("error instantiating component for type = " + type, e);
+					throw new RuntimeException(e);
+				} catch (IllegalAccessException e) {
+					LOG.error("error instantiating component for type = " + type, e);
 
-                    throw new RuntimeException(e);
-                }
-            }
+					throw new RuntimeException(e);
+				}
+			}
 		}
 
 		return Optional.fromNullable(instance);
