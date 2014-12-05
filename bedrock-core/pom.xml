@@ -55,7 +55,7 @@
 							!com.citytechinc.aem.bedrock.core.specs.*,
 							com.citytechinc.aem.bedrock.core.*
 						</Export-Package>
-						<Import-Package>!javassist,!com.citytechinc.cq.component.*</Import-Package>
+						<Import-Package>!javassist</Import-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
 						<Require-Bundle>org.apache.sling.models.api</Require-Bundle>
 					</instructions>
@@ -218,10 +218,6 @@
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.scr.annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
-			<artifactId>cq-component-maven-plugin</artifactId>
 		</dependency>
 
 		<!-- provided -->
