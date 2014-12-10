@@ -227,6 +227,11 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
     }
 
     @Override
+    Optional<BasicNode> getNodeInherited(String relativePath) {
+        findChildResourceInherited(relativePath).transform(RESOURCE_TO_BASIC_NODE)
+    }
+
+    @Override
     List<BasicNode> getNodesInherited(String relativePath) {
         def childOptional = findChildResourceInherited(relativePath)
 

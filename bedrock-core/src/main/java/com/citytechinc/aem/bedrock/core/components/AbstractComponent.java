@@ -1,27 +1,5 @@
 package com.citytechinc.aem.bedrock.core.components;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
-
-import com.google.common.collect.Lists;
-import io.sightly.java.api.Use;
-
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.script.Bindings;
-import javax.script.SimpleBindings;
-
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.models.annotations.Model;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.citytechinc.aem.bedrock.api.link.Link;
 import com.citytechinc.aem.bedrock.api.link.builders.LinkBuilder;
 import com.citytechinc.aem.bedrock.api.node.BasicNode;
@@ -33,7 +11,26 @@ import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentRequest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.sightly.java.api.Use;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ValueMap;
+import org.apache.sling.models.annotations.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.script.Bindings;
+import javax.script.SimpleBindings;
+import java.util.List;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
 
 /**
  * Base class for AEM component classes instantiated by the
@@ -461,6 +458,11 @@ public abstract class AbstractComponent implements ComponentNode, Use {
 	@Override
 	public final Optional<Node> getNode() {
 		return getComponentNode().getNode();
+	}
+
+	@Override
+	public final Optional<BasicNode> getNodeInherited(final String relativePath) {
+		return getComponentNode().getNodeInherited(relativePath);
 	}
 
 	@Override

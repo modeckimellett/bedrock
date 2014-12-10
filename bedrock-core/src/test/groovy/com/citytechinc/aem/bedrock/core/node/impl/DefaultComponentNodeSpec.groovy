@@ -262,6 +262,24 @@ class DefaultComponentNodeSpec extends BedrockSpec {
         !node.getAsPageInherited("nonExistentPagePath").present
     }
 
+    def "get node inherited"() {
+        setup:
+        def node = getComponentNode(path)
+
+        expect:
+        node.getNodeInherited("child1").get().path == inheritedNodePath
+
+        where:
+        path                                                       | inheritedNodePath
+        "/content/ales/esb/suds/pint/keg/jcr:content/container"    | "/content/ales/esb/suds/jcr:content/container/child1"
+        "/content/ales/esb/suds/pint/barrel/jcr:content/container" | "/content/ales/esb/suds/pint/barrel/jcr:content/container/child1"
+    }
+
+    def "get node inherited is absent when ancestor not found"() {
+        expect:
+        !getComponentNode("/content/ales/esb/jcr:content").getNodeInherited("child1").present
+    }
+
     def "get nodes inherited"() {
         setup:
         def node = getComponentNode(path)

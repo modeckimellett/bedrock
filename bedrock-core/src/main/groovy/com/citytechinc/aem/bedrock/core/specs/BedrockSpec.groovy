@@ -1,17 +1,15 @@
 package com.citytechinc.aem.bedrock.core.specs
 
-import com.adobe.cq.sightly.WCMUse
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
 import com.citytechinc.aem.prosper.builders.BindingsBuilder
+import com.citytechinc.aem.prosper.mixins.JspTagMixin
+import com.citytechinc.aem.prosper.mixins.SightlyMixin
 import com.citytechinc.aem.prosper.specs.ProsperSpec
-import com.citytechinc.aem.prosper.support.JspTagSupport
-import com.citytechinc.aem.prosper.support.SightlySupport
 import com.citytechinc.aem.prosper.tag.JspTagProxy
 import com.day.cq.wcm.api.PageManager
-import io.sightly.java.api.Use
 import org.apache.sling.api.adapter.AdapterFactory
 import spock.lang.Shared
 
@@ -30,10 +28,10 @@ abstract class BedrockSpec extends ProsperSpec {
     PageManagerDecorator pageManagerDecorator
 
     @Shared
-    SightlySupport sightlySupport
+    SightlyMixin sightly
 
     @Shared
-    JspTagSupport jspTagSupport
+    JspTagMixin jspTag
 
     @Override
     Collection<AdapterFactory> addAdapterFactories() {
@@ -42,8 +40,6 @@ abstract class BedrockSpec extends ProsperSpec {
 
     def setupSpec() {
         pageManagerDecorator = resourceResolver.adaptTo(PageManagerDecorator)
-        sightlySupport = new SightlySupport(resourceResolver)
-        jspTagSupport = new JspTagSupport(resourceResolver)
     }
 
     ComponentNode getComponentNode(String path) {
@@ -62,14 +58,6 @@ abstract class BedrockSpec extends ProsperSpec {
 
     // delegate methods
 
-    public <T extends Use> T init(Class<T> type, @DelegatesTo(BindingsBuilder) Closure closure) {
-        sightlySupport.init(type, closure)
-    }
-
-    public <T extends WCMUse> T activate(Class<T> type, @DelegatesTo(BindingsBuilder) Closure closure) {
-        sightlySupport.activate(type, closure)
-    }
-
     public <T extends TagSupport> JspTagProxy init(Class<T> tagClass, String path) {
         init(tagClass, path, [:])
     }
@@ -85,6 +73,6 @@ abstract class BedrockSpec extends ProsperSpec {
             setPath(path)
         }
 
-        jspTagSupport.init(tagClass, additionalPageContextAttributes)
+        jspTag.init(tagClass, additionalPageContextAttributes)
     }
 }
