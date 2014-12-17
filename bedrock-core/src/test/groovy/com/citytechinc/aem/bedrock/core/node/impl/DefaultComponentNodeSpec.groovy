@@ -261,6 +261,20 @@ class DefaultComponentNodeSpec extends BedrockSpec {
         node.getAsPageInherited("otherPagePath").get().path == "/content/citytechinc"
         !node.getAsPageInherited("nonExistentPagePath").present
     }
+	
+	def "get node inherited"(){
+		setup:
+		def node = getComponentNode(path)
+		
+		expect:
+		(node.getNodeInherited("container") != null) == result
+
+		where:
+		path                                             | result
+		"/content/ales/esb/suds/pint/jcr:content"        | true
+		"/content/ales/esb/suds/pint/keg/jcr:content"    | true
+		"/content/ales/esb/jcr:content" 				 | false
+	}
 
     def "get node inherited"() {
         setup:
