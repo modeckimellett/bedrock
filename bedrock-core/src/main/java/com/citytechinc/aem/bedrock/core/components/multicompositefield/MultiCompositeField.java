@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.FIELD })
 public @interface MultiCompositeField {
 
-    boolean matchBaseName() default false;
+    boolean matchBaseName() default true;
 
     String prefix() default "./";
 }
