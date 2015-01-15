@@ -15,6 +15,11 @@
     <tag>
         <name>disableAuthor</name>
         <tag-class>com.citytechinc.aem.bedrock.core.tags.DisableAuthorTag</tag-class>
+        <attribute>
+            <name>test</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
         <name>includeDeferredClientLib</name>
