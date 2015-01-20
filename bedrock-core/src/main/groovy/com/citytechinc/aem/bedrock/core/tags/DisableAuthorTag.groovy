@@ -16,32 +16,45 @@ final class DisableAuthorTag extends TagSupport {
 
     private static final def ATTR_PREVIOUS_WCMMODE = "previous-wcm-mode-"
 
+    /**
+     * Disables author if true, otherwise this tag does nothing.  Defaults to true.
+     */
+    String test
+
     @Override
     int doStartTag() {
-        def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
+        if (disableAuthor) {
+            def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
-        def path = slingRequest.resource.path
+            def path = slingRequest.resource.path
 
-        LOG.debug "disabling authoring for path = {}", path
+            LOG.debug "disabling authoring for path = {}", path
 
-        slingRequest.setAttribute(ATTR_PREVIOUS_WCMMODE + path, WCMMode.fromRequest(slingRequest))
+            slingRequest.setAttribute(ATTR_PREVIOUS_WCMMODE + path, WCMMode.fromRequest(slingRequest))
 
-        WCMMode.DISABLED.toRequest(slingRequest)
+            WCMMode.DISABLED.toRequest(slingRequest)
+        }
 
         EVAL_BODY_INCLUDE
     }
 
     @Override
     int doEndTag() {
-        def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
+        if (disableAuthor) {
+            def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
-        def path = slingRequest.resource.path
-        def mode = slingRequest.getAttribute(ATTR_PREVIOUS_WCMMODE + path) as WCMMode
+            def path = slingRequest.resource.path
+            def mode = slingRequest.getAttribute(ATTR_PREVIOUS_WCMMODE + path) as WCMMode
 
-        LOG.debug "restoring mode = {} for path = {}", mode.name(), path
+            LOG.debug "restoring mode = {} for path = {}", mode.name(), path
 
-        mode.toRequest(slingRequest)
+            mode.toRequest(slingRequest)
+        }
 
         EVAL_PAGE
+    }
+
+    private boolean isDisableAuthor() {
+        !this.test ? true : Boolean.valueOf(this.test)
     }
 }
