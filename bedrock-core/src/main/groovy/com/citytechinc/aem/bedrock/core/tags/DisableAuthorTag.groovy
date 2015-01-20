@@ -17,15 +17,13 @@ final class DisableAuthorTag extends TagSupport {
     private static final def ATTR_PREVIOUS_WCMMODE = "previous-wcm-mode-"
 
     /**
-     * Disables author if true, otherwise this tag does nothing. Defaults to true.
+     * Disables author if true, otherwise this tag does nothing.  Defaults to true.
      */
     String test
 
     @Override
     int doStartTag() {
-        boolean test = !this.test ? true : Boolean.valueOf(this.test)
-
-        if (test) {
+        if (disableAuthor) {
             def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
             def path = slingRequest.resource.path
@@ -42,9 +40,7 @@ final class DisableAuthorTag extends TagSupport {
 
     @Override
     int doEndTag() {
-        boolean test = !this.test ? true : Boolean.valueOf(this.test)
-        
-        if (test) {
+        if (disableAuthor) {
             def slingRequest = pageContext.getAttribute(DEFAULT_REQUEST_NAME) as SlingHttpServletRequest
 
             def path = slingRequest.resource.path
@@ -56,5 +52,9 @@ final class DisableAuthorTag extends TagSupport {
         }
 
         EVAL_PAGE
+    }
+
+    private boolean isDisableAuthor() {
+        !this.test ? true : Boolean.valueOf(this.test)
     }
 }
