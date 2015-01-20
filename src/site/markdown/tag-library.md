@@ -27,6 +27,10 @@ isDebug | If true, the resource path/type and script details will be included in
 
 Force "disabled" WCM mode in the tag body.  Useful for removing authoring capabilities in nested components.
 
+Attribute | Required | Description
+:---------|:---------|:-----------
+test | false | Disables author if true, otherwise this tag does nothing.  Defaults to `true`.
+
     <bedrock:disableAuthor>
         ...
     </bedrock:disableAuthor>

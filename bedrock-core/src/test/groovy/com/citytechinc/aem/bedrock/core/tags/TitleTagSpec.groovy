@@ -18,38 +18,37 @@ class TitleTagSpec extends AbstractMetaTagSpec {
 
     def "title variations"() {
         setup:
-        def tag = new TitleTag()
+        def proxy = init(TitleTag, "/content/citytechinc")
 
-        tag.propertyName = propertyName
-        tag.suffix = suffix
-
-        def jspTag = init(tag, "/content/citytechinc")
+        proxy.tag.with {
+            propertyName = testPropertyName
+            suffix = testSuffix
+        }
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.output == html
+        proxy.output == html
 
         where:
-        propertyName | suffix           | html
-        ""           | ""               | "<title>CITYTECH, Inc.</title>"
-        ""           | " | Chicago, IL" | "<title>CITYTECH, Inc. | Chicago, IL</title>"
-        "pageTitle"  | ""               | "<title>CITYTECH</title>"
-        "pageTitle"  | " | Chicago, IL" | "<title>CITYTECH | Chicago, IL</title>"
-        "navTitle"   | ""               | "<title>CITYTECH, Inc.</title>"
-        "navTitle"   | " | Chicago, IL" | "<title>CITYTECH, Inc. | Chicago, IL</title>"
+        testPropertyName | testSuffix       | html
+        ""               | ""               | "<title>CITYTECH, Inc.</title>"
+        ""               | " | Chicago, IL" | "<title>CITYTECH, Inc. | Chicago, IL</title>"
+        "pageTitle"      | ""               | "<title>CITYTECH</title>"
+        "pageTitle"      | " | Chicago, IL" | "<title>CITYTECH | Chicago, IL</title>"
+        "navTitle"       | ""               | "<title>CITYTECH, Inc.</title>"
+        "navTitle"       | " | Chicago, IL" | "<title>CITYTECH, Inc. | Chicago, IL</title>"
     }
 
     def "empty title defaults to page name"() {
         setup:
-        def tag = new TitleTag()
-        def jspTag = init(tag, "/content/ctmsp")
+        def proxy = init(TitleTag, "/content/ctmsp")
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.output == "<title>ctmsp</title>"
+        proxy.output == "<title>ctmsp</title>"
     }
 }

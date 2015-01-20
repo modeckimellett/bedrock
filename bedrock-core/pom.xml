@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.citytechinc.aem.bedrock</groupId>
 		<artifactId>bedrock</artifactId>
-		<version>3.1.1</version>
+		<version>3.2.0</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -55,7 +55,7 @@
 							!com.citytechinc.aem.bedrock.core.specs.*,
 							com.citytechinc.aem.bedrock.core.*
 						</Export-Package>
-						<Import-Package>!javassist,!com.citytechinc.cq.component.*</Import-Package>
+						<Import-Package>!javassist</Import-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
 						<Require-Bundle>org.apache.sling.models.api</Require-Bundle>
 					</instructions>
@@ -219,10 +219,6 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.scr.annotations</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.citytechinc.cq.cq-component-plugin</groupId>
-			<artifactId>cq-component-maven-plugin</artifactId>
-		</dependency>
 
 		<!-- provided -->
 		<dependency>
@@ -317,10 +313,6 @@
 			<groupId>com.day.cq</groupId>
 			<artifactId>cq-search</artifactId>
 		</dependency>
-		<dependency>
-            <groupId>com.day.cq.wcm</groupId>
-            <artifactId>cq-wcm-commons</artifactId>
-        </dependency>
 		<dependency>
 			<groupId>com.adobe.granite</groupId>
 			<artifactId>com.adobe.granite.replication.core</artifactId>

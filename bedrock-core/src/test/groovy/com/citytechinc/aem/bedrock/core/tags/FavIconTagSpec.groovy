@@ -23,31 +23,29 @@ class FavIconTagSpec extends AbstractMetaTagSpec {
 
     def "no favicon, no output"() {
         setup:
-        def tag = new FavIconTag()
-
-        def jspTag = init(tag, "/", [(DEFAULT_CURRENT_DESIGN_NAME): Mock(Design) {
+        def proxy = init(FavIconTag, "/", [(DEFAULT_CURRENT_DESIGN_NAME): Mock(Design) {
             getPath() >> ""
         }])
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        !jspTag.output
+        !proxy.output
     }
 
     def "valid favicon, HTML output"() {
         setup:
-        def tag = new FavIconTag()
-
-        def jspTag = init(tag, "/", [(DEFAULT_CURRENT_DESIGN_NAME): Mock(Design) {
+        def attributes = [(DEFAULT_CURRENT_DESIGN_NAME): Mock(Design) {
             getPath() >> "/etc/designs/citytechinc"
-        }])
+        }]
+
+        def proxy = init(FavIconTag, "/", attributes)
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.output == FAVICON("/etc/designs/citytechinc/favicon.ico")
+        proxy.output == FAVICON("/etc/designs/citytechinc/favicon.ico")
     }
 }

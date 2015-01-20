@@ -82,7 +82,7 @@ class ComponentSpec extends BedrockSpec {
 
     def "get component from path"() {
         setup:
-        def component = init(UselessComponent) {
+        def component = sightly.init(UselessComponent) {
             path = "/content/citytechinc/jcr:content/component"
         }
 
@@ -97,7 +97,7 @@ class ComponentSpec extends BedrockSpec {
 
     def "get component from component node"() {
         setup:
-        def component = init(UselessComponent) {
+        def component = sightly.init(UselessComponent) {
             path = "/content/citytechinc/jcr:content/component"
         }
 
@@ -109,7 +109,7 @@ class ComponentSpec extends BedrockSpec {
 
     def "get title from component"() {
         setup:
-        def component = init(TestComponent) {
+        def component = sightly.init(TestComponent) {
             path = "/content/citytechinc/jcr:content/component"
         }
 

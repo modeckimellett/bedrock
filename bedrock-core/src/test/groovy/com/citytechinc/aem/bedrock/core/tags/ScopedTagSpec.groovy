@@ -1,18 +1,18 @@
 package com.citytechinc.aem.bedrock.core.tags
 
-import com.citytechinc.aem.bedrock.core.specs.BedrockJspTagSpec
+import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import spock.lang.Unroll
 
 import javax.servlet.jsp.PageContext
 
 @Unroll
-class ScopedTagSpec extends BedrockJspTagSpec {
+class ScopedTagSpec extends BedrockSpec {
 
     static final def ATTRIBUTE_NAME = "scopedAttribute"
 
     static final def ATTRIBUTE_VALUE = "attributeValue"
 
-    class ScopedTag extends AbstractScopedTag {
+    static class ScopedTag extends AbstractScopedTag {
 
         @Override
         int doEndTag(int scope) {
@@ -24,17 +24,15 @@ class ScopedTagSpec extends BedrockJspTagSpec {
 
     def "set attribute in scope"() {
         setup:
-        def tag = new ScopedTag()
+        def proxy = init(ScopedTag, "/")
 
-        tag.scope = scope
-
-        def jspTag = init(tag)
+        proxy.tag.scope = scope
 
         when:
-        tag.doEndTag()
+        proxy.tag.doEndTag()
 
         then:
-        jspTag.pageContext.getAttribute(ATTRIBUTE_NAME, scopeValue) == ATTRIBUTE_VALUE
+        proxy.pageContext.getAttribute(ATTRIBUTE_NAME, scopeValue) == ATTRIBUTE_VALUE
 
         where:
         scope         | scopeValue

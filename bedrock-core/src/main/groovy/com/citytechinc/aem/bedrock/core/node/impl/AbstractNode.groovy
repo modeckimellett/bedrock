@@ -19,10 +19,10 @@ abstract class AbstractNode {
         this.resourceInternal = checkNotNull(resource)
     }
 
-    protected <AdapterType> Optional<Resource> getAsTypeOptional(String path, Class<AdapterType> type) {
+    protected <AdapterType> Optional<AdapterType> getAsTypeOptional(String path, Class<AdapterType> type) {
         def resource = path ? resourceInternal.resourceResolver.getResource(path) : null
 
-        Optional.fromNullable(resource?.adaptTo(type))
+        Optional.fromNullable(type == Resource ? resource : resource?.adaptTo(type))
     }
 
     protected Optional<Link> getLinkOptional(Optional<String> pathOptional, boolean strict, boolean mapped) {

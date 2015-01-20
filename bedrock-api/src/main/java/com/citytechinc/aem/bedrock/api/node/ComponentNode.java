@@ -1,7 +1,7 @@
 package com.citytechinc.aem.bedrock.api.node;
 
-import com.citytechinc.aem.bedrock.api.Traversable;
 import com.citytechinc.aem.bedrock.api.Inheritable;
+import com.citytechinc.aem.bedrock.api.Traversable;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
@@ -74,6 +74,14 @@ public interface ComponentNode extends BasicNode, Inheritable, Traversable<Compo
      * @return <code>Optional</code> design node for the current style
      */
     Optional<BasicNode> getDesignNode();
+
+    /**
+     * Get a child node relative to the current node, inheriting from a parent page if it does not exist.
+     *
+     * @param relativePath path relative to current node
+     * @return direct child node if it exists, otherwise the child node at this relative path for an ancestor page
+     */
+    Optional<BasicNode> getNodeInherited(String relativePath);
 
     /**
      * Get the children of a node relative to the current node. If node does not exist relative to current page, inherit
