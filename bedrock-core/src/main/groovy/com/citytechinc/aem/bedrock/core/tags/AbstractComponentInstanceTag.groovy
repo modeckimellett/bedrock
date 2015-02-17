@@ -1,6 +1,6 @@
 package com.citytechinc.aem.bedrock.core.tags
 
-import com.citytechinc.aem.bedrock.core.components.AbstractComponent
+import com.citytechinc.aem.bedrock.api.components.Component
 import groovy.util.logging.Slf4j
 import org.apache.sling.api.SlingHttpServletRequest
 import org.apache.sling.api.resource.Resource
@@ -36,11 +36,11 @@ abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
             if (!useModels) {
                 instance = clazz.newInstance()
 
-                if (instance instanceof AbstractComponent) {
+                if (instance instanceof Component) {
                     def slingBindings = pageContext.getAttribute(DEFAULT_BINDINGS_NAME) as SlingBindings
                     def bindings = new SimpleBindings(slingBindings)
 
-                    ((AbstractComponent) instance).init(bindings)
+                    ((Component) instance).init(bindings)
                 }
             }
         } catch (InstantiationException e) {
