@@ -24,15 +24,22 @@ final class ImageSourceTag extends AbstractComponentTag {
     int doEndTag() {
         checkArgument(DIGIT.matchesAllOf(width), "invalid width attribute = %s, must be numeric", width)
 
-        def name = this.name ?: DEFAULT_IMAGE_NAME
         def width = this.width as Integer
 
         def imageSource
 
         if (inherit) {
-            imageSource = componentNode.getImageSourceInherited(name, width).or(defaultValue)
+			if(this.name){
+				imageSource = componentNode.getImageSourceInherited(name, width).or(defaultValue)
+			}else{
+			 	imageSource = componentNode.getImageSourceInherited(width).or(defaultValue)
+			}
         } else {
-            imageSource = componentNode.getImageSource(name, width).or(defaultValue)
+			if(this.name){
+				imageSource = componentNode.getImageSource(name, width).or(defaultValue)
+			}else{
+			imageSource = componentNode.getImageSource(width).or(defaultValue)
+			}
         }
 
         try {
