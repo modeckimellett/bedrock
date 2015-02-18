@@ -107,5 +107,9 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.adobe.granite</groupId>
+            <artifactId>com.adobe.granite.sightly.engine</artifactId>
+        </dependency>
     </dependencies>
 </project>
