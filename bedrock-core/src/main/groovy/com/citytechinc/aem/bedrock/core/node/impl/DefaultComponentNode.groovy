@@ -186,12 +186,12 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
 
     @Override
     Optional<String> getImageSourceInherited() {
-        getImageSourceInherited(DEFAULT_IMAGE_NAME)
+        getImageSourceInherited(null)
     }
 
     @Override
     Optional<String> getImageSourceInherited(int width) {
-        getImageSourceInherited(DEFAULT_IMAGE_NAME, width)
+        getImageSourceInherited(null, width)
     }
 
     @Override
@@ -204,7 +204,11 @@ final class DefaultComponentNode extends AbstractNode implements ComponentNode {
         def predicate = new Predicate<ComponentNode>() {
             @Override
             boolean apply(ComponentNode componentNode) {
-                componentNode.isHasImage(name)
+                if (name) {
+                    componentNode.isHasImage(name)
+                } else {
+                    componentNode.isHasImage()
+                }
             }
         }
 

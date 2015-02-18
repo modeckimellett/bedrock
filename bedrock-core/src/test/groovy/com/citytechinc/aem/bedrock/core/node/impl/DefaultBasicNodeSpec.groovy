@@ -13,7 +13,7 @@ import spock.lang.Unroll
 @Unroll
 class DefaultBasicNodeSpec extends BedrockSpec {
 
-     def setupSpec() {
+    def setupSpec() {
         pageBuilder.content {
             citytechinc("CITYTECH, Inc.") {
                 "jcr:content"(otherPagePath: "/content/ales/esb", nonExistentPagePath: "/content/home",
@@ -32,6 +32,7 @@ class DefaultBasicNodeSpec extends BedrockSpec {
                         one("sling:resourceType": "won")
                         two("sling:resourceType": "tew")
                     }
+                    bourbon("sling:resourceType": "yummy", fileReference: "/content/dam/image")
                 }
             }
             ales {
@@ -54,12 +55,8 @@ class DefaultBasicNodeSpec extends BedrockSpec {
 
         nodeBuilder.content {
             dam("sling:Folder") {
-                image("dam:Asset") {
-                    "jcr:content"("jcr:data": "data")
-                }
-                "image-renditions"("dam:Asset") {
-                    "jcr:content"("jcr:data": "data")
-                }
+                image("dam:Asset") { "jcr:content"("jcr:data": "data") }
+                "image-renditions"("dam:Asset") { "jcr:content"("jcr:data": "data") }
             }
         }
     }
@@ -72,7 +69,9 @@ class DefaultBasicNodeSpec extends BedrockSpec {
             if (resource.path == "/content/dam/image-renditions") {
                 asset = [getRenditions: {
                     ["one", "two", "three"].collect { renditionName ->
-                        [getName: { renditionName }, getPath: { "/content/dam/image-renditions/" + renditionName }] as Rendition
+                        [getName: { renditionName }, getPath: {
+                            "/content/dam/image-renditions/" + renditionName
+                        }] as Rendition
                     }
                 }] as Asset
             }
@@ -324,6 +323,7 @@ class DefaultBasicNodeSpec extends BedrockSpec {
         "/content/ales/esb/jcr:content"            | false
         "/content/citytechinc/jcr:content/beer"    | true
         "/content/citytechinc/jcr:content/whiskey" | false
+        "/content/citytechinc/jcr:content/bourbon" | true
     }
 
     def "get image source"() {
@@ -334,9 +334,10 @@ class DefaultBasicNodeSpec extends BedrockSpec {
         node.imageSource.get() == imageSrc
 
         where:
-        path                                    | imageSrc
-        "/content/citytechinc/jcr:content"      | "/content/citytechinc.img.png"
-        "/content/citytechinc/jcr:content/beer" | "/content/citytechinc/jcr:content/beer.img.png"
+        path                                       | imageSrc
+        "/content/citytechinc/jcr:content"         | "/content/citytechinc.img.png"
+        "/content/citytechinc/jcr:content/beer"    | "/content/citytechinc/jcr:content/beer.img.png"
+        "/content/citytechinc/jcr:content/bourbon" | "/content/citytechinc/jcr:content/bourbon.img.png"
     }
 
     def "get named image source"() {

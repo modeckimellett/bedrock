@@ -185,12 +185,12 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     @Override
     Optional<String> getImageSource() {
-        getImageSource(DEFAULT_IMAGE_NAME)
+        getImageSource(null)
     }
 
     @Override
     Optional<String> getImageSource(int width) {
-        getImageSource(DEFAULT_IMAGE_NAME, width)
+        getImageSource(null, width)
     }
 
     @Override
@@ -201,6 +201,10 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
     @Override
     Optional<String> getImageSource(String name, int width) {
         def optionalImageSource
+
+        if (!name && !isHasImage(null)) {
+            name = DEFAULT_IMAGE_NAME
+        }
 
         if (isHasImage(name)) {
             def builder = new StringBuilder()
@@ -216,7 +220,7 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
             builder.append('.').append(IMAGE_SELECTOR)
 
             // only append name selector if not using the default name
-            if (name != DEFAULT_IMAGE_NAME) {
+            if (name && name != DEFAULT_IMAGE_NAME) {
                 builder.append('.').append(name)
             }
 
@@ -299,14 +303,18 @@ final class DefaultBasicNode extends AbstractNode implements BasicNode {
 
     @Override
     boolean isHasImage() {
-        isHasImage(DEFAULT_IMAGE_NAME)
+        isHasImage(null) ?: isHasImage(DEFAULT_IMAGE_NAME)
     }
 
     @Override
     boolean isHasImage(String name) {
-        def child = resource.getChild(checkNotNull(name))
+        if (name) {
+            def child = resource.getChild(name)
 
-        child && new Image(resource, name).hasContent()
+            child && new Image(resource, name).hasContent()
+        } else {
+            new Image(resource).hasContent()
+        }
     }
 
     @Override
