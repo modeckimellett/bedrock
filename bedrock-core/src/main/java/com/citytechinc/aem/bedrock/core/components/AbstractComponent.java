@@ -14,7 +14,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Model;
@@ -511,8 +510,7 @@ public abstract class AbstractComponent implements Component {
         return getComponentRequest().getServiceProvider();
     }
 
-    private <T extends Component> Optional<T> getComponentForResource(final Resource resource,
-        final Class<T> type) {
+    private <T extends Component> Optional<T> getComponentForResource(final Resource resource, final Class<T> type) {
         T instance = null;
 
         if (resource != null) {

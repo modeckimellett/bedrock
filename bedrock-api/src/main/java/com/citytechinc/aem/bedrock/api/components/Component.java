@@ -8,6 +8,9 @@ import io.sightly.java.api.Use;
 
 import java.util.List;
 
+/**
+ *
+ */
 public interface Component extends ComponentNode, Use {
 
     /**
@@ -17,7 +20,7 @@ public interface Component extends ComponentNode, Use {
      * @param type component class type
      * @return component instance or absent <code>Optional</code> if path does not resolve to a resource
      */
-    public <T extends Component> Optional<T> getComponent(final String path, final Class<T> type);
+    <T extends Component> Optional<T> getComponent(final String path, final Class<T> type);
 
     /**
      * Get a component instance for the given component node.
@@ -26,21 +29,21 @@ public interface Component extends ComponentNode, Use {
      * @param type component class type
      * @return component instance or null if an error occurs
      */
-    public <T extends Component> T getComponent(final ComponentNode componentNode, final Class<T> type);
+    <T extends Component> T getComponent(final ComponentNode componentNode, final Class<T> type);
 
     /**
      * Get the component request.
      *
      * @return component request
      */
-    public ComponentRequest getComponentRequest();
+    ComponentRequest getComponentRequest();
 
     /**
      * Get the current page.
      *
      * @return current page
      */
-    public PageDecorator getCurrentPage();
+    PageDecorator getCurrentPage();
 
     /**
      * Get an OSGi service.
@@ -49,7 +52,7 @@ public interface Component extends ComponentNode, Use {
      * @param <T> type
      * @return the service instance, or null if it is not available
      */
-    public <T> T getService(final Class<T> serviceType);
+    <T> T getService(final Class<T> serviceType);
 
     /**
      * Get one or more OSGi services.
@@ -59,7 +62,7 @@ public interface Component extends ComponentNode, Use {
      * @param <T> type
      * @return one or more service instances, or null if none are found
      */
-    public <T> List<T> getServices(final Class<T> serviceType, final String filter);
+    <T> List<T> getServices(final Class<T> serviceType, final String filter);
 
 
 }
