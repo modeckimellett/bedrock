@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 
 import javax.servlet.jsp.JspTagException
 
-import static com.citytechinc.aem.bedrock.core.constants.ComponentConstants.DEFAULT_IMAGE_NAME
 import static com.google.common.base.CharMatcher.DIGIT
 import static com.google.common.base.Preconditions.checkArgument
 
@@ -29,21 +28,21 @@ final class ImageSourceTag extends AbstractComponentTag {
         def imageSource
 
         if (inherit) {
-			if(this.name){
-				imageSource = componentNode.getImageSourceInherited(name, width).or(defaultValue)
-			}else{
-			 	imageSource = componentNode.getImageSourceInherited(width).or(defaultValue)
-			}
+            if (this.name) {
+                imageSource = componentNode.getImageSourceInherited(name, width)
+            } else {
+                imageSource = componentNode.getImageSourceInherited(width)
+            }
         } else {
-			if(this.name){
-				imageSource = componentNode.getImageSource(name, width).or(defaultValue)
-			}else{
-			imageSource = componentNode.getImageSource(width).or(defaultValue)
-			}
+            if (this.name) {
+                imageSource = componentNode.getImageSource(name, width)
+            } else {
+                imageSource = componentNode.getImageSource(width)
+            }
         }
 
         try {
-            pageContext.out.write(imageSource)
+            pageContext.out.write(imageSource.or(defaultValue))
         } catch (IOException e) {
             LOG.error "error writing image source = $imageSource", e
 
