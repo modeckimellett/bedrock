@@ -39,17 +39,9 @@ class DefaultComponentNodeSpec extends BedrockSpec {
                             }
                         }
                         pint {
-                            keg {
-                                "jcr:content" {
-                                    container()
-                                }
-                            }
+                            keg { "jcr:content" { container() } }
                             barrel {
-                                "jcr:content" {
-                                    container {
-                                        child1()
-                                    }
-                                }
+                                "jcr:content" { container { child1() } }
                             }
                         }
                     }
@@ -63,11 +55,7 @@ class DefaultComponentNodeSpec extends BedrockSpec {
                                 }
                             }
                         }
-                        tree {
-                            "jcr:content" {
-                                wood()
-                            }
-                        }
+                        tree { "jcr:content" { wood() } }
                     }
                     lace {
                         "jcr:content"() {
@@ -92,11 +80,12 @@ class DefaultComponentNodeSpec extends BedrockSpec {
                     component("jcr:title": "Component", "number": 5, "boolean": false) {
                         image(fileReference: "/content/dam/image")
                         secondimage(fileReference: "/content/dam/image")
+                        insidecomponent(fileReference: "/content/dam/image")
                     }
                 }
                 child {
                     "jcr:content" {
-                        component()
+                        component() { insidecomponent() }
                         other()
                     }
                 }
@@ -105,9 +94,7 @@ class DefaultComponentNodeSpec extends BedrockSpec {
 
         nodeBuilder.content {
             dam("sling:Folder") {
-                image("dam:Asset") {
-                    "jcr:content"("jcr:data": "data")
-                }
+                image("dam:Asset") { "jcr:content"("jcr:data": "data") }
             }
         }
     }
@@ -157,7 +144,10 @@ class DefaultComponentNodeSpec extends BedrockSpec {
         !ancestorNodeOptional.present
 
         where:
-        path << ["/content/inheritance/child/jcr:content", "/content/inheritance/child/jcr:content/component"]
+        path << [
+            "/content/inheritance/child/jcr:content",
+            "/content/inheritance/child/jcr:content/component"
+        ]
     }
 
     def "find ancestor with property value"() {
@@ -303,15 +293,48 @@ class DefaultComponentNodeSpec extends BedrockSpec {
         node.imageSourceInherited.present == isPresent
 
         where:
-        path                                               | isPresent
-        "/content/ales/esb/jcr:content"                    | true
-        "/content/ales/esb/suds/jcr:content"               | true
-        "/content/ales/esb/suds/pint/jcr:content"          | true
-        "/content/inheritance/jcr:content"                 | false
-        "/content/inheritance/child/jcr:content"           | false
-        "/content/inheritance/jcr:content/component"       | true
-        "/content/inheritance/child/jcr:content/component" | true
-        "/content/ales/esb/jcr:content/fullers"            | false
+        path                                                               | isPresent
+        "/content/ales/esb/jcr:content"                                    | true
+        "/content/ales/esb/suds/jcr:content"                               | true
+        "/content/ales/esb/suds/pint/jcr:content"                          | true
+        "/content/inheritance/jcr:content"                                 | false
+        "/content/inheritance/child/jcr:content"                           | false
+        "/content/inheritance/jcr:content/component"                       | true
+        "/content/inheritance/child/jcr:content/component"                 | true
+        "/content/ales/esb/jcr:content/fullers"                            | false
+        "/content/inheritance/jcr:content/component/insidecomponent"       | true
+        "/content/inheritance/child/jcr:content/component/insidecomponent" | true
+    }
+
+    def "get image source inherited"() {
+        setup:
+        def node = getComponentNode(path)
+
+        expect:
+        node.imageSourceInherited.get() == imageSrc
+
+        where:
+        path                                                               | imageSrc
+        "/content/ales/esb/jcr:content"                                    | "/content/ales/esb.img.png"
+        "/content/ales/esb/suds/jcr:content"                               | "/content/ales/esb.img.png"
+        "/content/ales/esb/suds/pint/jcr:content"                          | "/content/ales/esb.img.png"
+        "/content/inheritance/jcr:content/component"                       | "/content/inheritance/jcr:content/component.img.png"
+        "/content/inheritance/child/jcr:content/component"                 | "/content/inheritance/jcr:content/component.img.png"
+        "/content/inheritance/jcr:content/component/insidecomponent"       | "/content/inheritance/jcr:content/component/insidecomponent.img.png"
+        "/content/inheritance/child/jcr:content/component/insidecomponent" | "/content/inheritance/jcr:content/component/insidecomponent.img.png"
+    }
+
+    def "get named image source inherited"() {
+        setup:
+        def node = getComponentNode(path)
+
+        expect:
+        node.getImageSourceInherited(name).get() == imageSrc
+
+        where:
+        path                                 | name          | imageSrc
+        "/content/ales/esb/suds/jcr:content" | "image"       | "/content/ales/esb.img.png"
+        "/content/ales/esb/suds/jcr:content" | "secondimage" | "/content/ales/esb.img.secondimage.png"
     }
 
     def "get inherited"() {
@@ -326,7 +349,6 @@ class DefaultComponentNodeSpec extends BedrockSpec {
         "/content/ales/esb/suds/pint/barrel/jcr:content/container/child1" | "jcr:title"   | "Zeus"
         "/content/ales/esb/suds/pint/barrel/jcr:content/container/child1" | "nonExistent" | ""
         "/content/ales/esb/jcr:content/fullers"                           | "any"         | ""
-
     }
 
     def "get inherited optional"() {

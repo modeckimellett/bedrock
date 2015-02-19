@@ -1,5 +1,6 @@
 package com.citytechinc.aem.bedrock.core.components;
 
+import com.citytechinc.aem.bedrock.api.components.Component;
 import com.citytechinc.aem.bedrock.api.link.Link;
 import com.citytechinc.aem.bedrock.api.link.builders.LinkBuilder;
 import com.citytechinc.aem.bedrock.api.node.BasicNode;
@@ -13,7 +14,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.sightly.java.api.Use;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.Model;
@@ -37,7 +37,7 @@ import static org.apache.sling.api.scripting.SlingBindings.RESOURCE;
  * or implemented with Sightly.
  */
 @JsonAutoDetect(fieldVisibility = NONE, getterVisibility = NONE, isGetterVisibility = NONE)
-public abstract class AbstractComponent implements ComponentNode, Use {
+public abstract class AbstractComponent implements Component {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractComponent.class);
 
@@ -88,7 +88,8 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @param type component class type
      * @return component instance or absent <code>Optional</code> if path does not resolve to a resource
      */
-    public <T extends AbstractComponent> Optional<T> getComponent(final String path, final Class<T> type) {
+    @Override
+    public <T extends Component> Optional<T> getComponent(final String path, final Class<T> type) {
         return getComponentForResource(getComponentNode().getResource().getResourceResolver().getResource(path), type);
     }
 
@@ -99,7 +100,8 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @param type component class type
      * @return component instance or null if an error occurs
      */
-    public <T extends AbstractComponent> T getComponent(final ComponentNode componentNode, final Class<T> type) {
+    @Override
+    public <T extends Component> T getComponent(final ComponentNode componentNode, final Class<T> type) {
         return getComponentForResource(componentNode.getResource(), type).get();
     }
 
@@ -108,6 +110,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      *
      * @return component request
      */
+    @Override
     public ComponentRequest getComponentRequest() {
         return checkNotNull(componentRequest, PRECONDITIONS_ERROR_MESSAGE);
     }
@@ -117,6 +120,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      *
      * @return current page
      */
+    @Override
     public PageDecorator getCurrentPage() {
         return getComponentRequest().getCurrentPage();
     }
@@ -128,6 +132,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @param <T> type
      * @return the service instance, or null if it is not available
      */
+    @Override
     public final <T> T getService(final Class<T> serviceType) {
         return getServiceProvider().getService(serviceType);
     }
@@ -140,6 +145,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
      * @param <T> type
      * @return one or more service instances, or null if none are found
      */
+    @Override
     public final <T> List<T> getServices(final Class<T> serviceType, final String filter) {
         return getServiceProvider().getServices(serviceType, filter);
     }
@@ -504,8 +510,7 @@ public abstract class AbstractComponent implements ComponentNode, Use {
         return getComponentRequest().getServiceProvider();
     }
 
-    private <T extends AbstractComponent> Optional<T> getComponentForResource(final Resource resource,
-        final Class<T> type) {
+    private <T extends Component> Optional<T> getComponentForResource(final Resource resource, final Class<T> type) {
         T instance = null;
 
         if (resource != null) {

@@ -1,8 +1,8 @@
 package com.citytechinc.aem.bedrock.core.servlets;
 
+import com.citytechinc.aem.bedrock.api.components.Component;
 import com.citytechinc.aem.bedrock.api.request.ComponentServletRequest;
 import com.citytechinc.aem.bedrock.core.bindings.ComponentServletBindings;
-import com.citytechinc.aem.bedrock.core.components.AbstractComponent;
 import com.citytechinc.aem.bedrock.core.request.impl.DefaultComponentServletRequest;
 import com.google.common.collect.Lists;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import javax.script.Bindings;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,7 +107,7 @@ public abstract class AbstractComponentServlet extends AbstractJsonResponseServl
      * @return component instance for the current request context or absent <code>Optional</code> if
      * @throws ServletException if error occurs when instantiating component
      */
-    protected <T extends AbstractComponent> T getComponent(final ComponentServletRequest request, final Class<T> type)
+    protected <T extends Component> T getComponent(final ComponentServletRequest request, final Class<T> type)
         throws ServletException {
 
         //If the type requested is a Sling Model and is adaptable to from a SlingHttpServletRequest or a Resource, use adaptation for instantiation
