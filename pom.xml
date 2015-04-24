@@ -10,7 +10,7 @@
     <groupId>com.citytechinc.aem.bedrock</groupId>
     <artifactId>bedrock</artifactId>
     <packaging>pom</packaging>
-    <version>3.3.1-SNAPSHOT</version>
+    <version>3.4.0-SNAPSHOT</version>
     <name>Bedrock</name>
     <description>Bedrock provides a sturdy foundation for bootstrapping and simplifying AEM (Adobe CQ) projects.</description>
 
@@ -103,7 +103,7 @@
                     <plugin>
                         <groupId>com.github.github</groupId>
                         <artifactId>site-maven-plugin</artifactId>
-                        <version>0.10</version>
+                        <version>0.11</version>
                         <configuration>
                             <message>site for ${project.version}</message>
                             <server>github</server>
@@ -128,20 +128,20 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.6</version>
+                    <version>2.7</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.3</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.6</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>2.5.0</version>
+                    <version>2.5.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.felix</groupId>
@@ -150,7 +150,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.17</version>
+                    <version>2.18.1</version>
                     <configuration>
                         <includes>
                             <include>**/*Spec*</include>
@@ -159,20 +159,16 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-report-plugin</artifactId>
-                    <version>2.17</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.17</version>
+                    <version>2.18.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>cobertura-maven-plugin</artifactId>
-                    <version>2.6</version>
+                    <version>2.7</version>
                     <dependencies>
                         <dependency>
                             <groupId>com.sun</groupId>
@@ -185,15 +181,15 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.9.1</version>
+                    <version>2.10.3</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.2.1</version>
+                    <version>2.4</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.1</version>
+                    <version>2.8.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -202,12 +198,12 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.5.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.2.1</version>
+                    <version>1.4.0</version>
                 </plugin>
                 <plugin>
                     <groupId>com.citytechinc.maven.plugins</groupId>
@@ -225,12 +221,12 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>2.7</version>
+                    <version>2.8</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>1.3.1</version>
+                    <version>2.1</version>
                 </plugin>
                 <plugin>
                     <groupId>com.github.phasebash</groupId>
@@ -243,7 +239,7 @@
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
                 <artifactId>jgitflow-maven-plugin</artifactId>
-                <version>1.0-m4</version>
+                <version>1.0-m4.3</version>
                 <configuration>
                     <flowInitContext>
                         <featureBranchPrefix>feature-</featureBranchPrefix>
@@ -301,9 +297,8 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.4</version>
+                <version>1.6</version>
                 <executions>
                     <execution>
                         <phase>deploy</phase>
@@ -351,7 +346,7 @@
                     </excludePackageNames>
                     <links>
                         <link>http://docs.oracle.com/javaee/6/api</link>
-                        <link>http://docs.guava-libraries.googlecode.com/git-history/v15.0/javadoc</link>
+                        <link>http://docs.guava-libraries.googlecode.com/git-history/release/javadoc</link>
                         <link>http://www.day.com/maven/jsr170/javadocs/jcr-2.0</link>
                         <link>http://sling.apache.org/apidocs/sling5</link>
                         <link>http://dev.day.com/docs/en/cq/current/javadoc</link>
@@ -384,7 +379,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-changes-plugin</artifactId>
-                <version>2.9</version>
+                <version>2.11</version>
                 <configuration>
                     <includeOpenIssues>false</includeOpenIssues>
                 </configuration>
@@ -415,27 +410,32 @@
             <dependency>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.scr.annotations</artifactId>
-                <version>1.9.8</version>
+                <version>1.9.10</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>18.0</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.3.1</version>
+                <version>2.5.2</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>2.3.1</version>
+                <version>2.5.2</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.3.1</version>
+                <version>2.5.2</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
-                <version>2.3.2</version>
+                <version>2.4.3</version>
             </dependency>
             <dependency>
                 <groupId>com.citytechinc.aem.groovy.extension</groupId>
@@ -450,7 +450,7 @@
             <dependency>
                 <groupId>net.sourceforge.cobertura</groupId>
                 <artifactId>cobertura</artifactId>
-                <version>2.0.3</version>
+                <version>2.1.1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.sun</groupId>
