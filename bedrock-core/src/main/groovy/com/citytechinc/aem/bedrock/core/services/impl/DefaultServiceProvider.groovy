@@ -1,7 +1,6 @@
 package com.citytechinc.aem.bedrock.core.services.impl
 
 import com.citytechinc.aem.bedrock.api.services.ServiceProvider
-import com.google.common.collect.ImmutableList
 import org.apache.sling.api.scripting.SlingScriptHelper
 import org.apache.sling.scripting.core.ScriptHelper
 import org.osgi.framework.BundleContext
@@ -25,6 +24,6 @@ final class DefaultServiceProvider implements ServiceProvider {
 
     @Override
     public <T> List<T> getServices(Class<T> serviceType, String filter) {
-        ImmutableList.of(slingScriptHelper.getServices(serviceType, filter))
+        slingScriptHelper.getServices(serviceType, filter) as List
     }
 }
