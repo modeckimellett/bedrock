@@ -7,17 +7,13 @@ import org.apache.sling.models.annotations.Model
 
 import javax.servlet.jsp.JspTagException
 
-import static com.google.common.base.Preconditions.checkState
-
 @Slf4j("LOG")
 abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
     protected final Object getInstance(Class<?> clazz) {
         def instance
 
-        checkState(clazz.isAnnotationPresent(Model), "component class %s must be a sling model", clazz.name)
-
-        try {
+        if (clazz.isAnnotationPresent(Model)) {
             def adaptables = clazz.getAnnotation(Model).adaptables()
 
             if (adaptables.contains(SlingHttpServletRequest)) {
@@ -27,14 +23,14 @@ abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
             } else {
                 throw new JspTagException("component class ${clazz.name} is not adaptable from request or resource");
             }
-        } catch (InstantiationException e) {
-            LOG.error "error instantiating component class", e
+        } else {
+            try {
+                instance = clazz.newInstance()
+            } catch (InstantiationException | IllegalAccessException e) {
+                LOG.error("error instantiating component class", e)
 
-            throw new JspTagException(e)
-        } catch (IllegalAccessException e) {
-            LOG.error "error instantiating component class", e
-
-            throw new JspTagException(e)
+                throw new JspTagException(e)
+            }
         }
 
         instance
