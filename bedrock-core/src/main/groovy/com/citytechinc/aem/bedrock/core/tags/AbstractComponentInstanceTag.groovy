@@ -1,47 +1,31 @@
 package com.citytechinc.aem.bedrock.core.tags
 
-import com.citytechinc.aem.bedrock.api.components.Component
 import groovy.util.logging.Slf4j
 import org.apache.sling.api.SlingHttpServletRequest
 import org.apache.sling.api.resource.Resource
-import org.apache.sling.api.scripting.SlingBindings
 import org.apache.sling.models.annotations.Model
 
-import javax.script.SimpleBindings
 import javax.servlet.jsp.JspTagException
 
-import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME
+import static com.google.common.base.Preconditions.checkState
 
 @Slf4j("LOG")
 abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
     protected final Object getInstance(Class<?> clazz) {
-        def instance = null
+        def instance
+
+        checkState(clazz.isAnnotationPresent(Model), "component class %s must be a sling model", clazz.name)
 
         try {
-            boolean useModels = false
+            def adaptables = clazz.getAnnotation(Model).adaptables()
 
-            if (clazz.isAnnotationPresent(Model)) {
-                def adaptables = clazz.getAnnotation(Model).adaptables()
-
-                if (adaptables.contains(SlingHttpServletRequest)) {
-                    useModels = true
-                    instance = ((SlingHttpServletRequest) pageContext.request).adaptTo(clazz)
-                } else if (adaptables.contains(Resource)) {
-                    useModels = true
-                    instance = ((SlingHttpServletRequest) pageContext.request).resource.adaptTo(clazz)
-                }
-            }
-
-            if (!useModels) {
-                instance = clazz.newInstance()
-
-                if (instance instanceof Component) {
-                    def slingBindings = pageContext.getAttribute(DEFAULT_BINDINGS_NAME) as SlingBindings
-                    def bindings = new SimpleBindings(slingBindings)
-
-                    ((Component) instance).init(bindings)
-                }
+            if (adaptables.contains(SlingHttpServletRequest)) {
+                instance = ((SlingHttpServletRequest) pageContext.request).adaptTo(clazz)
+            } else if (adaptables.contains(Resource)) {
+                instance = ((SlingHttpServletRequest) pageContext.request).resource.adaptTo(clazz)
+            } else {
+                throw new JspTagException("component class ${clazz.name} is not adaptable from request or resource");
             }
         } catch (InstantiationException e) {
             LOG.error "error instantiating component class", e
