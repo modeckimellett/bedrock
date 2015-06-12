@@ -8,7 +8,7 @@ import javax.script.Bindings
 /**
  * Additional bindings to add to the script context (e.g. for consumption in Sightly templates).
  */
-final class BedrockBindings implements Bindings {
+final class WCMModeBindings implements Bindings {
 
     public static final String IS_ANALYTICS_MODE = "isAnalyticsMode"
 
@@ -31,7 +31,7 @@ final class BedrockBindings implements Bindings {
     @Delegate
     private final Map<String, Object> map = [:]
 
-    BedrockBindings(SlingHttpServletRequest slingRequest) {
+    WCMModeBindings(SlingHttpServletRequest slingRequest) {
         def mode = WCMMode.fromRequest(slingRequest)
 
         map.put(IS_AUTHOR, mode != WCMMode.DISABLED)

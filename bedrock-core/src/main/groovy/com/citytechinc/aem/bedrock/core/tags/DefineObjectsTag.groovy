@@ -2,7 +2,7 @@ package com.citytechinc.aem.bedrock.core.tags
 
 import com.citytechinc.aem.bedrock.api.components.annotations.AutoInstantiate
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
-import com.citytechinc.aem.bedrock.core.bindings.BedrockBindings
+import com.citytechinc.aem.bedrock.core.bindings.WCMModeBindings
 import com.day.cq.wcm.api.components.Component
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
@@ -53,7 +53,7 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
      */
     private void setBindings(SlingHttpServletRequest slingRequest) {
         // add bedrock attributes to page context
-        def bindings = new BedrockBindings(slingRequest)
+        def bindings = new WCMModeBindings(slingRequest)
 
         bindings.each { key, value ->
             pageContext.setAttribute(key, value)

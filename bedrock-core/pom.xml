@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.citytechinc.aem.bedrock</groupId>
 		<artifactId>bedrock</artifactId>
-		<version>3.4.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -41,26 +41,26 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Name>${project.name}</Bundle-Name>
-						<Bundle-Vendor>${project.parent.organization.name}</Bundle-Vendor>
-						<Export-Package>
-							!*.impl,
-							!com.citytechinc.aem.bedrock.core.specs.*,
-							com.citytechinc.aem.bedrock.core.*
-						</Export-Package>
-						<Import-Package>!javassist</Import-Package>
-						<DynamicImport-Package>*</DynamicImport-Package>
-						<Require-Bundle>org.apache.sling.models.api</Require-Bundle>
-					</instructions>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.name}</Bundle-Name>
+                        <Bundle-Vendor>${project.parent.organization.name}</Bundle-Vendor>
+                        <Export-Package>
+                            !*.impl,
+                            !com.citytechinc.aem.bedrock.core.specs.*,
+                            com.citytechinc.aem.bedrock.core.*
+                        </Export-Package>
+                        <Import-Package>!javassist</Import-Package>
+                        <DynamicImport-Package>*</DynamicImport-Package>
+                        <Require-Bundle>org.apache.sling.models.api</Require-Bundle>
+                    </instructions>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-scr-plugin</artifactId>
