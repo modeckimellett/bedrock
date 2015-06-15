@@ -18,7 +18,7 @@ import javax.jcr.Session
 class ComponentInjectorSpec extends BedrockSpec {
 
     @Shared
-    com.citytechinc.aem.bedrock.core.models.impl.ComponentInjector injector
+    ComponentInjector injector
 
     def setupSpec() {
         pageBuilder.content {
@@ -29,7 +29,7 @@ class ComponentInjectorSpec extends BedrockSpec {
             }
         }
 
-        injector = new com.citytechinc.aem.bedrock.core.models.impl.ComponentInjector()
+        injector = new ComponentInjector()
     }
 
     def "get value from resource for valid type returns non-null value"() {
