@@ -52,7 +52,7 @@ final class DefineObjectsTag extends AbstractComponentInstanceTag {
      * @param slingRequest current Sling request
      */
     private void setBindings(SlingHttpServletRequest slingRequest) {
-        // add bedrock attributes to page context
+        // add mode attributes to page context
         def bindings = new WCMModeBindings(slingRequest)
 
         bindings.each { key, value ->
