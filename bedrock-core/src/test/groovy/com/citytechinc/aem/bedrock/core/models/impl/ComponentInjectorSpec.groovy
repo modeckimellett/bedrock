@@ -15,10 +15,10 @@ import javax.jcr.Node
 import javax.jcr.Session
 
 @Unroll
-class ResourceContextInjectorSpec extends BedrockSpec {
+class ComponentInjectorSpec extends BedrockSpec {
 
     @Shared
-    ResourceContextInjector injector
+    ComponentInjector injector
 
     def setupSpec() {
         pageBuilder.content {
@@ -29,13 +29,13 @@ class ResourceContextInjectorSpec extends BedrockSpec {
             }
         }
 
-        injector = new ResourceContextInjector()
+        injector = new ComponentInjector()
     }
 
-    def "inject for valid type returns non-null value"() {
+    def "get value from resource for valid type returns non-null value"() {
         setup:
         def resource = getResource("/content/citytechinc/jcr:content/component")
-        def value = injector.inject(resource, null, type, null, null)
+        def value = injector.getValue(resource, null, type, null, null)
 
         expect:
         value
@@ -44,10 +44,10 @@ class ResourceContextInjectorSpec extends BedrockSpec {
         type << [Resource, ResourceResolver, ValueMap, Node, Session, BasicNode, ComponentNode, PageDecorator, PageManagerDecorator]
     }
 
-    def "inject for invalid type returns null value"() {
+    def "get value from resource for invalid type returns null value"() {
         setup:
         def resource = getResource("/content/citytechinc/jcr:content/component")
-        def value = injector.inject(resource, null, String, null, null)
+        def value = injector.getValue(resource, null, String, null, null)
 
         expect:
         !value
