@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 @Component
 @Service
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
-public class ImageInjector extends AbstractComponentNodeInjector<Image> implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
+public class ImageInjector extends AbstractTypedComponentNodeInjector<Image> implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
 
     public static final String NAME = "images";
 

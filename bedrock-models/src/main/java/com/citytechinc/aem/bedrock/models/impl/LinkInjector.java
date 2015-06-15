@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 @Component
 @Service
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
-public class LinkInjector extends AbstractComponentNodeInjector<Link> implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
+public class LinkInjector extends AbstractTypedComponentNodeInjector<Link> implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
 
     public static final String NAME = "links";
 
