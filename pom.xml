@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>com.citytechinc.aem</groupId>
@@ -29,6 +30,7 @@
     <modules>
         <module>bedrock-api</module>
         <module>bedrock-core</module>
+        <module>bedrock-models</module>
         <module>bedrock-ui</module>
     </modules>
 
@@ -444,7 +446,7 @@
             <dependency>
                 <groupId>com.citytechinc.aem.groovy.extension</groupId>
                 <artifactId>aem-groovy-extension-bundle</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.citytechinc.aem.prosper</groupId>
@@ -461,6 +463,16 @@
                         <artifactId>tools</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.models.api</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.sling</groupId>
+                <artifactId>org.apache.sling.models.impl</artifactId>
+                <version>1.1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

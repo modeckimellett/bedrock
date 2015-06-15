@@ -1,4 +1,4 @@
-package com.citytechinc.aem.bedrock.core.models.impl
+package com.citytechinc.aem.bedrock.models.impl
 
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property

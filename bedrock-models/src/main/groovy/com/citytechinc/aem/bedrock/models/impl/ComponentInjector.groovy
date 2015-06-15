@@ -1,4 +1,4 @@
-package com.citytechinc.aem.bedrock.core.models.impl
+package com.citytechinc.aem.bedrock.models.impl
 
 import com.citytechinc.aem.bedrock.api.node.BasicNode
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
