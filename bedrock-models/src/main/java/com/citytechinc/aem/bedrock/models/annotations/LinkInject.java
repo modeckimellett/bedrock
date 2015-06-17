@@ -1,16 +1,17 @@
 package com.citytechinc.aem.bedrock.models.annotations;
 
-import com.citytechinc.aem.bedrock.models.impl.LinkInjector;
-import org.apache.sling.models.annotations.Source;
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import org.apache.sling.models.annotations.Source;
+import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
+
+import com.citytechinc.aem.bedrock.models.impl.LinkInjector;
 
 @Target({ METHOD, FIELD, PARAMETER })
 @Retention(RUNTIME)
@@ -18,19 +19,19 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Source(LinkInjector.NAME)
 public @interface LinkInject {
 
-    /**
-     * If set to true, the model can be instantiated even if there is no child resource with that name available.
-     * Default = true.
-     */
-    boolean optional() default true;
+	/**
+	 * If set to true, the model can be instantiated even if there is no link
+	 * available. Default = true.
+	 */
+	boolean optional() default true;
 
-    /**
-     * The property to use for setting the title on the link
-     */
-    String titleProperty() default "";
+	/**
+	 * The property to use for setting the title on the link
+	 */
+	String titleProperty() default "";
 
-    /**
-     * Whether to get the link via inheriting
-     */
-    boolean inherit() default false;
+	/**
+	 * Whether to get the link via inheriting
+	 */
+	boolean inherit() default false;
 }
