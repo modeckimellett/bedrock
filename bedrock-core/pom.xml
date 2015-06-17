@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<parent>
 		<groupId>com.citytechinc.aem.bedrock</groupId>
@@ -24,26 +25,26 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Name>${project.name}</Bundle-Name>
-                        <Bundle-Vendor>${project.parent.organization.name}</Bundle-Vendor>
-                        <Export-Package>
-                            !*.impl,
-                            !com.citytechinc.aem.bedrock.core.specs.*,
-                            com.citytechinc.aem.bedrock.core.*
-                        </Export-Package>
-                        <Import-Package>!javassist</Import-Package>
-                        <DynamicImport-Package>*</DynamicImport-Package>
-                        <Require-Bundle>org.apache.sling.models.api</Require-Bundle>
-                    </instructions>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Name>${project.name}</Bundle-Name>
+						<Bundle-Vendor>${project.parent.organization.name}</Bundle-Vendor>
+						<Export-Package>
+							!*.impl,
+							!com.citytechinc.aem.bedrock.core.specs.*,
+							com.citytechinc.aem.bedrock.core.*
+						</Export-Package>
+						<Import-Package>!javassist</Import-Package>
+						<DynamicImport-Package>*</DynamicImport-Package>
+						<Require-Bundle>org.apache.sling.models.api</Require-Bundle>
+					</instructions>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-scr-plugin</artifactId>
@@ -313,6 +314,10 @@
 			<artifactId>cq-wcm-launches-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.adobe.cq</groupId>
+			<artifactId>cq-launches-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.adobe.cq.sightly</groupId>
 			<artifactId>cq-wcm-sightly-extension</artifactId>
 		</dependency>
@@ -328,10 +333,10 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
@@ -366,6 +371,14 @@
 		<dependency>
 			<groupId>com.citytechinc.aem.prosper</groupId>
 			<artifactId>prosper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
 		</dependency>
 	</dependencies>
 </project>
