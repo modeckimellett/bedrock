@@ -1,12 +1,9 @@
 package com.citytechinc.aem.bedrock.core.specs
-
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
 import com.citytechinc.aem.bedrock.core.adapter.BedrockAdapterFactory
-import com.citytechinc.aem.prosper.builders.BindingsBuilder
 import com.citytechinc.aem.prosper.mixins.JspTagMixin
-import com.citytechinc.aem.prosper.mixins.SightlyMixin
 import com.citytechinc.aem.prosper.specs.ProsperSpec
 import com.citytechinc.aem.prosper.tag.JspTagProxy
 import com.day.cq.wcm.api.PageManager
@@ -18,7 +15,6 @@ import javax.servlet.jsp.tagext.TagSupport
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME
-
 /**
  * Spock specification for testing Bedrock-based components and services.
  */
@@ -26,9 +22,6 @@ abstract class BedrockSpec extends ProsperSpec {
 
     @Shared
     PageManagerDecorator pageManagerDecorator
-
-    @Shared
-    SightlyMixin sightly
 
     @Shared
     JspTagMixin jspTag
@@ -69,7 +62,7 @@ abstract class BedrockSpec extends ProsperSpec {
 
         additionalPageContextAttributes[DEFAULT_RESOURCE_NAME] = resource
         additionalPageContextAttributes[DEFAULT_CURRENT_PAGE_NAME] = currentPage
-        additionalPageContextAttributes[DEFAULT_BINDINGS_NAME] = new BindingsBuilder(resourceResolver).build {
+        additionalPageContextAttributes[DEFAULT_BINDINGS_NAME] = bindingsBuilder.build {
             setPath(path)
         }
 
