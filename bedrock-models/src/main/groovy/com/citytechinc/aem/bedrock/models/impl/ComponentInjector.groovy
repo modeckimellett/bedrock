@@ -4,6 +4,7 @@ import com.citytechinc.aem.bedrock.api.node.BasicNode
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
+import com.citytechinc.aem.bedrock.models.utils.ModelUtils
 import com.day.cq.wcm.api.WCMMode
 import com.day.cq.wcm.api.components.ComponentContext
 import com.day.cq.wcm.api.components.EditContext
@@ -74,7 +75,7 @@ class ComponentInjector implements Injector {
     }
 
     private static def getValueForRequest(Class clazz, Object adaptable) {
-        def request = getRequest(adaptable)
+        def request = ModelUtils.getRequest(adaptable)
 
         def value = null
 
@@ -108,7 +109,7 @@ class ComponentInjector implements Injector {
     }
 
     private static def getValueForResource(Class clazz, Object adaptable) {
-        def resource = getResource(adaptable)
+        def resource = ModelUtils.getResource(adaptable)
 
         def value = null
 
@@ -139,27 +140,5 @@ class ComponentInjector implements Injector {
         }
 
         value
-    }
-
-    private static SlingHttpServletRequest getRequest(adaptable) {
-        def request = null
-
-        if (adaptable instanceof SlingHttpServletRequest) {
-            request = adaptable as SlingHttpServletRequest
-        }
-
-        request
-    }
-
-    private static Resource getResource(adaptable) {
-        def resource = null
-
-        if (adaptable instanceof Resource) {
-            resource = adaptable as Resource
-        } else if (adaptable instanceof SlingHttpServletRequest) {
-            resource = (adaptable as SlingHttpServletRequest).resource
-        }
-
-        resource
     }
 }
