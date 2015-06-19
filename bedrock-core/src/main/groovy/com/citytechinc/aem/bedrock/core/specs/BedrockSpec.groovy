@@ -1,4 +1,5 @@
 package com.citytechinc.aem.bedrock.core.specs
+
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.api.page.PageDecorator
 import com.citytechinc.aem.bedrock.api.page.PageManagerDecorator
@@ -15,6 +16,7 @@ import javax.servlet.jsp.tagext.TagSupport
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_CURRENT_PAGE_NAME
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_BINDINGS_NAME
 import static org.apache.sling.scripting.jsp.taglib.DefineObjectsTag.DEFAULT_RESOURCE_NAME
+
 /**
  * Spock specification for testing Bedrock-based components and services.
  */

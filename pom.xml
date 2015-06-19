@@ -45,10 +45,6 @@
 			<id>citytech-public</id>
 			<url>http://nexus.citytech.ctmsp.com/content/groups/public</url>
 		</repository>
-		<repository>
-			<id>adobe-public-releases</id>
-			<url>https://repo.adobe.com/nexus/content/groups/public/</url>
-		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -440,11 +436,6 @@
 				<version>1.9.12</version>
 			</dependency>
 			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>15.0</version>
-			</dependency>
-			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
 				<version>2.5.2</version>
@@ -479,33 +470,6 @@
 						<artifactId>tools</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.sling</groupId>
-				<artifactId>org.apache.sling.models.api</artifactId>
-				<version>1.1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.sling</groupId>
-				<artifactId>org.apache.sling.models.impl</artifactId>
-				<version>1.1.0</version>
-			</dependency>
-            <dependency>
-                <groupId>com.citytechinc.aem.prosper</groupId>
-                <artifactId>prosper</artifactId>
-                <version>4.0.0</version>
-            </dependency>
-			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>3.1</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.objenesis</groupId>
-				<artifactId>objenesis</artifactId>
-				<version>2.1</version>
-				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
