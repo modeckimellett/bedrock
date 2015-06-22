@@ -10,7 +10,7 @@ import java.lang.reflect.Type
 
 abstract class AbstractComponentNodeInjector implements Injector {
 
-    public abstract Object getValue(ComponentNode componentNode, String name, Type declaredType, AnnotatedElement element,
+    abstract Object getValue(ComponentNode componentNode, String name, Type declaredType, AnnotatedElement element,
         DisposalCallbackRegistry callbackRegistry)
 
     @Override

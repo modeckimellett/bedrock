@@ -1,6 +1,6 @@
 package com.citytechinc.aem.bedrock.models.annotations;
 
-import com.citytechinc.aem.bedrock.models.constants.ModelsConstants;
+import com.citytechinc.aem.bedrock.models.impl.InheritInjector;
 import org.apache.sling.models.annotations.Source;
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
 
@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ METHOD, FIELD, PARAMETER })
 @Retention(RUNTIME)
 @InjectAnnotation
-@Source(value = ModelsConstants.INHERIT_NAME)
+@Source(InheritInjector.NAME)
 public @interface InheritInject {
 
 	/**

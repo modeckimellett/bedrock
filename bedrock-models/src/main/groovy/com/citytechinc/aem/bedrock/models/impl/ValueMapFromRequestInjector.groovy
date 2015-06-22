@@ -1,9 +1,9 @@
 package com.citytechinc.aem.bedrock.models.impl
 
+import com.citytechinc.aem.bedrock.models.utils.ModelUtils
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
-import org.apache.sling.api.SlingHttpServletRequest
 import org.apache.sling.models.spi.DisposalCallbackRegistry
 import org.apache.sling.models.spi.Injector
 import org.osgi.framework.Constants
@@ -26,15 +26,13 @@ class ValueMapFromRequestInjector implements Injector {
         DisposalCallbackRegistry callbackRegistry) {
         def value = null
 
-        if (adaptable instanceof SlingHttpServletRequest) {
-            def request = adaptable as SlingHttpServletRequest
+        def request = ModelUtils.getRequest(adaptable)
 
-            if (request.resource) {
-                def map = request.resource.valueMap
+        if (request?.resource) {
+            def map = request.resource.valueMap
 
-                if (map && type instanceof Class<?>) {
-                    value = map.get(name, (Class<?>) type)
-                }
+            if (map && type instanceof Class<?>) {
+                value = map.get(name, (Class<?>) type)
             }
         }
 

@@ -1,5 +1,6 @@
 package com.citytechinc.aem.bedrock.models.impl
 
+import com.citytechinc.aem.bedrock.models.utils.ModelUtils
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
@@ -33,14 +34,7 @@ class ModelListInjector implements Injector {
             .rawType) as Class == List) {
             def typeClass = getActualType((ParameterizedType) declaredType)
 
-            def resource
-
-            if (adaptable instanceof Resource) {
-                resource = (Resource) adaptable
-            } else {
-                resource = ((SlingHttpServletRequest) adaptable).resource
-            }
-
+            def resource = ModelUtils.getResource(adaptable)
             def childResource = resource.getChild(name)
 
             if (childResource) {
