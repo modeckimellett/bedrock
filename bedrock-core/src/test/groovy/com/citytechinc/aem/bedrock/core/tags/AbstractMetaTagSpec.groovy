@@ -1,8 +1,8 @@
 package com.citytechinc.aem.bedrock.core.tags
 
+import com.adobe.granite.xss.XSSAPI
 import com.citytechinc.aem.bedrock.core.specs.BedrockSpec
 import com.citytechinc.aem.prosper.tag.JspTagProxy
-import org.apache.sling.xss.XSSAPI
 
 import javax.servlet.jsp.tagext.TagSupport
 

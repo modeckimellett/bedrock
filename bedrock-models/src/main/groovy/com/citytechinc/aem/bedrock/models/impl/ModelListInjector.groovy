@@ -4,8 +4,6 @@ import com.citytechinc.aem.bedrock.models.utils.ModelUtils
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
-import org.apache.sling.api.SlingHttpServletRequest
-import org.apache.sling.api.resource.Resource
 import org.apache.sling.models.spi.DisposalCallbackRegistry
 import org.apache.sling.models.spi.Injector
 import org.osgi.framework.Constants
@@ -29,12 +27,12 @@ class ModelListInjector implements Injector {
         DisposalCallbackRegistry callbackRegistry) {
         def value = null
 
-        if ((adaptable instanceof Resource || adaptable instanceof SlingHttpServletRequest)
-            && declaredType instanceof ParameterizedType && (((ParameterizedType) declaredType)
-            .rawType) as Class == List) {
+        def resource = ModelUtils.getResource(adaptable)
+
+        if (resource && declaredType instanceof ParameterizedType && (((ParameterizedType) declaredType).rawType) as
+            Class == List) {
             def typeClass = getActualType((ParameterizedType) declaredType)
 
-            def resource = ModelUtils.getResource(adaptable)
             def childResource = resource.getChild(name)
 
             if (childResource) {

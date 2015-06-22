@@ -1,13 +1,13 @@
 package com.citytechinc.aem.bedrock.core.tags
 
+import com.adobe.granite.xss.XSSAPI
 import com.day.cq.widget.Doctype
-import org.apache.sling.xss.XSSAPI
 
 import static com.day.cq.wcm.tags.DefineObjectsTag.DEFAULT_XSSAPI_NAME
 
+@SuppressWarnings("deprecation")
 abstract class AbstractMetaTag extends AbstractPropertyTag {
 
-    @SuppressWarnings("deprecation")
     protected final String getTagEnd() {
         def builder = new StringBuilder()
 

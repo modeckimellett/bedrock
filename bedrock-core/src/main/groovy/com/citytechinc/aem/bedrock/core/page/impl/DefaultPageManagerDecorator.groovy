@@ -144,40 +144,40 @@ class DefaultPageManagerDecorator implements PageManagerDecorator {
     @Override
     PageDecorator copy(Page page, String destination, String beforeName, boolean shallow,
         boolean resolveConflict) throws WCMException {
-        getPageDecorator(pageManager.copy(page, destination, beforeName, shallow, resolveConflict))
+        decorate(pageManager.copy(page, destination, beforeName, shallow, resolveConflict))
     }
 
     @Override
     PageDecorator copy(Page page, String destination, String beforeName, boolean shallow,
         boolean resolveConflict, boolean autoSave) throws WCMException {
-        getPageDecorator(pageManager.copy(page, destination, beforeName, shallow, resolveConflict, autoSave))
+        decorate(pageManager.copy(page, destination, beforeName, shallow, resolveConflict, autoSave))
     }
 
     @Override
     PageDecorator create(String parentPath, String pageName, String template,
         String title) throws WCMException {
-        getPageDecorator(pageManager.create(parentPath, pageName, template, title))
+        decorate(pageManager.create(parentPath, pageName, template, title))
     }
 
     @Override
     PageDecorator create(String parentPath, String pageName, String template,
         String title, boolean autoSave) throws WCMException {
-        getPageDecorator(pageManager.create(parentPath, pageName, template, title, autoSave))
+        decorate(pageManager.create(parentPath, pageName, template, title, autoSave))
     }
 
     @Override
     PageDecorator getContainingPage(Resource resource) {
-        getPageDecorator(pageManager.getContainingPage(resource))
+        decorate(pageManager.getContainingPage(resource))
     }
 
     @Override
     PageDecorator getContainingPage(String path) {
-        getPageDecorator(pageManager.getContainingPage(path))
+        decorate(pageManager.getContainingPage(path))
     }
 
     @Override
     PageDecorator getPage(Page page) {
-        getPageDecorator(page)
+        decorate(page)
     }
 
     @Override
@@ -188,26 +188,26 @@ class DefaultPageManagerDecorator implements PageManagerDecorator {
     @Override
     PageDecorator move(Page page, String destination, String beforeName, boolean shallow,
         boolean resolveConflict, String[] adjustRefs) throws WCMException {
-        getPageDecorator(pageManager.move(page, destination, beforeName, shallow, resolveConflict, adjustRefs))
+        decorate(pageManager.move(page, destination, beforeName, shallow, resolveConflict, adjustRefs))
     }
 
     @Override
     PageDecorator restore(String path, String revisionId) throws WCMException {
-        getPageDecorator(pageManager.restore(path, revisionId))
+        decorate(pageManager.restore(path, revisionId))
     }
 
     @Override
     PageDecorator restoreTree(String path, Calendar date) throws WCMException {
-        getPageDecorator(pageManager.restoreTree(path, date))
+        decorate(pageManager.restoreTree(path, date))
     }
 
     // internals
 
     private PageDecorator getPageDecorator(String path) {
-        getPageDecorator(pageManager.getPage(path))
+        decorate(pageManager.getPage(path))
     }
 
-    private static PageDecorator getPageDecorator(Page page) {
+    private static PageDecorator decorate(Page page) {
         page ? new DefaultPageDecorator(page) : null
     }
 }

@@ -15,11 +15,12 @@ abstract class AbstractComponentInstanceTag extends AbstractScopedTag {
 
         if (clazz.isAnnotationPresent(Model)) {
             def adaptables = clazz.getAnnotation(Model).adaptables()
+            def request = pageContext.request as SlingHttpServletRequest
 
             if (adaptables.contains(SlingHttpServletRequest)) {
-                instance = ((SlingHttpServletRequest) pageContext.request).adaptTo(clazz)
+                instance = request.adaptTo(clazz)
             } else if (adaptables.contains(Resource)) {
-                instance = ((SlingHttpServletRequest) pageContext.request).resource.adaptTo(clazz)
+                instance = request.resource.adaptTo(clazz)
             } else {
                 throw new JspTagException("component class ${clazz.name} is not adaptable from request or resource");
             }

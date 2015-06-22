@@ -20,7 +20,7 @@ final class ComponentTag extends AbstractComponentInstanceTag {
 
     @Override
     int doEndTag(int scope) {
-        LOG.debug "class name = {}, attribute name = {}", className, name
+        LOG.debug("class name = {}, attribute name = {}", className, name)
 
         pageContext.setAttribute(name, getInstance(className), scope)
 
