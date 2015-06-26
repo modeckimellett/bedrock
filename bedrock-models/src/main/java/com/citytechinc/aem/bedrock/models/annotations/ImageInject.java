@@ -1,22 +1,22 @@
 package com.citytechinc.aem.bedrock.models.annotations;
 
-import com.citytechinc.aem.bedrock.models.impl.ImageInjector;
-import org.apache.sling.models.annotations.Source;
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import org.apache.sling.models.annotations.Source;
+import org.apache.sling.models.spi.injectorspecific.InjectAnnotation;
+
 @Target({ METHOD, FIELD, PARAMETER })
 @Retention(RUNTIME)
 @InjectAnnotation
-@Source(ImageInjector.NAME)
+@Source(ImageInject.NAME)
 public @interface ImageInject {
+	static final String NAME = "images";
 
 	/**
 	 * If set to true, the model can be instantiated even if there is no image
