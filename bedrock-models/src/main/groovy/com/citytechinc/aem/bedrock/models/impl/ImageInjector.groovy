@@ -1,8 +1,9 @@
 package com.citytechinc.aem.bedrock.models.impl
 
-import java.lang.reflect.AnnotatedElement
-
-import org.apache.commons.lang3.StringUtils
+import com.citytechinc.aem.bedrock.api.node.ComponentNode
+import com.citytechinc.aem.bedrock.models.annotations.ImageInject
+import com.day.cq.wcm.foundation.Image
+import com.google.common.base.Predicate
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
@@ -13,82 +14,79 @@ import org.apache.sling.models.spi.Injector
 import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory
-
-import com.citytechinc.aem.bedrock.api.node.ComponentNode
-import com.citytechinc.aem.bedrock.models.annotations.ImageInject
-import com.day.cq.wcm.foundation.Image
-import com.google.common.base.Optional
 import org.osgi.framework.Constants
+
+import java.lang.reflect.AnnotatedElement
 
 @Component
 @Service
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
-public class ImageInjector extends AbstractTypedComponentNodeInjector<Image> implements Injector, InjectAnnotationProcessorFactory, AcceptsNullName {
+class ImageInjector extends AbstractTypedComponentNodeInjector<Image> implements Injector,
+    InjectAnnotationProcessorFactory, AcceptsNullName {
 
+    @Override
+    String getName() {
+        ImageInject.NAME
+    }
 
-	@Override
-	public String getName() {
-		return ImageInject.NAME
-	}
+    @Override
+    Object getValue(ComponentNode componentNode, String name, Class<Image> declaredType,
+        AnnotatedElement element, DisposalCallbackRegistry callbackRegistry) {
+        def imageAnnotation = element.getAnnotation(ImageInject)
+        def path = imageAnnotation?.path()
 
-	@Override
-	public Object getValue(ComponentNode componentNode, String name, Class<Image> declaredType,
-			AnnotatedElement element, DisposalCallbackRegistry callbackRegistry) {
-		final ImageInject imageAnnotation = element.getAnnotation(ImageInject.class)
-		final String path = imageAnnotation == null ? null : imageAnnotation.path()
+        Image image
+        Resource resource
 
-		Image image
-		Resource resource
+        if (imageAnnotation?.inherit()) {
+            def componentNodeInherit = componentNode.findAncestor(new Predicate<ComponentNode>() {
+                @Override
+                boolean apply(ComponentNode cn) {
+                    path ? cn.isHasImage(path) : cn.hasImage
+                }
+            })
 
-		if (imageAnnotation?.inherit()) {
-			Optional<ComponentNode> componentNodeInherit = componentNode.findAncestor({ ComponentNode cn ->
-				if (StringUtils.isNotEmpty(path)) {
-					return cn.isHasImage(path)
-				} else {
-					return cn.isHasImage()
-				}
-			})
+            if (componentNodeInherit.present) {
+                resource = componentNodeInherit.get().resource
+            }
+        } else {
+            resource = componentNode.resource
+        }
 
-			if (componentNodeInherit.isPresent()) {
-				resource = componentNodeInherit.get().getResource()
-			}
-		} else {
-			resource = componentNode.getResource()
-		}
+        if (resource) {
+            if (path) {
+                image = new Image(resource, path)
+            } else {
+                image = new Image(resource)
+            }
 
-		if (resource) {
-			if (StringUtils.isNotEmpty(path)) {
-				image = new Image(resource, path)
-			} else {
-				image = new Image(resource)
-			}
-			if (image.hasContent()) {
-				return image
-			}
-		}
+            if (image.hasContent()) {
+                return image
+            }
+        }
 
-		return null
-	}
+        null
+    }
 
-	@Override
-	public InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
-		// check if the element has the expected annotation
-		ImageInject annotation = element.getAnnotation(ImageInject.class)
+    @Override
+    InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
+        // check if the element has the expected annotation
+        def annotation = element.getAnnotation(ImageInject)
 
-		return annotation != null ? new ImageAnnotationProcessor(annotation) : null
-	}
+        annotation ? new ImageAnnotationProcessor(annotation) : null
+    }
 
-	private static class ImageAnnotationProcessor extends AbstractInjectAnnotationProcessor {
+    private static class ImageAnnotationProcessor extends AbstractInjectAnnotationProcessor {
 
-		private final ImageInject annotation
+        private final ImageInject annotation
 
-		public ImageAnnotationProcessor(ImageInject annotation) {
-			this.annotation = annotation
-		}
+        ImageAnnotationProcessor(ImageInject annotation) {
+            this.annotation = annotation
+        }
 
-		@Override
-		public Boolean isOptional() {
-			return annotation.optional()
-		}
-	}
+        @Override
+        Boolean isOptional() {
+            annotation.optional()
+        }
+    }
 }

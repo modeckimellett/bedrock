@@ -3,7 +3,6 @@ package com.citytechinc.aem.bedrock.models.impl
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.models.annotations.InheritInject
 import com.google.common.base.Optional
-
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
@@ -19,43 +18,44 @@ import java.lang.reflect.Type
 @Component
 @Service
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
-public class InheritInjector extends AbstractComponentNodeInjector implements InjectAnnotationProcessorFactory {
+class InheritInjector extends AbstractComponentNodeInjector implements InjectAnnotationProcessorFactory {
 
-	@Override
-	public String getName() {
-		return InheritInject.NAME
-	}
+    @Override
+    String getName() {
+        InheritInject.NAME
+    }
 
-	@Override
-	public Object getValue(ComponentNode componentNode, String name, Type declaredType, AnnotatedElement element,
-			DisposalCallbackRegistry callbackRegistry) {
+    @Override
+    Object getValue(ComponentNode componentNode, String name, Type declaredType, AnnotatedElement element,
+        DisposalCallbackRegistry callbackRegistry) {
 
-		if(declaredType instanceof Class && declaredType.isEnum()){
-			Optional<String> enumString=componentNode.getInherited(name, String.class)
-			return enumString.present ? declaredType[enumString.get()] : null
-		}else{
-			return componentNode.getInherited(name, declaredType).orNull()
-		}
-	}
+        if (declaredType instanceof Class && declaredType.enum) {
+            Optional<String> enumString = componentNode.getInherited(name, String)
 
-	@Override
-	public InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
-		InheritInject annotation = element.getAnnotation(InheritInject.class)
+            return enumString.present ? declaredType[enumString.get()] : null
+        } else {
+            return componentNode.getInherited(name, declaredType).orNull()
+        }
+    }
 
-		return annotation != null ? new InheritAnnotationProcessor(annotation) : null
-	}
+    @Override
+    InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
+        def annotation = element.getAnnotation(InheritInject)
 
-	private static class InheritAnnotationProcessor extends AbstractInjectAnnotationProcessor {
+        annotation ? new InheritAnnotationProcessor(annotation) : null
+    }
 
-		private final InheritInject annotation
+    private static class InheritAnnotationProcessor extends AbstractInjectAnnotationProcessor {
 
-		public InheritAnnotationProcessor(InheritInject annotation) {
-			this.annotation = annotation
-		}
+        private final InheritInject annotation
 
-		@Override
-		public Boolean isOptional() {
-			return annotation.optional()
-		}
-	}
+        InheritAnnotationProcessor(InheritInject annotation) {
+            this.annotation = annotation
+        }
+
+        @Override
+        Boolean isOptional() {
+            annotation.optional()
+        }
+    }
 }
