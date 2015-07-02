@@ -2,7 +2,6 @@ package com.citytechinc.aem.bedrock.models.impl
 
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.models.annotations.InheritInject
-import com.google.common.base.Optional
 import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
@@ -30,7 +29,7 @@ class InheritInjector extends AbstractComponentNodeInjector implements InjectAnn
         DisposalCallbackRegistry callbackRegistry) {
 
         if (declaredType instanceof Class && declaredType.enum) {
-            Optional<String> enumString = componentNode.getInherited(name, String)
+            def enumString = componentNode.getInherited(name, String)
 
             return enumString.present ? declaredType[enumString.get()] : null
         } else {
