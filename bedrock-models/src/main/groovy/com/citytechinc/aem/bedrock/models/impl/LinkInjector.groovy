@@ -1,4 +1,5 @@
 package com.citytechinc.aem.bedrock.models.impl
+
 import com.citytechinc.aem.bedrock.api.link.Link
 import com.citytechinc.aem.bedrock.api.node.ComponentNode
 import com.citytechinc.aem.bedrock.core.link.builders.factory.LinkBuilderFactory
@@ -53,7 +54,7 @@ class LinkInjector extends AbstractTypedComponentNodeInjector<Link> implements I
 			pathOptional = componentNode.get(name, String)
 		}
 
-		if (pathOptional.isPresent()) {
+		if (pathOptional.present) {
 			def linkBuilder = LinkBuilderFactory.forPath(pathOptional.get()).setTitle(title)
 
 			return linkBuilder.build()
@@ -63,11 +64,11 @@ class LinkInjector extends AbstractTypedComponentNodeInjector<Link> implements I
 	}
 
 	@Override
-	public InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
+    InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
 		// check if the element has the expected annotation
 		def annotation = element.getAnnotation(LinkInject)
 
-		!annotation ? new LinkAnnotationProcessor(annotation) : null
+		annotation ? new LinkAnnotationProcessor(annotation) : null
 	}
 
 	private static class LinkAnnotationProcessor extends AbstractInjectAnnotationProcessor {
