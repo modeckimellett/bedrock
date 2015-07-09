@@ -36,7 +36,7 @@ class ModelListInjector implements Injector {
             def childResource = resource.getChild(name)
 
             if (childResource) {
-                value = childResource.children.collect { grandChildResource -> grandChildResource.adaptTo(typeClass) }
+                value = childResource.children.collect { grandChildResource -> grandChildResource.adaptTo(typeClass) } - null
             }
         }
 
