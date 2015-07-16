@@ -539,8 +539,9 @@
         	var widget = $element ? $element.data("fileUpload") : undefined,
                     resourceURL = $element ? $element.parents("form.cq-dialog").attr("action") : undefined;
 
-            if (widget) {
+            if (widget && !$element.data("fileuploadprocessed")) {
             	new ns.FileUploadField(widget, resourceURL);
+            	$element.data("fileuploadprocessed",true);
             }
         });
       
