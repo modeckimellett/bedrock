@@ -6,6 +6,7 @@ import org.apache.felix.scr.annotations.Component
 import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
 import org.apache.sling.models.spi.DisposalCallbackRegistry
+import org.apache.sling.models.spi.Injector
 import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor
 import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory
@@ -15,7 +16,7 @@ import java.lang.reflect.AnnotatedElement
 import java.lang.reflect.Type
 
 @Component
-@Service
+@Service(Injector)
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
 class InheritInjector extends AbstractComponentNodeInjector implements InjectAnnotationProcessorFactory {
 
@@ -27,14 +28,17 @@ class InheritInjector extends AbstractComponentNodeInjector implements InjectAnn
     @Override
     Object getValue(ComponentNode componentNode, String name, Type declaredType, AnnotatedElement element,
         DisposalCallbackRegistry callbackRegistry) {
+        def value
 
         if (declaredType instanceof Class && declaredType.enum) {
             def enumString = componentNode.getInherited(name, String)
 
-            return enumString.present ? declaredType[enumString.get()] : null
+            value = enumString.present ? declaredType[enumString.get()] : null
         } else {
-            return componentNode.getInherited(name, declaredType).orNull()
+            value = componentNode.getInherited(name, declaredType).orNull()
         }
+
+        value
     }
 
     @Override

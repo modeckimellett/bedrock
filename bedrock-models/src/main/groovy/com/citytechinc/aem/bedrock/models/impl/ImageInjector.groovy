@@ -19,7 +19,7 @@ import org.osgi.framework.Constants
 import java.lang.reflect.AnnotatedElement
 
 @Component
-@Service
+@Service(Injector)
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
 class ImageInjector extends AbstractTypedComponentNodeInjector<Image> implements Injector,
     InjectAnnotationProcessorFactory, AcceptsNullName {

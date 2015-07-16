@@ -24,64 +24,66 @@ import java.lang.reflect.AnnotatedElement
 class LinkInjector extends AbstractTypedComponentNodeInjector<Link> implements Injector,
     InjectAnnotationProcessorFactory, AcceptsNullName {
 
-	@Override
+    @Override
     String getName() {
-		LinkInject.NAME
-	}
+        LinkInject.NAME
+    }
 
-	@Override
+    @Override
     Object getValue(ComponentNode componentNode, String name, Class<Link> declaredType, AnnotatedElement element,
         DisposalCallbackRegistry callbackRegistry) {
-		def injectAnnotation = element.getAnnotation(LinkInject)
+        def injectAnnotation = element.getAnnotation(LinkInject)
 
-		Optional<String> pathOptional
+        Optional<String> pathOptional
 
-		String title = null
+        String title = null
 
-		if (injectAnnotation) {
-			if (injectAnnotation.inherit()) {
-				pathOptional = componentNode.getInherited(name, String)
-				if (injectAnnotation.titleProperty()) {
-					title = componentNode.getInherited(injectAnnotation.titleProperty(), String).orNull()
-				}
-			} else {
-				pathOptional = componentNode.get(name, String)
-				if (injectAnnotation.titleProperty()) {
-					title = componentNode.get(injectAnnotation.titleProperty(), String).orNull()
-				}
-			}
-		} else {
-			pathOptional = componentNode.get(name, String)
-		}
+        if (injectAnnotation) {
+            if (injectAnnotation.inherit()) {
+                pathOptional = componentNode.getInherited(name, String)
 
-		if (pathOptional.present) {
-			def linkBuilder = LinkBuilderFactory.forPath(pathOptional.get()).setTitle(title)
+                if (injectAnnotation.titleProperty()) {
+                    title = componentNode.getInherited(injectAnnotation.titleProperty(), String).orNull()
+                }
+            } else {
+                pathOptional = componentNode.get(name, String)
 
-			return linkBuilder.build()
-		}
+                if (injectAnnotation.titleProperty()) {
+                    title = componentNode.get(injectAnnotation.titleProperty(), String).orNull()
+                }
+            }
+        } else {
+            pathOptional = componentNode.get(name, String)
+        }
 
-		null
-	}
+        if (pathOptional.present) {
+            def linkBuilder = LinkBuilderFactory.forPath(pathOptional.get()).setTitle(title)
 
-	@Override
+            return linkBuilder.build()
+        }
+
+        null
+    }
+
+    @Override
     InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
-		// check if the element has the expected annotation
-		def annotation = element.getAnnotation(LinkInject)
+        // check if the element has the expected annotation
+        def annotation = element.getAnnotation(LinkInject)
 
-		annotation ? new LinkAnnotationProcessor(annotation) : null
-	}
+        annotation ? new LinkAnnotationProcessor(annotation) : null
+    }
 
-	private static class LinkAnnotationProcessor extends AbstractInjectAnnotationProcessor {
+    private static class LinkAnnotationProcessor extends AbstractInjectAnnotationProcessor {
 
-		private final LinkInject annotation
+        private final LinkInject annotation
 
-		LinkAnnotationProcessor(LinkInject annotation) {
-			this.annotation = annotation
-		}
+        LinkAnnotationProcessor(LinkInject annotation) {
+            this.annotation = annotation
+        }
 
-		@Override
-		Boolean isOptional() {
-			annotation.optional()
-		}
-	}
+        @Override
+        Boolean isOptional() {
+            annotation.optional()
+        }
+    }
 }
