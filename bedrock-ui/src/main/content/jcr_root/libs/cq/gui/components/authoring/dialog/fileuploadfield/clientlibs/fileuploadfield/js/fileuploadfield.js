@@ -250,12 +250,10 @@
         var $hiddenField = this.widget.$element.closest('form').find("input[name=\"" + name + "\"]"),
             i;
 
-        if ($hiddenField.length === 0) {
-            $hiddenField = $("<input type='hidden'/>").attr("name", name);
-            this.widget.$element.append($hiddenField);
-        } else if ($hiddenField.closest(this.widget.$element).length === 0) {
-            return; // Duplicate field elsewhere in the form
-        }
+        
+        $hiddenField = $("<input type='hidden'/>").attr("name", name);
+        this.widget.$element.append($hiddenField);
+        
 
         if (classNames !== undefined) {
             if (!$.isArray(classNames)) {

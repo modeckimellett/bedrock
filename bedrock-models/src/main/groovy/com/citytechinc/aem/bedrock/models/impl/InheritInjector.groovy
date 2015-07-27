@@ -13,6 +13,7 @@ import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFac
 import org.osgi.framework.Constants
 
 import java.lang.reflect.AnnotatedElement
+import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 @Component
@@ -28,13 +29,13 @@ class InheritInjector extends AbstractComponentNodeInjector implements InjectAnn
     @Override
     Object getValue(ComponentNode componentNode, String name, Type declaredType, AnnotatedElement element,
         DisposalCallbackRegistry callbackRegistry) {
-        def value
+        def value = null
 
         if (declaredType instanceof Class && declaredType.enum) {
             def enumString = componentNode.getInherited(name, String)
 
             value = enumString.present ? declaredType[enumString.get()] : null
-        } else {
+        } else if (!declaredType instanceof ParameterizedType) {
             value = componentNode.getInherited(name, declaredType).orNull()
         }
 
