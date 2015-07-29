@@ -20,10 +20,6 @@ class InjectorIntegrationSpec extends BedrockModelSpec {
         TagManager tagManager
     }
 
-    def setupSpec() {
-        slingContext.addModelsForPackage("com.citytechinc.aem.bedrock.models.impl")
-    }
-
     def "injected values from multiple injectors are correct types"() {
         setup:
         def request = requestBuilder.build()

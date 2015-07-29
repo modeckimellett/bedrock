@@ -7,9 +7,9 @@ import org.apache.felix.scr.annotations.Property
 import org.apache.felix.scr.annotations.Service
 import org.apache.sling.models.spi.DisposalCallbackRegistry
 import org.apache.sling.models.spi.Injector
-import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory
+import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor2
+import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2
+import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory
 import org.osgi.framework.Constants
 
 import java.lang.reflect.AnnotatedElement
@@ -19,7 +19,7 @@ import java.lang.reflect.Type
 @Component
 @Service(Injector)
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
-class InheritInjector extends AbstractComponentNodeInjector implements InjectAnnotationProcessorFactory {
+class InheritInjector extends AbstractComponentNodeInjector implements StaticInjectAnnotationProcessorFactory {
 
     @Override
     String getName() {
@@ -43,13 +43,13 @@ class InheritInjector extends AbstractComponentNodeInjector implements InjectAnn
     }
 
     @Override
-    InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
+    InjectAnnotationProcessor2 createAnnotationProcessor(AnnotatedElement element) {
         def annotation = element.getAnnotation(InheritInject)
 
         annotation ? new InheritAnnotationProcessor(annotation) : null
     }
 
-    private static class InheritAnnotationProcessor extends AbstractInjectAnnotationProcessor {
+    private static class InheritAnnotationProcessor extends AbstractInjectAnnotationProcessor2 {
 
         private final InheritInject annotation
 

@@ -11,9 +11,9 @@ import org.apache.felix.scr.annotations.Service
 import org.apache.sling.models.spi.AcceptsNullName
 import org.apache.sling.models.spi.DisposalCallbackRegistry
 import org.apache.sling.models.spi.Injector
-import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor
-import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessorFactory
+import org.apache.sling.models.spi.injectorspecific.AbstractInjectAnnotationProcessor2
+import org.apache.sling.models.spi.injectorspecific.InjectAnnotationProcessor2
+import org.apache.sling.models.spi.injectorspecific.StaticInjectAnnotationProcessorFactory
 import org.osgi.framework.Constants
 
 import java.lang.reflect.AnnotatedElement
@@ -22,7 +22,7 @@ import java.lang.reflect.AnnotatedElement
 @Service
 @Property(name = Constants.SERVICE_RANKING, intValue = 4000)
 class LinkInjector extends AbstractTypedComponentNodeInjector<Link> implements Injector,
-    InjectAnnotationProcessorFactory, AcceptsNullName {
+    StaticInjectAnnotationProcessorFactory, AcceptsNullName {
 
     @Override
     String getName() {
@@ -66,14 +66,14 @@ class LinkInjector extends AbstractTypedComponentNodeInjector<Link> implements I
     }
 
     @Override
-    InjectAnnotationProcessor createAnnotationProcessor(Object adaptable, AnnotatedElement element) {
+    InjectAnnotationProcessor2 createAnnotationProcessor(AnnotatedElement element) {
         // check if the element has the expected annotation
         def annotation = element.getAnnotation(LinkInject)
 
         annotation ? new LinkAnnotationProcessor(annotation) : null
     }
 
-    private static class LinkAnnotationProcessor extends AbstractInjectAnnotationProcessor {
+    private static class LinkAnnotationProcessor extends AbstractInjectAnnotationProcessor2 {
 
         private final LinkInject annotation
 
