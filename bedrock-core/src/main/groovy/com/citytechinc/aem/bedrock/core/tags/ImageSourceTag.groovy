@@ -4,7 +4,6 @@ import groovy.util.logging.Slf4j
 
 import javax.servlet.jsp.JspTagException
 
-import static com.citytechinc.aem.bedrock.core.constants.ComponentConstants.DEFAULT_IMAGE_NAME
 import static com.google.common.base.CharMatcher.DIGIT
 import static com.google.common.base.Preconditions.checkArgument
 
@@ -24,19 +23,26 @@ final class ImageSourceTag extends AbstractComponentTag {
     int doEndTag() {
         checkArgument(DIGIT.matchesAllOf(width), "invalid width attribute = %s, must be numeric", width)
 
-        def name = this.name ?: DEFAULT_IMAGE_NAME
         def width = this.width as Integer
 
         def imageSource
 
         if (inherit) {
-            imageSource = componentNode.getImageSourceInherited(name, width).or(defaultValue)
+            if (this.name) {
+                imageSource = componentNode.getImageSourceInherited(name, width)
+            } else {
+                imageSource = componentNode.getImageSourceInherited(width)
+            }
         } else {
-            imageSource = componentNode.getImageSource(name, width).or(defaultValue)
+            if (this.name) {
+                imageSource = componentNode.getImageSource(name, width)
+            } else {
+                imageSource = componentNode.getImageSource(width)
+            }
         }
 
         try {
-            pageContext.out.write(imageSource)
+            pageContext.out.write(imageSource.or(defaultValue))
         } catch (IOException e) {
             LOG.error "error writing image source = $imageSource", e
 

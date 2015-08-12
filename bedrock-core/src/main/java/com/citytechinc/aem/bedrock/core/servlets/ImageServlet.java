@@ -84,9 +84,8 @@ public final class ImageServlet extends AbstractImageServlet {
         }
 
         // don't cache images on authoring instances
-        // Cache-Control: no-cache allows caching (e.g. in the browser cache) but
-        // will force revalidation using If-Modified-Since or If-None-Match every time,
-        // avoiding aggressive browser caching
+        // Cache-Control: no-cache allows caching (e.g. in the browser cache) but will force revalidation using
+        // If-Modified-Since or If-None-Match every time, avoiding aggressive browser caching
         if (!WCMMode.DISABLED.equals(WCMMode.fromRequest(request))) {
             response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
             response.setHeader(HttpHeaders.EXPIRES, "0");
@@ -102,7 +101,8 @@ public final class ImageServlet extends AbstractImageServlet {
 
             response.setContentType(mimeType);
 
-            imageLayer.write(mimeType, mimeType.equals(MediaType.GIF.toString()) ? GIF_QUALITY : 1.0, response.getOutputStream());
+            imageLayer.write(mimeType, mimeType.equals(MediaType.GIF.toString()) ? GIF_QUALITY : 1.0,
+                response.getOutputStream());
         } else {
             // do not re-encode layer, just spool
             final Property data = image.getData();
@@ -158,34 +158,38 @@ public final class ImageServlet extends AbstractImageServlet {
 
             final String[] selectors = request.getRequestPathInfo().getSelectors();
 
+            String toName = null;
+
             if (selectors.length > 1) {
                 final String selector = selectors[1];
 
                 if (isNumeric(selector)) {
-                    name = ComponentConstants.DEFAULT_IMAGE_NAME;
                     width = Integer.valueOf(selector);
                 } else {
-                    name = selector;
+                    toName = selector;
                     width = selectors.length > 2 ? Integer.valueOf(selectors[2]) : -1;
                 }
             } else {
-                name = ComponentConstants.DEFAULT_IMAGE_NAME;
                 width = -1;
+            }
+
+            if (toName != null) {
+                name = toName;
+            } else {
+                name = new Image(getResource()).hasContent() ? null : ComponentConstants.DEFAULT_IMAGE_NAME;
             }
         }
 
         public Image getImage() {
-            final Resource resource;
-
-            if (isPage(request)) {
-                resource = request.getResource().getChild(JcrConstants.JCR_CONTENT);
-            } else {
-                resource = request.getResource();
-            }
+            final Resource resource = getResource();
 
             LOG.debug("getImage() resource = {}, name = {}", resource.getPath(), name);
 
-            return new Image(resource, name);
+            if (name != null) {
+                return new Image(resource, name);
+            } else {
+                return new Image(resource);
+            }
         }
 
         public String getName() {
@@ -194,6 +198,14 @@ public final class ImageServlet extends AbstractImageServlet {
 
         public int getWidth() {
             return width;
+        }
+
+        private Resource getResource() {
+            if (isPage(request)) {
+                return request.getResource().getChild(JcrConstants.JCR_CONTENT);
+            } else {
+                return request.getResource();
+            }
         }
     }
 
